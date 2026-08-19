@@ -14,19 +14,20 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class DashboardService {
-
     private final HoldingService holdingService;
     private final NetWorthService netWorthService;
     private final AccountRepository accountRepository;
 
-    public DashboardSummary getDashboardSummary() {
-        List<Holding> activeHoldings = holdingService.getActiveHoldings();
+    public DashboardSummary getSummary(Long ownerId) {
+        List<Holding> holdings = ownerId != null
+                ? holdingService.getActiveByOwner(ownerId)
+                : holdingService.getActiveHoldings();
 
-        BigDecimal totalInvested = activeHoldings.stream()
+        BigDecimal totalInvested = holdings.stream()
                 .map(Holding::getInvestedAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal totalCurrentValue = activeHoldings.stream()
+        BigDecimal totalCurrentValue = holdings.stream()
                 .map(h -> {
                     BigDecimal price = h.getAsset().getCurrentPrice();
                     if (price == null) price = h.getAverageBuyPrice();
@@ -49,7 +50,7 @@ public class DashboardService {
                 .totalGainLoss(totalGainLoss)
                 .gainLossPercentage(gainLossPercentage)
                 .allocationByType(allocation)
-                .totalHoldings(activeHoldings.size())
+                .totalHoldings(holdings.size())
                 .totalAccounts((int) accountRepository.count())
                 .build();
     }

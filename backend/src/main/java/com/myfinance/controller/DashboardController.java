@@ -5,12 +5,10 @@ import com.myfinance.model.NetWorthSnapshot;
 import com.myfinance.service.DashboardService;
 import com.myfinance.service.NetWorthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -18,41 +16,27 @@ import java.util.Map;
 @RequestMapping("/api/dashboard")
 @RequiredArgsConstructor
 public class DashboardController {
-
     private final DashboardService dashboardService;
     private final NetWorthService netWorthService;
 
     @GetMapping("/summary")
-    public DashboardSummary getSummary() {
-        return dashboardService.getDashboardSummary();
+    public DashboardSummary getSummary(@RequestParam(required = false) Long ownerId) {
+        return dashboardService.getSummary(ownerId);
     }
 
     @GetMapping("/allocation")
-    public Map<String, BigDecimal> getAllocation() {
-        return netWorthService.getCurrentAllocation();
-    }
+    public Map<String, BigDecimal> getAllocation() { return netWorthService.getCurrentAllocation(); }
 
     @PostMapping("/snapshot")
-    public NetWorthSnapshot takeSnapshot() {
-        return netWorthService.calculateAndSaveSnapshot();
-    }
+    public NetWorthSnapshot takeSnapshot(@RequestParam(required = false) Long ownerId) { return netWorthService.takeSnapshot(ownerId); }
 
     @GetMapping("/net-worth/history")
-    public List<NetWorthSnapshot> getNetWorthHistory() {
-        return netWorthService.getNetWorthHistory();
-    }
-
-    @GetMapping("/net-worth/history/range")
-    public List<NetWorthSnapshot> getNetWorthHistoryRange(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
-        return netWorthService.getNetWorthHistoryBetween(start, end);
+    public List<NetWorthSnapshot> getHistory(@RequestParam(required = false) Long ownerId) {
+        return ownerId != null ? netWorthService.getByOwner(ownerId) : netWorthService.getHistory();
     }
 
     @GetMapping("/net-worth/latest")
-    public ResponseEntity<NetWorthSnapshot> getLatestSnapshot() {
-        return netWorthService.getLatestSnapshot()
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.noContent().build());
+    public ResponseEntity<NetWorthSnapshot> getLatest() {
+        return netWorthService.getLatest().map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
     }
 }

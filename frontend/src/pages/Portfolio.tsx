@@ -1,188 +1,187 @@
 import { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
-import { getActiveHoldings, Holding } from '../api';
+import { getActiveHoldings, getSoldPositions, getShortTermTrades } from '../api';
+import { formatCurrency, formatPercent } from '../utils/formatters';
+import type { Holding, SoldPosition } from '../types';
+import { ASSET_TYPE_LABELS, ASSET_TYPE_COLORS } from '../types';
 
-const COLORS = ['#6366f1', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6'];
-const ASSET_LABELS: Record<string, string> = {
-  EQUITY: 'Equity',
-  INDEX_FUND: 'Index Fund',
-  MUTUAL_FUND: 'Mutual Fund',
-  CRYPTO: 'Crypto',
-  BANK_DEPOSIT: 'Bank Deposit',
-};
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
-    minimumFractionDigits: 2,
-  }).format(amount);
-}
+type Tab = 'holdings' | 'sold' | 'shortTerm';
 
 export default function Portfolio() {
+  const [tab, setTab] = useState<Tab>('holdings');
   const [holdings, setHoldings] = useState<Holding[]>([]);
+  const [sold, setSold] = useState<SoldPosition[]>([]);
+  const [shortTerm, setShortTerm] = useState<SoldPosition[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  useEffect(() => { loadData(); }, []);
 
   const loadData = async () => {
     try {
-      const res = await getActiveHoldings();
-      setHoldings(res.data);
-    } catch (err) {
-      console.error('Failed to load holdings', err);
-    } finally {
-      setLoading(false);
-    }
+      const [hRes, sRes, stRes] = await Promise.all([getActiveHoldings(), getSoldPositions(), getShortTermTrades()]);
+      setHoldings(hRes.data);
+      setSold(sRes.data);
+      setShortTerm(stRes.data);
+    } catch (err) { console.error(err); }
+    finally { setLoading(false); }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-      </div>
-    );
-  }
+  if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
-  const holdingsWithValue = holdings.map((h) => {
+  const holdingsWithValue = holdings.map(h => {
     const currentPrice = h.asset.currentPrice || h.averageBuyPrice;
     const currentValue = h.quantity * currentPrice;
     const gainLoss = currentValue - h.investedAmount;
-    const gainLossPercent = h.investedAmount > 0 ? (gainLoss / h.investedAmount) * 100 : 0;
-    return { ...h, currentValue, gainLoss, gainLossPercent, currentPrice };
+    const pct = h.investedAmount > 0 ? (gainLoss / h.investedAmount) * 100 : 0;
+    return { ...h, currentValue, gainLoss, pct, currentPrice };
   });
 
-  const totalValue = holdingsWithValue.reduce((sum, h) => sum + h.currentValue, 0);
+  const totalValue = holdingsWithValue.reduce((s, h) => s + h.currentValue, 0);
+  const totalInvested = holdingsWithValue.reduce((s, h) => s + h.investedAmount, 0);
 
-  // Group by asset type for pie chart
-  const byType = holdingsWithValue.reduce((acc, h) => {
-    const type = h.asset.assetType;
-    acc[type] = (acc[type] || 0) + h.currentValue;
-    return acc;
-  }, {} as Record<string, number>);
+  // Group by type
+  const byType: Record<string, number> = {};
+  holdingsWithValue.forEach(h => { byType[h.asset.assetType] = (byType[h.asset.assetType] || 0) + h.currentValue; });
+  const pieData = Object.entries(byType).map(([k, v]) => ({ name: ASSET_TYPE_LABELS[k as keyof typeof ASSET_TYPE_LABELS] || k, value: v, color: ASSET_TYPE_COLORS[k as keyof typeof ASSET_TYPE_COLORS] || '#94a3b8' }));
 
-  const pieData = Object.entries(byType).map(([key, value]) => ({
-    name: ASSET_LABELS[key] || key,
-    value,
-  }));
-
-  // Top holdings for bar chart
-  const topHoldings = [...holdingsWithValue]
-    .sort((a, b) => b.currentValue - a.currentValue)
-    .slice(0, 8)
-    .map((h) => ({
-      name: h.asset.symbol,
-      value: h.currentValue,
-      gainLoss: h.gainLoss,
-    }));
+  // Top holdings bar
+  const topHoldings = [...holdingsWithValue].sort((a, b) => b.currentValue - a.currentValue).slice(0, 10).map(h => ({ name: h.asset.symbol, value: h.currentValue }));
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-slate-800">Portfolio</h1>
-        <p className="text-slate-500 text-sm mt-1">Your current holdings and positions</p>
+        <p className="text-slate-500 text-sm mt-1">Your current holdings, sold positions, and short-term trades</p>
       </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-          <h3 className="text-lg font-semibold text-slate-800 mb-4">Allocation by Type</h3>
-          <ResponsiveContainer width="100%" height={280}>
-            <PieChart>
-              <Pie
-                data={pieData}
-                cx="50%"
-                cy="50%"
-                innerRadius={50}
-                outerRadius={90}
-                dataKey="value"
-                label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
-                labelLine={false}
-              >
-                {pieData.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value) => formatCurrency(value as number)} />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-          <h3 className="text-lg font-semibold text-slate-800 mb-4">Top Holdings</h3>
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={topHoldings} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis type="number" tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}K`} stroke="#94a3b8" fontSize={12} />
-              <YAxis type="category" dataKey="name" stroke="#94a3b8" fontSize={12} width={80} />
-              <Tooltip formatter={(value) => formatCurrency(value as number)} />
-              <Bar dataKey="value" fill="#6366f1" radius={[0, 4, 4, 0]} name="Value" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+      {/* Tabs */}
+      <div className="flex gap-1 bg-slate-100 rounded-lg p-1 w-fit">
+        {(['holdings', 'sold', 'shortTerm'] as Tab[]).map(t => (
+          <button key={t} onClick={() => setTab(t)} className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${tab === t ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}>
+            {t === 'holdings' ? `Holdings (${holdings.length})` : t === 'sold' ? `Sold (${sold.length})` : `Short-Term (${shortTerm.length})`}
+          </button>
+        ))}
       </div>
 
-      {/* Holdings Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-slate-200">
-          <h3 className="font-semibold text-slate-800">All Holdings ({holdings.length})</h3>
-          <p className="text-sm text-slate-500">Total Value: {formatCurrency(totalValue)}</p>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200">
-              <tr>
-                <th className="text-left px-4 py-3 font-medium text-slate-600">Asset</th>
-                <th className="text-left px-4 py-3 font-medium text-slate-600">Type</th>
-                <th className="text-left px-4 py-3 font-medium text-slate-600">Account</th>
-                <th className="text-right px-4 py-3 font-medium text-slate-600">Qty</th>
-                <th className="text-right px-4 py-3 font-medium text-slate-600">Avg Price</th>
-                <th className="text-right px-4 py-3 font-medium text-slate-600">Current Price</th>
-                <th className="text-right px-4 py-3 font-medium text-slate-600">Invested</th>
-                <th className="text-right px-4 py-3 font-medium text-slate-600">Current Value</th>
-                <th className="text-right px-4 py-3 font-medium text-slate-600">Gain/Loss</th>
+      {tab === 'holdings' && (
+        <>
+          {/* Charts */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+              <h3 className="font-semibold text-slate-800 mb-4">Allocation by Type</h3>
+              <ResponsiveContainer width="100%" height={260}>
+                <PieChart><Pie data={pieData} cx="50%" cy="50%" innerRadius={50} outerRadius={90} dataKey="value" label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`} labelLine={false}>
+                  {pieData.map((e, i) => <Cell key={i} fill={e.color} />)}
+                </Pie><Tooltip formatter={(v) => formatCurrency(v as number)} /></PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+              <h3 className="font-semibold text-slate-800 mb-4">Top Holdings</h3>
+              <ResponsiveContainer width="100%" height={260}>
+                <BarChart data={topHoldings} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis type="number" tickFormatter={v => `$${(v/1000).toFixed(0)}K`} stroke="#94a3b8" fontSize={12} />
+                  <YAxis type="category" dataKey="name" stroke="#94a3b8" fontSize={11} width={60} />
+                  <Tooltip formatter={(v) => formatCurrency(v as number, 'USD')} />
+                  <Bar dataKey="value" fill="#6366f1" radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Holdings Table */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="p-4 border-b border-slate-200 flex justify-between items-center">
+              <div>
+                <h3 className="font-semibold text-slate-800">All Holdings ({holdings.length})</h3>
+                <p className="text-sm text-slate-500">Total: {formatCurrency(totalValue)} | Invested: {formatCurrency(totalInvested)} | P&L: {formatCurrency(totalValue - totalInvested)}</p>
+              </div>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-slate-50 border-b border-slate-200">
+                  <tr>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Asset</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Type</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Account</th>
+                    <th className="text-right px-4 py-3 font-medium text-slate-600">Qty</th>
+                    <th className="text-right px-4 py-3 font-medium text-slate-600">Avg Price</th>
+                    <th className="text-right px-4 py-3 font-medium text-slate-600">Current</th>
+                    <th className="text-right px-4 py-3 font-medium text-slate-600">Invested</th>
+                    <th className="text-right px-4 py-3 font-medium text-slate-600">Value</th>
+                    <th className="text-right px-4 py-3 font-medium text-slate-600">P&L</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {holdingsWithValue.sort((a, b) => b.currentValue - a.currentValue).map(h => (
+                    <tr key={h.id} className="hover:bg-slate-50">
+                      <td className="px-4 py-3"><span className="font-medium text-slate-800">{h.asset.symbol}</span><p className="text-xs text-slate-400">{h.asset.name}</p></td>
+                      <td className="px-4 py-3"><span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{ASSET_TYPE_LABELS[h.asset.assetType] || h.asset.assetType}</span></td>
+                      <td className="px-4 py-3 text-slate-600">{h.account.name}</td>
+                      <td className="px-4 py-3 text-right text-slate-700">{h.quantity.toFixed(h.quantity < 1 ? 4 : 2)}</td>
+                      <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(h.averageBuyPrice, h.currency)}</td>
+                      <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(h.currentPrice, h.currency)}</td>
+                      <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(h.investedAmount, h.currency)}</td>
+                      <td className="px-4 py-3 text-right font-medium text-slate-800">{formatCurrency(h.currentValue, h.currency)}</td>
+                      <td className="px-4 py-3 text-right">
+                        <span className={`font-medium ${h.gainLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(h.gainLoss, h.currency)}</span>
+                        <p className={`text-xs ${h.pct >= 0 ? 'text-green-500' : 'text-red-500'}`}>{formatPercent(h.pct)}</p>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
+      )}
+
+      {tab === 'sold' && <SoldTable data={sold} title="Sold Positions" />}
+      {tab === 'shortTerm' && <SoldTable data={shortTerm} title="Short-Term Trades" />}
+    </div>
+  );
+}
+
+function SoldTable({ data, title }: { data: SoldPosition[]; title: string }) {
+  const totalProfit = data.reduce((s, p) => s + p.profit, 0);
+  return (
+    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="p-4 border-b border-slate-200">
+        <h3 className="font-semibold text-slate-800">{title} ({data.length})</h3>
+        <p className={`text-sm ${totalProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>Total Profit: {formatCurrency(totalProfit, 'USD')}</p>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead className="bg-slate-50 border-b border-slate-200">
+            <tr>
+              <th className="text-left px-4 py-3 font-medium text-slate-600">Asset</th>
+              <th className="text-left px-4 py-3 font-medium text-slate-600">Account</th>
+              <th className="text-right px-4 py-3 font-medium text-slate-600">Qty</th>
+              <th className="text-right px-4 py-3 font-medium text-slate-600">Buy Price</th>
+              <th className="text-right px-4 py-3 font-medium text-slate-600">Sell Price</th>
+              <th className="text-right px-4 py-3 font-medium text-slate-600">Profit</th>
+              <th className="text-right px-4 py-3 font-medium text-slate-600">%</th>
+              <th className="text-left px-4 py-3 font-medium text-slate-600">Period</th>
+              <th className="text-left px-4 py-3 font-medium text-slate-600">Sold Date</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
+            {data.map(p => (
+              <tr key={p.id} className="hover:bg-slate-50">
+                <td className="px-4 py-3 font-medium text-slate-800">{p.asset.symbol}</td>
+                <td className="px-4 py-3 text-slate-600">{p.account.name}</td>
+                <td className="px-4 py-3 text-right">{p.quantity}</td>
+                <td className="px-4 py-3 text-right">{formatCurrency(p.buyPrice, p.currency)}</td>
+                <td className="px-4 py-3 text-right">{formatCurrency(p.sellPrice, p.currency)}</td>
+                <td className={`px-4 py-3 text-right font-medium ${p.profit >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(p.profit, p.currency)}</td>
+                <td className={`px-4 py-3 text-right ${p.profitPercentage >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatPercent(p.profitPercentage)}</td>
+                <td className="px-4 py-3 text-slate-500 text-xs">{p.holdingPeriod}</td>
+                <td className="px-4 py-3 text-slate-500">{p.soldDate}</td>
               </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {holdingsWithValue.map((h) => (
-                <tr key={h.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3">
-                    <span className="font-medium text-slate-800">{h.asset.symbol}</span>
-                    <p className="text-xs text-slate-400">{h.asset.name}</p>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="text-xs px-2 py-1 rounded-full bg-slate-100 text-slate-600">
-                      {ASSET_LABELS[h.asset.assetType] || h.asset.assetType}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-slate-600">{h.account.name}</td>
-                  <td className="px-4 py-3 text-right text-slate-700">{h.quantity.toFixed(4)}</td>
-                  <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(h.averageBuyPrice)}</td>
-                  <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(h.currentPrice)}</td>
-                  <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(h.investedAmount)}</td>
-                  <td className="px-4 py-3 text-right font-medium text-slate-800">{formatCurrency(h.currentValue)}</td>
-                  <td className="px-4 py-3 text-right">
-                    <span className={`font-medium ${h.gainLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {formatCurrency(h.gainLoss)}
-                    </span>
-                    <p className={`text-xs ${h.gainLossPercent >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                      {h.gainLossPercent >= 0 ? '+' : ''}{h.gainLossPercent.toFixed(2)}%
-                    </p>
-                  </td>
-                </tr>
-              ))}
-              {holdings.length === 0 && (
-                <tr>
-                  <td colSpan={9} className="px-4 py-12 text-center text-slate-400">
-                    No holdings yet. Add transactions to see your portfolio.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+            ))}
+            {data.length === 0 && <tr><td colSpan={9} className="px-4 py-12 text-center text-slate-400">No records</td></tr>}
+          </tbody>
+        </table>
       </div>
     </div>
   );

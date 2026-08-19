@@ -1,13 +1,8 @@
 package com.myfinance.config;
 
-import com.myfinance.model.Account;
-import com.myfinance.model.Asset;
-import com.myfinance.model.enums.AccountType;
-import com.myfinance.model.enums.AssetType;
-import com.myfinance.model.enums.TransactionType;
-import com.myfinance.repository.AccountRepository;
-import com.myfinance.repository.AssetRepository;
-import com.myfinance.service.TransactionService;
+import com.myfinance.model.*;
+import com.myfinance.model.enums.*;
+import com.myfinance.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -19,111 +14,74 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
+    private final OwnerRepository ownerRepository;
     private final AccountRepository accountRepository;
-    private final AssetRepository assetRepository;
-    private final TransactionService transactionService;
+    private final BankRepository bankRepository;
+    private final FDHolderRepository fdHolderRepository;
+    private final CurrencyRateRepository currencyRateRepository;
+    private final AllocationTargetRepository allocationTargetRepository;
 
     @Override
     public void run(String... args) {
-        if (accountRepository.count() > 0) return; // Skip if data exists
+        if (ownerRepository.count() > 0) return;
 
-        // Create accounts (brokers and banks)
-        Account zerodha = accountRepository.save(Account.builder()
-                .name("Zerodha").accountType(AccountType.BROKER).description("Primary stock broker").build());
-        Account groww = accountRepository.save(Account.builder()
-                .name("Groww").accountType(AccountType.BROKER).description("Mutual fund broker").build());
-        Account wazirx = accountRepository.save(Account.builder()
-                .name("WazirX").accountType(AccountType.BROKER).description("Crypto exchange").build());
-        Account sbi = accountRepository.save(Account.builder()
-                .name("SBI Bank").accountType(AccountType.BANK).description("Savings and FD").build());
-        Account hdfc = accountRepository.save(Account.builder()
-                .name("HDFC Bank").accountType(AccountType.BANK).description("Savings account").build());
+        // ─── Owners ───
+        Owner self = ownerRepository.save(Owner.builder().name("Mugu").relationship(OwnerRelationship.SELF).build());
+        Owner spouse = ownerRepository.save(Owner.builder().name("Vaish").relationship(OwnerRelationship.SPOUSE).build());
 
-        // Create assets
-        Asset reliance = assetRepository.save(Asset.builder()
-                .name("Reliance Industries").symbol("RELIANCE").assetType(AssetType.EQUITY)
-                .currentPrice(new BigDecimal("2850.50")).exchange("NSE").build());
-        Asset tcs = assetRepository.save(Asset.builder()
-                .name("Tata Consultancy Services").symbol("TCS").assetType(AssetType.EQUITY)
-                .currentPrice(new BigDecimal("3920.75")).exchange("NSE").build());
-        Asset infy = assetRepository.save(Asset.builder()
-                .name("Infosys").symbol("INFY").assetType(AssetType.EQUITY)
-                .currentPrice(new BigDecimal("1580.25")).exchange("NSE").build());
-        Asset hdfcBank = assetRepository.save(Asset.builder()
-                .name("HDFC Bank").symbol("HDFCBANK").assetType(AssetType.EQUITY)
-                .currentPrice(new BigDecimal("1650.80")).exchange("NSE").build());
+        // ─── Accounts (Brokers & Banks) ───
+        accountRepository.save(Account.builder().name("Tiger").accountType(AccountType.BROKER).owner(self).currency(Currency.USD).description("Tiger Brokers - US stocks").build());
+        accountRepository.save(Account.builder().name("Saxo").accountType(AccountType.BROKER).owner(self).currency(Currency.SGD).description("Saxo Capital Markets").build());
+        accountRepository.save(Account.builder().name("IBKR").accountType(AccountType.BROKER).owner(self).currency(Currency.SGD).description("Interactive Brokers").build());
+        accountRepository.save(Account.builder().name("Poems").accountType(AccountType.BROKER).owner(self).currency(Currency.SGD).description("Phillip Securities - SRS & Cash").build());
+        accountRepository.save(Account.builder().name("Moomoo").accountType(AccountType.BROKER).owner(self).currency(Currency.SGD).description("Moomoo SG").build());
+        accountRepository.save(Account.builder().name("DBS").accountType(AccountType.BANK).owner(self).currency(Currency.SGD).description("DBS Savings").build());
+        accountRepository.save(Account.builder().name("OCBC").accountType(AccountType.BANK).owner(self).currency(Currency.SGD).description("OCBC Savings").build());
+        accountRepository.save(Account.builder().name("CIMB").accountType(AccountType.BANK).owner(self).currency(Currency.SGD).description("CIMB Savings").build());
+        accountRepository.save(Account.builder().name("Coinhako").accountType(AccountType.CRYPTO_EXCHANGE).owner(self).currency(Currency.SGD).description("Coinhako crypto exchange").build());
+        accountRepository.save(Account.builder().name("Crypto.com").accountType(AccountType.CRYPTO_EXCHANGE).owner(self).currency(Currency.SGD).description("Crypto.com wallet").build());
+        accountRepository.save(Account.builder().name("SL-Fixed").accountType(AccountType.BANK).owner(self).currency(Currency.LKR).description("Sri Lanka Fixed Deposits").build());
 
-        Asset nifty50 = assetRepository.save(Asset.builder()
-                .name("Nifty 50 Index Fund").symbol("NIFTY50-IDX").assetType(AssetType.INDEX_FUND)
-                .currentPrice(new BigDecimal("245.30")).exchange("NSE").build());
-        Asset sensex = assetRepository.save(Asset.builder()
-                .name("Sensex Index Fund").symbol("SENSEX-IDX").assetType(AssetType.INDEX_FUND)
-                .currentPrice(new BigDecimal("780.60")).exchange("BSE").build());
+        // Spouse accounts
+        accountRepository.save(Account.builder().name("Tiger-Vaish").accountType(AccountType.BROKER).owner(spouse).currency(Currency.USD).description("Tiger Brokers - Vaish").build());
+        accountRepository.save(Account.builder().name("Saxo-Vaish").accountType(AccountType.BROKER).owner(spouse).currency(Currency.SGD).description("Saxo - Vaish").build());
 
-        Asset axisBlue = assetRepository.save(Asset.builder()
-                .name("Axis Bluechip Fund").symbol("AXIS-BLUE").assetType(AssetType.MUTUAL_FUND)
-                .currentPrice(new BigDecimal("52.40")).build());
-        Asset miraeAsset = assetRepository.save(Asset.builder()
-                .name("Mirae Asset Large Cap").symbol("MIRAE-LC").assetType(AssetType.MUTUAL_FUND)
-                .currentPrice(new BigDecimal("95.80")).build());
+        // ─── Banks (Sri Lanka for FDs) ───
+        bankRepository.save(Bank.builder().name("National Savings Bank").shortName("NSB").build());
+        bankRepository.save(Bank.builder().name("Bank of Ceylon").shortName("BOC").build());
+        bankRepository.save(Bank.builder().name("Commercial Bank").shortName("Commercial").build());
+        bankRepository.save(Bank.builder().name("Seylan Bank").shortName("Seylan").build());
+        bankRepository.save(Bank.builder().name("People's Bank").shortName("Peoples").build());
+        bankRepository.save(Bank.builder().name("Hatton National Bank").shortName("HNB").build());
+        bankRepository.save(Bank.builder().name("Sampath Bank").shortName("Sampath").build());
 
-        Asset btc = assetRepository.save(Asset.builder()
-                .name("Bitcoin").symbol("BTC").assetType(AssetType.CRYPTO)
-                .currentPrice(new BigDecimal("5500000")).exchange("WazirX").build());
-        Asset eth = assetRepository.save(Asset.builder()
-                .name("Ethereum").symbol("ETH").assetType(AssetType.CRYPTO)
-                .currentPrice(new BigDecimal("250000")).exchange("WazirX").build());
+        // ─── FD Holders ───
+        fdHolderRepository.save(FDHolder.builder().name("K.Kamaleswary").relationship("Mother").isSeniorCitizen(true).build());
+        fdHolderRepository.save(FDHolder.builder().name("Kumarasamy").relationship("Father").isSeniorCitizen(true).build());
+        fdHolderRepository.save(FDHolder.builder().name("Mugu/Appa").relationship("Self/Father").isSeniorCitizen(false).build());
+        fdHolderRepository.save(FDHolder.builder().name("Mugu/Amma").relationship("Self/Mother").isSeniorCitizen(false).build());
+        fdHolderRepository.save(FDHolder.builder().name("Kiri/Appa").relationship("Brother/Father").isSeniorCitizen(false).build());
+        fdHolderRepository.save(FDHolder.builder().name("Kiri/Amma").relationship("Brother/Mother").isSeniorCitizen(false).build());
+        fdHolderRepository.save(FDHolder.builder().name("Kirivarnan").relationship("Brother").isSeniorCitizen(false).build());
+        fdHolderRepository.save(FDHolder.builder().name("Anna/Appa").relationship("Sibling/Father").isSeniorCitizen(false).build());
+        fdHolderRepository.save(FDHolder.builder().name("Anna/Amma").relationship("Sibling/Mother").isSeniorCitizen(false).build());
 
-        Asset sbiFD = assetRepository.save(Asset.builder()
-                .name("SBI Fixed Deposit 7.1%").symbol("SBI-FD-71").assetType(AssetType.BANK_DEPOSIT)
-                .currentPrice(BigDecimal.ONE).build());
-        Asset hdfcSavings = assetRepository.save(Asset.builder()
-                .name("HDFC Savings Account").symbol("HDFC-SAV").assetType(AssetType.BANK_DEPOSIT)
-                .currentPrice(BigDecimal.ONE).build());
+        // ─── Currency Rates ───
+        currencyRateRepository.save(CurrencyRate.builder().fromCurrency(Currency.USD).toCurrency(Currency.SGD).rate(new BigDecimal("1.27")).effectiveDate(LocalDate.now()).build());
+        currencyRateRepository.save(CurrencyRate.builder().fromCurrency(Currency.EUR).toCurrency(Currency.SGD).rate(new BigDecimal("1.49")).effectiveDate(LocalDate.now()).build());
+        currencyRateRepository.save(CurrencyRate.builder().fromCurrency(Currency.LKR).toCurrency(Currency.SGD).rate(new BigDecimal("0.0042")).effectiveDate(LocalDate.now()).build());
 
-        // Create sample transactions
-        transactionService.createTransaction(reliance.getId(), zerodha.getId(), TransactionType.BUY,
-                new BigDecimal("10"), new BigDecimal("2500.00"), new BigDecimal("25"), LocalDate.of(2024, 3, 15), "Initial buy");
-        transactionService.createTransaction(reliance.getId(), zerodha.getId(), TransactionType.BUY,
-                new BigDecimal("5"), new BigDecimal("2700.00"), new BigDecimal("15"), LocalDate.of(2024, 6, 20), "Added more");
+        // ─── Allocation Targets (for primary owner) ───
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.INDEX_FUND).targetPercentage(new BigDecimal("37")).targetAmount(new BigDecimal("370000")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.GROWTH_EQUITY).targetPercentage(new BigDecimal("23")).targetAmount(new BigDecimal("230000")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.DIVIDEND_EQUITY).targetPercentage(new BigDecimal("10")).targetAmount(new BigDecimal("100000")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.MONEY_MARKET).targetPercentage(new BigDecimal("10")).targetAmount(new BigDecimal("100000")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.LEVERAGED_ETF).targetPercentage(new BigDecimal("5")).targetAmount(new BigDecimal("50000")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.FIXED_DEPOSIT).targetPercentage(new BigDecimal("5")).targetAmount(new BigDecimal("50000")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.CRYPTO).targetPercentage(new BigDecimal("5")).targetAmount(new BigDecimal("50000")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.SAVINGS).targetPercentage(new BigDecimal("3")).targetAmount(new BigDecimal("30000")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.MUTUAL_FUND).targetPercentage(new BigDecimal("2")).targetAmount(new BigDecimal("20000")).build());
 
-        transactionService.createTransaction(tcs.getId(), zerodha.getId(), TransactionType.BUY,
-                new BigDecimal("8"), new BigDecimal("3600.00"), new BigDecimal("30"), LocalDate.of(2024, 2, 10), null);
-
-        transactionService.createTransaction(infy.getId(), zerodha.getId(), TransactionType.BUY,
-                new BigDecimal("20"), new BigDecimal("1450.00"), new BigDecimal("20"), LocalDate.of(2024, 1, 5), null);
-        transactionService.createTransaction(infy.getId(), zerodha.getId(), TransactionType.SELL,
-                new BigDecimal("5"), new BigDecimal("1550.00"), new BigDecimal("10"), LocalDate.of(2024, 8, 15), "Partial profit booking");
-
-        transactionService.createTransaction(hdfcBank.getId(), zerodha.getId(), TransactionType.BUY,
-                new BigDecimal("12"), new BigDecimal("1500.00"), new BigDecimal("18"), LocalDate.of(2024, 4, 1), null);
-
-        transactionService.createTransaction(nifty50.getId(), groww.getId(), TransactionType.BUY,
-                new BigDecimal("100"), new BigDecimal("220.00"), BigDecimal.ZERO, LocalDate.of(2024, 1, 10), "SIP");
-        transactionService.createTransaction(nifty50.getId(), groww.getId(), TransactionType.BUY,
-                new BigDecimal("100"), new BigDecimal("230.00"), BigDecimal.ZERO, LocalDate.of(2024, 4, 10), "SIP");
-
-        transactionService.createTransaction(sensex.getId(), groww.getId(), TransactionType.BUY,
-                new BigDecimal("50"), new BigDecimal("720.00"), BigDecimal.ZERO, LocalDate.of(2024, 2, 15), "SIP");
-
-        transactionService.createTransaction(axisBlue.getId(), groww.getId(), TransactionType.BUY,
-                new BigDecimal("200"), new BigDecimal("48.50"), BigDecimal.ZERO, LocalDate.of(2024, 3, 1), "Lump sum");
-
-        transactionService.createTransaction(miraeAsset.getId(), groww.getId(), TransactionType.BUY,
-                new BigDecimal("150"), new BigDecimal("88.00"), BigDecimal.ZERO, LocalDate.of(2024, 5, 1), "SIP");
-
-        transactionService.createTransaction(btc.getId(), wazirx.getId(), TransactionType.BUY,
-                new BigDecimal("0.01"), new BigDecimal("4500000"), new BigDecimal("450"), LocalDate.of(2024, 2, 20), null);
-
-        transactionService.createTransaction(eth.getId(), wazirx.getId(), TransactionType.BUY,
-                new BigDecimal("0.5"), new BigDecimal("200000"), new BigDecimal("100"), LocalDate.of(2024, 3, 10), null);
-
-        transactionService.createTransaction(sbiFD.getId(), sbi.getId(), TransactionType.BUY,
-                new BigDecimal("500000"), BigDecimal.ONE, BigDecimal.ZERO, LocalDate.of(2024, 1, 1), "1 year FD at 7.1%");
-
-        transactionService.createTransaction(hdfcSavings.getId(), hdfc.getId(), TransactionType.BUY,
-                new BigDecimal("200000"), BigDecimal.ONE, BigDecimal.ZERO, LocalDate.of(2024, 1, 1), "Emergency fund");
-
-        System.out.println("Sample data loaded successfully!");
+        System.out.println("✓ Reference data initialized (owners, accounts, banks, FD holders, currency rates, allocation targets)");
     }
 }

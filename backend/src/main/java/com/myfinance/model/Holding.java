@@ -1,5 +1,6 @@
 package com.myfinance.model;
 
+import com.myfinance.model.enums.Currency;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,13 +9,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "holdings", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"asset_id", "account_id"})
+    @UniqueConstraint(columnNames = {"asset_id", "account_id", "owner_id"})
 })
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Holding {
 
     @Id
@@ -29,6 +26,10 @@ public class Holding {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "owner_id", nullable = false)
+    private Owner owner;
+
     @Column(nullable = false)
     private BigDecimal quantity;
 
@@ -38,11 +39,12 @@ public class Holding {
     @Column(nullable = false)
     private BigDecimal investedAmount;
 
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private Currency currency = Currency.USD;
+
     private LocalDateTime updatedAt;
 
-    @PrePersist
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    @PrePersist @PreUpdate
+    protected void onUpdate() { updatedAt = LocalDateTime.now(); }
 }

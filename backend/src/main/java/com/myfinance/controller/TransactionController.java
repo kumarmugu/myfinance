@@ -2,7 +2,6 @@ package com.myfinance.controller;
 
 import com.myfinance.dto.TransactionRequest;
 import com.myfinance.model.Transaction;
-import com.myfinance.model.enums.AssetType;
 import com.myfinance.service.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,64 +17,38 @@ import java.util.List;
 @RequestMapping("/api/transactions")
 @RequiredArgsConstructor
 public class TransactionController {
-
     private final TransactionService transactionService;
 
     @GetMapping
-    public List<Transaction> getAllTransactions() {
-        return transactionService.getAllTransactions();
-    }
-
-    @GetMapping("/{id}")
-    public Transaction getTransactionById(@PathVariable Long id) {
-        return transactionService.getTransactionById(id);
-    }
-
-    @GetMapping("/asset/{assetId}")
-    public List<Transaction> getByAsset(@PathVariable Long assetId) {
-        return transactionService.getTransactionsByAsset(assetId);
+    public List<Transaction> getAll(@RequestParam(required = false) Long ownerId) {
+        return ownerId != null ? transactionService.getByOwner(ownerId) : transactionService.getAll();
     }
 
     @GetMapping("/account/{accountId}")
-    public List<Transaction> getByAccount(@PathVariable Long accountId) {
-        return transactionService.getTransactionsByAccount(accountId);
-    }
+    public List<Transaction> getByAccount(@PathVariable Long accountId) { return transactionService.getByAccount(accountId); }
 
-    @GetMapping("/type/{assetType}")
-    public List<Transaction> getByAssetType(@PathVariable AssetType assetType) {
-        return transactionService.getTransactionsByAssetType(assetType);
-    }
+    @GetMapping("/asset/{assetId}")
+    public List<Transaction> getByAsset(@PathVariable Long assetId) { return transactionService.getByAsset(assetId); }
 
     @GetMapping("/date-range")
     public List<Transaction> getByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
-        return transactionService.getTransactionsByDateRange(start, end);
+        return transactionService.getByDateRange(start, end);
     }
 
     @GetMapping("/recent")
-    public List<Transaction> getRecentTransactions(@RequestParam(defaultValue = "30") int days) {
-        return transactionService.getRecentTransactions(days);
-    }
+    public List<Transaction> getRecent(@RequestParam(defaultValue = "30") int days) { return transactionService.getRecent(days); }
 
     @PostMapping
-    public ResponseEntity<Transaction> createTransaction(@Valid @RequestBody TransactionRequest request) {
-        Transaction transaction = transactionService.createTransaction(
-                request.getAssetId(),
-                request.getAccountId(),
-                request.getTransactionType(),
-                request.getQuantity(),
-                request.getPricePerUnit(),
-                request.getFees(),
-                request.getTransactionDate(),
-                request.getNotes()
-        );
-        return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
+    public ResponseEntity<Transaction> create(@Valid @RequestBody TransactionRequest req) {
+        Transaction tx = transactionService.create(
+                req.getAssetId(), req.getAccountId(), req.getOwnerId(),
+                req.getTransactionType(), req.getQuantity(), req.getPricePerUnit(),
+                req.getFees(), req.getCurrency(), req.getTransactionDate(), req.getNotes());
+        return ResponseEntity.status(HttpStatus.CREATED).body(tx);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTransaction(@PathVariable Long id) {
-        transactionService.deleteTransaction(id);
-        return ResponseEntity.noContent().build();
-    }
+    public ResponseEntity<Void> delete(@PathVariable Long id) { transactionService.delete(id); return ResponseEntity.noContent().build(); }
 }

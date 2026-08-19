@@ -12,13 +12,16 @@ import java.util.Optional;
 
 @Repository
 public interface HoldingRepository extends JpaRepository<Holding, Long> {
-    Optional<Holding> findByAssetIdAndAccountId(Long assetId, Long accountId);
+    Optional<Holding> findByAssetIdAndAccountIdAndOwnerId(Long assetId, Long accountId, Long ownerId);
     List<Holding> findByAccountId(Long accountId);
-    List<Holding> findByAssetId(Long assetId);
-
-    @Query("SELECT h FROM Holding h JOIN h.asset a WHERE a.assetType = :assetType")
-    List<Holding> findByAssetType(@Param("assetType") AssetType assetType);
+    List<Holding> findByOwnerId(Long ownerId);
 
     @Query("SELECT h FROM Holding h WHERE h.quantity > 0")
     List<Holding> findActiveHoldings();
+
+    @Query("SELECT h FROM Holding h WHERE h.quantity > 0 AND h.owner.id = :ownerId")
+    List<Holding> findActiveHoldingsByOwner(@Param("ownerId") Long ownerId);
+
+    @Query("SELECT h FROM Holding h JOIN h.asset a WHERE a.assetType = :assetType AND h.quantity > 0")
+    List<Holding> findByAssetType(@Param("assetType") AssetType assetType);
 }

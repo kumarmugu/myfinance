@@ -1,5 +1,6 @@
 package com.myfinance.model;
 
+import com.myfinance.model.enums.Currency;
 import com.myfinance.model.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,11 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transactions")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Transaction {
 
     @Id
@@ -29,6 +26,10 @@ public class Transaction {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "owner_id", nullable = false)
+    private Owner owner;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TransactionType transactionType;
@@ -42,7 +43,12 @@ public class Transaction {
     @Column(nullable = false)
     private BigDecimal totalAmount;
 
-    private BigDecimal fees;
+    @Builder.Default
+    private BigDecimal fees = BigDecimal.ZERO;
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private Currency currency = Currency.USD;
 
     @Column(nullable = false)
     private LocalDate transactionDate;

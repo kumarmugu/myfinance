@@ -16,47 +16,31 @@ import java.util.List;
 @RequestMapping("/api/assets")
 @RequiredArgsConstructor
 public class AssetController {
-
     private final AssetService assetService;
 
     @GetMapping
-    public List<Asset> getAllAssets() {
-        return assetService.getAllAssets();
-    }
+    public List<Asset> getAll() { return assetService.getAll(); }
 
     @GetMapping("/{id}")
-    public Asset getAssetById(@PathVariable Long id) {
-        return assetService.getAssetById(id);
-    }
+    public Asset getById(@PathVariable Long id) { return assetService.getById(id); }
 
     @GetMapping("/type/{type}")
-    public List<Asset> getAssetsByType(@PathVariable AssetType type) {
-        return assetService.getAssetsByType(type);
-    }
+    public List<Asset> getByType(@PathVariable AssetType type) { return assetService.getByType(type); }
 
     @GetMapping("/search")
-    public List<Asset> searchAssets(@RequestParam String query) {
-        return assetService.searchAssets(query);
-    }
+    public List<Asset> search(@RequestParam String query) { return assetService.search(query); }
 
     @PostMapping
-    public ResponseEntity<Asset> createAsset(@Valid @RequestBody Asset asset) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(assetService.createAsset(asset));
+    public ResponseEntity<Asset> create(@Valid @RequestBody Asset asset) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(assetService.create(asset));
     }
 
     @PutMapping("/{id}")
-    public Asset updateAsset(@PathVariable Long id, @Valid @RequestBody Asset asset) {
-        return assetService.updateAsset(id, asset);
-    }
+    public Asset update(@PathVariable Long id, @Valid @RequestBody Asset asset) { return assetService.update(id, asset); }
 
     @PatchMapping("/{id}/price")
-    public Asset updatePrice(@PathVariable Long id, @RequestParam BigDecimal price) {
-        return assetService.updateCurrentPrice(id, price);
-    }
+    public Asset updatePrice(@PathVariable Long id, @RequestParam BigDecimal price) { return assetService.updatePrice(id, price); }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAsset(@PathVariable Long id) {
-        assetService.deleteAsset(id);
-        return ResponseEntity.noContent().build();
-    }
+    public ResponseEntity<Void> delete(@PathVariable Long id) { assetService.delete(id); return ResponseEntity.noContent().build(); }
 }

@@ -12,24 +12,18 @@ import java.time.LocalDate;
 public class TransactionRequest {
     @NotNull
     private Long assetId;
-
     @NotNull
     private Long accountId;
-
+    @NotNull
+    private Long ownerId;
     @NotNull
     private TransactionType transactionType;
-
-    @NotNull
-    @Positive
+    @NotNull @Positive
     private BigDecimal quantity;
-
-    @NotNull
-    @Positive
+    @NotNull @Positive
     private BigDecimal pricePerUnit;
-
     private BigDecimal fees;
-
+    private String currency;
     private LocalDate transactionDate;
-
     private String notes;
 }

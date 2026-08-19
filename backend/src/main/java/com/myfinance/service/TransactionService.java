@@ -1,9 +1,6 @@
 package com.myfinance.service;
 
-import com.myfinance.model.Asset;
-import com.myfinance.model.Holding;
-import com.myfinance.model.Transaction;
-import com.myfinance.model.enums.AssetType;
+import com.myfinance.model.*;
 import com.myfinance.model.enums.TransactionType;
 import com.myfinance.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,116 +15,77 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
-
     private final TransactionRepository transactionRepository;
     private final HoldingService holdingService;
     private final AssetService assetService;
     private final AccountService accountService;
+    private final OwnerService ownerService;
 
-    public List<Transaction> getAllTransactions() {
-        return transactionRepository.findAllByOrderByTransactionDateDesc();
-    }
-
-    public Transaction getTransactionById(Long id) {
-        return transactionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Transaction not found with id: " + id));
-    }
-
-    public List<Transaction> getTransactionsByAsset(Long assetId) {
-        return transactionRepository.findByAssetIdOrderByTransactionDateDesc(assetId);
-    }
-
-    public List<Transaction> getTransactionsByAccount(Long accountId) {
-        return transactionRepository.findByAccountIdOrderByTransactionDateDesc(accountId);
-    }
-
-    public List<Transaction> getTransactionsByAssetType(AssetType assetType) {
-        return transactionRepository.findByAssetType(assetType);
-    }
-
-    public List<Transaction> getTransactionsByDateRange(LocalDate start, LocalDate end) {
-        return transactionRepository.findByTransactionDateBetweenOrderByTransactionDateDesc(start, end);
-    }
-
-    public List<Transaction> getRecentTransactions(int days) {
-        return transactionRepository.findRecentTransactions(LocalDate.now().minusDays(days));
-    }
+    public List<Transaction> getAll() { return transactionRepository.findAllByOrderByTransactionDateDesc(); }
+    public List<Transaction> getByOwner(Long ownerId) { return transactionRepository.findByOwnerIdOrderByTransactionDateDesc(ownerId); }
+    public List<Transaction> getByAccount(Long accountId) { return transactionRepository.findByAccountIdOrderByTransactionDateDesc(accountId); }
+    public List<Transaction> getByAsset(Long assetId) { return transactionRepository.findByAssetIdOrderByTransactionDateDesc(assetId); }
+    public List<Transaction> getByDateRange(LocalDate start, LocalDate end) { return transactionRepository.findByTransactionDateBetweenOrderByTransactionDateDesc(start, end); }
+    public List<Transaction> getRecent(int days) { return transactionRepository.findRecentTransactions(LocalDate.now().minusDays(days)); }
 
     @Transactional
-    public Transaction createTransaction(Long assetId, Long accountId, TransactionType type,
-                                          BigDecimal quantity, BigDecimal pricePerUnit,
-                                          BigDecimal fees, LocalDate date, String notes) {
-        Asset asset = assetService.getAssetById(assetId);
-        var account = accountService.getAccountById(accountId);
+    public Transaction create(Long assetId, Long accountId, Long ownerId, TransactionType type,
+                              BigDecimal quantity, BigDecimal pricePerUnit, BigDecimal fees,
+                              String currency, LocalDate date, String notes) {
+        Asset asset = assetService.getById(assetId);
+        Account account = accountService.getById(accountId);
+        Owner owner = ownerService.getById(ownerId);
 
         BigDecimal totalAmount = quantity.multiply(pricePerUnit);
-        if (fees != null) {
-            totalAmount = totalAmount.add(fees);
-        }
+        if (fees != null) totalAmount = totalAmount.add(fees);
 
-        Transaction transaction = Transaction.builder()
-                .asset(asset)
-                .account(account)
-                .transactionType(type)
-                .quantity(quantity)
-                .pricePerUnit(pricePerUnit)
-                .totalAmount(totalAmount)
-                .fees(fees != null ? fees : BigDecimal.ZERO)
+        Transaction tx = Transaction.builder()
+                .asset(asset).account(account).owner(owner)
+                .transactionType(type).quantity(quantity).pricePerUnit(pricePerUnit)
+                .totalAmount(totalAmount).fees(fees != null ? fees : BigDecimal.ZERO)
+                .currency(currency != null ? com.myfinance.model.enums.Currency.valueOf(currency) : account.getCurrency())
                 .transactionDate(date != null ? date : LocalDate.now())
-                .notes(notes)
-                .build();
+                .notes(notes).build();
 
-        Transaction saved = transactionRepository.save(transaction);
-
-        // Update holding
-        updateHolding(asset, account, type, quantity, pricePerUnit);
-
+        Transaction saved = transactionRepository.save(tx);
+        updateHolding(asset, account, owner, type, quantity, pricePerUnit);
         return saved;
     }
 
-    private void updateHolding(Asset asset, com.myfinance.model.Account account,
-                                TransactionType type, BigDecimal quantity, BigDecimal pricePerUnit) {
-        var holdingOpt = holdingService.getHolding(asset.getId(), account.getId());
+    private void updateHolding(Asset asset, Account account, Owner owner, TransactionType type, BigDecimal quantity, BigDecimal pricePerUnit) {
+        var holdingOpt = holdingService.getHolding(asset.getId(), account.getId(), owner.getId());
 
         if (type == TransactionType.BUY) {
             if (holdingOpt.isPresent()) {
-                Holding holding = holdingOpt.get();
-                BigDecimal newQuantity = holding.getQuantity().add(quantity);
-                BigDecimal newInvested = holding.getInvestedAmount().add(quantity.multiply(pricePerUnit));
-                BigDecimal newAvgPrice = newInvested.divide(newQuantity, 4, RoundingMode.HALF_UP);
-                holding.setQuantity(newQuantity);
-                holding.setAverageBuyPrice(newAvgPrice);
-                holding.setInvestedAmount(newInvested);
-                holdingService.saveHolding(holding);
+                Holding h = holdingOpt.get();
+                BigDecimal newQty = h.getQuantity().add(quantity);
+                BigDecimal newInvested = h.getInvestedAmount().add(quantity.multiply(pricePerUnit));
+                BigDecimal newAvg = newInvested.divide(newQty, 6, RoundingMode.HALF_UP);
+                h.setQuantity(newQty);
+                h.setAverageBuyPrice(newAvg);
+                h.setInvestedAmount(newInvested);
+                holdingService.save(h);
             } else {
-                Holding holding = Holding.builder()
-                        .asset(asset)
-                        .account(account)
-                        .quantity(quantity)
-                        .averageBuyPrice(pricePerUnit)
+                holdingService.save(Holding.builder()
+                        .asset(asset).account(account).owner(owner)
+                        .quantity(quantity).averageBuyPrice(pricePerUnit)
                         .investedAmount(quantity.multiply(pricePerUnit))
-                        .build();
-                holdingService.saveHolding(holding);
+                        .currency(account.getCurrency()).build());
             }
-        } else {
-            // SELL
+        } else if (type == TransactionType.SELL) {
             if (holdingOpt.isPresent()) {
-                Holding holding = holdingOpt.get();
-                BigDecimal newQuantity = holding.getQuantity().subtract(quantity);
-                if (newQuantity.compareTo(BigDecimal.ZERO) < 0) {
-                    throw new RuntimeException("Cannot sell more than held quantity");
-                }
-                BigDecimal soldInvestment = quantity.multiply(holding.getAverageBuyPrice());
-                holding.setQuantity(newQuantity);
-                holding.setInvestedAmount(holding.getInvestedAmount().subtract(soldInvestment));
-                holdingService.saveHolding(holding);
+                Holding h = holdingOpt.get();
+                BigDecimal newQty = h.getQuantity().subtract(quantity);
+                if (newQty.compareTo(BigDecimal.ZERO) < 0) throw new RuntimeException("Cannot sell more than held");
+                BigDecimal soldInvestment = quantity.multiply(h.getAverageBuyPrice());
+                h.setQuantity(newQty);
+                h.setInvestedAmount(h.getInvestedAmount().subtract(soldInvestment));
+                holdingService.save(h);
             } else {
                 throw new RuntimeException("No holding found to sell");
             }
         }
     }
 
-    public void deleteTransaction(Long id) {
-        transactionRepository.deleteById(id);
-    }
+    public void delete(Long id) { transactionRepository.deleteById(id); }
 }

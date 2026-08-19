@@ -12,26 +12,16 @@ import java.util.List;
 @RequestMapping("/api/holdings")
 @RequiredArgsConstructor
 public class HoldingController {
-
     private final HoldingService holdingService;
 
     @GetMapping
-    public List<Holding> getActiveHoldings() {
-        return holdingService.getActiveHoldings();
-    }
-
-    @GetMapping("/all")
-    public List<Holding> getAllHoldings() {
-        return holdingService.getAllHoldings();
+    public List<Holding> getActive(@RequestParam(required = false) Long ownerId) {
+        return ownerId != null ? holdingService.getActiveByOwner(ownerId) : holdingService.getActiveHoldings();
     }
 
     @GetMapping("/account/{accountId}")
-    public List<Holding> getByAccount(@PathVariable Long accountId) {
-        return holdingService.getHoldingsByAccount(accountId);
-    }
+    public List<Holding> getByAccount(@PathVariable Long accountId) { return holdingService.getByAccount(accountId); }
 
-    @GetMapping("/type/{assetType}")
-    public List<Holding> getByAssetType(@PathVariable AssetType assetType) {
-        return holdingService.getHoldingsByAssetType(assetType);
-    }
+    @GetMapping("/type/{type}")
+    public List<Holding> getByType(@PathVariable AssetType type) { return holdingService.getByAssetType(type); }
 }

@@ -17,88 +17,53 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class NetWorthService {
-
     private final NetWorthSnapshotRepository snapshotRepository;
     private final HoldingService holdingService;
 
-    public NetWorthSnapshot calculateAndSaveSnapshot() {
-        return calculateAndSaveSnapshot(LocalDate.now());
-    }
+    public NetWorthSnapshot takeSnapshot(Long ownerId) {
+        List<Holding> holdings = ownerId != null
+                ? holdingService.getActiveByOwner(ownerId)
+                : holdingService.getActiveHoldings();
 
-    public NetWorthSnapshot calculateAndSaveSnapshot(LocalDate date) {
-        List<Holding> activeHoldings = holdingService.getActiveHoldings();
-
-        Map<AssetType, BigDecimal> totals = activeHoldings.stream()
+        Map<AssetType, BigDecimal> totals = holdings.stream()
                 .collect(Collectors.groupingBy(
                         h -> h.getAsset().getAssetType(),
-                        Collectors.reducing(BigDecimal.ZERO,
-                                this::calculateHoldingValue,
-                                BigDecimal::add)
-                ));
+                        Collectors.reducing(BigDecimal.ZERO, this::holdingValue, BigDecimal::add)));
 
-        BigDecimal totalEquity = totals.getOrDefault(AssetType.EQUITY, BigDecimal.ZERO);
-        BigDecimal totalIndexFund = totals.getOrDefault(AssetType.INDEX_FUND, BigDecimal.ZERO);
-        BigDecimal totalMutualFund = totals.getOrDefault(AssetType.MUTUAL_FUND, BigDecimal.ZERO);
-        BigDecimal totalCrypto = totals.getOrDefault(AssetType.CRYPTO, BigDecimal.ZERO);
-        BigDecimal totalBankDeposit = totals.getOrDefault(AssetType.BANK_DEPOSIT, BigDecimal.ZERO);
-        BigDecimal totalNetWorth = totalEquity.add(totalIndexFund).add(totalMutualFund)
-                .add(totalCrypto).add(totalBankDeposit);
+        NetWorthSnapshot snapshot = NetWorthSnapshot.builder()
+                .snapshotDate(LocalDate.now())
+                .year(LocalDate.now().getYear())
+                .totalIndexFund(totals.getOrDefault(AssetType.INDEX_FUND, BigDecimal.ZERO))
+                .totalMutualFund(totals.getOrDefault(AssetType.MUTUAL_FUND, BigDecimal.ZERO))
+                .totalGrowthEquity(totals.getOrDefault(AssetType.GROWTH_EQUITY, BigDecimal.ZERO))
+                .totalDividendEquity(totals.getOrDefault(AssetType.DIVIDEND_EQUITY, BigDecimal.ZERO))
+                .totalLeveragedEtf(totals.getOrDefault(AssetType.LEVERAGED_ETF, BigDecimal.ZERO))
+                .totalMoneyMarket(totals.getOrDefault(AssetType.MONEY_MARKET, BigDecimal.ZERO))
+                .totalFixedDeposit(totals.getOrDefault(AssetType.FIXED_DEPOSIT, BigDecimal.ZERO))
+                .totalSavings(totals.getOrDefault(AssetType.SAVINGS, BigDecimal.ZERO))
+                .totalCrypto(totals.getOrDefault(AssetType.CRYPTO, BigDecimal.ZERO))
+                .build();
 
-        // Check if snapshot already exists for this date
-        Optional<NetWorthSnapshot> existing = snapshotRepository.findBySnapshotDate(date);
-        NetWorthSnapshot snapshot;
-        if (existing.isPresent()) {
-            snapshot = existing.get();
-        } else {
-            snapshot = new NetWorthSnapshot();
-            snapshot.setSnapshotDate(date);
-        }
-
-        snapshot.setTotalEquity(totalEquity);
-        snapshot.setTotalIndexFund(totalIndexFund);
-        snapshot.setTotalMutualFund(totalMutualFund);
-        snapshot.setTotalCrypto(totalCrypto);
-        snapshot.setTotalBankDeposit(totalBankDeposit);
-        snapshot.setTotalNetWorth(totalNetWorth);
-
+        BigDecimal total = totals.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        snapshot.setTotalNetWorth(total);
         return snapshotRepository.save(snapshot);
     }
 
-    public List<NetWorthSnapshot> getNetWorthHistory() {
-        return snapshotRepository.findAllByOrderBySnapshotDateDesc();
-    }
-
-    public List<NetWorthSnapshot> getNetWorthHistoryBetween(LocalDate start, LocalDate end) {
-        return snapshotRepository.findBySnapshotDateBetweenOrderBySnapshotDateAsc(start, end);
-    }
-
-    public Optional<NetWorthSnapshot> getLatestSnapshot() {
-        return snapshotRepository.findTopByOrderBySnapshotDateDesc();
-    }
+    public List<NetWorthSnapshot> getHistory() { return snapshotRepository.findAllByOrderBySnapshotDateDesc(); }
+    public List<NetWorthSnapshot> getByOwner(Long ownerId) { return snapshotRepository.findByOwnerIdOrderBySnapshotDateDesc(ownerId); }
+    public Optional<NetWorthSnapshot> getLatest() { return snapshotRepository.findTopByOrderBySnapshotDateDesc(); }
 
     public Map<String, BigDecimal> getCurrentAllocation() {
-        List<Holding> activeHoldings = holdingService.getActiveHoldings();
-
-        Map<AssetType, BigDecimal> totals = activeHoldings.stream()
+        List<Holding> holdings = holdingService.getActiveHoldings();
+        return holdings.stream()
                 .collect(Collectors.groupingBy(
-                        h -> h.getAsset().getAssetType(),
-                        Collectors.reducing(BigDecimal.ZERO,
-                                this::calculateHoldingValue,
-                                BigDecimal::add)
-                ));
-
-        return totals.entrySet().stream()
-                .collect(Collectors.toMap(
-                        e -> e.getKey().name(),
-                        Map.Entry::getValue
-                ));
+                        h -> h.getAsset().getAssetType().name(),
+                        Collectors.reducing(BigDecimal.ZERO, this::holdingValue, BigDecimal::add)));
     }
 
-    private BigDecimal calculateHoldingValue(Holding holding) {
-        BigDecimal price = holding.getAsset().getCurrentPrice();
-        if (price == null) {
-            price = holding.getAverageBuyPrice();
-        }
-        return holding.getQuantity().multiply(price);
+    private BigDecimal holdingValue(Holding h) {
+        BigDecimal price = h.getAsset().getCurrentPrice();
+        if (price == null) price = h.getAverageBuyPrice();
+        return h.getQuantity().multiply(price);
     }
 }

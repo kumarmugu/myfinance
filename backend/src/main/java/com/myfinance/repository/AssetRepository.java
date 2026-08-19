@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface AssetRepository extends JpaRepository<Asset, Long> {
+    List<Asset> findByAssetType(AssetType type);
     Optional<Asset> findBySymbol(String symbol);
-    List<Asset> findByAssetType(AssetType assetType);
     List<Asset> findByNameContainingIgnoreCaseOrSymbolContainingIgnoreCase(String name, String symbol);
 }

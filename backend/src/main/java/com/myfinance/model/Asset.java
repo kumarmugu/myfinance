@@ -1,6 +1,7 @@
 package com.myfinance.model;
 
 import com.myfinance.model.enums.AssetType;
+import com.myfinance.model.enums.Currency;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,11 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "assets")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Asset {
 
     @Id
@@ -32,23 +29,19 @@ public class Asset {
 
     private BigDecimal currentPrice;
 
-    private String exchange;
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private Currency currency = Currency.USD;
 
+    private String exchange;
     private String description;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
     @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
+    protected void onCreate() { createdAt = LocalDateTime.now(); updatedAt = LocalDateTime.now(); }
     @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    protected void onUpdate() { updatedAt = LocalDateTime.now(); }
 }
