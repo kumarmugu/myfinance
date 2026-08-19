@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, ArrowLeftRight, PieChart, FileBarChart, Building2, Coins } from 'lucide-react';
+import { LayoutDashboard, ArrowLeftRight, PieChart, FileBarChart, Building2, Coins, FileText } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
 import Transactions from './pages/Transactions';
 import Portfolio from './pages/Portfolio';
 import Reports from './pages/Reports';
 import Accounts from './pages/Accounts';
 import Assets from './pages/Assets';
+import Docs from './pages/Docs';
 
 function App() {
   const navItems = [
@@ -15,6 +16,7 @@ function App() {
     { to: '/reports', icon: FileBarChart, label: 'Reports' },
     { to: '/accounts', icon: Building2, label: 'Accounts' },
     { to: '/assets', icon: Coins, label: 'Assets' },
+    { to: '/docs', icon: FileText, label: 'Documentation' },
   ];
 
   return (
@@ -62,6 +64,7 @@ function App() {
               <Route path="/reports" element={<Reports />} />
               <Route path="/accounts" element={<Accounts />} />
               <Route path="/assets" element={<Assets />} />
+              <Route path="/docs" element={<Docs />} />
             </Routes>
           </div>
         </main>
