@@ -168,7 +168,7 @@
 | category | VARCHAR(20) | | NORMAL, SENIOR_CITIZEN |
 | status | VARCHAR(20) | DEFAULT 'ACTIVE' | ACTIVE, MATURED, RENEWED, REQUIRES_UPDATE |
 | expected_interest | DECIMAL(18,2) | | Calculated interest amount |
-| beneficiary | VARCHAR(30) | | Who benefits (appa/amma indicator) |
+| beneficiary | VARCHAR(30) | | Who benefits (parent indicator indicator) |
 | purpose | VARCHAR(100) | | Purpose (deed, car, etc.) |
 | notes | VARCHAR(500) | | |
 | requires_update | BOOLEAN | DEFAULT false | Flag for needing verification |
@@ -250,10 +250,10 @@
 [
   {
     "id": 1,
-    "holder": { "id": 1, "name": "K.Kamaleswary", "isSeniorCitizen": true },
-    "jointHolder": { "id": 2, "name": "Kumarasamy" },
+    "holder": { "id": 1, "name": "Parent A", "isSeniorCitizen": true },
+    "jointHolder": { "id": 2, "name": "Parent B" },
     "bank": { "id": 1, "name": "National Savings Bank", "shortName": "NSB" },
-    "accountNumber": "2/0073/04/18170",
+    "accountNumber": "FD-ACC-001",
     "principalAmount": 575000.00,
     "interestRate": 8.0,
     "startDate": "2025-01-11",
@@ -263,7 +263,7 @@
     "category": "SENIOR_CITIZEN",
     "status": "ACTIVE",
     "expectedInterest": 46000.00,
-    "beneficiary": "APPA",
+    "beneficiary": "PARENT_B",
     "requiresUpdate": false,
     "daysToMaturity": 145,
     "notes": null
@@ -275,8 +275,8 @@
 **Response:**
 ```json
 {
-  "totalPrincipal": 32923114.22,
-  "totalExpectedInterest": 2434725.09,
+  "totalPrincipal": 25000000.00,
+  "totalExpectedInterest": 1800000.00,
   "totalActiveFDs": 41,
   "byBank": [
     { "bank": "BOC", "count": 20, "amount": 19103684.77, "percentage": 58 },
@@ -284,8 +284,8 @@
     { "bank": "Seylan", "count": 9, "amount": 4670506.05, "percentage": 14 }
   ],
   "byBeneficiary": [
-    { "beneficiary": "Appa", "count": 23, "amount": 20305406.84, "percentage": 61 },
-    { "beneficiary": "Amma", "count": 18, "amount": 12617707.38, "percentage": 39 }
+    { "beneficiary": "Parent B", "count": 23, "amount": 15000000.00, "percentage": 61 },
+    { "beneficiary": "Parent A", "count": 18, "amount": 10000000.00, "percentage": 39 }
   ],
   "maturingWithin30Days": 2,
   "maturingWithin90Days": 5,
@@ -302,7 +302,7 @@
 [
   {
     "id": 5,
-    "holder": "Kiri/Amma",
+    "holder": "Sibling1/Parent A",
     "bank": "NSB",
     "principalAmount": 781860.77,
     "maturityDate": "2025-07-15",
@@ -321,10 +321,10 @@
 **Response:**
 ```json
 {
-  "totalInterestIncome": 2434725.09,
+  "totalInterestIncome": 1800000.00,
   "byHolder": [
-    { "holder": "Appa", "interest": 1592251.12 },
-    { "holder": "Amma", "interest": 842473.97 }
+    { "holder": "Parent B", "interest": 1592251.12 },
+    { "holder": "Parent A", "interest": 842473.97 }
   ],
   "byBank": [
     { "bank": "BOC", "interest": 1200000.00 },
@@ -478,7 +478,7 @@
     "lastQuarterAmount": 557.99
   },
   "fixedDeposits": {
-    "totalPrincipal": 32923114.22,
+    "totalPrincipal": 25000000.00,
     "currency": "LKR",
     "maturingSoon": 3
   }
@@ -496,24 +496,24 @@
 [
   {
     "broker": "Tiger",
-    "invested": 137419.41,
-    "currentValue": 196423.12,
-    "profit": 59003.72,
+    "invested": 100000.00,
+    "currentValue": 150000.00,
+    "profit": 50000.00,
     "profitPercentage": 67.63,
     "currency": "USD"
   },
   {
     "broker": "Saxo",
-    "invested": 107434.67,
-    "currentValue": 154550.82,
+    "invested": 80000.00,
+    "currentValue": 120000.00,
     "profit": 34550.82,
     "profitPercentage": 32.16,
     "currency": "SGD"
   },
   {
     "broker": "IBKR",
-    "invested": 153973.48,
-    "currentValue": 178634.78,
+    "invested": 110000.00,
+    "currentValue": 130000.00,
     "profit": 5634.78,
     "profitPercentage": 3.26,
     "currency": "SGD"
@@ -628,7 +628,7 @@
 ├─────────────────────────────────────────────────────────────┤
 │ ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌───────────┐ │
 │ │ Net Worth  │ │ Invested   │ │ Gain/Loss  │ │ Dividends │ │
-│ │ S$910,269  │ │ S$750,000  │ │ +S$160,269 │ │ S$2,051   │ │
+│ │ S$XXX,XXX  │ │ S$XXX,XXX  │ │ +S$XX,XXX │ │ S$X,XXX   │ │
 │ │            │ │            │ │ +21.37%    │ │ YTD 2025  │ │
 │ └────────────┘ └────────────┘ └────────────┘ └───────────┘ │
 │                                                              │
@@ -669,9 +669,9 @@
 │ ┌─────────────────────────────────────────────────────────┐ │
 │ │ # │Holder       │Bank │Amount    │Rate│Start   │Maturity│ │
 │ │───┼─────────────┼─────┼──────────┼────┼────────┼────────│ │
-│ │ 1 │K.Kamaleswary│NSB  │575,000   │8%  │11/01/25│11/01/26│ │
-│ │ 2 │K.Kamaleswary│Comm │194,000   │8%  │28/01/25│28/01/26│ │
-│ │ 3 │Kumarasamy   │HNB  │1,030,000 │8%  │22/05/25│22/05/26│ │
+│ │ 1 │Parent A│NSB  │575,000   │8%  │11/01/25│11/01/26│ │
+│ │ 2 │Parent A│Comm │194,000   │8%  │28/01/25│28/01/26│ │
+│ │ 3 │Parent B   │HNB  │1,030,000 │8%  │22/05/25│22/05/26│ │
 │ │...│             │     │          │    │        │        │ │
 │ └─────────────────────────────────────────────────────────┘ │
 │                                                              │
@@ -765,10 +765,10 @@
 │ ┌─────────────────────────────────────────────────────────┐ │
 │ │ Year │ Net Worth  │ Growth    │ Growth %  │ Notes        │ │
 │ │──────┼────────────┼───────────┼───────────┼──────────────│ │
-│ │ 2021 │ S$392,548  │ -         │ -         │ Starting     │ │
-│ │ 2022 │ S$658,104  │ +S$265,556│ +67.65%   │              │ │
-│ │ 2023 │ S$910,269  │ +S$252,165│ +38.32%   │              │ │
-│ │ 2024 │ S$902,104  │ -S$8,166  │ -0.90%    │ Market adj   │ │
+│ │ 2021 │ S$XXX,XXX  │ -         │ -         │ Starting     │ │
+│ │ 2022 │ S$XXX,XXX  │ +S$XX,XXX│ +XX.XX%   │              │ │
+│ │ 2023 │ S$XXX,XXX  │ +S$XX,XXX│ +XX.XX%   │              │ │
+│ │ 2024 │ S$XXX,XXX  │ -S$X,XXX  │ -X.XX%    │ Market adj   │ │
 │ └─────────────────────────────────────────────────────────┘ │
 │                                                              │
 │ ┌─────────────────────────────────────────────────────────┐ │
@@ -786,11 +786,11 @@
 
 | Category | Owner Groups | Description |
 |----------|-------------|-------------|
-| **Appa & Amma** | K.Kamaleswary, Kumarasamy | Parents' FDs |
-| **Mugu** | Mugu/Appa, Mugu/Amma | User's FDs (joint with parents) |
-| **Kiri** | Kiri/Appa, Kiri/Amma, Kirivarnan | Sibling's FDs |
-| **Anna** | Anna/Appa, Anna/Amma | Another sibling's FDs |
-| **Car** | Mugu/Amma, Mugu/Appa, Anna/Amma | Purpose-specific FDs |
+| **Parents** | Parent A, Parent B | Parents' FDs |
+| **Self** | Self/Parent B, Self/Parent A | User's FDs (joint with parents) |
+| **Sibling 1** | Sibling1/Parent B, Sibling1/Parent A, Sibling 1 | Sibling's FDs |
+| **Sibling 2** | Sibling2/Parent B, Sibling2/Parent A | Another sibling's FDs |
+| **Car** | Self/Parent A, Self/Parent B, Sibling2/Parent A | Purpose-specific FDs |
 
 ### 4.2 Banks Supported
 
@@ -828,7 +828,7 @@
 1. **Summary Dashboard** - Total by bank, by holder, by category
 2. **Maturity Calendar** - Visual timeline of upcoming maturities
 3. **Interest Income Report** - Expected and realized interest
-4. **Beneficiary Report** - Split between Appa and Amma accounts
+4. **Beneficiary Report** - Split between parent accounts
 5. **Renewal Alert** - FDs needing action (flagged with `requires_update`)
 
 ---
