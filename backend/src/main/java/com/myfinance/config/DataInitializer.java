@@ -26,8 +26,8 @@ public class DataInitializer implements CommandLineRunner {
         if (ownerRepository.count() > 0) return;
 
         // ─── Owners ───
-        Owner self = ownerRepository.save(Owner.builder().name("Mugu").relationship(OwnerRelationship.SELF).build());
-        Owner spouse = ownerRepository.save(Owner.builder().name("Vaish").relationship(OwnerRelationship.SPOUSE).build());
+        Owner self = ownerRepository.save(Owner.builder().name("Primary User").relationship(OwnerRelationship.SELF).build());
+        Owner spouse = ownerRepository.save(Owner.builder().name("Spouse").relationship(OwnerRelationship.SPOUSE).build());
 
         // ─── Accounts (Brokers & Banks) ───
         accountRepository.save(Account.builder().name("Tiger").accountType(AccountType.BROKER).owner(self).currency(Currency.USD).description("Tiger Brokers - US stocks").build());
@@ -43,8 +43,8 @@ public class DataInitializer implements CommandLineRunner {
         accountRepository.save(Account.builder().name("SL-Fixed").accountType(AccountType.BANK).owner(self).currency(Currency.LKR).description("Sri Lanka Fixed Deposits").build());
 
         // Spouse accounts
-        accountRepository.save(Account.builder().name("Tiger-Vaish").accountType(AccountType.BROKER).owner(spouse).currency(Currency.USD).description("Tiger Brokers - Vaish").build());
-        accountRepository.save(Account.builder().name("Saxo-Vaish").accountType(AccountType.BROKER).owner(spouse).currency(Currency.SGD).description("Saxo - Vaish").build());
+        accountRepository.save(Account.builder().name("Tiger-Spouse").accountType(AccountType.BROKER).owner(spouse).currency(Currency.USD).description("Tiger Brokers - Spouse").build());
+        accountRepository.save(Account.builder().name("Saxo-Spouse").accountType(AccountType.BROKER).owner(spouse).currency(Currency.SGD).description("Saxo - Spouse").build());
 
         // ─── Banks (Sri Lanka for FDs) ───
         bankRepository.save(Bank.builder().name("National Savings Bank").shortName("NSB").build());
@@ -56,32 +56,32 @@ public class DataInitializer implements CommandLineRunner {
         bankRepository.save(Bank.builder().name("Sampath Bank").shortName("Sampath").build());
 
         // ─── FD Holders ───
-        fdHolderRepository.save(FDHolder.builder().name("K.Kamaleswary").relationship("Mother").isSeniorCitizen(true).build());
-        fdHolderRepository.save(FDHolder.builder().name("Kumarasamy").relationship("Father").isSeniorCitizen(true).build());
-        fdHolderRepository.save(FDHolder.builder().name("Mugu/Appa").relationship("Self/Father").isSeniorCitizen(false).build());
-        fdHolderRepository.save(FDHolder.builder().name("Mugu/Amma").relationship("Self/Mother").isSeniorCitizen(false).build());
-        fdHolderRepository.save(FDHolder.builder().name("Kiri/Appa").relationship("Brother/Father").isSeniorCitizen(false).build());
-        fdHolderRepository.save(FDHolder.builder().name("Kiri/Amma").relationship("Brother/Mother").isSeniorCitizen(false).build());
-        fdHolderRepository.save(FDHolder.builder().name("Kirivarnan").relationship("Brother").isSeniorCitizen(false).build());
-        fdHolderRepository.save(FDHolder.builder().name("Anna/Appa").relationship("Sibling/Father").isSeniorCitizen(false).build());
-        fdHolderRepository.save(FDHolder.builder().name("Anna/Amma").relationship("Sibling/Mother").isSeniorCitizen(false).build());
+        fdHolderRepository.save(FDHolder.builder().name("Parent A").relationship("Mother").isSeniorCitizen(true).build());
+        fdHolderRepository.save(FDHolder.builder().name("Parent B").relationship("Father").isSeniorCitizen(true).build());
+        fdHolderRepository.save(FDHolder.builder().name("Self/Parent B").relationship("Self/Father").isSeniorCitizen(false).build());
+        fdHolderRepository.save(FDHolder.builder().name("Self/Parent A").relationship("Self/Mother").isSeniorCitizen(false).build());
+        fdHolderRepository.save(FDHolder.builder().name("Sibling1/Parent B").relationship("Sibling/Father").isSeniorCitizen(false).build());
+        fdHolderRepository.save(FDHolder.builder().name("Sibling1/Parent A").relationship("Sibling/Mother").isSeniorCitizen(false).build());
+        fdHolderRepository.save(FDHolder.builder().name("Sibling 1").relationship("Sibling").isSeniorCitizen(false).build());
+        fdHolderRepository.save(FDHolder.builder().name("Sibling2/Parent B").relationship("Sibling/Father").isSeniorCitizen(false).build());
+        fdHolderRepository.save(FDHolder.builder().name("Sibling2/Parent A").relationship("Sibling/Mother").isSeniorCitizen(false).build());
 
         // ─── Currency Rates ───
-        currencyRateRepository.save(CurrencyRate.builder().fromCurrency(Currency.USD).toCurrency(Currency.SGD).rate(new BigDecimal("1.27")).effectiveDate(LocalDate.now()).build());
-        currencyRateRepository.save(CurrencyRate.builder().fromCurrency(Currency.EUR).toCurrency(Currency.SGD).rate(new BigDecimal("1.49")).effectiveDate(LocalDate.now()).build());
-        currencyRateRepository.save(CurrencyRate.builder().fromCurrency(Currency.LKR).toCurrency(Currency.SGD).rate(new BigDecimal("0.0042")).effectiveDate(LocalDate.now()).build());
+        currencyRateRepository.save(CurrencyRate.builder().fromCurrency(Currency.USD).toCurrency(Currency.SGD).rate(new BigDecimal("1.35")).effectiveDate(LocalDate.now()).build());
+        currencyRateRepository.save(CurrencyRate.builder().fromCurrency(Currency.EUR).toCurrency(Currency.SGD).rate(new BigDecimal("1.45")).effectiveDate(LocalDate.now()).build());
+        currencyRateRepository.save(CurrencyRate.builder().fromCurrency(Currency.LKR).toCurrency(Currency.SGD).rate(new BigDecimal("0.004")).effectiveDate(LocalDate.now()).build());
 
         // ─── Allocation Targets (for primary owner) ───
-        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.INDEX_FUND).targetPercentage(new BigDecimal("37")).targetAmount(new BigDecimal("370000")).build());
-        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.GROWTH_EQUITY).targetPercentage(new BigDecimal("23")).targetAmount(new BigDecimal("230000")).build());
-        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.DIVIDEND_EQUITY).targetPercentage(new BigDecimal("10")).targetAmount(new BigDecimal("100000")).build());
-        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.MONEY_MARKET).targetPercentage(new BigDecimal("10")).targetAmount(new BigDecimal("100000")).build());
-        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.LEVERAGED_ETF).targetPercentage(new BigDecimal("5")).targetAmount(new BigDecimal("50000")).build());
-        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.FIXED_DEPOSIT).targetPercentage(new BigDecimal("5")).targetAmount(new BigDecimal("50000")).build());
-        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.CRYPTO).targetPercentage(new BigDecimal("5")).targetAmount(new BigDecimal("50000")).build());
-        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.SAVINGS).targetPercentage(new BigDecimal("3")).targetAmount(new BigDecimal("30000")).build());
-        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.MUTUAL_FUND).targetPercentage(new BigDecimal("2")).targetAmount(new BigDecimal("20000")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.INDEX_FUND).targetPercentage(new BigDecimal("37")).targetAmount(new BigDecimal("0")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.GROWTH_EQUITY).targetPercentage(new BigDecimal("23")).targetAmount(new BigDecimal("0")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.DIVIDEND_EQUITY).targetPercentage(new BigDecimal("10")).targetAmount(new BigDecimal("0")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.MONEY_MARKET).targetPercentage(new BigDecimal("10")).targetAmount(new BigDecimal("0")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.LEVERAGED_ETF).targetPercentage(new BigDecimal("5")).targetAmount(new BigDecimal("0")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.FIXED_DEPOSIT).targetPercentage(new BigDecimal("5")).targetAmount(new BigDecimal("0")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.CRYPTO).targetPercentage(new BigDecimal("5")).targetAmount(new BigDecimal("0")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.SAVINGS).targetPercentage(new BigDecimal("3")).targetAmount(new BigDecimal("0")).build());
+        allocationTargetRepository.save(AllocationTarget.builder().owner(self).assetType(AssetType.MUTUAL_FUND).targetPercentage(new BigDecimal("2")).targetAmount(new BigDecimal("0")).build());
 
-        System.out.println("✓ Reference data initialized (owners, accounts, banks, FD holders, currency rates, allocation targets)");
+        System.out.println("Reference data initialized (owners, accounts, banks, FD holders, currency rates, allocation targets)");
     }
 }

@@ -341,10 +341,10 @@ function DesignDoc() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              <tr><td className="px-3 py-2">Appa &amp; Amma</td><td className="px-3 py-2">K.Kamaleswary, Kumarasamy</td><td className="px-3 py-2">Parents' FDs</td></tr>
-              <tr><td className="px-3 py-2">Mugu</td><td className="px-3 py-2">Mugu/Appa, Mugu/Amma</td><td className="px-3 py-2">User's FDs (joint)</td></tr>
-              <tr><td className="px-3 py-2">Kiri</td><td className="px-3 py-2">Kiri/Appa, Kiri/Amma</td><td className="px-3 py-2">Sibling's FDs</td></tr>
-              <tr><td className="px-3 py-2">Anna</td><td className="px-3 py-2">Anna/Appa, Anna/Amma</td><td className="px-3 py-2">Another sibling's FDs</td></tr>
+              <tr><td className="px-3 py-2">Parents</td><td className="px-3 py-2">Parent A, Parent B</td><td className="px-3 py-2">Parents' FDs</td></tr>
+              <tr><td className="px-3 py-2">Self</td><td className="px-3 py-2">Self/Parent B, Self/Parent A</td><td className="px-3 py-2">User's FDs (joint)</td></tr>
+              <tr><td className="px-3 py-2">Sibling 1</td><td className="px-3 py-2">Sibling1/Parent B, Sibling1/Parent A</td><td className="px-3 py-2">Sibling's FDs</td></tr>
+              <tr><td className="px-3 py-2">Sibling 2</td><td className="px-3 py-2">Sibling2/Parent B, Sibling2/Parent A</td><td className="px-3 py-2">Another sibling's FDs</td></tr>
             </tbody>
           </table>
 
@@ -387,15 +387,15 @@ ACTIVE → REQUIRES_UPDATE (needs verification)`}</pre>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              <tr><td className="px-3 py-2">Index Fund</td><td className="px-3 py-2 text-right">37%</td><td className="px-3 py-2 text-right">$370,000</td><td className="px-3 py-2 text-right">35.76%</td></tr>
-              <tr><td className="px-3 py-2">Growth Equity</td><td className="px-3 py-2 text-right">23%</td><td className="px-3 py-2 text-right">$230,000</td><td className="px-3 py-2 text-right">22.06%</td></tr>
-              <tr><td className="px-3 py-2">Dividend Equity</td><td className="px-3 py-2 text-right">10%</td><td className="px-3 py-2 text-right">$100,000</td><td className="px-3 py-2 text-right">2.60%</td></tr>
-              <tr><td className="px-3 py-2">Money Market</td><td className="px-3 py-2 text-right">10%</td><td className="px-3 py-2 text-right">$100,000</td><td className="px-3 py-2 text-right">7.03%</td></tr>
-              <tr><td className="px-3 py-2">Leveraged ETF</td><td className="px-3 py-2 text-right">5%</td><td className="px-3 py-2 text-right">$50,000</td><td className="px-3 py-2 text-right">1.98%</td></tr>
-              <tr><td className="px-3 py-2">Fixed Deposit</td><td className="px-3 py-2 text-right">5%</td><td className="px-3 py-2 text-right">$50,000</td><td className="px-3 py-2 text-right">2.66%</td></tr>
-              <tr><td className="px-3 py-2">Crypto</td><td className="px-3 py-2 text-right">5%</td><td className="px-3 py-2 text-right">$50,000</td><td className="px-3 py-2 text-right">1.68%</td></tr>
-              <tr><td className="px-3 py-2">Savings</td><td className="px-3 py-2 text-right">3%</td><td className="px-3 py-2 text-right">$30,000</td><td className="px-3 py-2 text-right">24.13%</td></tr>
-              <tr><td className="px-3 py-2">Mutual Fund</td><td className="px-3 py-2 text-right">2%</td><td className="px-3 py-2 text-right">$20,000</td><td className="px-3 py-2 text-right">2.11%</td></tr>
+              <tr><td className="px-3 py-2">Index Fund</td><td className="px-3 py-2 text-right">37%</td><td className="px-3 py-2 text-right">-</td><td className="px-3 py-2 text-right">-</td></tr>
+              <tr><td className="px-3 py-2">Growth Equity</td><td className="px-3 py-2 text-right">23%</td><td className="px-3 py-2 text-right">-</td><td className="px-3 py-2 text-right">-</td></tr>
+              <tr><td className="px-3 py-2">Dividend Equity</td><td className="px-3 py-2 text-right">10%</td><td className="px-3 py-2 text-right">-</td><td className="px-3 py-2 text-right">-</td></tr>
+              <tr><td className="px-3 py-2">Money Market</td><td className="px-3 py-2 text-right">10%</td><td className="px-3 py-2 text-right">-</td><td className="px-3 py-2 text-right">-</td></tr>
+              <tr><td className="px-3 py-2">Leveraged ETF</td><td className="px-3 py-2 text-right">5%</td><td className="px-3 py-2 text-right">-</td><td className="px-3 py-2 text-right">-</td></tr>
+              <tr><td className="px-3 py-2">Fixed Deposit</td><td className="px-3 py-2 text-right">5%</td><td className="px-3 py-2 text-right">-</td><td className="px-3 py-2 text-right">-</td></tr>
+              <tr><td className="px-3 py-2">Crypto</td><td className="px-3 py-2 text-right">5%</td><td className="px-3 py-2 text-right">-</td><td className="px-3 py-2 text-right">-</td></tr>
+              <tr><td className="px-3 py-2">Savings</td><td className="px-3 py-2 text-right">3%</td><td className="px-3 py-2 text-right">-</td><td className="px-3 py-2 text-right">-</td></tr>
+              <tr><td className="px-3 py-2">Mutual Fund</td><td className="px-3 py-2 text-right">2%</td><td className="px-3 py-2 text-right">-</td><td className="px-3 py-2 text-right">-</td></tr>
             </tbody>
           </table>
 
