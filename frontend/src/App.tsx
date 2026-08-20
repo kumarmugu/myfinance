@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut } from 'lucide-react';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Transactions from './pages/Transactions';
 import Portfolio from './pages/Portfolio';
@@ -12,6 +14,24 @@ import Dividends from './pages/Dividends';
 import Docs from './pages/Docs';
 
 function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}
+
+function AppContent() {
+  const { isAuthenticated, isLoading, user, logout } = useAuth();
+
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center bg-slate-50"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
+  }
+
+  if (!isAuthenticated) {
+    return <Login />;
+  }
+
   const navSections = [
     {
       label: null,
@@ -90,8 +110,14 @@ function App() {
               </div>
             ))}
           </nav>
-          <div className="p-4 border-t border-slate-200">
-            <p className="text-xs text-slate-400 text-center">MyFinance v2.0</p>
+          <div className="p-4 border-t border-slate-200 space-y-2">
+            <div className="flex items-center gap-2 px-2 py-1">
+              <div className="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 text-xs font-bold">{user?.displayName?.[0] || 'U'}</div>
+              <span className="text-sm text-slate-700 font-medium truncate">{user?.displayName || user?.username}</span>
+            </div>
+            <button onClick={logout} className="flex items-center gap-2 w-full px-4 py-2 text-sm text-slate-600 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors">
+              <LogOut size={16} /> Sign Out
+            </button>
           </div>
         </aside>
 

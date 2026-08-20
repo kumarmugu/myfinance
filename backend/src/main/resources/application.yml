@@ -24,3 +24,6 @@ spring:
 app:
   cors:
     allowed-origins: http://localhost:5173
+  jwt:
+    secret: myfinance-jwt-secret-key-please-change-in-production-at-least-256-bits
+    expiration: 86400000

@@ -6,6 +6,7 @@ import com.myfinance.repository.*;
 import com.myfinance.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -28,10 +29,20 @@ public class DataInitializer implements CommandLineRunner {
     private final AccountDepositRepository accountDepositRepository;
     private final NetWorthSnapshotRepository netWorthSnapshotRepository;
     private final TransactionService transactionService;
+    private final AppUserRepository appUserRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) {
         if (ownerRepository.count() > 0) return;
+
+        // ─── Default Admin User ───
+        appUserRepository.save(AppUser.builder()
+                .username("admin")
+                .email("admin@myfinance.local")
+                .password(passwordEncoder.encode("admin123"))
+                .displayName("Admin")
+                .build());
 
         // ═══════════════════════════════════════════════════════
         // OWNERS

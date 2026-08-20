@@ -1,0 +1,89 @@
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import api from '../api';
+
+interface AuthUser {
+  username: string;
+  displayName: string;
+  email: string;
+}
+
+interface AuthContextType {
+  user: AuthUser | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (username: string, password: string) => Promise<void>;
+  register: (username: string, email: string, password: string, displayName?: string) => Promise<void>;
+  logout: () => void;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+  verifyPassword: (password: string) => Promise<boolean>;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (token) {
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      api.get('/auth/me')
+        .then(res => setUser(res.data))
+        .catch(() => { logout(); })
+        .finally(() => setIsLoading(false));
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const login = async (username: string, password: string) => {
+    const res = await api.post('/auth/login', { username, password });
+    const { token: newToken, ...userData } = res.data;
+    setToken(newToken);
+    setUser(userData);
+    localStorage.setItem('token', newToken);
+    api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+  };
+
+  const register = async (username: string, email: string, password: string, displayName?: string) => {
+    const res = await api.post('/auth/register', { username, email, password, displayName });
+    const { token: newToken, ...userData } = res.data;
+    setToken(newToken);
+    setUser(userData);
+    localStorage.setItem('token', newToken);
+    api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+  };
+
+  const logout = () => {
+    setToken(null);
+    setUser(null);
+    localStorage.removeItem('token');
+    delete api.defaults.headers.common['Authorization'];
+  };
+
+  const changePassword = async (currentPassword: string, newPassword: string) => {
+    await api.post('/auth/change-password', { currentPassword, newPassword });
+  };
+
+  const verifyPassword = async (password: string): Promise<boolean> => {
+    const res = await api.post('/auth/verify-password', { password });
+    return res.data.valid;
+  };
+
+  return (
+    <AuthContext.Provider value={{
+      user, token, isAuthenticated: !!token && !!user, isLoading,
+      login, register, logout, changePassword, verifyPassword
+    }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
+  return context;
+}

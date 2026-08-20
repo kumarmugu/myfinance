@@ -10,6 +10,25 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+// Attach token from localStorage on init
+const storedToken = localStorage.getItem('token');
+if (storedToken) {
+  api.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
+}
+
+// Intercept 401 responses to trigger logout
+api.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      localStorage.removeItem('token');
+      delete api.defaults.headers.common['Authorization'];
+      window.location.href = '/';
+    }
+    return Promise.reject(error);
+  }
+);
+
 // ─── Owners ───
 export const getOwners = () => api.get<Owner[]>('/owners');
 export const createOwner = (owner: Partial<Owner>) => api.post<Owner>('/owners', owner);
