@@ -24,6 +24,7 @@ public class NetWorthSnapshot {
     @Column(nullable = false)
     private LocalDate snapshotDate;
 
+    @Column(name = "snapshot_year")
     private Integer year;
 
     @Builder.Default

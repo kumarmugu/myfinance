@@ -39,6 +39,7 @@ public class Dividend {
     @Column(nullable = false)
     private LocalDate receivedDate;
 
+    @Column(name = "dividend_year")
     private Integer year;
     private String quarter; // Q1, Q2, Q3, Q4
 
