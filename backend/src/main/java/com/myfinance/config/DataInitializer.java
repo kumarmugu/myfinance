@@ -295,9 +295,9 @@ public class DataInitializer implements CommandLineRunner {
         // ═══════════════════════════════════════════════════════
         // CURRENCY RATES
         // ═══════════════════════════════════════════════════════
-        currencyRateRepository.save(CurrencyRate.builder().fromCurrency(Currency.USD).toCurrency(Currency.SGD).rate(bd("1.35")).effectiveDate(LocalDate.now()).build());
-        currencyRateRepository.save(CurrencyRate.builder().fromCurrency(Currency.EUR).toCurrency(Currency.SGD).rate(bd("1.45")).effectiveDate(LocalDate.now()).build());
-        currencyRateRepository.save(CurrencyRate.builder().fromCurrency(Currency.LKR).toCurrency(Currency.SGD).rate(bd("0.004")).effectiveDate(LocalDate.now()).build());
+        currencyRateRepository.save(CurrencyRate.builder().fromCurrency("USD").toCurrency("SGD").rate(bd("1.35")).effectiveDate(LocalDate.now()).build());
+        currencyRateRepository.save(CurrencyRate.builder().fromCurrency("EUR").toCurrency("SGD").rate(bd("1.45")).effectiveDate(LocalDate.now()).build());
+        currencyRateRepository.save(CurrencyRate.builder().fromCurrency("LKR").toCurrency("SGD").rate(bd("0.004")).effectiveDate(LocalDate.now()).build());
 
         System.out.println("Sample data initialized successfully!");
     }

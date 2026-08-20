@@ -32,6 +32,13 @@ public class TransactionService {
     @Transactional
     public Transaction create(Long assetId, Long accountId, Long ownerId, TransactionType type,
                               BigDecimal quantity, BigDecimal pricePerUnit, BigDecimal fees,
+                              String currency, LocalDate date, String notes) {
+        return create(assetId, accountId, ownerId, type, quantity, pricePerUnit, fees, currency, date, notes, null);
+    }
+
+    @Transactional
+    public Transaction create(Long assetId, Long accountId, Long ownerId, TransactionType type,
+                              BigDecimal quantity, BigDecimal pricePerUnit, BigDecimal fees,
                               String currency, LocalDate date, String notes, InvestmentPurpose purpose) {
         Asset asset = assetService.getById(assetId);
         Account account = accountService.getById(accountId);
