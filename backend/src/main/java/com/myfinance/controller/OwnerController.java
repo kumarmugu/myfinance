@@ -25,4 +25,10 @@ public class OwnerController {
     public ResponseEntity<Owner> create(@RequestBody Owner owner) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ownerService.create(owner));
     }
+
+    @PutMapping("/{id}")
+    public Owner update(@PathVariable Long id, @RequestBody Owner owner) { return ownerService.update(id, owner); }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) { ownerService.delete(id); return ResponseEntity.noContent().build(); }
 }

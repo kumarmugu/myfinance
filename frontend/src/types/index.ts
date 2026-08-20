@@ -21,6 +21,7 @@ export interface Account {
   accountType: AccountType;
   owner: Owner;
   currency: Currency;
+  accountNumber: string | null;
   description: string;
   createdAt: string;
   updatedAt: string;

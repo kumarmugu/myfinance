@@ -31,6 +31,8 @@ public class Account {
     @Builder.Default
     private Currency currency = Currency.SGD;
 
+    private String accountNumber;
+
     private String description;
 
     @Column(updatable = false)

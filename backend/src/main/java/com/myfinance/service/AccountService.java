@@ -23,7 +23,9 @@ public class AccountService {
         existing.setName(updated.getName());
         existing.setAccountType(updated.getAccountType());
         existing.setCurrency(updated.getCurrency());
+        existing.setAccountNumber(updated.getAccountNumber());
         existing.setDescription(updated.getDescription());
+        existing.setOwner(updated.getOwner());
         return accountRepository.save(existing);
     }
     public void delete(Long id) { accountRepository.deleteById(id); }

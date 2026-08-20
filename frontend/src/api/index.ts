@@ -31,7 +31,10 @@ api.interceptors.response.use(
 
 // ─── Owners ───
 export const getOwners = () => api.get<Owner[]>('/owners');
+export const getOwnerById = (id: number) => api.get<Owner>(`/owners/${id}`);
 export const createOwner = (owner: Partial<Owner>) => api.post<Owner>('/owners', owner);
+export const updateOwner = (id: number, owner: Partial<Owner>) => api.put<Owner>(`/owners/${id}`, owner);
+export const deleteOwner = (id: number) => api.delete(`/owners/${id}`);
 
 // ─── Accounts ───
 export const getAccounts = () => api.get<Account[]>('/accounts');

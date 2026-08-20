@@ -15,4 +15,17 @@ public class OwnerService {
     public List<Owner> getAllOwners() { return ownerRepository.findByIsActiveTrue(); }
     public Owner getById(Long id) { return ownerRepository.findById(id).orElseThrow(() -> new RuntimeException("Owner not found: " + id)); }
     public Owner create(Owner owner) { return ownerRepository.save(owner); }
+
+    public Owner update(Long id, Owner updated) {
+        Owner existing = getById(id);
+        existing.setName(updated.getName());
+        existing.setRelationship(updated.getRelationship());
+        return ownerRepository.save(existing);
+    }
+
+    public void delete(Long id) {
+        Owner owner = getById(id);
+        owner.setIsActive(false);
+        ownerRepository.save(owner);
+    }
 }
