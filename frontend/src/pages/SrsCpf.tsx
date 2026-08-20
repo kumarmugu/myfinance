@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Calculator, PiggyBank } from 'lucide-react';
-import { formatCurrency } from '../utils/formatters';
+import { Calculator, PiggyBank, Plus, Trash2 } from 'lucide-react';
+import { getRetirementFundEntries, createRetirementFundEntry, deleteRetirementFundEntry } from '../api';
+import { formatCurrency, formatDate } from '../utils/formatters';
 
-type Tab = 'srs' | 'cpf';
+type Tab = 'srs' | 'cpf' | 'contributions';
 
 export default function SrsCpf() {
   const [tab, setTab] = useState<Tab>('srs');
@@ -22,9 +23,12 @@ export default function SrsCpf() {
         <button onClick={() => setTab('cpf')} className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${tab === 'cpf' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600'}`}>
           <Calculator size={15} /> CPF Tracker
         </button>
+        <button onClick={() => setTab('contributions')} className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${tab === 'contributions' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600'}`}>
+          <Plus size={15} /> Contribution History
+        </button>
       </div>
 
-      {tab === 'srs' ? <SRSPlan /> : <CPFTracker />}
+      {tab === 'srs' ? <SRSPlan /> : tab === 'cpf' ? <CPFTracker /> : <ContributionHistory />}
     </div>
   );
 }
@@ -280,6 +284,133 @@ function CPFTracker() {
           <li>SA is for retirement and approved investments</li>
           <li>At 55, OA + SA merge into Retirement Account (RA)</li>
         </ul>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════
+// CONTRIBUTION HISTORY (Persistent)
+// ═══════════════════════════════════════════════════════
+function ContributionHistory() {
+  const [entries, setEntries] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [filterFund, setFilterFund] = useState<string>('');
+  const [form, setForm] = useState({ fundType: 'CPF', entryType: 'CONTRIBUTION', amount: 0, entryDate: new Date().toISOString().split('T')[0], account: 'OA', balance: 0, employer: '', notes: '' });
+
+  useEffect(() => { loadData(); }, [filterFund]);
+  const loadData = async () => {
+    try { setEntries((await getRetirementFundEntries(filterFund || undefined)).data); }
+    catch (err) { console.error(err); }
+    finally { setLoading(false); }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try { await createRetirementFundEntry(form); setShowForm(false); loadData(); }
+    catch (err) { console.error(err); alert('Failed'); }
+  };
+
+  const handleDelete = async (id: number) => { if (confirm('Delete?')) { await deleteRetirementFundEntry(id); loadData(); } };
+
+  if (loading) return <div className="flex items-center justify-center h-32"><div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div></div>;
+
+  const totalContributions = entries.filter(e => e.entryType === 'CONTRIBUTION' || e.entryType === 'EMPLOYER_CONTRIBUTION').reduce((s, e) => s + e.amount, 0);
+  const totalWithdrawals = entries.filter(e => e.entryType === 'WITHDRAWAL').reduce((s, e) => s + e.amount, 0);
+
+  return (
+    <div className="space-y-5">
+      {/* Info */}
+      <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+        <p className="text-xs text-amber-700">CPF/EPF/SRS contributions are tracked here for record-keeping. These amounts are <strong>NOT</strong> included in net worth calculations as they are already counted through equity investments.</p>
+      </div>
+
+      {/* Summary */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Total Entries</p><p className="text-lg font-bold text-slate-800 mt-1">{entries.length}</p></div>
+        <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Total Contributions</p><p className="text-lg font-bold text-green-600 mt-1">{formatCurrency(totalContributions)}</p></div>
+        <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Total Withdrawals</p><p className="text-lg font-bold text-red-600 mt-1">{formatCurrency(totalWithdrawals)}</p></div>
+        <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Net</p><p className="text-lg font-bold text-indigo-600 mt-1">{formatCurrency(totalContributions - totalWithdrawals)}</p></div>
+      </div>
+
+      {/* Filters + Add */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex gap-1.5">
+          {['', 'CPF', 'EPF', 'SRS'].map(f => (
+            <button key={f} onClick={() => setFilterFund(f)} className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${filterFund === f ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-300'}`}>{f || 'All'}</button>
+          ))}
+        </div>
+        <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-medium hover:bg-indigo-700"><Plus size={14} /> Add Entry</button>
+      </div>
+
+      {/* Form */}
+      {showForm && (
+        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+          <form onSubmit={handleSubmit} className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Fund Type</label>
+              <div className="flex rounded-lg overflow-hidden border border-slate-300">
+                {['CPF', 'EPF', 'SRS'].map(f => (
+                  <button key={f} type="button" onClick={() => setForm({...form, fundType: f})} className={`flex-1 py-1.5 text-xs font-medium ${form.fundType === f ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600'}`}>{f}</button>
+                ))}
+              </div></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Type</label>
+              <div className="flex flex-wrap gap-1">
+                {['CONTRIBUTION', 'WITHDRAWAL', 'INTEREST', 'EMPLOYER_CONTRIBUTION'].map(t => (
+                  <button key={t} type="button" onClick={() => setForm({...form, entryType: t})} className={`px-2 py-1 rounded text-[10px] font-medium border ${form.entryType === t ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-300'}`}>{t.replace(/_/g, ' ')}</button>
+                ))}
+              </div></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Amount *</label>
+              <input type="number" step="any" value={form.amount || ''} onChange={e => setForm({...form, amount: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Date *</label>
+              <input type="date" value={form.entryDate} onChange={e => setForm({...form, entryDate: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Account</label>
+              <input type="text" value={form.account} onChange={e => setForm({...form, account: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="OA, SA, MA" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Balance After</label>
+              <input type="number" step="any" value={form.balance || ''} onChange={e => setForm({...form, balance: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Employer</label>
+              <input type="text" value={form.employer} onChange={e => setForm({...form, employer: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <div className="flex items-end gap-2">
+              <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium">Save</button>
+              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* Table */}
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th className="text-left px-3 py-2.5 font-medium text-slate-600">Date</th>
+                <th className="text-left px-3 py-2.5 font-medium text-slate-600">Fund</th>
+                <th className="text-left px-3 py-2.5 font-medium text-slate-600">Type</th>
+                <th className="text-left px-3 py-2.5 font-medium text-slate-600">Account</th>
+                <th className="text-right px-3 py-2.5 font-medium text-slate-600">Amount</th>
+                <th className="text-right px-3 py-2.5 font-medium text-slate-600">Balance</th>
+                <th className="text-left px-3 py-2.5 font-medium text-slate-600">Employer</th>
+                <th className="px-3 py-2.5 w-10"></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {entries.map((e: any) => (
+                <tr key={e.id} className="hover:bg-slate-50 group">
+                  <td className="px-3 py-2 text-slate-700 text-xs">{formatDate(e.entryDate)}</td>
+                  <td className="px-3 py-2"><span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-700 font-medium">{e.fundType}</span></td>
+                  <td className="px-3 py-2"><span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${e.entryType === 'CONTRIBUTION' || e.entryType === 'EMPLOYER_CONTRIBUTION' ? 'bg-green-100 text-green-700' : e.entryType === 'WITHDRAWAL' ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-600'}`}>{e.entryType.replace(/_/g, ' ')}</span></td>
+                  <td className="px-3 py-2 text-slate-600 text-xs">{e.account || '-'}</td>
+                  <td className={`px-3 py-2 text-right font-medium ${e.entryType === 'WITHDRAWAL' ? 'text-red-600' : 'text-green-600'}`}>{formatCurrency(e.amount)}</td>
+                  <td className="px-3 py-2 text-right text-slate-700">{e.balance ? formatCurrency(e.balance) : '-'}</td>
+                  <td className="px-3 py-2 text-slate-500 text-xs">{e.employer || '-'}</td>
+                  <td className="px-3 py-2"><button onClick={() => handleDelete(e.id)} className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500"><Trash2 size={13} /></button></td>
+                </tr>
+              ))}
+              {entries.length === 0 && <tr><td colSpan={8} className="px-4 py-12 text-center text-slate-400">No entries</td></tr>}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

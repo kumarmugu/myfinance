@@ -1,6 +1,7 @@
 package com.myfinance.service;
 
 import com.myfinance.model.*;
+import com.myfinance.model.enums.InvestmentPurpose;
 import com.myfinance.model.enums.TransactionType;
 import com.myfinance.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class TransactionService {
     @Transactional
     public Transaction create(Long assetId, Long accountId, Long ownerId, TransactionType type,
                               BigDecimal quantity, BigDecimal pricePerUnit, BigDecimal fees,
-                              String currency, LocalDate date, String notes) {
+                              String currency, LocalDate date, String notes, InvestmentPurpose purpose) {
         Asset asset = assetService.getById(assetId);
         Account account = accountService.getById(accountId);
         Owner owner = ownerService.getById(ownerId);
@@ -45,14 +46,14 @@ public class TransactionService {
                 .totalAmount(totalAmount).fees(fees != null ? fees : BigDecimal.ZERO)
                 .currency(currency != null ? com.myfinance.model.enums.Currency.valueOf(currency) : account.getCurrency())
                 .transactionDate(date != null ? date : LocalDate.now())
-                .notes(notes).build();
+                .notes(notes).purpose(purpose).build();
 
         Transaction saved = transactionRepository.save(tx);
-        updateHolding(asset, account, owner, type, quantity, pricePerUnit);
+        updateHolding(asset, account, owner, type, quantity, pricePerUnit, purpose);
         return saved;
     }
 
-    private void updateHolding(Asset asset, Account account, Owner owner, TransactionType type, BigDecimal quantity, BigDecimal pricePerUnit) {
+    private void updateHolding(Asset asset, Account account, Owner owner, TransactionType type, BigDecimal quantity, BigDecimal pricePerUnit, InvestmentPurpose purpose) {
         var holdingOpt = holdingService.getHolding(asset.getId(), account.getId(), owner.getId());
 
         if (type == TransactionType.BUY) {
@@ -64,13 +65,14 @@ public class TransactionService {
                 h.setQuantity(newQty);
                 h.setAverageBuyPrice(newAvg);
                 h.setInvestedAmount(newInvested);
+                if (purpose != null) h.setPurpose(purpose);
                 holdingService.save(h);
             } else {
                 holdingService.save(Holding.builder()
                         .asset(asset).account(account).owner(owner)
                         .quantity(quantity).averageBuyPrice(pricePerUnit)
                         .investedAmount(quantity.multiply(pricePerUnit))
-                        .currency(account.getCurrency()).build());
+                        .currency(account.getCurrency()).purpose(purpose).build());
             }
         } else if (type == TransactionType.SELL) {
             if (holdingOpt.isPresent()) {

@@ -21,6 +21,15 @@ public class AssetController {
     @GetMapping
     public List<Asset> getAll() { return assetService.getAll(); }
 
+    @GetMapping("/types")
+    public List<String> getAssetTypes() {
+        List<String> types = new java.util.ArrayList<>();
+        for (AssetType t : AssetType.values()) {
+            types.add(t.name());
+        }
+        return types;
+    }
+
     @GetMapping("/{id}")
     public Asset getById(@PathVariable Long id) { return assetService.getById(id); }
 
@@ -40,6 +49,11 @@ public class AssetController {
 
     @PatchMapping("/{id}/price")
     public Asset updatePrice(@PathVariable Long id, @RequestParam BigDecimal price) { return assetService.updatePrice(id, price); }
+
+    @PatchMapping("/{id}/net-worth")
+    public Asset toggleNetWorth(@PathVariable Long id, @RequestParam boolean include) {
+        return assetService.toggleNetWorth(id, include);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) { assetService.delete(id); return ResponseEntity.noContent().build(); }

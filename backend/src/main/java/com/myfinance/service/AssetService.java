@@ -1,12 +1,17 @@
 package com.myfinance.service;
 
+import com.myfinance.config.ReferenceConstraintException;
 import com.myfinance.model.Asset;
 import com.myfinance.model.enums.AssetType;
 import com.myfinance.repository.AssetRepository;
+import com.myfinance.repository.DividendRepository;
+import com.myfinance.repository.HoldingRepository;
+import com.myfinance.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +19,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AssetService {
     private final AssetRepository assetRepository;
+    private final TransactionRepository transactionRepository;
+    private final HoldingRepository holdingRepository;
+    private final DividendRepository dividendRepository;
 
     public List<Asset> getAll() { return assetRepository.findAll(); }
     public Asset getById(Long id) { return assetRepository.findById(id).orElseThrow(() -> new RuntimeException("Asset not found: " + id)); }
@@ -37,5 +45,30 @@ public class AssetService {
         asset.setCurrentPrice(price);
         return assetRepository.save(asset);
     }
-    public void delete(Long id) { assetRepository.deleteById(id); }
+
+    public Asset toggleNetWorth(Long id, boolean include) {
+        Asset asset = getById(id);
+        asset.setIncludeInNetWorth(include);
+        return assetRepository.save(asset);
+    }
+
+    public void delete(Long id) {
+        Asset asset = getById(id);
+        List<String> references = new ArrayList<>();
+
+        long txCount = transactionRepository.findByAssetIdOrderByTransactionDateDesc(id).size();
+        if (txCount > 0) references.add(txCount + " Transaction(s)");
+
+        long holdingCount = holdingRepository.findByAssetId(id).size();
+        if (holdingCount > 0) references.add(holdingCount + " Holding(s)");
+
+        long divCount = dividendRepository.findByAssetId(id).size();
+        if (divCount > 0) references.add(divCount + " Dividend(s)");
+
+        if (!references.isEmpty()) {
+            throw new ReferenceConstraintException("Asset '" + asset.getSymbol() + " - " + asset.getName() + "'", references);
+        }
+
+        assetRepository.deleteById(id);
+    }
 }

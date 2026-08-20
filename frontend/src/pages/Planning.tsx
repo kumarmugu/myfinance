@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { getAllocationPlan, getAccountDeposits, getNetWorthHistory } from '../api';
+import { Pencil, Save, X } from 'lucide-react';
+import { getAllocationPlan, updateAllocationTargets, getAccountDeposits, getNetWorthHistory } from '../api';
 import { formatCurrency } from '../utils/formatters';
 import type { AllocationTarget, AccountDeposit, NetWorthSnapshot } from '../types';
 import { ASSET_TYPE_LABELS, ASSET_TYPE_COLORS } from '../types';
@@ -14,6 +15,8 @@ export default function Planning() {
   const [deposits, setDeposits] = useState<AccountDeposit[]>([]);
   const [history, setHistory] = useState<NetWorthSnapshot[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editingTargets, setEditingTargets] = useState(false);
+  const [editedTargets, setEditedTargets] = useState<AllocationTarget[]>([]);
 
   useEffect(() => { loadData(); }, []);
 
@@ -26,6 +29,27 @@ export default function Planning() {
       setHistory(histRes.data);
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
+  };
+
+  const startEditTargets = () => {
+    setEditedTargets(targets.map(t => ({ ...t })));
+    setEditingTargets(true);
+  };
+
+  const saveTargets = async () => {
+    try {
+      await updateAllocationTargets(editedTargets);
+      setEditingTargets(false);
+      loadData();
+    } catch (err) { console.error(err); alert('Failed to save targets'); }
+  };
+
+  const updateTarget = (index: number, field: 'targetPercentage' | 'targetAmount', value: number) => {
+    setEditedTargets(prev => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
   };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
@@ -91,9 +115,25 @@ export default function Planning() {
 
           {/* Allocation Table */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="p-4 border-b border-slate-200">
-              <h3 className="font-semibold text-slate-800">Allocation Detail</h3>
-              <p className="text-sm text-slate-500">Total Portfolio: {formatCurrency(totalCurrent)}</p>
+            <div className="p-4 border-b border-slate-200 flex justify-between items-center">
+              <div>
+                <h3 className="font-semibold text-slate-800">Allocation Detail</h3>
+                <p className="text-sm text-slate-500">Total Portfolio: {formatCurrency(totalCurrent)}</p>
+              </div>
+              {!editingTargets ? (
+                <button onClick={startEditTargets} className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:bg-indigo-50">
+                  <Pencil size={14} /> Edit Targets
+                </button>
+              ) : (
+                <div className="flex gap-2">
+                  <button onClick={saveTargets} className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                    <Save size={14} /> Save
+                  </button>
+                  <button onClick={() => setEditingTargets(false)} className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50">
+                    <X size={14} /> Cancel
+                  </button>
+                </div>
+              )}
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -108,19 +148,48 @@ export default function Planning() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {allocData.map(row => (
-                    <tr key={row.type} className="hover:bg-slate-50">
-                      <td className="px-4 py-3 font-medium text-slate-800">{row.type}</td>
-                      <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(row.currentAmount)}</td>
-                      <td className="px-4 py-3 text-right text-slate-700">{row.actual}%</td>
-                      <td className="px-4 py-3 text-right text-slate-700">{row.target}%</td>
-                      <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(row.targetAmount)}</td>
-                      <td className={`px-4 py-3 text-right font-medium ${row.gap >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(row.gap)}</td>
-                    </tr>
-                  ))}
+                  {editingTargets ? (
+                    editedTargets.map((t, i) => {
+                      const currentAmount = current[t.assetType] || 0;
+                      const currentPct = totalCurrent > 0 ? (currentAmount / totalCurrent) * 100 : 0;
+                      const gap = currentAmount - (t.targetAmount || 0);
+                      return (
+                        <tr key={t.assetType} className="hover:bg-slate-50">
+                          <td className="px-4 py-2 font-medium text-slate-800">{ASSET_TYPE_LABELS[t.assetType] || t.assetType}</td>
+                          <td className="px-4 py-2 text-right text-slate-700">{formatCurrency(currentAmount)}</td>
+                          <td className="px-4 py-2 text-right text-slate-700">{currentPct.toFixed(1)}%</td>
+                          <td className="px-4 py-2 text-right">
+                            <input type="number" step="0.5" value={t.targetPercentage} onChange={e => updateTarget(i, 'targetPercentage', parseFloat(e.target.value) || 0)}
+                              className="w-20 border border-indigo-300 rounded px-2 py-1 text-sm text-right focus:ring-2 focus:ring-indigo-500" />
+                          </td>
+                          <td className="px-4 py-2 text-right">
+                            <input type="number" step="1000" value={t.targetAmount} onChange={e => updateTarget(i, 'targetAmount', parseFloat(e.target.value) || 0)}
+                              className="w-28 border border-indigo-300 rounded px-2 py-1 text-sm text-right focus:ring-2 focus:ring-indigo-500" />
+                          </td>
+                          <td className={`px-4 py-2 text-right font-medium ${gap >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(gap)}</td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    allocData.map(row => (
+                      <tr key={row.type} className="hover:bg-slate-50">
+                        <td className="px-4 py-3 font-medium text-slate-800">{row.type}</td>
+                        <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(row.currentAmount)}</td>
+                        <td className="px-4 py-3 text-right text-slate-700">{row.actual}%</td>
+                        <td className="px-4 py-3 text-right text-slate-700">{row.target}%</td>
+                        <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(row.targetAmount)}</td>
+                        <td className={`px-4 py-3 text-right font-medium ${row.gap >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(row.gap)}</td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
+            {editingTargets && (
+              <div className="p-3 bg-slate-50 border-t border-slate-200 text-right">
+                <span className="text-xs text-slate-500">Total Target: {editedTargets.reduce((s, t) => s + t.targetPercentage, 0).toFixed(1)}%</span>
+              </div>
+            )}
           </div>
         </div>
       )}

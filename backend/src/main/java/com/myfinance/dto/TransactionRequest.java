@@ -1,5 +1,6 @@
 package com.myfinance.dto;
 
+import com.myfinance.model.enums.InvestmentPurpose;
 import com.myfinance.model.enums.TransactionType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -26,4 +27,5 @@ public class TransactionRequest {
     private String currency;
     private LocalDate transactionDate;
     private String notes;
+    private InvestmentPurpose purpose;
 }

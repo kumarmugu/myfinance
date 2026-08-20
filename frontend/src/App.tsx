@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -16,6 +16,10 @@ import Deposits from './pages/Deposits';
 import FxRates from './pages/FxRates';
 import SrsCpf from './pages/SrsCpf';
 import Insurance from './pages/Insurance';
+import Tax from './pages/Tax';
+import WorkExperience from './pages/WorkExperience';
+import Salary from './pages/Salary';
+import HomeLoans from './pages/HomeLoans';
 import UserGuide from './pages/UserGuide';
 import Docs from './pages/Docs';
 
@@ -58,6 +62,7 @@ function AppContent() {
       items: [
         { to: '/fixed-deposits', icon: Landmark, label: 'All Deposits' },
         { to: '/insurance', icon: Shield, label: 'Insurance' },
+        { to: '/home-loans', icon: Home, label: 'Home Loans' },
       ],
     },
     {
@@ -65,6 +70,9 @@ function AppContent() {
       items: [
         { to: '/planning', icon: Target, label: 'Allocation & Net Worth' },
         { to: '/srs-cpf', icon: Calculator, label: 'SRS & CPF' },
+        { to: '/tax', icon: Receipt, label: 'Tax Records' },
+        { to: '/work-experience', icon: Briefcase, label: 'Work Experience' },
+        { to: '/salary', icon: Wallet, label: 'Salary' },
       ],
     },
     {
@@ -145,6 +153,10 @@ function AppContent() {
               <Route path="/deposits" element={<Deposits />} />
               <Route path="/fixed-deposits" element={<FixedDeposits />} />
               <Route path="/insurance" element={<Insurance />} />
+              <Route path="/home-loans" element={<HomeLoans />} />
+              <Route path="/tax" element={<Tax />} />
+              <Route path="/work-experience" element={<WorkExperience />} />
+              <Route path="/salary" element={<Salary />} />
               <Route path="/planning" element={<Planning />} />
               <Route path="/srs-cpf" element={<SrsCpf />} />
               <Route path="/reports" element={<Reports />} />

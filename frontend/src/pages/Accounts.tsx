@@ -47,7 +47,16 @@ export default function Accounts() {
     setShowAccountForm(true);
   };
 
-  const handleDeleteAccount = async (id: number) => { if (confirm('Delete this account?')) { await deleteAccount(id); loadData(); } };
+  const handleDeleteAccount = async (id: number) => {
+    if (confirm('Delete this account?')) {
+      try { await deleteAccount(id); loadData(); }
+      catch (err: any) {
+        const msg = err.response?.data?.message || 'Failed to delete';
+        const refs = err.response?.data?.references;
+        alert(refs ? `${msg}\n\nReferenced by:\n• ${refs.join('\n• ')}` : msg);
+      }
+    }
+  };
 
   const toggleMask = (id: number) => {
     setUnmasked(prev => { const n = new Set(prev); if (n.has(id)) n.delete(id); else n.add(id); return n; });
@@ -73,7 +82,16 @@ export default function Accounts() {
   };
 
   const startEditOwner = (o: Owner) => { setEditingOwner(o); setOwnerForm({ name: o.name, relationship: o.relationship }); setShowOwnerForm(true); };
-  const handleDeleteOwner = async (id: number) => { if (confirm('Delete this owner? (soft delete)')) { await deleteOwner(id); loadData(); } };
+  const handleDeleteOwner = async (id: number) => {
+    if (confirm('Delete this owner?')) {
+      try { await deleteOwner(id); loadData(); }
+      catch (err: any) {
+        const msg = err.response?.data?.message || 'Failed to delete';
+        const refs = err.response?.data?.references;
+        alert(refs ? `${msg}\n\nReferenced by:\n• ${refs.join('\n• ')}` : msg);
+      }
+    }
+  };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
@@ -111,12 +129,15 @@ export default function Accounts() {
               <form onSubmit={handleAccountSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Name *</label><input type="text" value={accForm.name} onChange={e => setAccForm({...accForm, name: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" required /></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
-                  <select value={accForm.accountType} onChange={e => setAccForm({...accForm, accountType: e.target.value as AccountType})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
-                    <option value="BROKER">Broker</option><option value="BANK">Bank</option><option value="CRYPTO_EXCHANGE">Crypto Exchange</option>
-                  </select></div>
+                  <div className="flex rounded-lg overflow-hidden border border-slate-300">
+                    {([['BROKER', 'Broker'], ['BANK', 'Bank'], ['CRYPTO_EXCHANGE', 'Crypto']] as const).map(([val, label]) => (
+                      <button key={val} type="button" onClick={() => setAccForm({...accForm, accountType: val as AccountType})}
+                        className={`flex-1 py-2 text-sm font-medium transition-colors ${accForm.accountType === val ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`}>{label}</button>
+                    ))}
+                  </div></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Currency</label>
                   <select value={accForm.currency} onChange={e => setAccForm({...accForm, currency: e.target.value as Currency})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
-                    <option value="SGD">SGD</option><option value="USD">USD</option><option value="EUR">EUR</option><option value="LKR">LKR</option>
+                    <option value="SGD">SGD</option><option value="USD">USD</option><option value="EUR">EUR</option><option value="LKR">LKR</option><option value="INR">INR</option><option value="GBP">GBP</option><option value="AUD">AUD</option><option value="JPY">JPY</option><option value="CNY">CNY</option><option value="MYR">MYR</option><option value="HKD">HKD</option><option value="CAD">CAD</option>
                   </select></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Account Number</label><input type="text" value={accForm.accountNumber} onChange={e => setAccForm({...accForm, accountNumber: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Will be masked on display" /></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Owner</label>
@@ -188,7 +209,7 @@ export default function Accounts() {
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Name *</label><input type="text" value={ownerForm.name} onChange={e => setOwnerForm({...ownerForm, name: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" required /></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Relationship</label>
                   <select value={ownerForm.relationship} onChange={e => setOwnerForm({...ownerForm, relationship: e.target.value as OwnerRelationship})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
-                    <option value="SELF">Self</option><option value="SPOUSE">Spouse</option>
+                    <option value="SELF">Self</option><option value="SPOUSE">Spouse</option><option value="SON">Son</option><option value="DAUGHTER">Daughter</option><option value="FATHER">Father</option><option value="MOTHER">Mother</option><option value="BROTHER">Brother</option><option value="SISTER">Sister</option>
                   </select></div>
                 <div className="flex items-end gap-2">
                   <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">{editingOwner ? 'Update' : 'Save'}</button>

@@ -1,6 +1,5 @@
 package com.myfinance.model;
 
-import com.myfinance.model.enums.Currency;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,13 +16,11 @@ public class CurrencyRate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Currency fromCurrency;
+    @Column(nullable = false, length = 10)
+    private String fromCurrency;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Currency toCurrency;
+    @Column(nullable = false, length = 10)
+    private String toCurrency;
 
     @Column(nullable = false)
     private BigDecimal rate;

@@ -1,6 +1,7 @@
 package com.myfinance.model;
 
 import com.myfinance.model.enums.Currency;
+import com.myfinance.model.enums.InvestmentPurpose;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -63,6 +64,9 @@ public class SoldPosition {
 
     @Builder.Default
     private Boolean isShortTerm = false;
+
+    @Enumerated(EnumType.STRING)
+    private InvestmentPurpose purpose;
 
     private String notes;
 

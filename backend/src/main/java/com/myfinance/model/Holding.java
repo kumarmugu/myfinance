@@ -1,6 +1,7 @@
 package com.myfinance.model;
 
 import com.myfinance.model.enums.Currency;
+import com.myfinance.model.enums.InvestmentPurpose;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,6 +43,9 @@ public class Holding {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Currency currency = Currency.USD;
+
+    @Enumerated(EnumType.STRING)
+    private InvestmentPurpose purpose;
 
     private LocalDateTime updatedAt;
 

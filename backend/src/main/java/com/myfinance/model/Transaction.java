@@ -1,6 +1,7 @@
 package com.myfinance.model;
 
 import com.myfinance.model.enums.Currency;
+import com.myfinance.model.enums.InvestmentPurpose;
 import com.myfinance.model.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -54,6 +55,9 @@ public class Transaction {
     private LocalDate transactionDate;
 
     private String notes;
+
+    @Enumerated(EnumType.STRING)
+    private InvestmentPurpose purpose;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;

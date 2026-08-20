@@ -20,7 +20,7 @@ export default function Transactions() {
 
   const [form, setForm] = useState<TransactionRequest>({
     assetId: 0, accountId: 0, ownerId: 0, transactionType: 'BUY',
-    quantity: 0, pricePerUnit: 0, fees: 0, transactionDate: new Date().toISOString().split('T')[0], notes: '',
+    quantity: 0, pricePerUnit: 0, fees: 0, transactionDate: new Date().toISOString().split('T')[0], notes: '', purpose: 'LONG_TERM',
   });
 
   useEffect(() => { loadData(); }, [filterOwner]);
@@ -95,6 +95,13 @@ export default function Transactions() {
               <input type="date" value={form.transactionDate} onChange={e => setForm({...form, transactionDate: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Notes</label>
               <input type="text" value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Optional" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Purpose</label>
+              <div className="flex flex-wrap gap-1.5">
+                {([['LONG_TERM', 'Long Term'], ['TRADING', 'Trading'], ['DIVIDEND_REINVESTMENT', 'Div Reinvest'], ['SRS', 'SRS'], ['RETIREMENT', 'Retirement'], ['SHORT_TERM', 'Short Term']] as const).map(([val, label]) => (
+                  <button key={val} type="button" onClick={() => setForm({...form, purpose: val as any})}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border ${form.purpose === val ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-300 hover:border-indigo-300'}`}>{label}</button>
+                ))}
+              </div></div>
             <div className="flex items-end gap-2 lg:col-span-4">
               <button type="submit" className="px-5 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">Save Transaction</button>
               <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">Cancel</button>
@@ -114,6 +121,7 @@ export default function Transactions() {
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Asset</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Account</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Owner</th>
+                <th className="text-left px-4 py-3 font-medium text-slate-600">Purpose</th>
                 <th className="text-right px-4 py-3 font-medium text-slate-600">Qty</th>
                 <th className="text-right px-4 py-3 font-medium text-slate-600">Price</th>
                 <th className="text-right px-4 py-3 font-medium text-slate-600">Total</th>
@@ -132,6 +140,7 @@ export default function Transactions() {
                   <td className="px-4 py-2.5"><span className="font-medium text-slate-800">{tx.asset.symbol}</span></td>
                   <td className="px-4 py-2.5 text-slate-600">{tx.account.name}</td>
                   <td className="px-4 py-2.5 text-slate-500 text-xs">{tx.owner.name}</td>
+                  <td className="px-4 py-2.5"><span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{tx.purpose ? tx.purpose.replace(/_/g, ' ') : '-'}</span></td>
                   <td className="px-4 py-2.5 text-right text-slate-700">{tx.quantity}</td>
                   <td className="px-4 py-2.5 text-right text-slate-700">{formatCurrency(tx.pricePerUnit, tx.currency)}</td>
                   <td className="px-4 py-2.5 text-right font-medium text-slate-800">{formatCurrency(tx.totalAmount, tx.currency)}</td>

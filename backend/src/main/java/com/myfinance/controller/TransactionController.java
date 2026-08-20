@@ -45,7 +45,8 @@ public class TransactionController {
         Transaction tx = transactionService.create(
                 req.getAssetId(), req.getAccountId(), req.getOwnerId(),
                 req.getTransactionType(), req.getQuantity(), req.getPricePerUnit(),
-                req.getFees(), req.getCurrency(), req.getTransactionDate(), req.getNotes());
+                req.getFees(), req.getCurrency(), req.getTransactionDate(), req.getNotes(),
+                req.getPurpose());
         return ResponseEntity.status(HttpStatus.CREATED).body(tx);
     }
 

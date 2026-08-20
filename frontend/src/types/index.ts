@@ -1,10 +1,11 @@
 // ─── Enums ───
-export type AssetType = 'INDEX_FUND' | 'MUTUAL_FUND' | 'GROWTH_EQUITY' | 'DIVIDEND_EQUITY' | 'LEVERAGED_ETF' | 'MONEY_MARKET' | 'FIXED_DEPOSIT' | 'SAVINGS' | 'CRYPTO';
+export type AssetType = 'INDEX_FUND' | 'MUTUAL_FUND' | 'GROWTH_EQUITY' | 'DIVIDEND_EQUITY' | 'LEVERAGED_ETF' | 'MONEY_MARKET' | 'FIXED_DEPOSIT' | 'SAVINGS' | 'CRYPTO' | 'GOLD' | 'BOND' | 'REIT' | 'COMMODITY' | 'INSURANCE' | 'PENSION' | 'OTHER' | string;
 export type AccountType = 'BROKER' | 'BANK' | 'CRYPTO_EXCHANGE';
 export type TransactionType = 'BUY' | 'SELL' | 'DIVIDEND' | 'DEPOSIT' | 'WITHDRAWAL';
-export type Currency = 'SGD' | 'USD' | 'EUR' | 'LKR';
+export type InvestmentPurpose = 'LONG_TERM' | 'TRADING' | 'DIVIDEND_REINVESTMENT' | 'SRS' | 'RETIREMENT' | 'SHORT_TERM';
+export type Currency = 'SGD' | 'USD' | 'EUR' | 'LKR' | 'INR' | 'GBP' | 'AUD' | 'JPY' | 'CNY' | 'MYR' | 'THB' | 'HKD' | 'NZD' | 'CHF' | 'CAD' | string;
 export type FDStatus = 'ACTIVE' | 'MATURED' | 'RENEWED' | 'CLOSED' | 'REQUIRES_UPDATE';
-export type OwnerRelationship = 'SELF' | 'SPOUSE';
+export type OwnerRelationship = 'SELF' | 'SPOUSE' | 'SON' | 'DAUGHTER' | 'FATHER' | 'MOTHER' | 'BROTHER' | 'SISTER';
 
 // ─── Core Models ───
 export interface Owner {
@@ -36,14 +37,15 @@ export interface Asset {
   currency: Currency;
   exchange: string;
   description: string;
+  includeInNetWorth: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface CurrencyRate {
   id: number;
-  fromCurrency: Currency;
-  toCurrency: Currency;
+  fromCurrency: string;
+  toCurrency: string;
   rate: number;
   effectiveDate: string;
 }
@@ -62,6 +64,7 @@ export interface Transaction {
   currency: Currency;
   transactionDate: string;
   notes: string;
+  purpose: InvestmentPurpose | null;
   createdAt: string;
 }
 
@@ -74,6 +77,7 @@ export interface Holding {
   averageBuyPrice: number;
   investedAmount: number;
   currency: Currency;
+  purpose: InvestmentPurpose | null;
   updatedAt: string;
 }
 
@@ -223,10 +227,11 @@ export interface TransactionRequest {
   currency?: string;
   transactionDate?: string;
   notes?: string;
+  purpose?: InvestmentPurpose;
 }
 
 // ─── Helpers ───
-export const ASSET_TYPE_LABELS: Record<AssetType, string> = {
+export const ASSET_TYPE_LABELS: Record<string, string> = {
   INDEX_FUND: 'Index Fund',
   MUTUAL_FUND: 'Mutual Fund',
   GROWTH_EQUITY: 'Growth Equity',
@@ -236,9 +241,16 @@ export const ASSET_TYPE_LABELS: Record<AssetType, string> = {
   FIXED_DEPOSIT: 'Fixed Deposit',
   SAVINGS: 'Savings',
   CRYPTO: 'Crypto',
+  GOLD: 'Gold',
+  BOND: 'Bond',
+  REIT: 'REIT',
+  COMMODITY: 'Commodity',
+  INSURANCE: 'Insurance',
+  PENSION: 'Pension',
+  OTHER: 'Other',
 };
 
-export const ASSET_TYPE_COLORS: Record<AssetType, string> = {
+export const ASSET_TYPE_COLORS: Record<string, string> = {
   INDEX_FUND: '#6366f1',
   GROWTH_EQUITY: '#06b6d4',
   MUTUAL_FUND: '#10b981',
@@ -248,6 +260,13 @@ export const ASSET_TYPE_COLORS: Record<AssetType, string> = {
   FIXED_DEPOSIT: '#64748b',
   SAVINGS: '#eab308',
   CRYPTO: '#f59e0b',
+  GOLD: '#d97706',
+  BOND: '#0891b2',
+  REIT: '#7c3aed',
+  COMMODITY: '#b45309',
+  INSURANCE: '#059669',
+  PENSION: '#4f46e5',
+  OTHER: '#6b7280',
 };
 
 // ─── Insurance ───

@@ -25,6 +25,11 @@ public class NetWorthService {
                 ? holdingService.getActiveByOwner(ownerId)
                 : holdingService.getActiveHoldings();
 
+        // Only include holdings where asset is flagged for net worth
+        holdings = holdings.stream()
+                .filter(h -> h.getAsset().getIncludeInNetWorth() == null || h.getAsset().getIncludeInNetWorth())
+                .collect(Collectors.toList());
+
         Map<AssetType, BigDecimal> totals = holdings.stream()
                 .collect(Collectors.groupingBy(
                         h -> h.getAsset().getAssetType(),
@@ -54,7 +59,9 @@ public class NetWorthService {
     public Optional<NetWorthSnapshot> getLatest() { return snapshotRepository.findTopByOrderBySnapshotDateDesc(); }
 
     public Map<String, BigDecimal> getCurrentAllocation() {
-        List<Holding> holdings = holdingService.getActiveHoldings();
+        List<Holding> holdings = holdingService.getActiveHoldings().stream()
+                .filter(h -> h.getAsset().getIncludeInNetWorth() == null || h.getAsset().getIncludeInNetWorth())
+                .collect(Collectors.toList());
         return holdings.stream()
                 .collect(Collectors.groupingBy(
                         h -> h.getAsset().getAssetType().name(),

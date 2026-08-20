@@ -2,5 +2,11 @@ package com.myfinance.model.enums;
 
 public enum OwnerRelationship {
     SELF,
-    SPOUSE
+    SPOUSE,
+    SON,
+    DAUGHTER,
+    FATHER,
+    MOTHER,
+    BROTHER,
+    SISTER
 }

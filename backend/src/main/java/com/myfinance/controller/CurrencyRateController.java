@@ -1,13 +1,15 @@
 package com.myfinance.controller;
 
 import com.myfinance.model.CurrencyRate;
+import com.myfinance.model.enums.Currency;
 import com.myfinance.repository.CurrencyRateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/currency-rates")
@@ -17,6 +19,22 @@ public class CurrencyRateController {
 
     @GetMapping
     public List<CurrencyRate> getAll() { return repository.findAll(); }
+
+    @GetMapping("/currencies")
+    public List<String> getAvailableCurrencies() {
+        Set<String> currencies = new TreeSet<>();
+        // Add all enum values
+        for (Currency c : Currency.values()) {
+            currencies.add(c.name());
+        }
+        // Add any additional from stored rates
+        List<CurrencyRate> rates = repository.findAll();
+        for (CurrencyRate r : rates) {
+            currencies.add(r.getFromCurrency());
+            currencies.add(r.getToCurrency());
+        }
+        return new ArrayList<>(currencies);
+    }
 
     @PostMapping
     public ResponseEntity<CurrencyRate> create(@RequestBody CurrencyRate rate) {

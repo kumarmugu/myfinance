@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Plus, Trash2 } from 'lucide-react';
-import { getAssets, createAsset, deleteAsset } from '../api';
-import { formatCurrency } from '../utils/formatters';
+import { Plus, Trash2, Check } from 'lucide-react';
+import { getAssets, createAsset, deleteAsset, toggleAssetNetWorth } from '../api';
 import type { Asset, AssetType, Currency } from '../types';
 import { ASSET_TYPE_LABELS } from '../types';
 
@@ -9,17 +8,31 @@ export default function Assets() {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState({ name: '', symbol: '', assetType: 'GROWTH_EQUITY' as AssetType, currentPrice: 0, currency: 'USD' as Currency, exchange: '', description: '' });
+  const [form, setForm] = useState({ name: '', symbol: '', assetType: 'GROWTH_EQUITY' as AssetType, currency: 'USD' as Currency, exchange: '', description: '' });
 
   useEffect(() => { loadData(); }, []);
   const loadData = async () => { try { setAssets((await getAssets()).data); } catch (err) { console.error(err); } finally { setLoading(false); } };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try { await createAsset(form); setShowForm(false); setForm({ name: '', symbol: '', assetType: 'GROWTH_EQUITY', currentPrice: 0, currency: 'USD', exchange: '', description: '' }); loadData(); }
+    try { await createAsset(form); setShowForm(false); setForm({ name: '', symbol: '', assetType: 'GROWTH_EQUITY', currency: 'USD', exchange: '', description: '' }); loadData(); }
     catch (err) { console.error(err); alert('Failed'); }
   };
-  const handleDelete = async (id: number) => { if (confirm('Delete?')) { await deleteAsset(id); loadData(); } };
+  const handleDelete = async (id: number) => {
+    if (confirm('Delete?')) {
+      try { await deleteAsset(id); loadData(); }
+      catch (err: any) {
+        const msg = err.response?.data?.message || 'Failed to delete';
+        const refs = err.response?.data?.references;
+        alert(refs ? `${msg}\n\nReferenced by:\n• ${refs.join('\n• ')}` : msg);
+      }
+    }
+  };
+
+  const handleToggleNetWorth = async (asset: Asset) => {
+    try { await toggleAssetNetWorth(asset.id, !asset.includeInNetWorth); loadData(); }
+    catch (err) { console.error(err); }
+  };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
@@ -35,15 +48,17 @@ export default function Assets() {
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div><label className="block text-sm font-medium text-slate-700 mb-1">Name</label><input type="text" value={form.name} onChange={e => setForm({...form, name: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
             <div><label className="block text-sm font-medium text-slate-700 mb-1">Symbol</label><input type="text" value={form.symbol} onChange={e => setForm({...form, symbol: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
-            <div><label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
-              <select value={form.assetType} onChange={e => setForm({...form, assetType: e.target.value as AssetType})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-                {Object.entries(ASSET_TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-              </select></div>
+            <div className="lg:col-span-2"><label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
+              <div className="flex flex-wrap gap-1.5">
+                {Object.entries(ASSET_TYPE_LABELS).map(([k, v]) => (
+                  <button key={k} type="button" onClick={() => setForm({...form, assetType: k as AssetType})}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border ${form.assetType === k ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-300 hover:border-indigo-300'}`}>{v}</button>
+                ))}
+              </div></div>
             <div><label className="block text-sm font-medium text-slate-700 mb-1">Currency</label>
               <select value={form.currency} onChange={e => setForm({...form, currency: e.target.value as Currency})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-                <option value="USD">USD</option><option value="SGD">SGD</option><option value="EUR">EUR</option>
+                <option value="USD">USD</option><option value="SGD">SGD</option><option value="EUR">EUR</option><option value="LKR">LKR</option><option value="INR">INR</option><option value="GBP">GBP</option><option value="AUD">AUD</option><option value="JPY">JPY</option><option value="CNY">CNY</option><option value="MYR">MYR</option><option value="HKD">HKD</option><option value="CAD">CAD</option>
               </select></div>
-            <div><label className="block text-sm font-medium text-slate-700 mb-1">Current Price</label><input type="number" step="any" value={form.currentPrice || ''} onChange={e => setForm({...form, currentPrice: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
             <div><label className="block text-sm font-medium text-slate-700 mb-1">Exchange</label><input type="text" value={form.exchange} onChange={e => setForm({...form, exchange: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="e.g. NYSE, SGX" /></div>
             <div className="flex items-end gap-2">
               <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium">Save</button>
@@ -63,7 +78,7 @@ export default function Assets() {
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Type</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Exchange</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Currency</th>
-                <th className="text-right px-4 py-3 font-medium text-slate-600">Price</th>
+                <th className="text-center px-4 py-3 font-medium text-slate-600" title="Include in Net Worth">NW</th>
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
@@ -75,7 +90,11 @@ export default function Assets() {
                   <td className="px-4 py-3"><span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{ASSET_TYPE_LABELS[a.assetType] || a.assetType}</span></td>
                   <td className="px-4 py-3 text-slate-600">{a.exchange || '-'}</td>
                   <td className="px-4 py-3 text-slate-600">{a.currency}</td>
-                  <td className="px-4 py-3 text-right text-slate-700">{a.currentPrice ? formatCurrency(a.currentPrice, a.currency) : '-'}</td>
+                  <td className="px-4 py-3 text-center">
+                    <button onClick={() => handleToggleNetWorth(a)} className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${a.includeInNetWorth !== false ? 'bg-indigo-600 border-indigo-600' : 'border-slate-300 hover:border-indigo-400'}`} title={a.includeInNetWorth !== false ? 'Included in net worth' : 'Excluded from net worth'}>
+                      {a.includeInNetWorth !== false && <Check size={12} className="text-white" />}
+                    </button>
+                  </td>
                   <td className="px-4 py-3"><button onClick={() => handleDelete(a.id)} className="text-slate-400 hover:text-red-500"><Trash2 size={16} /></button></td>
                 </tr>
               ))}

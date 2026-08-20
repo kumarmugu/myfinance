@@ -1,43 +1,44 @@
 package com.myfinance.model;
 
-import com.myfinance.model.enums.AssetType;
-import com.myfinance.model.enums.Currency;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "assets")
+@Table(name = "work_experiences")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class Asset {
+public class WorkExperience {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String company;
 
-    @Column(nullable = false, unique = true)
-    private String symbol;
+    private String position;
 
-    @Enumerated(EnumType.STRING)
+    private String level; // PM3, PM4, PM5 etc.
+
+    private String country;
+
     @Column(nullable = false)
-    private AssetType assetType;
+    private LocalDate startDate;
 
-    private BigDecimal currentPrice;
-
-    @Enumerated(EnumType.STRING)
-    @Builder.Default
-    private Currency currency = Currency.USD;
-
-    private String exchange;
-    private String description;
+    private LocalDate endDate; // null = current
 
     @Builder.Default
-    private Boolean includeInNetWorth = true;
+    private Boolean isCurrent = false;
+
+    private String industry;
+
+    private String notes;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;

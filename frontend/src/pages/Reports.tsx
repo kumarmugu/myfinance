@@ -117,7 +117,8 @@ export default function Reports() {
 
       {/* Net Worth Over Time */}
       <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
-        <h3 className="text-sm font-semibold text-slate-800 mb-3">Net Worth Over Time ({cSymbol})</h3>
+        <h3 className="text-sm font-semibold text-slate-800 mb-3">Net Worth Breakdown Over Time ({cSymbol})</h3>
+        <p className="text-[10px] text-slate-400 -mt-2 mb-3">Stacked by asset type. See Dashboard for the summary line chart.</p>
         {nwData.length > 0 ? (
           <ResponsiveContainer width="100%" height={320}>
             <AreaChart data={nwData}>

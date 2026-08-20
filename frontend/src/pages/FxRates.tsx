@@ -1,22 +1,27 @@
 import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, RefreshCw } from 'lucide-react';
-import { getCurrencyRates, createCurrencyRate, updateCurrencyRate, deleteCurrencyRate } from '../api';
+import { getCurrencyRates, getAvailableCurrencies, createCurrencyRate, updateCurrencyRate, deleteCurrencyRate } from '../api';
 import { formatDate } from '../utils/formatters';
-import type { CurrencyRate, Currency } from '../types';
+import type { CurrencyRate } from '../types';
 
-const CURRENCIES: Currency[] = ['SGD', 'USD', 'EUR', 'LKR'];
 
 export default function FxRates() {
   const [rates, setRates] = useState<CurrencyRate[]>([]);
+  const [currencies, setCurrencies] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<CurrencyRate | null>(null);
-  const [form, setForm] = useState({ fromCurrency: 'USD' as Currency, toCurrency: 'SGD' as Currency, rate: 0, effectiveDate: new Date().toISOString().split('T')[0] });
+  const [form, setForm] = useState({ fromCurrency: 'USD', toCurrency: 'SGD', rate: 0, effectiveDate: new Date().toISOString().split('T')[0] });
+  const [newCurrency, setNewCurrency] = useState('');
 
   useEffect(() => { loadData(); }, []);
 
   const loadData = async () => {
-    try { setRates((await getCurrencyRates()).data); }
+    try {
+      const [ratesRes, currRes] = await Promise.all([getCurrencyRates(), getAvailableCurrencies()]);
+      setRates(ratesRes.data);
+      setCurrencies(currRes.data);
+    }
     catch (err) { console.error(err); }
     finally { setLoading(false); }
   };
@@ -42,6 +47,14 @@ export default function FxRates() {
   };
 
   const handleDelete = async (id: number) => { if (confirm('Delete this rate?')) { await deleteCurrencyRate(id); loadData(); } };
+
+  const handleAddCurrency = () => {
+    const code = newCurrency.trim().toUpperCase();
+    if (code && code.length >= 3 && !currencies.includes(code)) {
+      setCurrencies([...currencies, code].sort());
+      setNewCurrency('');
+    }
+  };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
@@ -94,12 +107,12 @@ export default function FxRates() {
           <h3 className="text-base font-semibold text-slate-800 mb-4">{editing ? 'Edit Rate' : 'Add Exchange Rate'}</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">From Currency</label>
-              <select value={form.fromCurrency} onChange={e => setForm({...form, fromCurrency: e.target.value as Currency})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" disabled={!!editing}>
-                {CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}
+              <select value={form.fromCurrency} onChange={e => setForm({...form, fromCurrency: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" disabled={!!editing}>
+                {currencies.map(c => <option key={c} value={c}>{c}</option>)}
               </select></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">To Currency</label>
-              <select value={form.toCurrency} onChange={e => setForm({...form, toCurrency: e.target.value as Currency})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" disabled={!!editing}>
-                {CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}
+              <select value={form.toCurrency} onChange={e => setForm({...form, toCurrency: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" disabled={!!editing}>
+                {currencies.map(c => <option key={c} value={c}>{c}</option>)}
               </select></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Rate</label>
               <input type="number" step="any" value={form.rate || ''} onChange={e => setForm({...form, rate: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required placeholder="e.g. 1.35" /></div>
@@ -148,6 +161,19 @@ export default function FxRates() {
               {rates.length === 0 && <tr><td colSpan={5} className="px-4 py-12 text-center text-slate-400">No rates</td></tr>}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* Add New Currency */}
+      <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+        <h3 className="text-sm font-semibold text-slate-800 mb-3">Add New Currency</h3>
+        <p className="text-xs text-slate-500 mb-3">Add a currency code that's not in the list. Once you add a rate for it, it becomes available across the app.</p>
+        <div className="flex items-center gap-3">
+          <input type="text" value={newCurrency} onChange={e => setNewCurrency(e.target.value.toUpperCase())} placeholder="e.g. INR, BTC, KRW" maxLength={5} className="border border-slate-300 rounded-lg px-3 py-2 text-sm w-32 uppercase" onKeyDown={e => e.key === 'Enter' && handleAddCurrency()} />
+          <button onClick={handleAddCurrency} className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">Add</button>
+          <div className="flex flex-wrap gap-1.5 ml-3">
+            {currencies.map(c => <span key={c} className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">{c}</span>)}
+          </div>
         </div>
       </div>
 

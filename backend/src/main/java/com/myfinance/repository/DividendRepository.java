@@ -12,6 +12,7 @@ public interface DividendRepository extends JpaRepository<Dividend, Long> {
     List<Dividend> findByOwnerIdOrderByReceivedDateDesc(Long ownerId);
     List<Dividend> findByYear(Integer year);
     List<Dividend> findByAccountIdOrderByReceivedDateDesc(Long accountId);
+    List<Dividend> findByAssetId(Long assetId);
     List<Dividend> findAllByOrderByReceivedDateDesc();
 
     @Query("SELECT d.year, SUM(d.amount) FROM Dividend d GROUP BY d.year ORDER BY d.year")

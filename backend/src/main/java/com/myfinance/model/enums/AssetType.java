@@ -9,5 +9,12 @@ public enum AssetType {
     MONEY_MARKET,
     FIXED_DEPOSIT,
     SAVINGS,
-    CRYPTO
+    CRYPTO,
+    GOLD,
+    BOND,
+    REIT,
+    COMMODITY,
+    INSURANCE,
+    PENSION,
+    OTHER
 }

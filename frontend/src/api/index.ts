@@ -46,11 +46,13 @@ export const deleteAccount = (id: number) => api.delete(`/accounts/${id}`);
 
 // ─── Assets ───
 export const getAssets = () => api.get<Asset[]>('/assets');
+export const getAssetTypes = () => api.get<string[]>('/assets/types');
 export const getAssetsByType = (type: string) => api.get<Asset[]>(`/assets/type/${type}`);
 export const searchAssets = (query: string) => api.get<Asset[]>(`/assets/search?query=${query}`);
 export const createAsset = (asset: Partial<Asset>) => api.post<Asset>('/assets', asset);
 export const updateAsset = (id: number, asset: Partial<Asset>) => api.put<Asset>(`/assets/${id}`, asset);
 export const updateAssetPrice = (id: number, price: number) => api.patch<Asset>(`/assets/${id}/price?price=${price}`);
+export const toggleAssetNetWorth = (id: number, include: boolean) => api.patch<Asset>(`/assets/${id}/net-worth?include=${include}`);
 export const deleteAsset = (id: number) => api.delete(`/assets/${id}`);
 
 // ─── Dashboard ───
@@ -109,6 +111,7 @@ export const deleteAccountDeposit = (id: number) => api.delete(`/planning/deposi
 
 // ─── Currency Rates ───
 export const getCurrencyRates = () => api.get<CurrencyRate[]>('/currency-rates');
+export const getAvailableCurrencies = () => api.get<string[]>('/currency-rates/currencies');
 export const createCurrencyRate = (rate: Partial<CurrencyRate>) => api.post<CurrencyRate>('/currency-rates', rate);
 export const updateCurrencyRate = (id: number, rate: Partial<CurrencyRate>) => api.put<CurrencyRate>(`/currency-rates/${id}`, rate);
 export const deleteCurrencyRate = (id: number) => api.delete(`/currency-rates/${id}`);
@@ -118,5 +121,47 @@ export const getInsurancePolicies = (ownerId?: number) => api.get<any[]>('/insur
 export const createInsurancePolicy = (policy: any) => api.post<any>('/insurance', policy);
 export const updateInsurancePolicy = (id: number, policy: any) => api.put<any>(`/insurance/${id}`, policy);
 export const deleteInsurancePolicy = (id: number) => api.delete(`/insurance/${id}`);
+export const getInsuranceBonusEntries = (policyId: number) => api.get<any[]>(`/insurance/${policyId}/bonus`);
+export const createInsuranceBonusEntry = (policyId: number, entry: any) => api.post<any>(`/insurance/${policyId}/bonus`, entry);
+export const updateInsuranceBonusEntry = (entryId: number, entry: any) => api.put<any>(`/insurance/bonus/${entryId}`, entry);
+export const deleteInsuranceBonusEntry = (entryId: number) => api.delete(`/insurance/bonus/${entryId}`);
+export const batchCreateBonusEntries = (policyId: number, entries: any[]) => api.post<any[]>(`/insurance/${policyId}/bonus/batch`, entries);
+
+// ─── Tax ───
+export const getTaxRecords = (ownerId?: number, country?: string) => api.get<any[]>('/tax', { params: { ownerId, country } });
+export const getTaxSummary = () => api.get<any>('/tax/summary');
+export const createTaxRecord = (record: any) => api.post<any>('/tax', record);
+export const updateTaxRecord = (id: number, record: any) => api.put<any>(`/tax/${id}`, record);
+export const deleteTaxRecord = (id: number) => api.delete(`/tax/${id}`);
+
+// ─── Work Experience ───
+export const getWorkExperiences = (ownerId?: number) => api.get<any[]>('/work-experience', { params: { ownerId } });
+export const createWorkExperience = (exp: any) => api.post<any>('/work-experience', exp);
+export const updateWorkExperience = (id: number, exp: any) => api.put<any>(`/work-experience/${id}`, exp);
+export const deleteWorkExperience = (id: number) => api.delete(`/work-experience/${id}`);
+
+// ─── Salary ───
+export const getSalaryRecords = (year?: number, country?: string) => api.get<any[]>('/salary', { params: { year, country } });
+export const getSalarySummary = () => api.get<any>('/salary/summary');
+export const getSalaryYears = () => api.get<number[]>('/salary/years');
+export const createSalaryRecord = (record: any) => api.post<any>('/salary', record);
+export const updateSalaryRecord = (id: number, record: any) => api.put<any>(`/salary/${id}`, record);
+export const deleteSalaryRecord = (id: number) => api.delete(`/salary/${id}`);
+
+// ─── Retirement Fund (CPF/EPF/SRS) ───
+export const getRetirementFundEntries = (fundType?: string, ownerId?: number) => api.get<any[]>('/retirement-fund', { params: { fundType, ownerId } });
+export const getRetirementFundSummary = () => api.get<any>('/retirement-fund/summary');
+export const createRetirementFundEntry = (entry: any) => api.post<any>('/retirement-fund', entry);
+export const updateRetirementFundEntry = (id: number, entry: any) => api.put<any>(`/retirement-fund/${id}`, entry);
+export const deleteRetirementFundEntry = (id: number) => api.delete(`/retirement-fund/${id}`);
+
+// ─── Home Loans ───
+export const getHomeLoans = (ownerId?: number) => api.get<any[]>('/home-loans', { params: { ownerId } });
+export const createHomeLoan = (loan: any) => api.post<any>('/home-loans', loan);
+export const updateHomeLoan = (id: number, loan: any) => api.put<any>(`/home-loans/${id}`, loan);
+export const deleteHomeLoan = (id: number) => api.delete(`/home-loans/${id}`);
+export const getLoanPayments = (loanId: number) => api.get<any[]>(`/home-loans/${loanId}/payments`);
+export const createLoanPayment = (loanId: number, payment: any) => api.post<any>(`/home-loans/${loanId}/payments`, payment);
+export const deleteLoanPayment = (paymentId: number) => api.delete(`/home-loans/payments/${paymentId}`);
 
 export default api;

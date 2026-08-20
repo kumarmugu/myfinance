@@ -4,5 +4,16 @@ public enum Currency {
     SGD,
     USD,
     EUR,
-    LKR
+    LKR,
+    INR,
+    GBP,
+    AUD,
+    JPY,
+    CNY,
+    MYR,
+    THB,
+    HKD,
+    NZD,
+    CHF,
+    CAD
 }
