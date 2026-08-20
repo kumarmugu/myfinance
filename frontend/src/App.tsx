@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -15,6 +15,8 @@ import Crypto from './pages/Crypto';
 import Deposits from './pages/Deposits';
 import FxRates from './pages/FxRates';
 import SrsCpf from './pages/SrsCpf';
+import Insurance from './pages/Insurance';
+import UserGuide from './pages/UserGuide';
 import Docs from './pages/Docs';
 
 function App() {
@@ -55,6 +57,7 @@ function AppContent() {
       label: 'Fixed Deposits',
       items: [
         { to: '/fixed-deposits', icon: Landmark, label: 'All Deposits' },
+        { to: '/insurance', icon: Shield, label: 'Insurance' },
       ],
     },
     {
@@ -76,6 +79,7 @@ function AppContent() {
         { to: '/accounts', icon: Building2, label: 'Accounts' },
         { to: '/assets', icon: Coins, label: 'Assets' },
         { to: '/fx-rates', icon: RefreshCw, label: 'FX Rates' },
+        { to: '/guide', icon: HelpCircle, label: 'User Guide' },
         { to: '/docs', icon: FileText, label: 'Documentation' },
       ],
     },
@@ -140,12 +144,14 @@ function AppContent() {
               <Route path="/crypto" element={<Crypto />} />
               <Route path="/deposits" element={<Deposits />} />
               <Route path="/fixed-deposits" element={<FixedDeposits />} />
+              <Route path="/insurance" element={<Insurance />} />
               <Route path="/planning" element={<Planning />} />
               <Route path="/srs-cpf" element={<SrsCpf />} />
               <Route path="/reports" element={<Reports />} />
               <Route path="/accounts" element={<Accounts />} />
               <Route path="/assets" element={<Assets />} />
               <Route path="/fx-rates" element={<FxRates />} />
+              <Route path="/guide" element={<UserGuide />} />
               <Route path="/docs" element={<Docs />} />
             </Routes>
           </div>

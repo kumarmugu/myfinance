@@ -112,4 +112,10 @@ export const createCurrencyRate = (rate: Partial<CurrencyRate>) => api.post<Curr
 export const updateCurrencyRate = (id: number, rate: Partial<CurrencyRate>) => api.put<CurrencyRate>(`/currency-rates/${id}`, rate);
 export const deleteCurrencyRate = (id: number) => api.delete(`/currency-rates/${id}`);
 
+// ─── Insurance ───
+export const getInsurancePolicies = (ownerId?: number) => api.get<any[]>('/insurance', { params: { ownerId } });
+export const createInsurancePolicy = (policy: any) => api.post<any>('/insurance', policy);
+export const updateInsurancePolicy = (id: number, policy: any) => api.put<any>(`/insurance/${id}`, policy);
+export const deleteInsurancePolicy = (id: number) => api.delete(`/insurance/${id}`);
+
 export default api;

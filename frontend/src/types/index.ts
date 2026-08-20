@@ -249,3 +249,24 @@ export const ASSET_TYPE_COLORS: Record<AssetType, string> = {
   SAVINGS: '#eab308',
   CRYPTO: '#f59e0b',
 };
+
+// ─── Insurance ───
+export interface InsurancePolicy {
+  id: number;
+  policyName: string;
+  provider: string;
+  policyNumber: string;
+  policyType: string;
+  annualPremium: number;
+  currency: Currency;
+  coverageAmount: number;
+  cashValue: number;
+  startDate: string;
+  maturityDate: string;
+  isActive: boolean;
+  includeInNetWorth: boolean;
+  beneficiary: string;
+  notes: string;
+  owner: Owner | null;
+  createdAt: string;
+}
