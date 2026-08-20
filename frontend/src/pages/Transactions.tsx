@@ -1,26 +1,33 @@
-import { useEffect, useState } from 'react';
-import { Plus, Trash2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
+import { Plus, Trash2, ArrowUpCircle, ArrowDownCircle, Search, X, ChevronDown, Lock, Users } from 'lucide-react';
 import { getTransactions, createTransaction, deleteTransaction, getAssets, getAccounts, getOwners } from '../api';
+import { useAuth } from '../contexts/AuthContext';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import type { Transaction, Asset, Account, Owner, TransactionRequest } from '../types';
 
 export default function Transactions() {
+  const { verifyPassword } = useAuth();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [assets, setAssets] = useState<Asset[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [owners, setOwners] = useState<Owner[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [filterOwner, setFilterOwner] = useState<number | undefined>();
+  const [deleteModal, setDeleteModal] = useState<{ id: number; symbol: string } | null>(null);
+  const [deletePassword, setDeletePassword] = useState('');
+  const [deleteError, setDeleteError] = useState('');
+
   const [form, setForm] = useState<TransactionRequest>({
     assetId: 0, accountId: 0, ownerId: 0, transactionType: 'BUY',
     quantity: 0, pricePerUnit: 0, fees: 0, transactionDate: new Date().toISOString().split('T')[0], notes: '',
   });
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => { loadData(); }, [filterOwner]);
 
   const loadData = async () => {
     try {
-      const [txRes, assetRes, accRes, ownerRes] = await Promise.all([getTransactions(), getAssets(), getAccounts(), getOwners()]);
+      const [txRes, assetRes, accRes, ownerRes] = await Promise.all([getTransactions(filterOwner), getAssets(), getAccounts(), getOwners()]);
       setTransactions(txRes.data); setAssets(assetRes.data); setAccounts(accRes.data); setOwners(ownerRes.data);
       if (ownerRes.data.length > 0 && form.ownerId === 0) setForm(f => ({ ...f, ownerId: ownerRes.data[0].id }));
     } catch (err) { console.error(err); }
@@ -33,52 +40,70 @@ export default function Transactions() {
     catch (err) { console.error(err); alert('Failed to create transaction'); }
   };
 
-  const handleDelete = async (id: number) => { if (confirm('Delete?')) { await deleteTransaction(id); loadData(); } };
+  const confirmDelete = async () => {
+    if (!deleteModal) return;
+    setDeleteError('');
+    const valid = await verifyPassword(deletePassword);
+    if (!valid) { setDeleteError('Incorrect password'); return; }
+    await deleteTransaction(deleteModal.id);
+    setDeleteModal(null); setDeletePassword('');
+    loadData();
+  };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div><h1 className="text-2xl font-bold text-slate-800">Transactions</h1><p className="text-slate-500 text-sm mt-1">Record buy and sell transactions</p></div>
-        <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> New Transaction</button>
+    <div className="space-y-5">
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div><h1 className="text-2xl font-bold text-slate-800">Transactions</h1><p className="text-slate-500 text-sm mt-0.5">Record buy and sell transactions</p></div>
+        <div className="flex items-center gap-3">
+          {/* Owner Filter */}
+          <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-1.5">
+            <Users size={14} className="text-slate-400" />
+            <select value={filterOwner || ''} onChange={e => setFilterOwner(e.target.value ? Number(e.target.value) : undefined)} className="text-sm border-none bg-transparent focus:outline-none text-slate-700">
+              <option value="">All Owners</option>
+              {owners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+            </select>
+          </div>
+          <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
+            <Plus size={16} /> New Transaction
+          </button>
+        </div>
       </div>
 
+      {/* Transaction Form */}
       {showForm && (
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+          <h3 className="text-base font-semibold text-slate-800 mb-4">Add Transaction</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div><label className="block text-sm font-medium text-slate-700 mb-1">Owner</label>
-              <select value={form.ownerId} onChange={e => setForm({...form, ownerId: Number(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required>
-                {owners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-              </select></div>
-            <div><label className="block text-sm font-medium text-slate-700 mb-1">Asset</label>
-              <select value={form.assetId} onChange={e => setForm({...form, assetId: Number(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required>
-                <option value={0}>Select...</option>{assets.map(a => <option key={a.id} value={a.id}>{a.symbol} - {a.name}</option>)}
-              </select></div>
-            <div><label className="block text-sm font-medium text-slate-700 mb-1">Account</label>
-              <select value={form.accountId} onChange={e => setForm({...form, accountId: Number(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required>
-                <option value={0}>Select...</option>{accounts.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
-              </select></div>
-            <div><label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
-              <select value={form.transactionType} onChange={e => setForm({...form, transactionType: e.target.value as 'BUY'|'SELL'})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-                <option value="BUY">Buy</option><option value="SELL">Sell</option>
-              </select></div>
-            <div><label className="block text-sm font-medium text-slate-700 mb-1">Quantity</label>
-              <input type="number" step="any" value={form.quantity || ''} onChange={e => setForm({...form, quantity: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
-            <div><label className="block text-sm font-medium text-slate-700 mb-1">Price per Unit</label>
-              <input type="number" step="any" value={form.pricePerUnit || ''} onChange={e => setForm({...form, pricePerUnit: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
-            <div><label className="block text-sm font-medium text-slate-700 mb-1">Date</label>
-              <input type="date" value={form.transactionDate} onChange={e => setForm({...form, transactionDate: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
-            <div><label className="block text-sm font-medium text-slate-700 mb-1">Notes</label>
-              <input type="text" value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
-            <div className="flex items-end gap-2">
-              <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">Save</button>
-              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner</label>
+              <SearchableSelect options={owners.map(o => ({ value: o.id, label: o.name }))} value={form.ownerId} onChange={v => setForm({...form, ownerId: v})} placeholder="Select owner..." /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Asset</label>
+              <SearchableSelect options={assets.map(a => ({ value: a.id, label: `${a.symbol} - ${a.name}` }))} value={form.assetId} onChange={v => setForm({...form, assetId: v})} placeholder="Search asset..." /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Account</label>
+              <SearchableSelect options={accounts.map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))} value={form.accountId} onChange={v => setForm({...form, accountId: v})} placeholder="Select account..." /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Type</label>
+              <div className="flex rounded-lg overflow-hidden border border-slate-300">
+                <button type="button" onClick={() => setForm({...form, transactionType: 'BUY'})} className={`flex-1 py-2 text-sm font-medium transition-colors ${form.transactionType === 'BUY' ? 'bg-green-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`}>Buy</button>
+                <button type="button" onClick={() => setForm({...form, transactionType: 'SELL'})} className={`flex-1 py-2 text-sm font-medium transition-colors ${form.transactionType === 'SELL' ? 'bg-red-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`}>Sell</button>
+              </div></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Quantity</label>
+              <input type="number" step="any" value={form.quantity || ''} onChange={e => setForm({...form, quantity: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" required /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Price per Unit</label>
+              <input type="number" step="any" value={form.pricePerUnit || ''} onChange={e => setForm({...form, pricePerUnit: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" required /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Date</label>
+              <input type="date" value={form.transactionDate} onChange={e => setForm({...form, transactionDate: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" required /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Notes</label>
+              <input type="text" value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Optional" /></div>
+            <div className="flex items-end gap-2 lg:col-span-4">
+              <button type="submit" className="px-5 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">Save Transaction</button>
+              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">Cancel</button>
             </div>
           </form>
         </div>
       )}
 
+      {/* Transaction Table */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -92,25 +117,29 @@ export default function Transactions() {
                 <th className="text-right px-4 py-3 font-medium text-slate-600">Qty</th>
                 <th className="text-right px-4 py-3 font-medium text-slate-600">Price</th>
                 <th className="text-right px-4 py-3 font-medium text-slate-600">Total</th>
-                <th className="px-4 py-3"></th>
+                <th className="px-4 py-3 w-10"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {transactions.map(tx => (
-                <tr key={tx.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3 text-slate-700">{formatDate(tx.transactionDate)}</td>
-                  <td className="px-4 py-3">
-                    <span className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full ${tx.transactionType === 'BUY' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                      {tx.transactionType === 'BUY' ? <ArrowDownCircle size={12} /> : <ArrowUpCircle size={12} />}{tx.transactionType}
+                <tr key={tx.id} className="hover:bg-slate-50 group">
+                  <td className="px-4 py-2.5 text-slate-700 text-xs">{formatDate(tx.transactionDate)}</td>
+                  <td className="px-4 py-2.5">
+                    <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${tx.transactionType === 'BUY' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                      {tx.transactionType === 'BUY' ? <ArrowDownCircle size={11} /> : <ArrowUpCircle size={11} />}{tx.transactionType}
                     </span>
                   </td>
-                  <td className="px-4 py-3 font-medium text-slate-800">{tx.asset.symbol}</td>
-                  <td className="px-4 py-3 text-slate-600">{tx.account.name}</td>
-                  <td className="px-4 py-3 text-slate-500">{tx.owner.name}</td>
-                  <td className="px-4 py-3 text-right text-slate-700">{tx.quantity}</td>
-                  <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(tx.pricePerUnit, tx.currency)}</td>
-                  <td className="px-4 py-3 text-right font-medium text-slate-800">{formatCurrency(tx.totalAmount, tx.currency)}</td>
-                  <td className="px-4 py-3"><button onClick={() => handleDelete(tx.id)} className="text-slate-400 hover:text-red-500"><Trash2 size={15} /></button></td>
+                  <td className="px-4 py-2.5"><span className="font-medium text-slate-800">{tx.asset.symbol}</span></td>
+                  <td className="px-4 py-2.5 text-slate-600">{tx.account.name}</td>
+                  <td className="px-4 py-2.5 text-slate-500 text-xs">{tx.owner.name}</td>
+                  <td className="px-4 py-2.5 text-right text-slate-700">{tx.quantity}</td>
+                  <td className="px-4 py-2.5 text-right text-slate-700">{formatCurrency(tx.pricePerUnit, tx.currency)}</td>
+                  <td className="px-4 py-2.5 text-right font-medium text-slate-800">{formatCurrency(tx.totalAmount, tx.currency)}</td>
+                  <td className="px-4 py-2.5">
+                    <button onClick={() => setDeleteModal({ id: tx.id, symbol: tx.asset.symbol })} className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500 transition-opacity" title="Delete (requires password)">
+                      <Trash2 size={14} />
+                    </button>
+                  </td>
                 </tr>
               ))}
               {transactions.length === 0 && <tr><td colSpan={9} className="px-4 py-12 text-center text-slate-400">No transactions yet</td></tr>}
@@ -118,6 +147,80 @@ export default function Transactions() {
           </table>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 w-full max-w-sm shadow-2xl">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-red-100 rounded-lg"><Lock size={20} className="text-red-600" /></div>
+              <div>
+                <h3 className="font-semibold text-slate-800">Confirm Delete</h3>
+                <p className="text-sm text-slate-500">Transaction: {deleteModal.symbol}</p>
+              </div>
+            </div>
+            <p className="text-sm text-slate-600 mb-4">Enter your password to confirm deletion. This action cannot be undone.</p>
+            {deleteError && <p className="text-sm text-red-600 mb-3 bg-red-50 p-2 rounded">{deleteError}</p>}
+            <input type="password" value={deletePassword} onChange={e => setDeletePassword(e.target.value)} placeholder="Enter your password" className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm mb-4 focus:ring-2 focus:ring-red-500 focus:border-red-500" autoFocus onKeyDown={e => e.key === 'Enter' && confirmDelete()} />
+            <div className="flex gap-2">
+              <button onClick={confirmDelete} disabled={!deletePassword} className="flex-1 py-2.5 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 disabled:opacity-40 transition-colors">Delete</button>
+              <button onClick={() => { setDeleteModal(null); setDeletePassword(''); setDeleteError(''); }} className="flex-1 py-2.5 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Searchable Dropdown Component ───
+function SearchableSelect({ options, value, onChange, placeholder }: {
+  options: { value: number; label: string }[];
+  value: number;
+  onChange: (v: number) => void;
+  placeholder: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const filtered = options.filter(o => o.label.toLowerCase().includes(search.toLowerCase()));
+  const selected = options.find(o => o.value === value);
+
+  return (
+    <div ref={ref} className="relative">
+      <button type="button" onClick={() => setOpen(!open)} className="w-full flex items-center justify-between border border-slate-300 rounded-lg px-3 py-2 text-sm text-left hover:border-slate-400 focus:ring-2 focus:ring-indigo-500 bg-white">
+        <span className={selected ? 'text-slate-800' : 'text-slate-400'}>{selected ? selected.label : placeholder}</span>
+        <ChevronDown size={14} className={`text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+        <div className="absolute z-50 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg max-h-60 overflow-hidden">
+          {/* Search */}
+          <div className="p-2 border-b border-slate-100">
+            <div className="relative">
+              <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..." className="w-full pl-8 pr-3 py-1.5 text-sm border border-slate-200 rounded-md focus:ring-1 focus:ring-indigo-500" autoFocus />
+              {search && <button onClick={() => setSearch('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400"><X size={12} /></button>}
+            </div>
+          </div>
+          {/* Options */}
+          <div className="max-h-48 overflow-y-auto">
+            {filtered.map(o => (
+              <button key={o.value} type="button" onClick={() => { onChange(o.value); setOpen(false); setSearch(''); }} className={`w-full text-left px-3 py-2 text-sm hover:bg-indigo-50 transition-colors ${o.value === value ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-slate-700'}`}>
+                {o.label}
+              </button>
+            ))}
+            {filtered.length === 0 && <p className="px-3 py-2 text-sm text-slate-400">No results</p>}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
