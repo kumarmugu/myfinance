@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -14,6 +14,7 @@ import Dividends from './pages/Dividends';
 import Crypto from './pages/Crypto';
 import Deposits from './pages/Deposits';
 import FxRates from './pages/FxRates';
+import SrsCpf from './pages/SrsCpf';
 import Docs from './pages/Docs';
 
 function App() {
@@ -60,6 +61,7 @@ function AppContent() {
       label: 'Planning',
       items: [
         { to: '/planning', icon: Target, label: 'Allocation & Net Worth' },
+        { to: '/srs-cpf', icon: Calculator, label: 'SRS & CPF' },
       ],
     },
     {
@@ -139,6 +141,7 @@ function AppContent() {
               <Route path="/deposits" element={<Deposits />} />
               <Route path="/fixed-deposits" element={<FixedDeposits />} />
               <Route path="/planning" element={<Planning />} />
+              <Route path="/srs-cpf" element={<SrsCpf />} />
               <Route path="/reports" element={<Reports />} />
               <Route path="/accounts" element={<Accounts />} />
               <Route path="/assets" element={<Assets />} />
