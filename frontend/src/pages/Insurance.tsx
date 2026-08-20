@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, AlertCircle, Calendar, ChevronDown, ChevronUp } from 'lucide-react';
 import { getInsurancePolicies, createInsurancePolicy, updateInsurancePolicy, deleteInsurancePolicy, getInsuranceBonusEntries, createInsuranceBonusEntry, deleteInsuranceBonusEntry } from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
@@ -145,7 +145,8 @@ export default function Insurance() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {policies.map(p => (
-                <tr key={p.id} className="hover:bg-slate-50 group">
+                <React.Fragment key={p.id}>
+                <tr className="hover:bg-slate-50 group">
                   <td className="px-4 py-2.5"><span className="font-medium text-slate-800">{p.policyName}</span>{p.includeInNetWorth && <span className="ml-1 text-[9px] bg-indigo-100 text-indigo-700 px-1 py-0.5 rounded">NW</span>}</td>
                   <td className="px-4 py-2.5 text-slate-600">{p.provider || '-'}</td>
                   <td className="px-4 py-2.5"><span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{p.policyType?.replace(/_/g, ' ')}</span></td>
@@ -219,6 +220,7 @@ export default function Insurance() {
                     )}
                   </td>
                 </tr>
+                </React.Fragment>
               ))}
               {policies.length === 0 && <tr><td colSpan={8} className="px-4 py-12 text-center text-slate-400">No insurance policies tracked</td></tr>}
             </tbody>
