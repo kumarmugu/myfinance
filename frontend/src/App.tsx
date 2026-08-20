@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -13,6 +13,7 @@ import Planning from './pages/Planning';
 import Dividends from './pages/Dividends';
 import Crypto from './pages/Crypto';
 import Deposits from './pages/Deposits';
+import FxRates from './pages/FxRates';
 import Docs from './pages/Docs';
 
 function App() {
@@ -72,6 +73,7 @@ function AppContent() {
       items: [
         { to: '/accounts', icon: Building2, label: 'Accounts' },
         { to: '/assets', icon: Coins, label: 'Assets' },
+        { to: '/fx-rates', icon: RefreshCw, label: 'FX Rates' },
         { to: '/docs', icon: FileText, label: 'Documentation' },
       ],
     },
@@ -140,6 +142,7 @@ function AppContent() {
               <Route path="/reports" element={<Reports />} />
               <Route path="/accounts" element={<Accounts />} />
               <Route path="/assets" element={<Assets />} />
+              <Route path="/fx-rates" element={<FxRates />} />
               <Route path="/docs" element={<Docs />} />
             </Routes>
           </div>

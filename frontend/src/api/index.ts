@@ -2,7 +2,7 @@ import axios from 'axios';
 import type {
   Owner, Account, Asset, Transaction, Holding, SoldPosition,
   Dividend, Bank, FDHolder, FixedDeposit, FDSummary, AllocationTarget,
-  AccountDeposit, NetWorthSnapshot, DashboardSummary, TransactionRequest,
+  AccountDeposit, NetWorthSnapshot, DashboardSummary, TransactionRequest, CurrencyRate,
 } from '../types';
 
 const api = axios.create({
@@ -105,5 +105,11 @@ export const updateAllocationTargets = (targets: AllocationTarget[]) => api.put<
 export const getAccountDeposits = (accountId?: number) => api.get<AccountDeposit[]>('/planning/deposits', { params: { accountId } });
 export const createAccountDeposit = (deposit: Partial<AccountDeposit>) => api.post<AccountDeposit>('/planning/deposits', deposit);
 export const deleteAccountDeposit = (id: number) => api.delete(`/planning/deposits/${id}`);
+
+// ─── Currency Rates ───
+export const getCurrencyRates = () => api.get<CurrencyRate[]>('/currency-rates');
+export const createCurrencyRate = (rate: Partial<CurrencyRate>) => api.post<CurrencyRate>('/currency-rates', rate);
+export const updateCurrencyRate = (id: number, rate: Partial<CurrencyRate>) => api.put<CurrencyRate>(`/currency-rates/${id}`, rate);
+export const deleteCurrencyRate = (id: number) => api.delete(`/currency-rates/${id}`);
 
 export default api;
