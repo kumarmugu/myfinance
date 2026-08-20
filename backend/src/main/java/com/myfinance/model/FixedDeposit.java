@@ -64,6 +64,11 @@ public class FixedDeposit {
     @Builder.Default
     private Boolean requiresUpdate = false;
 
+    @Builder.Default
+    private Boolean includeInNetWorth = false;
+
+    private BigDecimal netWorthAmount; // manual SGD amount to include in net worth
+
     @Column(updatable = false)
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

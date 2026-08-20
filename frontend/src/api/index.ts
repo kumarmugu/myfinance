@@ -92,6 +92,7 @@ export const getFDRequiringUpdate = () => api.get<FixedDeposit[]>('/fixed-deposi
 export const getFDSummary = () => api.get<FDSummary>('/fixed-deposits/summary');
 export const createFixedDeposit = (fd: Partial<FixedDeposit>) => api.post<FixedDeposit>('/fixed-deposits', fd);
 export const updateFixedDeposit = (id: number, fd: Partial<FixedDeposit>) => api.put<FixedDeposit>(`/fixed-deposits/${id}`, fd);
+export const toggleFDNetWorth = (id: number, includeInNetWorth: boolean, netWorthAmount?: number) => api.patch<FixedDeposit>(`/fixed-deposits/${id}/net-worth`, { includeInNetWorth, netWorthAmount });
 export const deleteFixedDeposit = (id: number) => api.delete(`/fixed-deposits/${id}`);
 export const getBanks = () => api.get<Bank[]>('/fixed-deposits/banks');
 export const getFDHolders = () => api.get<FDHolder[]>('/fixed-deposits/holders');

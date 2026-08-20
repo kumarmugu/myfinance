@@ -70,7 +70,29 @@ public class FixedDepositController {
         result.put("maturingWithin30Days", fdService.getMaturingWithinDays(30).size());
         result.put("maturingWithin90Days", fdService.getMaturingWithinDays(90).size());
         result.put("requiresUpdate", fdService.getRequiringUpdate().size());
+
+        // Net worth inclusion
+        BigDecimal includedInNetWorth = active.stream()
+                .filter(fd -> Boolean.TRUE.equals(fd.getIncludeInNetWorth()) && fd.getNetWorthAmount() != null)
+                .map(FixedDeposit::getNetWorthAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        result.put("includedInNetWorth", includedInNetWorth);
+        long includedCount = active.stream().filter(fd -> Boolean.TRUE.equals(fd.getIncludeInNetWorth())).count();
+        result.put("includedInNetWorthCount", includedCount);
+
         return result;
+    }
+
+    @PatchMapping("/{id}/net-worth")
+    public FixedDeposit toggleNetWorthInclusion(@PathVariable Long id, @RequestBody Map<String, Object> body) {
+        FixedDeposit fd = fdService.getById(id);
+        if (body.containsKey("includeInNetWorth")) {
+            fd.setIncludeInNetWorth((Boolean) body.get("includeInNetWorth"));
+        }
+        if (body.containsKey("netWorthAmount")) {
+            fd.setNetWorthAmount(body.get("netWorthAmount") != null ? new BigDecimal(body.get("netWorthAmount").toString()) : null);
+        }
+        return fdService.create(fd); // save changes
     }
 
     @PostMapping

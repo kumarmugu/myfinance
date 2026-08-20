@@ -146,6 +146,8 @@ export interface FixedDeposit {
   purpose: string;
   notes: string;
   requiresUpdate: boolean;
+  includeInNetWorth: boolean;
+  netWorthAmount: number | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -158,6 +160,8 @@ export interface FDSummary {
   maturingWithin30Days: number;
   maturingWithin90Days: number;
   requiresUpdate: number;
+  includedInNetWorth: number;
+  includedInNetWorthCount: number;
 }
 
 // ─── Planning Models ───

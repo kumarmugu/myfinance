@@ -54,6 +54,8 @@ public class FixedDepositService {
         existing.setPurpose(updated.getPurpose());
         existing.setNotes(updated.getNotes());
         existing.setRequiresUpdate(updated.getRequiresUpdate());
+        existing.setIncludeInNetWorth(updated.getIncludeInNetWorth());
+        existing.setNetWorthAmount(updated.getNetWorthAmount());
         existing.setExpectedInterest(calculateInterest(existing));
         return fdRepository.save(existing);
     }
