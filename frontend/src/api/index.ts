@@ -20,7 +20,8 @@ if (storedToken) {
 api.interceptors.response.use(
   response => response,
   error => {
-    if (error.response?.status === 401 || error.response?.status === 403) {
+    if (error.response?.status === 401) {
+      // Only clear token and redirect for actual auth failures, not 403 (forbidden)
       localStorage.removeItem('token');
       delete api.defaults.headers.common['Authorization'];
       window.location.href = '/';
