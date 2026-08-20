@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -12,6 +12,7 @@ import FixedDeposits from './pages/FixedDeposits';
 import Planning from './pages/Planning';
 import Dividends from './pages/Dividends';
 import Crypto from './pages/Crypto';
+import Deposits from './pages/Deposits';
 import Docs from './pages/Docs';
 
 function App() {
@@ -45,6 +46,7 @@ function AppContent() {
         { to: '/transactions', icon: ArrowLeftRight, label: 'Transactions' },
         { to: '/dividends', icon: DollarSign, label: 'Dividends' },
         { to: '/crypto', icon: Bitcoin, label: 'Crypto' },
+        { to: '/deposits', icon: Banknote, label: 'Deposits' },
       ],
     },
     {
@@ -132,6 +134,7 @@ function AppContent() {
               <Route path="/transactions" element={<Transactions />} />
               <Route path="/dividends" element={<Dividends />} />
               <Route path="/crypto" element={<Crypto />} />
+              <Route path="/deposits" element={<Deposits />} />
               <Route path="/fixed-deposits" element={<FixedDeposits />} />
               <Route path="/planning" element={<Planning />} />
               <Route path="/reports" element={<Reports />} />
