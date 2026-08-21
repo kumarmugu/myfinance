@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home, Settings } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -20,6 +20,7 @@ import Tax from './pages/Tax';
 import WorkExperience from './pages/WorkExperience';
 import Salary from './pages/Salary';
 import HomeLoans from './pages/HomeLoans';
+import NetWorthConfig from './pages/NetWorthConfig';
 import UserGuide from './pages/UserGuide';
 import Docs from './pages/Docs';
 
@@ -87,6 +88,7 @@ function AppContent() {
         { to: '/accounts', icon: Building2, label: 'Accounts' },
         { to: '/assets', icon: Coins, label: 'Assets' },
         { to: '/fx-rates', icon: RefreshCw, label: 'FX Rates' },
+        { to: '/net-worth-config', icon: Settings, label: 'Net Worth Config' },
         { to: '/guide', icon: HelpCircle, label: 'User Guide' },
         { to: '/docs', icon: FileText, label: 'Documentation' },
       ],
@@ -163,6 +165,7 @@ function AppContent() {
               <Route path="/accounts" element={<Accounts />} />
               <Route path="/assets" element={<Assets />} />
               <Route path="/fx-rates" element={<FxRates />} />
+              <Route path="/net-worth-config" element={<NetWorthConfig />} />
               <Route path="/guide" element={<UserGuide />} />
               <Route path="/docs" element={<Docs />} />
             </Routes>

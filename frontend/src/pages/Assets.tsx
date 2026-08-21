@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Plus, Trash2, Check } from 'lucide-react';
-import { getAssets, createAsset, deleteAsset, toggleAssetNetWorth } from '../api';
+import { Plus, Trash2 } from 'lucide-react';
+import { getAssets, createAsset, deleteAsset } from '../api';
 import type { Asset, AssetType, Currency } from '../types';
 import { ASSET_TYPE_LABELS } from '../types';
 
@@ -27,11 +27,6 @@ export default function Assets() {
         alert(refs ? `${msg}\n\nReferenced by:\n• ${refs.join('\n• ')}` : msg);
       }
     }
-  };
-
-  const handleToggleNetWorth = async (asset: Asset) => {
-    try { await toggleAssetNetWorth(asset.id, !asset.includeInNetWorth); loadData(); }
-    catch (err) { console.error(err); }
   };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
@@ -78,7 +73,6 @@ export default function Assets() {
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Type</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Exchange</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Currency</th>
-                <th className="text-center px-4 py-3 font-medium text-slate-600" title="Part of Net Worth">Part of Net Worth</th>
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
@@ -90,11 +84,6 @@ export default function Assets() {
                   <td className="px-4 py-3"><span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{ASSET_TYPE_LABELS[a.assetType] || a.assetType}</span></td>
                   <td className="px-4 py-3 text-slate-600">{a.exchange || '-'}</td>
                   <td className="px-4 py-3 text-slate-600">{a.currency}</td>
-                  <td className="px-4 py-3 text-center">
-                    <button onClick={() => handleToggleNetWorth(a)} className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${a.includeInNetWorth !== false ? 'bg-indigo-600 border-indigo-600' : 'border-slate-300 hover:border-indigo-400'}`} title={a.includeInNetWorth !== false ? 'Included in net worth' : 'Excluded from net worth'}>
-                      {a.includeInNetWorth !== false && <Check size={12} className="text-white" />}
-                    </button>
-                  </td>
                   <td className="px-4 py-3"><button onClick={() => handleDelete(a.id)} className="text-slate-400 hover:text-red-500"><Trash2 size={16} /></button></td>
                 </tr>
               ))}

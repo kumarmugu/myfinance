@@ -1,33 +1,44 @@
 package com.myfinance.service;
 
 import com.myfinance.model.Holding;
+import com.myfinance.model.NetWorthConfig;
 import com.myfinance.model.NetWorthSnapshot;
 import com.myfinance.model.enums.AssetType;
+import com.myfinance.repository.NetWorthConfigRepository;
 import com.myfinance.repository.NetWorthSnapshotRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class NetWorthService {
     private final NetWorthSnapshotRepository snapshotRepository;
+    private final NetWorthConfigRepository netWorthConfigRepository;
     private final HoldingService holdingService;
+
+    private Set<String> getIncludedTypes() {
+        List<NetWorthConfig> configs = netWorthConfigRepository.findByIncludeInNetWorthTrue();
+        if (configs.isEmpty()) {
+            // If no config exists yet, include everything
+            return Arrays.stream(AssetType.values()).map(Enum::name).collect(Collectors.toSet());
+        }
+        return configs.stream().map(NetWorthConfig::getAssetType).collect(Collectors.toSet());
+    }
 
     public NetWorthSnapshot takeSnapshot(Long ownerId) {
         List<Holding> holdings = ownerId != null
                 ? holdingService.getActiveByOwner(ownerId)
                 : holdingService.getActiveHoldings();
 
-        // Only include holdings where asset is flagged for net worth
+        // Filter by net worth config (which asset types are included)
+        Set<String> includedTypes = getIncludedTypes();
         holdings = holdings.stream()
-                .filter(h -> h.getAsset().getIncludeInNetWorth() == null || h.getAsset().getIncludeInNetWorth())
+                .filter(h -> includedTypes.contains(h.getAsset().getAssetType().name()))
                 .collect(Collectors.toList());
 
         Map<AssetType, BigDecimal> totals = holdings.stream()
@@ -59,8 +70,9 @@ public class NetWorthService {
     public Optional<NetWorthSnapshot> getLatest() { return snapshotRepository.findTopByOrderBySnapshotDateDesc(); }
 
     public Map<String, BigDecimal> getCurrentAllocation() {
+        Set<String> includedTypes = getIncludedTypes();
         List<Holding> holdings = holdingService.getActiveHoldings().stream()
-                .filter(h -> h.getAsset().getIncludeInNetWorth() == null || h.getAsset().getIncludeInNetWorth())
+                .filter(h -> includedTypes.contains(h.getAsset().getAssetType().name()))
                 .collect(Collectors.toList());
         return holdings.stream()
                 .collect(Collectors.groupingBy(
