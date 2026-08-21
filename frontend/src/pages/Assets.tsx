@@ -78,7 +78,7 @@ export default function Assets() {
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Type</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Exchange</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Currency</th>
-                <th className="text-center px-4 py-3 font-medium text-slate-600" title="Include in Net Worth">NW</th>
+                <th className="text-center px-4 py-3 font-medium text-slate-600" title="Part of Net Worth">Part of Net Worth</th>
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
