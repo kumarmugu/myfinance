@@ -14,6 +14,7 @@ import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "app.init-data", havingValue = "true", matchIfMissing = true)
 public class DataInitializer implements CommandLineRunner {
 
     private final OwnerRepository ownerRepository;

@@ -28,7 +28,9 @@ public class RetirementFundEntry {
     @Column(nullable = false)
     private LocalDate entryDate;
 
+    @Column(name = "\"year\"")
     private Integer year;
+    @Column(name = "\"month\"")
     private Integer month;
 
     private String account; // OA, SA, MA for CPF; or employee/employer for EPF

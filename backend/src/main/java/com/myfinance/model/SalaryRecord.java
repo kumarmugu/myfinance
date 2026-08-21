@@ -15,10 +15,10 @@ public class SalaryRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "\"year\"")
     private Integer year;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "\"month\"")
     private Integer month; // 1-12
 
     @Column(nullable = false)
