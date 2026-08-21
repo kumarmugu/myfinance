@@ -65,6 +65,14 @@ export default function FxRates() {
     setNewCurrency('');
   };
 
+  const handleDeleteCurrency = (code: string) => {
+    // Check if any rates use this currency
+    const inUse = rates.some(r => r.fromCurrency === code || r.toCurrency === code);
+    if (inUse) { alert(`Cannot delete "${code}" — it is used in existing FX rates. Delete those rates first.`); return; }
+    if (!confirm(`Remove "${code}" from the currency list?`)) return;
+    setCurrencies(currencies.filter(c => c !== code));
+  };
+
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
   // Group rates by pair for quick view
@@ -189,13 +197,17 @@ export default function FxRates() {
               <tr>
                 <th className="text-left px-4 py-2 font-medium text-slate-600">#</th>
                 <th className="text-left px-4 py-2 font-medium text-slate-600">Currency Code</th>
+                <th className="px-4 py-2 w-16"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {currencies.map((c, i) => (
-                <tr key={c} className="hover:bg-slate-50">
+                <tr key={c} className="hover:bg-slate-50 group">
                   <td className="px-4 py-1.5 text-slate-400 text-xs">{i + 1}</td>
                   <td className="px-4 py-1.5"><span className="text-xs font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded">{c}</span></td>
+                  <td className="px-4 py-1.5">
+                    <button onClick={() => handleDeleteCurrency(c)} className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500 transition-opacity"><Trash2 size={13} /></button>
+                  </td>
                 </tr>
               ))}
             </tbody>
