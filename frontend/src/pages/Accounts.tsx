@@ -140,7 +140,7 @@ export default function Accounts() {
                   <SearchableSelect options={['SGD','USD','EUR','LKR','INR','GBP','AUD','JPY','CNY','MYR','HKD','CAD'].map(c => ({ value: c, label: c }))} value={accForm.currency} onChange={v => setAccForm({...accForm, currency: v as Currency})} placeholder="Select currency..." /></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Account Number</label><input type="text" value={accForm.accountNumber} onChange={e => setAccForm({...accForm, accountNumber: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Will be masked on display" /></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Owner</label>
-                  <SearchableSelect options={[{ value: 0, label: 'Unlinked' }, ...owners.map(o => ({ value: o.id, label: `${o.name} (${o.relationship})` }))]} value={accForm.ownerId} onChange={v => setAccForm({...accForm, ownerId: Number(v)})} placeholder="Select owner..." /></div>
+                  <SearchableSelect options={[{ value: 0, label: 'Unlinked' }, ...owners.map(o => ({ value: o.id, label: `${o.name} (${o.relationship})`, icon: o.name[0] }))]} value={accForm.ownerId} onChange={v => setAccForm({...accForm, ownerId: Number(v)})} placeholder="Select owner..." /></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Description</label><input type="text" value={accForm.description} onChange={e => setAccForm({...accForm, description: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
                 <div className="flex items-end gap-2">
                   <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">{editingAccount ? 'Update' : 'Save'}</button>
@@ -150,41 +150,63 @@ export default function Accounts() {
             </div>
           )}
 
-          {/* Account Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {accounts.map(acc => (
-              <div key={acc.id} className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex items-center gap-2.5">
-                    <div className={`p-2 rounded-lg ${bgFor(acc.accountType)}`}>{iconFor(acc.accountType)}</div>
-                    <div>
-                      <h4 className="font-medium text-slate-800 text-sm">{acc.name}</h4>
-                      <div className="flex gap-1.5 mt-0.5">
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{acc.accountType}</span>
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600">{acc.currency}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-1">
-                    <button onClick={() => startEditAccount(acc)} className="p-1 text-slate-400 hover:text-indigo-600 rounded" title="Edit"><Pencil size={14} /></button>
-                    <button onClick={() => handleDeleteAccount(acc.id)} className="p-1 text-slate-400 hover:text-red-500 rounded" title="Delete"><Trash2 size={14} /></button>
-                  </div>
-                </div>
-
-                {/* Account Number (masked) */}
-                {acc.accountNumber && (
-                  <div className="flex items-center gap-2 mt-2 bg-slate-50 rounded px-2.5 py-1.5">
-                    <span className="text-xs font-mono text-slate-600">{maskNumber(acc.accountNumber, acc.id)}</span>
-                    <button onClick={() => toggleMask(acc.id)} className="text-slate-400 hover:text-slate-700" title="Toggle visibility">
-                      {unmasked.has(acc.id) ? <EyeOff size={13} /> : <Eye size={13} />}
-                    </button>
-                  </div>
-                )}
-
-                {acc.owner && <p className="text-xs text-slate-500 mt-2">Owner: <span className="font-medium text-slate-700">{acc.owner.name}</span></p>}
-                {acc.description && <p className="text-xs text-slate-400 mt-1">{acc.description}</p>}
-              </div>
-            ))}
+          {/* Account Table */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-slate-50 border-b border-slate-200">
+                  <tr>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Account</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Type</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Currency</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Account No.</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Owner</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Description</th>
+                    <th className="px-4 py-3 w-20"></th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {accounts.map(acc => (
+                    <tr key={acc.id} className="hover:bg-slate-50 group">
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2.5">
+                          <div className={`p-1.5 rounded-lg ${bgFor(acc.accountType)}`}>{iconFor(acc.accountType)}</div>
+                          <span className="font-medium text-slate-800">{acc.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3"><span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">{acc.accountType}</span></td>
+                      <td className="px-4 py-3"><span className="text-xs font-medium text-indigo-600">{acc.currency}</span></td>
+                      <td className="px-4 py-3">
+                        {acc.accountNumber ? (
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-xs font-mono text-slate-600">{maskNumber(acc.accountNumber, acc.id)}</span>
+                            <button onClick={() => toggleMask(acc.id)} className="text-slate-400 hover:text-slate-700">
+                              {unmasked.has(acc.id) ? <EyeOff size={12} /> : <Eye size={12} />}
+                            </button>
+                          </div>
+                        ) : <span className="text-xs text-slate-400">-</span>}
+                      </td>
+                      <td className="px-4 py-3">
+                        {acc.owner ? (
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-5 h-5 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 text-[9px] font-bold">{acc.owner.name[0]}</div>
+                            <span className="text-xs text-slate-700">{acc.owner.name}</span>
+                          </div>
+                        ) : <span className="text-xs text-slate-400">Unlinked</span>}
+                      </td>
+                      <td className="px-4 py-3 text-xs text-slate-500 max-w-40 truncate">{acc.description || '-'}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button onClick={() => startEditAccount(acc)} className="p-1 text-slate-400 hover:text-indigo-600"><Pencil size={13} /></button>
+                          <button onClick={() => handleDeleteAccount(acc.id)} className="p-1 text-slate-400 hover:text-red-500"><Trash2 size={13} /></button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                  {accounts.length === 0 && <tr><td colSpan={7} className="px-4 py-12 text-center text-slate-400">No accounts</td></tr>}
+                </tbody>
+              </table>
+            </div>
           </div>
         </>
       )}
@@ -213,37 +235,51 @@ export default function Accounts() {
             </div>
           )}
 
-          {/* Owner Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {owners.map(o => {
-              const linkedAccounts = accounts.filter(a => a.owner?.id === o.id);
-              return (
-                <div key={o.id} className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-sm">{o.name[0]}</div>
-                      <div>
-                        <h4 className="font-medium text-slate-800">{o.name}</h4>
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{o.relationship}</span>
-                      </div>
-                    </div>
-                    <div className="flex gap-1">
-                      <button onClick={() => startEditOwner(o)} className="p-1 text-slate-400 hover:text-indigo-600" title="Edit"><Pencil size={14} /></button>
-                      <button onClick={() => handleDeleteOwner(o.id)} className="p-1 text-slate-400 hover:text-red-500" title="Delete"><Trash2 size={14} /></button>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-xs font-medium text-slate-500 mb-1">Linked Accounts ({linkedAccounts.length})</p>
-                    <div className="flex flex-wrap gap-1">
-                      {linkedAccounts.map(a => (
-                        <span key={a.id} className="text-[10px] px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded">{a.name}</span>
-                      ))}
-                      {linkedAccounts.length === 0 && <span className="text-xs text-slate-400">No accounts linked</span>}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+          {/* Owner Table */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-slate-50 border-b border-slate-200">
+                  <tr>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Owner</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Relationship</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Linked Accounts</th>
+                    <th className="px-4 py-3 w-20"></th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {owners.map(o => {
+                    const linkedAccounts = accounts.filter(a => a.owner?.id === o.id);
+                    return (
+                      <tr key={o.id} className="hover:bg-slate-50 group">
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">{o.name[0]}</div>
+                            <span className="font-medium text-slate-800">{o.name}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3"><span className="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-medium">{o.relationship}</span></td>
+                        <td className="px-4 py-3">
+                          <div className="flex flex-wrap gap-1">
+                            {linkedAccounts.map(a => (
+                              <span key={a.id} className="text-[10px] px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded font-medium">{a.name}</span>
+                            ))}
+                            {linkedAccounts.length === 0 && <span className="text-xs text-slate-400">No accounts</span>}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onClick={() => startEditOwner(o)} className="p-1 text-slate-400 hover:text-indigo-600"><Pencil size={13} /></button>
+                            <button onClick={() => handleDeleteOwner(o.id)} className="p-1 text-slate-400 hover:text-red-500"><Trash2 size={13} /></button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                  {owners.length === 0 && <tr><td colSpan={4} className="px-4 py-12 text-center text-slate-400">No owners</td></tr>}
+                </tbody>
+              </table>
+            </div>
           </div>
         </>
       )}

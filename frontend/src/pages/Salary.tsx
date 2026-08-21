@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, Copy } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { getSalaryRecords, getSalarySummary, createSalaryRecord, updateSalaryRecord, deleteSalaryRecord } from '../api';
+import { getSalaryRecords, getSalarySummary, createSalaryRecord, updateSalaryRecord, deleteSalaryRecord, getWorkExperiences } from '../api';
 import { formatCurrency } from '../utils/formatters';
+import SearchableSelect from '../components/SearchableSelect';
 
 interface SalaryRecord {
   id: number; year: number; month: number; company: string; amount: number;
@@ -18,15 +19,21 @@ export default function Salary() {
   const [summary, setSummary] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [showBulkForm, setShowBulkForm] = useState(false);
   const [editing, setEditing] = useState<SalaryRecord | null>(null);
   const [filterYear, setFilterYear] = useState<number | undefined>();
+  const [companies, setCompanies] = useState<string[]>([]);
   const [form, setForm] = useState({
     year: new Date().getFullYear(), month: new Date().getMonth() + 1, company: '', amount: 0,
     basic: 0, allowance: 0, mobile: 0, support: 0, weekend: 0, mealAllowance: 0, deductions: 0,
     isBonus: false, bonusMonths: 0, country: 'Singapore', notes: ''
   });
+  const [bulkForm, setBulkForm] = useState({
+    year: new Date().getFullYear(), company: '', fromMonth: 1, toMonth: 12,
+    amount: 0, basic: 0, allowance: 0, mobile: 0, deductions: 0, country: 'Singapore'
+  });
 
-  useEffect(() => { loadData(); }, [filterYear]);
+  useEffect(() => { loadData(); loadCompanies(); }, [filterYear]);
 
   const loadData = async () => {
     try {
@@ -34,6 +41,14 @@ export default function Salary() {
       setRecords(recRes.data); setSummary(sumRes.data);
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
+  };
+
+  const loadCompanies = async () => {
+    try {
+      const res = await getWorkExperiences();
+      const companyNames = [...new Set(res.data.map((e: any) => e.company))];
+      setCompanies(companyNames);
+    } catch {}
   };
 
   const resetForm = () => setForm({
@@ -65,6 +80,21 @@ export default function Salary() {
 
   const handleDelete = async (id: number) => { if (confirm('Delete?')) { await deleteSalaryRecord(id); loadData(); } };
 
+  const handleBulkSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      for (let m = bulkForm.fromMonth; m <= bulkForm.toMonth; m++) {
+        await createSalaryRecord({
+          year: bulkForm.year, month: m, company: bulkForm.company,
+          amount: bulkForm.amount, basic: bulkForm.basic, allowance: bulkForm.allowance,
+          mobile: bulkForm.mobile, deductions: bulkForm.deductions, country: bulkForm.country,
+          isBonus: false
+        });
+      }
+      setShowBulkForm(false); loadData();
+    } catch (err) { console.error(err); alert('Failed to bulk add'); }
+  };
+
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
   const yearlyChart = summary?.yearly?.map((y: any) => ({ year: y.year, total: y.total })) || [];
@@ -76,7 +106,10 @@ export default function Salary() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-2xl font-bold text-slate-800">Salary Records</h1><p className="text-slate-500 text-sm mt-0.5">Track monthly salary and bonuses</p></div>
-        <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Entry</button>
+        <div className="flex gap-2">
+          <button onClick={() => { setShowBulkForm(!showBulkForm); setShowForm(false); }} className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200"><Copy size={16} /> Bulk Add</button>
+          <button onClick={() => { setShowForm(!showForm); setShowBulkForm(false); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Entry</button>
+        </div>
       </div>
 
       {/* Summary */}
@@ -103,6 +136,42 @@ export default function Salary() {
         </div>
       )}
 
+      {/* Bulk Add Form */}
+      {showBulkForm && (
+        <div className="bg-white rounded-xl p-6 border border-indigo-200 shadow-sm">
+          <h3 className="text-base font-semibold text-slate-800 mb-1">Bulk Add Salary</h3>
+          <p className="text-xs text-slate-500 mb-4">Add the same salary for multiple months in one go (useful when salary is fixed for the year).</p>
+          <form onSubmit={handleBulkSubmit} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Year *</label>
+              <input type="number" value={bulkForm.year} onChange={e => setBulkForm({...bulkForm, year: parseInt(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Company *</label>
+              <SearchableSelect options={companies.map(c => ({ value: c, label: c }))} value={bulkForm.company} onChange={v => setBulkForm({...bulkForm, company: v})} placeholder="Select..." /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">From Month</label>
+              <select value={bulkForm.fromMonth} onChange={e => setBulkForm({...bulkForm, fromMonth: parseInt(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                {MONTHS.slice(1).map((m, i) => <option key={i+1} value={i+1}>{m}</option>)}
+              </select></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">To Month</label>
+              <select value={bulkForm.toMonth} onChange={e => setBulkForm({...bulkForm, toMonth: parseInt(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                {MONTHS.slice(1).map((m, i) => <option key={i+1} value={i+1}>{m}</option>)}
+              </select></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Amount *</label>
+              <input type="number" step="any" value={bulkForm.amount || ''} onChange={e => setBulkForm({...bulkForm, amount: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Basic</label>
+              <input type="number" step="any" value={bulkForm.basic || ''} onChange={e => setBulkForm({...bulkForm, basic: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Allowance</label>
+              <input type="number" step="any" value={bulkForm.allowance || ''} onChange={e => setBulkForm({...bulkForm, allowance: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Mobile</label>
+              <input type="number" step="any" value={bulkForm.mobile || ''} onChange={e => setBulkForm({...bulkForm, mobile: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Deductions</label>
+              <input type="number" step="any" value={bulkForm.deductions || ''} onChange={e => setBulkForm({...bulkForm, deductions: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <div className="flex items-end gap-2 col-span-2 lg:col-span-3">
+              <button type="submit" className="px-5 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">Add {bulkForm.toMonth - bulkForm.fromMonth + 1} Months</button>
+              <button type="button" onClick={() => setShowBulkForm(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
+            </div>
+          </form>
+        </div>
+      )}
+
       {/* Year Filter */}
       <div className="flex items-center gap-2 flex-wrap">
         <button onClick={() => setFilterYear(undefined)} className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${!filterYear ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-300 hover:border-indigo-300'}`}>All</button>
@@ -123,7 +192,7 @@ export default function Salary() {
                 {MONTHS.slice(1).map((m, i) => <option key={i+1} value={i+1}>{m}</option>)}
               </select></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Company *</label>
-              <input type="text" value={form.company} onChange={e => setForm({...form, company: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
+              <SearchableSelect options={companies.map(c => ({ value: c, label: c }))} value={form.company} onChange={v => setForm({...form, company: v})} placeholder="Select company..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Amount *</label>
               <input type="number" step="any" value={form.amount || ''} onChange={e => setForm({...form, amount: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Basic</label>

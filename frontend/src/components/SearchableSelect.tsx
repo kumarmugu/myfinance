@@ -4,6 +4,7 @@ import { ChevronDown, Search, X } from 'lucide-react';
 export interface SelectOption {
   value: string | number;
   label: string;
+  icon?: string; // single character for avatar circle
 }
 
 interface SearchableSelectProps {
@@ -40,7 +41,10 @@ export default function SearchableSelect({ options, value, onChange, placeholder
         disabled={disabled}
         className={`w-full flex items-center justify-between border border-slate-300 rounded-lg px-3 py-2 text-sm text-left focus:ring-2 focus:ring-indigo-500 bg-white ${disabled ? 'opacity-60 cursor-not-allowed' : 'hover:border-slate-400'}`}
       >
-        <span className={selected ? 'text-slate-800 truncate' : 'text-slate-400 truncate'}>{selected ? selected.label : placeholder}</span>
+        <span className={`flex items-center gap-2 ${selected ? 'text-slate-800' : 'text-slate-400'} truncate`}>
+          {selected?.icon && <span className="w-5 h-5 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-[10px] font-bold shrink-0">{selected.icon}</span>}
+          {selected ? selected.label : placeholder}
+        </span>
         <ChevronDown size={14} className={`text-slate-400 transition-transform shrink-0 ml-1 ${open ? 'rotate-180' : ''}`} />
       </button>
 
@@ -55,7 +59,8 @@ export default function SearchableSelect({ options, value, onChange, placeholder
           </div>
           <div className="max-h-48 overflow-y-auto">
             {filtered.map(o => (
-              <button key={o.value} type="button" onClick={() => { onChange(o.value); setOpen(false); setSearch(''); }} className={`w-full text-left px-3 py-2 text-sm hover:bg-indigo-50 transition-colors ${o.value === value ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-slate-700'}`}>
+              <button key={o.value} type="button" onClick={() => { onChange(o.value); setOpen(false); setSearch(''); }} className={`w-full text-left px-3 py-2 text-sm hover:bg-indigo-50 transition-colors flex items-center gap-2 ${o.value === value ? 'bg-indigo-50 text-indigo-700 font-medium' : 'text-slate-700'}`}>
+                {o.icon && <span className="w-5 h-5 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-[10px] font-bold shrink-0">{o.icon}</span>}
                 {o.label}
               </button>
             ))}
