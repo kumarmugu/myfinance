@@ -3,6 +3,7 @@ import { Plus, Calendar, Globe, Check, Pencil, Trash2 } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { getFixedDeposits, getFDSummary, getMaturingFDs, getBanks, getFDHolders, createFixedDeposit, updateFixedDeposit, deleteFixedDeposit, toggleFDNetWorth } from '../api';
 import { formatDate, daysBetween } from '../utils/formatters';
+import SearchableSelect from '../components/SearchableSelect';
 import type { FixedDeposit, FDSummary, Bank, FDHolder } from '../types';
 
 const BANK_COLORS = ['#6366f1', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#14b8a6'];
@@ -159,20 +160,11 @@ export default function FixedDeposits() {
           <h3 className="text-base font-semibold text-slate-800 mb-4">{editing ? 'Edit Fixed Deposit' : 'New Fixed Deposit'}</h3>
           <form onSubmit={handleFdSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Holder *</label>
-              <select value={fdForm.holderId} onChange={e => setFdForm({...fdForm, holderId: Number(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required>
-                <option value={0}>Select holder...</option>
-                {holders.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
-              </select></div>
+              <SearchableSelect options={holders.map(h => ({ value: h.id, label: h.name }))} value={fdForm.holderId} onChange={v => setFdForm({...fdForm, holderId: Number(v)})} placeholder="Select holder..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Joint Holder</label>
-              <select value={fdForm.jointHolderId} onChange={e => setFdForm({...fdForm, jointHolderId: Number(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-                <option value={0}>None</option>
-                {holders.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
-              </select></div>
+              <SearchableSelect options={[{ value: 0, label: 'None' }, ...holders.map(h => ({ value: h.id, label: h.name }))]} value={fdForm.jointHolderId} onChange={v => setFdForm({...fdForm, jointHolderId: Number(v)})} placeholder="None" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Bank *</label>
-              <select value={fdForm.bankId} onChange={e => setFdForm({...fdForm, bankId: Number(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required>
-                <option value={0}>Select bank...</option>
-                {banks.map(b => <option key={b.id} value={b.id}>{b.shortName} - {b.name}</option>)}
-              </select></div>
+              <SearchableSelect options={banks.map(b => ({ value: b.id, label: `${b.shortName} - ${b.name}` }))} value={fdForm.bankId} onChange={v => setFdForm({...fdForm, bankId: Number(v)})} placeholder="Select bank..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Account Number</label>
               <input type="text" value={fdForm.accountNumber} onChange={e => setFdForm({...fdForm, accountNumber: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Principal Amount (LKR) *</label>
@@ -274,14 +266,8 @@ export default function FixedDeposits() {
 
       {/* Filters */}
       <div className="flex gap-3 items-center flex-wrap">
-        <select value={filterBank} onChange={e => setFilterBank(e.target.value)} className="border border-slate-300 rounded-lg px-3 py-1.5 text-sm">
-          <option value="">All Banks</option>
-          {banks.map(b => <option key={b.id} value={b.id}>{b.shortName}</option>)}
-        </select>
-        <select value={filterHolder} onChange={e => setFilterHolder(e.target.value)} className="border border-slate-300 rounded-lg px-3 py-1.5 text-sm">
-          <option value="">All Holders</option>
-          {holders.map(h => <option key={h.id} value={h.id}>{h.name}</option>)}
-        </select>
+        <div className="w-48"><SearchableSelect options={[{ value: '', label: 'All Banks' }, ...banks.map(b => ({ value: b.id.toString(), label: b.shortName }))]} value={filterBank} onChange={v => setFilterBank(v.toString() === '0' ? '' : v.toString())} placeholder="All Banks" /></div>
+        <div className="w-48"><SearchableSelect options={[{ value: '', label: 'All Holders' }, ...holders.map(h => ({ value: h.id.toString(), label: h.name }))]} value={filterHolder} onChange={v => setFilterHolder(v.toString() === '0' ? '' : v.toString())} placeholder="All Holders" /></div>
         <span className="text-xs text-slate-500">{filteredFDs.length} records</span>
       </div>
 

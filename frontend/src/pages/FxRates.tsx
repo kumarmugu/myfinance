@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, RefreshCw } from 'lucide-react';
 import { getCurrencyRates, getAvailableCurrencies, createCurrencyRate, updateCurrencyRate, deleteCurrencyRate } from '../api';
 import { formatDate } from '../utils/formatters';
+import SearchableSelect from '../components/SearchableSelect';
 import type { CurrencyRate } from '../types';
 
 export default function FxRates() {
@@ -125,13 +126,9 @@ export default function FxRates() {
           {error && <div className="mb-3 p-2 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700">{error}</div>}
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">From Currency</label>
-              <select value={form.fromCurrency} onChange={e => setForm({...form, fromCurrency: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" disabled={!!editing}>
-                {currencies.map(c => <option key={c} value={c}>{c}</option>)}
-              </select></div>
+              <SearchableSelect options={currencies.map(c => ({ value: c, label: c }))} value={form.fromCurrency} onChange={v => setForm({...form, fromCurrency: v})} placeholder="From..." disabled={!!editing} /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">To Currency</label>
-              <select value={form.toCurrency} onChange={e => setForm({...form, toCurrency: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" disabled={!!editing}>
-                {currencies.map(c => <option key={c} value={c}>{c}</option>)}
-              </select></div>
+              <SearchableSelect options={currencies.map(c => ({ value: c, label: c }))} value={form.toCurrency} onChange={v => setForm({...form, toCurrency: v})} placeholder="To..." disabled={!!editing} /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Rate *</label>
               <input type="number" step="any" value={form.rate} onChange={e => setForm({...form, rate: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required placeholder="e.g. 1.3500" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Effective Date *</label>

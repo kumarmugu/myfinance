@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { getAssets, createAsset, deleteAsset } from '../api';
+import SearchableSelect from '../components/SearchableSelect';
 import type { Asset, AssetType, Currency } from '../types';
 import { ASSET_TYPE_LABELS } from '../types';
 
@@ -51,9 +52,7 @@ export default function Assets() {
                 ))}
               </div></div>
             <div><label className="block text-sm font-medium text-slate-700 mb-1">Currency</label>
-              <select value={form.currency} onChange={e => setForm({...form, currency: e.target.value as Currency})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-                <option value="USD">USD</option><option value="SGD">SGD</option><option value="EUR">EUR</option><option value="LKR">LKR</option><option value="INR">INR</option><option value="GBP">GBP</option><option value="AUD">AUD</option><option value="JPY">JPY</option><option value="CNY">CNY</option><option value="MYR">MYR</option><option value="HKD">HKD</option><option value="CAD">CAD</option>
-              </select></div>
+              <SearchableSelect options={['USD','SGD','EUR','LKR','INR','GBP','AUD','JPY','CNY','MYR','HKD','CAD'].map(c => ({ value: c, label: c }))} value={form.currency} onChange={v => setForm({...form, currency: v as Currency})} placeholder="Select currency..." /></div>
             <div><label className="block text-sm font-medium text-slate-700 mb-1">Exchange</label><input type="text" value={form.exchange} onChange={e => setForm({...form, exchange: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="e.g. NYSE, SGX" /></div>
             <div className="flex items-end gap-2">
               <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium">Save</button>

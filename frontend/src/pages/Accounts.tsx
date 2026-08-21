@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Plus, Trash2, Building2, TrendingUp, Bitcoin, Pencil, Eye, EyeOff, Users, UserPlus } from 'lucide-react';
 import { getAccounts, createAccount, updateAccount, deleteAccount, getOwners, createOwner, updateOwner, deleteOwner } from '../api';
+import SearchableSelect from '../components/SearchableSelect';
 import type { Account, AccountType, Currency, Owner, OwnerRelationship } from '../types';
 
 export default function Accounts() {
@@ -136,15 +137,10 @@ export default function Accounts() {
                     ))}
                   </div></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Currency</label>
-                  <select value={accForm.currency} onChange={e => setAccForm({...accForm, currency: e.target.value as Currency})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
-                    <option value="SGD">SGD</option><option value="USD">USD</option><option value="EUR">EUR</option><option value="LKR">LKR</option><option value="INR">INR</option><option value="GBP">GBP</option><option value="AUD">AUD</option><option value="JPY">JPY</option><option value="CNY">CNY</option><option value="MYR">MYR</option><option value="HKD">HKD</option><option value="CAD">CAD</option>
-                  </select></div>
+                  <SearchableSelect options={['SGD','USD','EUR','LKR','INR','GBP','AUD','JPY','CNY','MYR','HKD','CAD'].map(c => ({ value: c, label: c }))} value={accForm.currency} onChange={v => setAccForm({...accForm, currency: v as Currency})} placeholder="Select currency..." /></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Account Number</label><input type="text" value={accForm.accountNumber} onChange={e => setAccForm({...accForm, accountNumber: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Will be masked on display" /></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Owner</label>
-                  <select value={accForm.ownerId} onChange={e => setAccForm({...accForm, ownerId: Number(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
-                    <option value={0}>Unlinked</option>
-                    {owners.map(o => <option key={o.id} value={o.id}>{o.name} ({o.relationship})</option>)}
-                  </select></div>
+                  <SearchableSelect options={[{ value: 0, label: 'Unlinked' }, ...owners.map(o => ({ value: o.id, label: `${o.name} (${o.relationship})` }))]} value={accForm.ownerId} onChange={v => setAccForm({...accForm, ownerId: Number(v)})} placeholder="Select owner..." /></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Description</label><input type="text" value={accForm.description} onChange={e => setAccForm({...accForm, description: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
                 <div className="flex items-end gap-2">
                   <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">{editingAccount ? 'Update' : 'Save'}</button>
@@ -208,9 +204,7 @@ export default function Accounts() {
               <form onSubmit={handleOwnerSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Name *</label><input type="text" value={ownerForm.name} onChange={e => setOwnerForm({...ownerForm, name: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" required /></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Relationship</label>
-                  <select value={ownerForm.relationship} onChange={e => setOwnerForm({...ownerForm, relationship: e.target.value as OwnerRelationship})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
-                    <option value="SELF">Self</option><option value="SPOUSE">Spouse</option><option value="SON">Son</option><option value="DAUGHTER">Daughter</option><option value="FATHER">Father</option><option value="MOTHER">Mother</option><option value="BROTHER">Brother</option><option value="SISTER">Sister</option>
-                  </select></div>
+                  <SearchableSelect options={['SELF','SPOUSE','SON','DAUGHTER','FATHER','MOTHER','BROTHER','SISTER'].map(r => ({ value: r, label: r.charAt(0) + r.slice(1).toLowerCase() }))} value={ownerForm.relationship} onChange={v => setOwnerForm({...ownerForm, relationship: v as OwnerRelationship})} placeholder="Select relationship..." /></div>
                 <div className="flex items-end gap-2">
                   <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">{editingOwner ? 'Update' : 'Save'}</button>
                   <button type="button" onClick={() => { setShowOwnerForm(false); setEditingOwner(null); }} className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
