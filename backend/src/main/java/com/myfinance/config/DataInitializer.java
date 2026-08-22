@@ -32,6 +32,11 @@ public class DataInitializer implements CommandLineRunner {
     private final TransactionService transactionService;
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SalaryRecordRepository salaryRecordRepository;
+    private final TaxRecordRepository taxRecordRepository;
+    private final WorkExperienceRepository workExperienceRepository;
+    private final RetirementFundEntryRepository retirementFundEntryRepository;
+    private final HomeLoanRepository homeLoanRepository;
 
     @Override
     public void run(String... args) {
@@ -299,6 +304,40 @@ public class DataInitializer implements CommandLineRunner {
         currencyRateRepository.save(CurrencyRate.builder().fromCurrency("USD").toCurrency("SGD").rate(bd("1.35")).effectiveDate(LocalDate.now()).build());
         currencyRateRepository.save(CurrencyRate.builder().fromCurrency("EUR").toCurrency("SGD").rate(bd("1.45")).effectiveDate(LocalDate.now()).build());
         currencyRateRepository.save(CurrencyRate.builder().fromCurrency("LKR").toCurrency("SGD").rate(bd("0.004")).effectiveDate(LocalDate.now()).build());
+
+        // ═══════════════════════════════════════════════════════
+        // WORK EXPERIENCE
+        // ═══════════════════════════════════════════════════════
+        workExperienceRepository.save(WorkExperience.builder().company("Shell Infortech").position("Software Developer").country("Singapore").startDate(LocalDate.of(2015, 1, 15)).endDate(LocalDate.of(2016, 10, 15)).owner(self).build());
+        workExperienceRepository.save(WorkExperience.builder().company("Welcome Realtime").position("Software Engineer").country("Singapore").startDate(LocalDate.of(2016, 10, 16)).endDate(LocalDate.of(2019, 2, 28)).owner(self).build());
+        workExperienceRepository.save(WorkExperience.builder().company("BCS").position("Senior Software Engineer").level("PM5").country("Singapore").startDate(LocalDate.of(2019, 3, 1)).isCurrent(true).owner(self).build());
+
+        // ═══════════════════════════════════════════════════════
+        // SALARY (Sample - 2026)
+        // ═══════════════════════════════════════════════════════
+        for (int m = 1; m <= 6; m++) {
+            salaryRecordRepository.save(SalaryRecord.builder().year(2026).month(m).company("BCS").amount(bd("14442")).basic(bd("14400")).mobile(bd("60")).deductions(bd("18")).country("Singapore").owner(self).build());
+        }
+        salaryRecordRepository.save(SalaryRecord.builder().year(2026).month(3).company("BCS").amount(bd("56000")).isBonus(true).bonusMonths(bd("4.04")).country("Singapore").owner(self).build());
+
+        // ═══════════════════════════════════════════════════════
+        // TAX RECORDS
+        // ═══════════════════════════════════════════════════════
+        taxRecordRepository.save(TaxRecord.builder().assessmentYear(2023).employment(bd("197112")).donations(bd("570")).reliefs(bd("1000")).chargeableIncome(bd("195050")).tax(bd("20059")).taxRebate(BigDecimal.ZERO).taxPayable(bd("20059")).country("Singapore").owner(self).build());
+        taxRecordRepository.save(TaxRecord.builder().assessmentYear(2024).employment(bd("220032")).donations(bd("570")).reliefs(bd("1000")).chargeableIncome(bd("218220")).tax(bd("24611.80")).taxRebate(bd("200")).taxPayable(bd("24411.80")).country("Singapore").owner(self).build());
+        taxRecordRepository.save(TaxRecord.builder().assessmentYear(2025).employment(bd("275300")).donations(bd("570")).reliefs(bd("1000")).srsDeduction(bd("35400")).chargeableIncome(bd("238330")).tax(bd("27000")).taxRebate(BigDecimal.ZERO).taxPayable(bd("27000")).country("Singapore").owner(self).build());
+
+        // ═══════════════════════════════════════════════════════
+        // RETIREMENT FUND (CPF Sample)
+        // ═══════════════════════════════════════════════════════
+        retirementFundEntryRepository.save(RetirementFundEntry.builder().fundType("CPF").entryType("CONTRIBUTION").amount(bd("2500")).entryDate(LocalDate.of(2026, 1, 15)).year(2026).month(1).account("OA").employer("BCS").owner(self).build());
+        retirementFundEntryRepository.save(RetirementFundEntry.builder().fundType("CPF").entryType("EMPLOYER_CONTRIBUTION").amount(bd("2448")).entryDate(LocalDate.of(2026, 1, 15)).year(2026).month(1).account("OA").employer("BCS").owner(self).build());
+        retirementFundEntryRepository.save(RetirementFundEntry.builder().fundType("SRS").entryType("CONTRIBUTION").amount(bd("15300")).entryDate(LocalDate.of(2026, 1, 5)).year(2026).month(1).owner(self).build());
+
+        // ═══════════════════════════════════════════════════════
+        // HOME LOAN (Sample)
+        // ═══════════════════════════════════════════════════════
+        homeLoanRepository.save(HomeLoan.builder().propertyName("HDB Flat - Woodlands").propertyValue(bd("550000")).loanAmount(bd("400000")).interestRate(bd("2.6")).loanType("HDB").tenureMonths(300).monthlyEmi(bd("1800")).outstandingBalance(bd("380000")).startDate(LocalDate.of(2024, 6, 1)).bank("HDB").currency(Currency.SGD).includeInNetWorth(true).owner(self).build());
 
         System.out.println("Sample data initialized successfully!");
     }
