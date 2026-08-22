@@ -19,17 +19,17 @@ public class TenantContext {
 
     /**
      * Get the current authenticated user's ID.
-     * @throws RuntimeException if no user is authenticated
+     * Returns null if no user is authenticated (e.g., during startup/initialization).
      */
     public Long getCurrentUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
-            throw new RuntimeException("No authenticated user");
+            return null;
         }
         String username = auth.getName();
         AppUser user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found: " + username));
-        return user.getId();
+                .orElse(null);
+        return user != null ? user.getId() : null;
     }
 
     /**
@@ -38,16 +38,16 @@ public class TenantContext {
     public AppUser getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
-            throw new RuntimeException("No authenticated user");
+            return null;
         }
-        return userRepository.findByUsername(auth.getName())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        return userRepository.findByUsername(auth.getName()).orElse(null);
     }
 
     /**
      * Check if current user has ADMIN role.
      */
     public boolean isAdmin() {
-        return "ADMIN".equals(getCurrentUser().getRole());
+        AppUser user = getCurrentUser();
+        return user != null && "ADMIN".equals(user.getRole());
     }
 }
