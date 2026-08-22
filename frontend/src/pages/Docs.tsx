@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { FileText, Server, Palette, Database, Layout, Layers, Globe, Users, BarChart3, Shield, Rocket } from 'lucide-react';
+import SwaggerUI from 'swagger-ui-react';
+import 'swagger-ui-react/swagger-ui.css';
 
 type TabId = 'architecture' | 'design' | 'api';
 
@@ -66,15 +68,11 @@ function ApiDocsEmbed() {
         <Globe size={16} className="text-blue-600 mt-0.5 shrink-0" />
         <div>
           <p className="text-sm text-blue-800 font-medium">Live API Documentation</p>
-          <p className="text-xs text-blue-600">This is the OpenAPI (Swagger) spec auto-generated from the backend. Requires the backend to be running on port 8080.</p>
+          <p className="text-xs text-blue-600">OpenAPI spec auto-generated from the backend. Requires backend running on port 8080.</p>
         </div>
       </div>
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden" style={{ height: 'calc(100vh - 280px)' }}>
-        <iframe
-          src="http://localhost:8080/swagger-ui.html"
-          className="w-full h-full border-0"
-          title="Swagger UI - MyFinance API"
-        />
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden swagger-container">
+        <SwaggerUI url="http://localhost:8080/v3/api-docs" />
       </div>
     </div>
   );
