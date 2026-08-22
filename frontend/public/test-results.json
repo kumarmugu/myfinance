@@ -1,0 +1,379 @@
+{
+  "timestamp": "2026-08-22T03:17:15Z",
+  "summary": {
+    "total": 58,
+    "passed": 58,
+    "failed": 0,
+    "suites": 13
+  },
+  "suites": [
+    {
+      "name": "AccountControllerTest",
+      "type": "backend",
+      "tests": [
+        {
+          "name": "shouldGetAccountsByType",
+          "status": "pass",
+          "duration": "23ms"
+        },
+        {
+          "name": "shouldCreateAccount",
+          "status": "pass",
+          "duration": "24ms"
+        },
+        {
+          "name": "shouldPreventDeleteWhenReferenced",
+          "status": "pass",
+          "duration": "26ms"
+        }
+      ]
+    },
+    {
+      "name": "AssetControllerTest",
+      "type": "backend",
+      "tests": [
+        {
+          "name": "shouldFilterByType",
+          "status": "pass",
+          "duration": "34ms"
+        },
+        {
+          "name": "shouldCreateAsset",
+          "status": "pass",
+          "duration": "17ms"
+        },
+        {
+          "name": "shouldGetAssetTypes",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "shouldSearchAssets",
+          "status": "pass",
+          "duration": "30ms"
+        },
+        {
+          "name": "shouldToggleNetWorth",
+          "status": "pass",
+          "duration": "18ms"
+        }
+      ]
+    },
+    {
+      "name": "CurrencyRateControllerTest",
+      "type": "backend",
+      "tests": [
+        {
+          "name": "shouldUpdateRate",
+          "status": "pass",
+          "duration": "20ms"
+        },
+        {
+          "name": "shouldCreateCurrencyRate",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldDeleteRate",
+          "status": "pass",
+          "duration": "12ms"
+        },
+        {
+          "name": "shouldGetAvailableCurrencies",
+          "status": "pass",
+          "duration": "9ms"
+        },
+        {
+          "name": "shouldSupportCustomCurrencyCodes",
+          "status": "pass",
+          "duration": "10ms"
+        }
+      ]
+    },
+    {
+      "name": "HomeLoanControllerTest",
+      "type": "backend",
+      "tests": [
+        {
+          "name": "shouldSoftDelete",
+          "status": "pass",
+          "duration": "864ms"
+        },
+        {
+          "name": "shouldCreateHomeLoan",
+          "status": "pass",
+          "duration": "79ms"
+        },
+        {
+          "name": "shouldListActiveLoans",
+          "status": "pass",
+          "duration": "13ms"
+        }
+      ]
+    },
+    {
+      "name": "NetWorthConfigControllerTest",
+      "type": "backend",
+      "tests": [
+        {
+          "name": "shouldBatchUpdate",
+          "status": "pass",
+          "duration": "61ms"
+        },
+        {
+          "name": "shouldReturnIncludedTypes",
+          "status": "pass",
+          "duration": "35ms"
+        },
+        {
+          "name": "shouldAutoCreateConfigsForAllAssetTypes",
+          "status": "pass",
+          "duration": "37ms"
+        },
+        {
+          "name": "shouldToggleInclusionOff",
+          "status": "pass",
+          "duration": "31ms"
+        }
+      ]
+    },
+    {
+      "name": "OwnerControllerTest",
+      "type": "backend",
+      "tests": [
+        {
+          "name": "shouldSupportAllRelationships",
+          "status": "pass",
+          "duration": "45ms"
+        },
+        {
+          "name": "shouldUpdateOwner",
+          "status": "pass",
+          "duration": "21ms"
+        },
+        {
+          "name": "shouldCreateOwner",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldGetAllOwners",
+          "status": "pass",
+          "duration": "13ms"
+        }
+      ]
+    },
+    {
+      "name": "RetirementFundControllerTest",
+      "type": "backend",
+      "tests": [
+        {
+          "name": "shouldFilterByFundType",
+          "status": "pass",
+          "duration": "19ms"
+        },
+        {
+          "name": "shouldCreateCPFContribution",
+          "status": "pass",
+          "duration": "16ms"
+        },
+        {
+          "name": "shouldCreateWithdrawal",
+          "status": "pass",
+          "duration": "12ms"
+        }
+      ]
+    },
+    {
+      "name": "SalaryControllerTest",
+      "type": "backend",
+      "tests": [
+        {
+          "name": "shouldReturnSummary",
+          "status": "pass",
+          "duration": "30ms"
+        },
+        {
+          "name": "shouldFilterByYear",
+          "status": "pass",
+          "duration": "17ms"
+        },
+        {
+          "name": "shouldCreateSalaryRecord",
+          "status": "pass",
+          "duration": "16ms"
+        },
+        {
+          "name": "shouldCreateBonusRecord",
+          "status": "pass",
+          "duration": "11ms"
+        }
+      ]
+    },
+    {
+      "name": "TaxControllerTest",
+      "type": "backend",
+      "tests": [
+        {
+          "name": "shouldDeleteTaxRecord",
+          "status": "pass",
+          "duration": "22ms"
+        },
+        {
+          "name": "shouldUpdateTaxRecord",
+          "status": "pass",
+          "duration": "24ms"
+        },
+        {
+          "name": "shouldGetTaxSummary",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldCreateTaxRecord",
+          "status": "pass",
+          "duration": "13ms"
+        }
+      ]
+    },
+    {
+      "name": "WorkExperienceControllerTest",
+      "type": "backend",
+      "tests": [
+        {
+          "name": "shouldCreateWorkExperience",
+          "status": "pass",
+          "duration": "25ms"
+        },
+        {
+          "name": "shouldListSortedByDate",
+          "status": "pass",
+          "duration": "21ms"
+        }
+      ]
+    },
+    {
+      "name": "SearchableSelect",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "renders with placeholder when no value selected",
+          "status": "pass",
+          "duration": "24.02689799999996ms"
+        },
+        {
+          "name": "shows selected value label",
+          "status": "pass",
+          "duration": "4.422207000000071ms"
+        },
+        {
+          "name": "opens dropdown on click",
+          "status": "pass",
+          "duration": "19.524265000000014ms"
+        },
+        {
+          "name": "filters options by search text",
+          "status": "pass",
+          "duration": "12.525259000000005ms"
+        },
+        {
+          "name": "calls onChange when option is selected",
+          "status": "pass",
+          "duration": "9.225680000000011ms"
+        },
+        {
+          "name": "shows \"No results\" when search matches nothing",
+          "status": "pass",
+          "duration": "11.249642999999992ms"
+        },
+        {
+          "name": "respects disabled prop",
+          "status": "pass",
+          "duration": "2.814200000000028ms"
+        }
+      ]
+    },
+    {
+      "name": "api",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "exports owner CRUD functions",
+          "status": "pass",
+          "duration": "1.9931309999999485ms"
+        },
+        {
+          "name": "exports account CRUD functions",
+          "status": "pass",
+          "duration": "0.41656399999999394ms"
+        },
+        {
+          "name": "exports asset functions",
+          "status": "pass",
+          "duration": "0.42135099999995873ms"
+        },
+        {
+          "name": "exports transaction functions",
+          "status": "pass",
+          "duration": "0.22036900000000514ms"
+        },
+        {
+          "name": "exports currency rate functions",
+          "status": "pass",
+          "duration": "0.3973790000000008ms"
+        },
+        {
+          "name": "exports tax functions",
+          "status": "pass",
+          "duration": "0.3265879999999015ms"
+        },
+        {
+          "name": "exports work experience functions",
+          "status": "pass",
+          "duration": "0.2664230000000316ms"
+        },
+        {
+          "name": "exports salary functions",
+          "status": "pass",
+          "duration": "0.36912500000005366ms"
+        },
+        {
+          "name": "exports retirement fund functions",
+          "status": "pass",
+          "duration": "0.4516089999999622ms"
+        },
+        {
+          "name": "exports home loan functions",
+          "status": "pass",
+          "duration": "0.4942829999999958ms"
+        },
+        {
+          "name": "exports insurance bonus functions",
+          "status": "pass",
+          "duration": "0.26786600000002636ms"
+        }
+      ]
+    },
+    {
+      "name": "types",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "ASSET_TYPE_LABELS has all expected types",
+          "status": "pass",
+          "duration": "2.2086850000000595ms"
+        },
+        {
+          "name": "ASSET_TYPE_COLORS has colors for all types in labels",
+          "status": "pass",
+          "duration": "2.8977429999999913ms"
+        },
+        {
+          "name": "has 16 asset types",
+          "status": "pass",
+          "duration": "0.2295840000000453ms"
+        }
+      ]
+    }
+  ]
+}

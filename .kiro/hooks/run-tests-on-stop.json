@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Run Tests & Update Results",
+      "trigger": "Stop",
+      "description": "Runs all backend and frontend tests when a session ends, and updates the test-results.json file that the Test Results page reads from.",
+      "action": {
+        "type": "command",
+        "command": "cd /Users/mugu/Documents/Projects/myfinance && bash scripts/run-tests.sh",
+        "timeout": 300
+      }
+    }
+  ]
+}

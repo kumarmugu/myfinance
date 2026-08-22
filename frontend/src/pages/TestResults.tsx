@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { CheckCircle, XCircle, Clock, Play, AlertTriangle } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { CheckCircle, XCircle, Clock, Play, RefreshCw } from 'lucide-react';
 
 interface TestCase {
   name: string;
@@ -13,144 +13,54 @@ interface TestSuite {
   tests: TestCase[];
 }
 
-const BACKEND_TESTS: TestSuite[] = [
-  {
-    name: 'OwnerControllerTest', type: 'backend',
-    tests: [
-      { name: 'shouldCreateOwner', status: 'pass', duration: '45ms' },
-      { name: 'shouldGetAllOwners', status: 'pass', duration: '23ms' },
-      { name: 'shouldUpdateOwner', status: 'pass', duration: '31ms' },
-      { name: 'shouldSupportAllRelationships', status: 'pass', duration: '89ms' },
-    ]
-  },
-  {
-    name: 'AccountControllerTest', type: 'backend',
-    tests: [
-      { name: 'shouldCreateAccount', status: 'pass', duration: '38ms' },
-      { name: 'shouldGetAccountsByType', status: 'pass', duration: '27ms' },
-      { name: 'shouldPreventDeleteWhenReferenced', status: 'pass', duration: '42ms' },
-    ]
-  },
-  {
-    name: 'AssetControllerTest', type: 'backend',
-    tests: [
-      { name: 'shouldCreateAsset', status: 'pass', duration: '35ms' },
-      { name: 'shouldGetAssetTypes', status: 'pass', duration: '15ms' },
-      { name: 'shouldFilterByType', status: 'pass', duration: '28ms' },
-      { name: 'shouldToggleNetWorth', status: 'pass', duration: '22ms' },
-      { name: 'shouldSearchAssets', status: 'pass', duration: '25ms' },
-    ]
-  },
-  {
-    name: 'TaxControllerTest', type: 'backend',
-    tests: [
-      { name: 'shouldCreateTaxRecord', status: 'pass', duration: '33ms' },
-      { name: 'shouldGetTaxSummary', status: 'pass', duration: '28ms' },
-      { name: 'shouldUpdateTaxRecord', status: 'pass', duration: '30ms' },
-      { name: 'shouldDeleteTaxRecord', status: 'pass', duration: '19ms' },
-    ]
-  },
-  {
-    name: 'WorkExperienceControllerTest', type: 'backend',
-    tests: [
-      { name: 'shouldCreateWorkExperience', status: 'pass', duration: '29ms' },
-      { name: 'shouldListSortedByDate', status: 'pass', duration: '24ms' },
-    ]
-  },
-  {
-    name: 'SalaryControllerTest', type: 'backend',
-    tests: [
-      { name: 'shouldCreateSalaryRecord', status: 'pass', duration: '31ms' },
-      { name: 'shouldCreateBonusRecord', status: 'pass', duration: '26ms' },
-      { name: 'shouldFilterByYear', status: 'pass', duration: '22ms' },
-      { name: 'shouldReturnSummary', status: 'pass', duration: '27ms' },
-    ]
-  },
-  {
-    name: 'HomeLoanControllerTest', type: 'backend',
-    tests: [
-      { name: 'shouldCreateHomeLoan', status: 'pass', duration: '36ms' },
-      { name: 'shouldListActiveLoans', status: 'pass', duration: '21ms' },
-      { name: 'shouldSoftDelete', status: 'pass', duration: '28ms' },
-    ]
-  },
-  {
-    name: 'CurrencyRateControllerTest', type: 'backend',
-    tests: [
-      { name: 'shouldCreateCurrencyRate', status: 'pass', duration: '25ms' },
-      { name: 'shouldGetAvailableCurrencies', status: 'pass', duration: '18ms' },
-      { name: 'shouldUpdateRate', status: 'pass', duration: '23ms' },
-      { name: 'shouldDeleteRate', status: 'pass', duration: '17ms' },
-      { name: 'shouldSupportCustomCurrencyCodes', status: 'pass', duration: '22ms' },
-    ]
-  },
-  {
-    name: 'RetirementFundControllerTest', type: 'backend',
-    tests: [
-      { name: 'shouldCreateCPFContribution', status: 'pass', duration: '30ms' },
-      { name: 'shouldFilterByFundType', status: 'pass', duration: '24ms' },
-      { name: 'shouldCreateWithdrawal', status: 'pass', duration: '21ms' },
-    ]
-  },
-  {
-    name: 'NetWorthConfigControllerTest', type: 'backend',
-    tests: [
-      { name: 'shouldAutoCreateConfigsForAllAssetTypes', status: 'pass', duration: '45ms' },
-      { name: 'shouldToggleInclusionOff', status: 'pass', duration: '32ms' },
-      { name: 'shouldReturnIncludedTypes', status: 'pass', duration: '28ms' },
-      { name: 'shouldBatchUpdate', status: 'pass', duration: '35ms' },
-    ]
-  },
-];
-
-const FRONTEND_TESTS: TestSuite[] = [
-  {
-    name: 'SearchableSelect', type: 'frontend',
-    tests: [
-      { name: 'renders with placeholder when no value selected', status: 'pass', duration: '5ms' },
-      { name: 'shows selected value label', status: 'pass', duration: '3ms' },
-      { name: 'opens dropdown on click', status: 'pass', duration: '8ms' },
-      { name: 'filters options by search text', status: 'pass', duration: '6ms' },
-      { name: 'calls onChange when option is selected', status: 'pass', duration: '4ms' },
-      { name: 'shows "No results" when search matches nothing', status: 'pass', duration: '5ms' },
-      { name: 'respects disabled prop', status: 'pass', duration: '3ms' },
-    ]
-  },
-  {
-    name: 'Type Definitions', type: 'frontend',
-    tests: [
-      { name: 'ASSET_TYPE_LABELS has all expected types', status: 'pass', duration: '1ms' },
-      { name: 'ASSET_TYPE_COLORS has colors for all types', status: 'pass', duration: '1ms' },
-      { name: 'has 16 asset types', status: 'pass', duration: '1ms' },
-    ]
-  },
-  {
-    name: 'API Module Exports', type: 'frontend',
-    tests: [
-      { name: 'exports owner CRUD functions', status: 'pass', duration: '1ms' },
-      { name: 'exports account CRUD functions', status: 'pass', duration: '1ms' },
-      { name: 'exports asset functions', status: 'pass', duration: '1ms' },
-      { name: 'exports transaction functions', status: 'pass', duration: '1ms' },
-      { name: 'exports currency rate functions', status: 'pass', duration: '1ms' },
-      { name: 'exports tax functions', status: 'pass', duration: '1ms' },
-      { name: 'exports work experience functions', status: 'pass', duration: '1ms' },
-      { name: 'exports salary functions', status: 'pass', duration: '1ms' },
-      { name: 'exports retirement fund functions', status: 'pass', duration: '1ms' },
-      { name: 'exports home loan functions', status: 'pass', duration: '1ms' },
-      { name: 'exports insurance bonus functions', status: 'pass', duration: '1ms' },
-    ]
-  },
-];
+interface TestResultsData {
+  timestamp: string;
+  summary: { total: number; passed: number; failed: number; suites: number };
+  suites: TestSuite[];
+}
 
 export default function TestResults() {
+  const [data, setData] = useState<TestResultsData | null>(null);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'backend' | 'frontend'>('all');
 
-  const allSuites = [...BACKEND_TESTS, ...FRONTEND_TESTS];
-  const filtered = filter === 'all' ? allSuites : allSuites.filter(s => s.type === filter);
+  useEffect(() => { loadResults(); }, []);
 
-  const totalTests = allSuites.reduce((s, suite) => s + suite.tests.length, 0);
-  const passedTests = allSuites.reduce((s, suite) => s + suite.tests.filter(t => t.status === 'pass').length, 0);
-  const failedTests = allSuites.reduce((s, suite) => s + suite.tests.filter(t => t.status === 'fail').length, 0);
+  const loadResults = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/test-results.json');
+      if (res.ok) {
+        setData(await res.json());
+      }
+    } catch (err) { console.error('Could not load test results:', err); }
+    finally { setLoading(false); }
+  };
+
+  if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
+
+  if (!data) {
+    return (
+      <div className="space-y-6 max-w-4xl">
+        <div><h1 className="text-2xl font-bold text-slate-800">Test Results</h1></div>
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 text-center">
+          <p className="text-sm text-amber-800 font-medium mb-2">No test results found</p>
+          <p className="text-xs text-amber-600 mb-4">Run the test suite to generate results. Tests run automatically when a Kiro session ends (Stop hook), or you can run manually:</p>
+          <div className="space-y-1.5 text-left max-w-md mx-auto">
+            <div className="flex items-center gap-2">
+              <Play size={12} className="text-blue-600" />
+              <code className="text-xs bg-white px-2 py-0.5 rounded border border-amber-200 text-slate-700">bash scripts/run-tests.sh</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const { summary, suites, timestamp } = data;
+  const filtered = filter === 'all' ? suites : suites.filter(s => s.type === filter);
+  const backendCount = suites.filter(s => s.type === 'backend').reduce((s, st) => s + st.tests.length, 0);
+  const frontendCount = suites.filter(s => s.type === 'frontend').reduce((s, st) => s + st.tests.length, 0);
 
   return (
     <div className="space-y-6 max-w-4xl">
@@ -159,8 +69,11 @@ export default function TestResults() {
           <h1 className="text-2xl font-bold text-slate-800">Test Results</h1>
           <p className="text-slate-500 text-sm mt-0.5">Backend (Spring Boot) + Frontend (Vitest) test coverage</p>
         </div>
-        <div className="flex items-center gap-2 text-xs text-slate-500">
-          <Clock size={13} /> Last run: just now
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 text-xs text-slate-500">
+            <Clock size={13} /> {new Date(timestamp).toLocaleString()}
+          </div>
+          <button onClick={loadResults} className="p-1.5 text-slate-400 hover:text-indigo-600 rounded-lg hover:bg-slate-100"><RefreshCw size={15} /></button>
         </div>
       </div>
 
@@ -168,19 +81,19 @@ export default function TestResults() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
           <p className="text-[11px] text-slate-500 uppercase">Total Tests</p>
-          <p className="text-2xl font-bold text-slate-800 mt-1">{totalTests}</p>
+          <p className="text-2xl font-bold text-slate-800 mt-1">{summary.total}</p>
         </div>
         <div className="bg-green-50 rounded-lg p-4 border border-green-200">
           <p className="text-[11px] text-green-600 uppercase">Passed</p>
-          <p className="text-2xl font-bold text-green-700 mt-1">{passedTests}</p>
+          <p className="text-2xl font-bold text-green-700 mt-1">{summary.passed}</p>
         </div>
-        <div className={`rounded-lg p-4 border ${failedTests > 0 ? 'bg-red-50 border-red-200' : 'bg-slate-50 border-slate-200'}`}>
-          <p className={`text-[11px] uppercase ${failedTests > 0 ? 'text-red-600' : 'text-slate-500'}`}>Failed</p>
-          <p className={`text-2xl font-bold mt-1 ${failedTests > 0 ? 'text-red-700' : 'text-slate-400'}`}>{failedTests}</p>
+        <div className={`rounded-lg p-4 border ${summary.failed > 0 ? 'bg-red-50 border-red-200' : 'bg-slate-50 border-slate-200'}`}>
+          <p className={`text-[11px] uppercase ${summary.failed > 0 ? 'text-red-600' : 'text-slate-500'}`}>Failed</p>
+          <p className={`text-2xl font-bold mt-1 ${summary.failed > 0 ? 'text-red-700' : 'text-slate-400'}`}>{summary.failed}</p>
         </div>
         <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
           <p className="text-[11px] text-slate-500 uppercase">Suites</p>
-          <p className="text-2xl font-bold text-slate-800 mt-1">{allSuites.length}</p>
+          <p className="text-2xl font-bold text-slate-800 mt-1">{summary.suites}</p>
         </div>
       </div>
 
@@ -188,10 +101,10 @@ export default function TestResults() {
       <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-slate-700">Pass Rate</span>
-          <span className="text-sm font-bold text-green-600">{((passedTests / totalTests) * 100).toFixed(0)}%</span>
+          <span className={`text-sm font-bold ${summary.failed === 0 ? 'text-green-600' : 'text-amber-600'}`}>{summary.total > 0 ? ((summary.passed / summary.total) * 100).toFixed(0) : 0}%</span>
         </div>
         <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
-          <div className="h-full bg-green-500 rounded-full transition-all" style={{ width: `${(passedTests / totalTests) * 100}%` }} />
+          <div className={`h-full rounded-full transition-all ${summary.failed === 0 ? 'bg-green-500' : 'bg-amber-500'}`} style={{ width: `${summary.total > 0 ? (summary.passed / summary.total) * 100 : 0}%` }} />
         </div>
       </div>
 
@@ -199,7 +112,7 @@ export default function TestResults() {
       <div className="flex gap-1 bg-slate-100 rounded-lg p-1 w-fit">
         {(['all', 'backend', 'frontend'] as const).map(f => (
           <button key={f} onClick={() => setFilter(f)} className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${filter === f ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600'}`}>
-            {f === 'all' ? `All (${totalTests})` : f === 'backend' ? `Backend (${BACKEND_TESTS.reduce((s, st) => s + st.tests.length, 0)})` : `Frontend (${FRONTEND_TESTS.reduce((s, st) => s + st.tests.length, 0)})`}
+            {f === 'all' ? `All (${summary.total})` : f === 'backend' ? `Backend (${backendCount})` : `Frontend (${frontendCount})`}
           </button>
         ))}
       </div>
@@ -241,17 +154,23 @@ export default function TestResults() {
 
       {/* Run Instructions */}
       <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-        <p className="text-sm font-medium text-slate-700 mb-2">How to run tests</p>
-        <div className="space-y-1.5">
+        <p className="text-sm font-medium text-slate-700 mb-2">How tests are run</p>
+        <ul className="text-xs text-slate-600 space-y-1.5 list-disc list-inside">
+          <li><b>Automatic:</b> Tests run when a Kiro session ends (Stop hook)</li>
+          <li><b>Manual:</b> Run <code className="bg-white px-1.5 py-0.5 rounded border border-slate-200">bash scripts/run-tests.sh</code> from the project root</li>
+          <li>Results are saved to <code className="bg-white px-1.5 py-0.5 rounded border border-slate-200">frontend/public/test-results.json</code></li>
+          <li>This page auto-refreshes from that file</li>
+        </ul>
+        <div className="mt-3 pt-3 border-t border-slate-200 space-y-1.5">
           <div className="flex items-center gap-2">
             <Play size={12} className="text-blue-600" />
             <code className="text-xs bg-white px-2 py-0.5 rounded border border-slate-200 text-slate-700">cd backend && ./mvnw test</code>
-            <span className="text-xs text-slate-500">— Backend (Spring Boot)</span>
+            <span className="text-xs text-slate-500">— Backend only</span>
           </div>
           <div className="flex items-center gap-2">
             <Play size={12} className="text-purple-600" />
             <code className="text-xs bg-white px-2 py-0.5 rounded border border-slate-200 text-slate-700">cd frontend && npm test</code>
-            <span className="text-xs text-slate-500">— Frontend (Vitest)</span>
+            <span className="text-xs text-slate-500">— Frontend only</span>
           </div>
         </div>
       </div>
