@@ -45,7 +45,22 @@ function AppContent() {
     return <Login />;
   }
 
-  const navSections = [
+  const navSections = isAdmin ? [
+    // ─── ADMIN-ONLY NAV ───
+    {
+      label: null,
+      items: [{ to: '/admin/users', icon: Users, label: 'User Management' }],
+    },
+    {
+      label: 'Admin Tools',
+      items: [
+        { to: '/test-results', icon: FlaskConical, label: 'Test Results' },
+        { to: '/docs', icon: FileText, label: 'Documentation' },
+        { to: '/guide', icon: HelpCircle, label: 'User Guide' },
+      ],
+    },
+  ] : [
+    // ─── NORMAL USER NAV ───
     {
       label: null,
       items: [{ to: '/', icon: LayoutDashboard, label: 'Dashboard' }],
@@ -92,11 +107,6 @@ function AppContent() {
         { to: '/fx-rates', icon: RefreshCw, label: 'FX Rates' },
         { to: '/net-worth-config', icon: Settings, label: 'Net Worth Config' },
         { to: '/guide', icon: HelpCircle, label: 'User Guide' },
-        ...(isAdmin ? [
-          { to: '/admin/users', icon: Users, label: 'User Management' },
-          { to: '/test-results', icon: FlaskConical, label: 'Test Results' },
-          { to: '/docs', icon: FileText, label: 'Documentation' },
-        ] : []),
       ],
     },
   ];
