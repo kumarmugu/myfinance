@@ -103,10 +103,15 @@ function AppContent() {
         {/* Sidebar */}
         <aside className="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0">
           <div className="p-6 border-b border-slate-200">
-            <h1 className="text-xl font-bold text-slate-800">
-              <span className="text-indigo-600">My</span>Finance
-            </h1>
-            <p className="text-xs text-slate-500 mt-1">Personal Finance Manager</p>
+            <div className="flex items-center gap-3">
+              <img src="/logo.svg" alt="MyFinance" className="w-9 h-9" />
+              <div>
+                <h1 className="text-xl font-bold text-slate-800">
+                  <span className="text-indigo-600">My</span>Finance
+                </h1>
+                <p className="text-xs text-slate-500">Personal Finance Manager</p>
+              </div>
+            </div>
           </div>
           <nav className="flex-1 p-4 space-y-4 overflow-y-auto">
             {navSections.map((section, si) => (

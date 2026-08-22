@@ -48,6 +48,7 @@ export default function Login() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
+          <img src="/logo.svg" alt="MyFinance" className="w-16 h-16 mx-auto mb-3" />
           <h1 className="text-3xl font-bold text-slate-800"><span className="text-indigo-600">My</span>Finance</h1>
           <p className="text-slate-500 mt-2">Personal Finance Manager</p>
         </div>
