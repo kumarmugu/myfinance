@@ -195,10 +195,10 @@ function AppContent() {
               <Route path="/assets" element={<Assets />} />
               <Route path="/fx-rates" element={<FxRates />} />
               <Route path="/net-worth-config" element={<NetWorthConfig />} />
-              <Route path="/admin/users" element={<UserManagement />} />
-              <Route path="/test-results" element={<TestResults />} />
+              <Route path="/admin/users" element={isAdmin ? <UserManagement /> : <Dashboard />} />
+              <Route path="/test-results" element={isAdmin ? <TestResults /> : <Dashboard />} />
               <Route path="/guide" element={<UserGuide />} />
-              <Route path="/docs" element={<Docs />} />
+              <Route path="/docs" element={isAdmin ? <Docs /> : <Dashboard />} />
             </Routes>
           </div>
         </main>
