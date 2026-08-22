@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-08-22T10:26:10Z",
+  "timestamp": "2026-08-22T10:29:06Z",
   "summary": {
     "total": 63,
     "passed": 63,
@@ -14,12 +14,12 @@
         {
           "name": "shouldGetAccountsByType",
           "status": "pass",
-          "duration": "23ms"
+          "duration": "25ms"
         },
         {
           "name": "shouldCreateAccount",
           "status": "pass",
-          "duration": "27ms"
+          "duration": "25ms"
         },
         {
           "name": "shouldPreventDeleteWhenReferenced",
@@ -35,7 +35,7 @@
         {
           "name": "shouldFilterByType",
           "status": "pass",
-          "duration": "21ms"
+          "duration": "22ms"
         },
         {
           "name": "shouldCreateAsset",
@@ -45,17 +45,17 @@
         {
           "name": "shouldGetAssetTypes",
           "status": "pass",
-          "duration": "11ms"
+          "duration": "12ms"
         },
         {
           "name": "shouldSearchAssets",
           "status": "pass",
-          "duration": "30ms"
+          "duration": "27ms"
         },
         {
           "name": "shouldToggleNetWorth",
           "status": "pass",
-          "duration": "17ms"
+          "duration": "19ms"
         }
       ]
     },
@@ -66,27 +66,27 @@
         {
           "name": "shouldUpdateRate",
           "status": "pass",
-          "duration": "29ms"
+          "duration": "28ms"
         },
         {
           "name": "shouldCreateCurrencyRate",
           "status": "pass",
-          "duration": "17ms"
+          "duration": "16ms"
         },
         {
           "name": "shouldDeleteRate",
           "status": "pass",
-          "duration": "11ms"
+          "duration": "12ms"
         },
         {
           "name": "shouldGetAvailableCurrencies",
           "status": "pass",
-          "duration": "12ms"
+          "duration": "11ms"
         },
         {
           "name": "shouldSupportCustomCurrencyCodes",
           "status": "pass",
-          "duration": "11ms"
+          "duration": "10ms"
         }
       ]
     },
@@ -97,7 +97,7 @@
         {
           "name": "shouldSoftDelete",
           "status": "pass",
-          "duration": "921ms"
+          "duration": "939ms"
         },
         {
           "name": "shouldCreateHomeLoan",
@@ -118,17 +118,17 @@
         {
           "name": "userB_shouldOnlySeeOwnOwners",
           "status": "pass",
-          "duration": "181ms"
+          "duration": "185ms"
         },
         {
           "name": "userA_shouldOnlySeeOwnOwners",
           "status": "pass",
-          "duration": "23ms"
+          "duration": "22ms"
         },
         {
           "name": "userA_taxSummary_shouldOnlyIncludeOwnData",
           "status": "pass",
-          "duration": "26ms"
+          "duration": "25ms"
         },
         {
           "name": "userB_shouldNotSeeAsTaxRecords",
@@ -149,22 +149,22 @@
         {
           "name": "shouldBatchUpdate",
           "status": "pass",
-          "duration": "47ms"
+          "duration": "46ms"
         },
         {
           "name": "shouldReturnIncludedTypes",
           "status": "pass",
-          "duration": "33ms"
+          "duration": "29ms"
         },
         {
           "name": "shouldAutoCreateConfigsForAllAssetTypes",
           "status": "pass",
-          "duration": "41ms"
+          "duration": "33ms"
         },
         {
           "name": "shouldToggleInclusionOff",
           "status": "pass",
-          "duration": "30ms"
+          "duration": "32ms"
         }
       ]
     },
@@ -175,22 +175,22 @@
         {
           "name": "shouldSupportAllRelationships",
           "status": "pass",
-          "duration": "47ms"
+          "duration": "54ms"
         },
         {
           "name": "shouldUpdateOwner",
           "status": "pass",
-          "duration": "18ms"
+          "duration": "15ms"
         },
         {
           "name": "shouldCreateOwner",
           "status": "pass",
-          "duration": "11ms"
+          "duration": "12ms"
         },
         {
           "name": "shouldGetAllOwners",
           "status": "pass",
-          "duration": "13ms"
+          "duration": "12ms"
         }
       ]
     },
@@ -201,17 +201,17 @@
         {
           "name": "shouldFilterByFundType",
           "status": "pass",
-          "duration": "19ms"
+          "duration": "18ms"
         },
         {
           "name": "shouldCreateCPFContribution",
           "status": "pass",
-          "duration": "17ms"
+          "duration": "26ms"
         },
         {
           "name": "shouldCreateWithdrawal",
           "status": "pass",
-          "duration": "14ms"
+          "duration": "13ms"
         }
       ]
     },
@@ -222,22 +222,22 @@
         {
           "name": "shouldReturnSummary",
           "status": "pass",
-          "duration": "23ms"
+          "duration": "24ms"
         },
         {
           "name": "shouldFilterByYear",
           "status": "pass",
-          "duration": "19ms"
+          "duration": "17ms"
         },
         {
           "name": "shouldCreateSalaryRecord",
           "status": "pass",
-          "duration": "17ms"
+          "duration": "15ms"
         },
         {
           "name": "shouldCreateBonusRecord",
           "status": "pass",
-          "duration": "20ms"
+          "duration": "19ms"
         }
       ]
     },
@@ -248,7 +248,7 @@
         {
           "name": "shouldDeleteTaxRecord",
           "status": "pass",
-          "duration": "17ms"
+          "duration": "18ms"
         },
         {
           "name": "shouldUpdateTaxRecord",
@@ -258,12 +258,12 @@
         {
           "name": "shouldGetTaxSummary",
           "status": "pass",
-          "duration": "17ms"
+          "duration": "15ms"
         },
         {
           "name": "shouldCreateTaxRecord",
           "status": "pass",
-          "duration": "14ms"
+          "duration": "12ms"
         }
       ]
     },
@@ -274,12 +274,12 @@
         {
           "name": "shouldCreateWorkExperience",
           "status": "pass",
-          "duration": "22ms"
+          "duration": "26ms"
         },
         {
           "name": "shouldListSortedByDate",
           "status": "pass",
-          "duration": "23ms"
+          "duration": "24ms"
         }
       ]
     },
@@ -290,37 +290,37 @@
         {
           "name": "renders with placeholder when no value selected",
           "status": "pass",
-          "duration": "27.39525500000002ms"
+          "duration": "25.497776000000044ms"
         },
         {
           "name": "shows selected value label",
           "status": "pass",
-          "duration": "4.677029999999945ms"
+          "duration": "3.918317000000002ms"
         },
         {
           "name": "opens dropdown on click",
           "status": "pass",
-          "duration": "19.573773999999958ms"
+          "duration": "20.743896999999947ms"
         },
         {
           "name": "filters options by search text",
           "status": "pass",
-          "duration": "10.732071000000019ms"
+          "duration": "12.04488200000003ms"
         },
         {
           "name": "calls onChange when option is selected",
           "status": "pass",
-          "duration": "7.036901999999941ms"
+          "duration": "9.580245999999988ms"
         },
         {
           "name": "shows \"No results\" when search matches nothing",
           "status": "pass",
-          "duration": "6.762494999999944ms"
+          "duration": "7.635807999999997ms"
         },
         {
           "name": "respects disabled prop",
           "status": "pass",
-          "duration": "2.1172020000000202ms"
+          "duration": "2.77308400000004ms"
         }
       ]
     },
@@ -331,57 +331,57 @@
         {
           "name": "exports owner CRUD functions",
           "status": "pass",
-          "duration": "2.3085539999999583ms"
+          "duration": "2.0858749999999873ms"
         },
         {
           "name": "exports account CRUD functions",
           "status": "pass",
-          "duration": "0.4638999999999669ms"
+          "duration": "0.41900299999997515ms"
         },
         {
           "name": "exports asset functions",
           "status": "pass",
-          "duration": "0.4833879999999908ms"
+          "duration": "0.43415200000004006ms"
         },
         {
           "name": "exports transaction functions",
           "status": "pass",
-          "duration": "0.2584870000000592ms"
+          "duration": "0.23477900000000318ms"
         },
         {
           "name": "exports currency rate functions",
           "status": "pass",
-          "duration": "0.4096799999999803ms"
+          "duration": "0.3831639999999652ms"
         },
         {
           "name": "exports tax functions",
           "status": "pass",
-          "duration": "0.3549769999999626ms"
+          "duration": "0.3236739999999827ms"
         },
         {
           "name": "exports work experience functions",
           "status": "pass",
-          "duration": "0.30394700000010744ms"
+          "duration": "0.2743789999999535ms"
         },
         {
           "name": "exports salary functions",
           "status": "pass",
-          "duration": "0.4127369999999928ms"
+          "duration": "0.37902199999996355ms"
         },
         {
           "name": "exports retirement fund functions",
           "status": "pass",
-          "duration": "0.4786210000000892ms"
+          "duration": "0.4285380000000032ms"
         },
         {
           "name": "exports home loan functions",
           "status": "pass",
-          "duration": "0.5094360000000506ms"
+          "duration": "0.46438800000009905ms"
         },
         {
           "name": "exports insurance bonus functions",
           "status": "pass",
-          "duration": "0.2739239999999654ms"
+          "duration": "0.2481960000000072ms"
         }
       ]
     },
@@ -392,17 +392,17 @@
         {
           "name": "ASSET_TYPE_LABELS has all expected types",
           "status": "pass",
-          "duration": "2.3095930000000635ms"
+          "duration": "2.3257340000000113ms"
         },
         {
           "name": "ASSET_TYPE_COLORS has colors for all types in labels",
           "status": "pass",
-          "duration": "2.856832000000054ms"
+          "duration": "2.9045939999999746ms"
         },
         {
           "name": "has 16 asset types",
           "status": "pass",
-          "duration": "0.19891500000005635ms"
+          "duration": "0.2048780000000079ms"
         }
       ]
     }

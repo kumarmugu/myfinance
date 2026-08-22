@@ -35,36 +35,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Username already taken"));
-        }
-        if (userRepository.existsByEmail(request.getEmail())) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Email already registered"));
-        }
-
-        AppUser user = AppUser.builder()
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .displayName(request.getDisplayName() != null ? request.getDisplayName() : request.getUsername())
-                .build();
-
-        userRepository.save(user);
-
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("userId", user.getId());
-        claims.put("role", user.getRole());
-        UserDetails userDetails = new User(user.getUsername(), user.getPassword(), Collections.emptyList());
-        String token = jwtService.generateToken(claims, userDetails);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(AuthResponse.builder()
-                .token(token)
-                .userId(user.getId())
-                .username(user.getUsername())
-                .displayName(user.getDisplayName())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .build());
+        // Self-registration disabled. Users must be created by admin via /api/admin/users
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Self-registration is disabled. Contact your administrator."));
     }
 
     @PostMapping("/login")
