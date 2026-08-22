@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { TrendingUp, TrendingDown, Wallet, PiggyBank, Building2, Target, Camera, Users } from 'lucide-react';
+import { TrendingUp, TrendingDown, Wallet, PiggyBank, Building2, Target, Camera } from 'lucide-react';
 import { getDashboardSummary, getNetWorthHistory, getActiveHoldings, takeSnapshot, getOwners } from '../api';
 import { formatCurrency, formatPercent } from '../utils/formatters';
+import SearchableSelect from '../components/SearchableSelect';
 import type { DashboardSummary, NetWorthSnapshot, Holding, Owner, Currency } from '../types';
 import { ASSET_TYPE_LABELS, ASSET_TYPE_COLORS } from '../types';
 
@@ -88,12 +89,13 @@ export default function Dashboard() {
         </div>
         <div className="flex items-center gap-3">
           {/* Owner Selector */}
-          <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-1.5">
-            <Users size={15} className="text-slate-400" />
-            <select value={selectedOwner || ''} onChange={e => setSelectedOwner(e.target.value ? Number(e.target.value) : undefined)} className="text-sm border-none bg-transparent focus:outline-none text-slate-700 pr-6">
-              <option value="">All Owners</option>
-              {owners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-            </select>
+          <div className="w-44">
+            <SearchableSelect
+              options={[{ value: '', label: 'All Owners' }, ...owners.map(o => ({ value: o.id, label: o.name, icon: o.name[0] }))]}
+              value={selectedOwner || ''}
+              onChange={v => setSelectedOwner(v ? Number(v) : undefined)}
+              placeholder="All Owners"
+            />
           </div>
           {/* Currency Toggle */}
           <div className="flex bg-white border border-slate-200 rounded-lg overflow-hidden">

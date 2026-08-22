@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Plus, Trash2, ArrowUpCircle, ArrowDownCircle, Lock, Users } from 'lucide-react';
+import { Plus, Trash2, ArrowUpCircle, ArrowDownCircle, Lock } from 'lucide-react';
 import { getTransactions, createTransaction, deleteTransaction, getAssets, getAccounts, getOwners } from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import { formatCurrency, formatDate } from '../utils/formatters';
@@ -59,12 +59,13 @@ export default function Transactions() {
         <div><h1 className="text-2xl font-bold text-slate-800">Transactions</h1><p className="text-slate-500 text-sm mt-0.5">Record buy and sell transactions</p></div>
         <div className="flex items-center gap-3">
           {/* Owner Filter */}
-          <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-1.5">
-            <Users size={14} className="text-slate-400" />
-            <select value={filterOwner || ''} onChange={e => setFilterOwner(e.target.value ? Number(e.target.value) : undefined)} className="text-sm border-none bg-transparent focus:outline-none text-slate-700">
-              <option value="">All Owners</option>
-              {owners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-            </select>
+          <div className="w-44">
+            <SearchableSelect
+              options={[{ value: '', label: 'All Owners' }, ...owners.map(o => ({ value: o.id, label: o.name, icon: o.name[0] }))]}
+              value={filterOwner || ''}
+              onChange={v => setFilterOwner(v ? Number(v) : undefined)}
+              placeholder="All Owners"
+            />
           </div>
           <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
             <Plus size={16} /> New Transaction

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { Users } from 'lucide-react';
+import SearchableSelect from '../components/SearchableSelect';
 import { getNetWorthHistory, getTransactions, getActiveHoldings, getOwners, takeSnapshot } from '../api';
 import { formatCurrency, formatPercent } from '../utils/formatters';
 import type { NetWorthSnapshot, Transaction, Holding, Owner, Currency } from '../types';
@@ -99,12 +99,13 @@ export default function Reports() {
         <div><h1 className="text-2xl font-bold text-slate-800">Reports</h1><p className="text-slate-500 text-sm mt-0.5">Financial reports and analytics</p></div>
         <div className="flex items-center gap-3">
           {/* Owner Filter */}
-          <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-1.5">
-            <Users size={14} className="text-slate-400" />
-            <select value={selectedOwner || ''} onChange={e => setSelectedOwner(e.target.value ? Number(e.target.value) : undefined)} className="text-sm border-none bg-transparent focus:outline-none text-slate-700">
-              <option value="">All Owners</option>
-              {owners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-            </select>
+          <div className="w-44">
+            <SearchableSelect
+              options={[{ value: '', label: 'All Owners' }, ...owners.map(o => ({ value: o.id, label: o.name, icon: o.name[0] }))]}
+              value={selectedOwner || ''}
+              onChange={v => setSelectedOwner(v ? Number(v) : undefined)}
+              placeholder="All Owners"
+            />
           </div>
           {/* Currency Toggle */}
           <div className="flex bg-white border border-slate-200 rounded-lg overflow-hidden">
