@@ -159,7 +159,6 @@ export default function Dividends() {
       <div className="flex items-center gap-3 flex-wrap">
         <div className="w-44"><SearchableSelect options={[{ value: '', label: 'All Brokers' }, ...accounts.map(a => ({ value: a.id.toString(), label: a.name }))]} value={filterBroker} onChange={v => setFilterBroker(v.toString())} placeholder="All Brokers" /></div>
         <div className="w-36"><SearchableSelect options={[{ value: '', label: 'All Years' }, ...years.map(y => ({ value: y.toString(), label: y.toString() }))]} value={filterYear} onChange={v => setFilterYear(v.toString())} placeholder="All Years" /></div>
-        </select>
         <span className="text-xs text-slate-500">{filtered.length} records | Total: {formatCurrency(totalDividends)}</span>
       </div>
 
