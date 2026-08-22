@@ -200,52 +200,15 @@ User → CloudFront (https://myfinance.example.com)
         </div>
       </DocSection>
 
-      <DocSection icon={<Shield size={20} className="text-indigo-600" />} title="5. Why NOT Containerize">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <h4 className="font-medium text-red-800 text-sm mb-2">Docker/ECS/Fargate — Not Needed</h4>
-            <ul className="list-disc list-inside text-xs text-red-600 space-y-1">
-              <li>Single-user app, no scaling needed</li>
-              <li>Fargate minimum cost: ~$10/month</li>
-              <li>ECS adds complexity for no benefit</li>
-              <li>Docker image registry adds cost</li>
-              <li>Cold start delays with Fargate</li>
-            </ul>
-          </div>
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-            <h4 className="font-medium text-green-800 text-sm mb-2">Plain EC2 — Best Fit</h4>
-            <ul className="list-disc list-inside text-xs text-green-600 space-y-1">
-              <li>Simple: just Java + JAR on Linux</li>
-              <li>Cheapest: only pay compute when running</li>
-              <li>EBS persists data across stops</li>
-              <li>Easy to SSH and manage</li>
-              <li>Instant start (no image pull)</li>
-            </ul>
-          </div>
-        </div>
-      </DocSection>
-
-      <DocSection icon={<Database size={20} className="text-indigo-600" />} title="6. Setup Steps">
+      <DocSection icon={<Database size={20} className="text-indigo-600" />} title="5. Deployment Script">
         <div className="space-y-3">
-          <div className="flex items-start gap-3">
-            <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold shrink-0">1</span>
-            <div><p className="text-sm font-medium text-slate-700">Create S3 bucket for frontend</p><p className="text-xs text-slate-500">Enable static website hosting, upload <code>dist/</code> after build</p></div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold shrink-0">2</span>
-            <div><p className="text-sm font-medium text-slate-700">Launch EC2 t3.micro</p><p className="text-xs text-slate-500">Amazon Linux 2023, 8GB gp3 EBS, Security Group: allow 8080 from CloudFront/your IP</p></div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold shrink-0">3</span>
-            <div><p className="text-sm font-medium text-slate-700">Install Java 17 + deploy JAR</p><p className="text-xs text-slate-500"><code>sudo yum install java-17-amazon-corretto</code>, copy myfinance.jar, create systemd service</p></div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold shrink-0">4</span>
-            <div><p className="text-sm font-medium text-slate-700">Configure backup cron</p><p className="text-xs text-slate-500">Monthly cron to copy H2 db file to S3 backup bucket</p></div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold shrink-0">5</span>
-            <div><p className="text-sm font-medium text-slate-700">Update frontend API URL</p><p className="text-xs text-slate-500">Set <code>VITE_API_URL</code> to EC2 public IP/DNS, rebuild and re-upload to S3</p></div>
+          <p className="text-sm text-slate-600">A deployment script (<code className="bg-slate-100 px-1 rounded">scripts/deploy.sh</code>) is provided to deploy from any machine or from EC2 itself. It pulls the latest code from GitHub, builds both apps, and deploys.</p>
+          <div className="bg-slate-900 text-green-400 p-4 rounded-lg font-mono text-xs overflow-x-auto">
+            <pre>{`# On EC2 - deploy latest from GitHub:
+bash scripts/deploy.sh
+
+# Or specify a branch:
+bash scripts/deploy.sh feature/20-enhancements`}</pre>
           </div>
         </div>
       </DocSection>
