@@ -20,6 +20,7 @@ import Tax from './pages/Tax';
 import WorkExperience from './pages/WorkExperience';
 import Salary from './pages/Salary';
 import HomeLoans from './pages/HomeLoans';
+import BankSavings from './pages/BankSavings';
 import NetWorthConfig from './pages/NetWorthConfig';
 import TestResults from './pages/TestResults';
 import UserManagement from './pages/UserManagement';
@@ -79,6 +80,7 @@ function AppContent() {
       label: 'Fixed Deposits',
       items: [
         { to: '/fixed-deposits', icon: Landmark, label: 'All Deposits' },
+        { to: '/bank-savings', icon: Building2, label: 'Bank Savings' },
         { to: '/insurance', icon: Shield, label: 'Insurance' },
         { to: '/home-loans', icon: Home, label: 'Home Loans' },
       ],
@@ -175,6 +177,7 @@ function AppContent() {
               <Route path="/crypto" element={<Crypto />} />
               <Route path="/deposits" element={<Deposits />} />
               <Route path="/fixed-deposits" element={<FixedDeposits />} />
+              <Route path="/bank-savings" element={<BankSavings />} />
               <Route path="/insurance" element={<Insurance />} />
               <Route path="/home-loans" element={<HomeLoans />} />
               <Route path="/tax" element={<Tax />} />

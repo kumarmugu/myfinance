@@ -285,7 +285,6 @@ export default function FixedDeposits() {
                 <th className="text-left px-3 py-2.5 font-medium text-slate-600">Period</th>
                 <th className="text-right px-3 py-2.5 font-medium text-slate-600">Interest</th>
                 <th className="text-left px-3 py-2.5 font-medium text-slate-600">Status</th>
-                <th className="text-center px-3 py-2.5 font-medium text-slate-600" title="Include in Net Worth">NW</th>
                 <th className="px-3 py-2.5 w-16"></th>
               </tr>
             </thead>
@@ -309,11 +308,6 @@ export default function FixedDeposits() {
                       'bg-slate-100 text-slate-600'
                     }`}>{fd.status}</span>
                   </td>
-                  <td className="px-3 py-2.5 text-center">
-                    <button onClick={() => handleToggleNetWorth(fd)} className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${fd.includeInNetWorth ? 'bg-indigo-600 border-indigo-600' : 'border-slate-300 hover:border-indigo-400'}`} title={fd.includeInNetWorth ? `Included: ${formatSGD(fd.netWorthAmount || 0)}` : 'Click to include in net worth'}>
-                      {fd.includeInNetWorth && <Check size={12} className="text-white" />}
-                    </button>
-                  </td>
                   <td className="px-3 py-2.5">
                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button onClick={() => startEditFd(fd)} className="text-slate-400 hover:text-indigo-600"><Pencil size={13} /></button>
@@ -322,7 +316,7 @@ export default function FixedDeposits() {
                   </td>
                 </tr>
               ))}
-              {filteredFDs.length === 0 && <tr><td colSpan={10} className="px-4 py-12 text-center text-slate-400">No fixed deposits</td></tr>}
+              {filteredFDs.length === 0 && <tr><td colSpan={9} className="px-4 py-12 text-center text-slate-400">No fixed deposits</td></tr>}
             </tbody>
           </table>
         </div>
