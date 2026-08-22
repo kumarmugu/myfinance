@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Plus, Trash2, DollarSign } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { getDividends, getDividendSummary, createDividend, deleteDividend, getAccounts, getOwners } from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
+import SearchableSelect from '../components/SearchableSelect';
 import type { Dividend, Account, Owner, Currency } from '../types';
 
 export default function Dividends() {
@@ -126,26 +127,19 @@ export default function Dividends() {
           <h3 className="text-base font-semibold text-slate-800 mb-4">Record Dividend</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Broker *</label>
-              <select value={form.accountId} onChange={e => setForm({...form, accountId: Number(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required>
-                <option value={0}>Select broker...</option>
-                {accounts.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
-              </select></div>
+              <SearchableSelect options={accounts.map(a => ({ value: a.id, label: a.name }))} value={form.accountId} onChange={v => setForm({...form, accountId: Number(v)})} placeholder="Select broker..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Instrument *</label>
               <input type="text" value={form.instrument} onChange={e => setForm({...form, instrument: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="e.g. VOO, D05" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Amount *</label>
               <input type="number" step="any" value={form.amount || ''} onChange={e => setForm({...form, amount: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Currency</label>
-              <select value={form.currency} onChange={e => setForm({...form, currency: e.target.value as Currency})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-                <option value="SGD">SGD</option><option value="USD">USD</option>
-              </select></div>
+              <SearchableSelect options={['SGD','USD','EUR','LKR','INR'].map(c => ({ value: c, label: c }))} value={form.currency} onChange={v => setForm({...form, currency: v as Currency})} placeholder="Currency" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Date *</label>
               <input type="date" value={form.receivedDate} onChange={e => setForm({...form, receivedDate: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Year</label>
               <input type="number" value={form.year} onChange={e => setForm({...form, year: parseInt(e.target.value) || new Date().getFullYear()})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Quarter</label>
-              <select value={form.quarter} onChange={e => setForm({...form, quarter: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-                <option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option>
-              </select></div>
+              <SearchableSelect options={['Q1','Q2','Q3','Q4'].map(q => ({ value: q, label: q }))} value={form.quarter} onChange={v => setForm({...form, quarter: v})} placeholder="Quarter" /></div>
             <div className="flex items-end gap-2">
               <button type="submit" className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700">Save</button>
               <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
@@ -156,14 +150,8 @@ export default function Dividends() {
 
       {/* Filters */}
       <div className="flex items-center gap-3 flex-wrap">
-        <DollarSign size={15} className="text-slate-400" />
-        <select value={filterBroker} onChange={e => setFilterBroker(e.target.value)} className="border border-slate-300 rounded-lg px-3 py-1.5 text-sm">
-          <option value="">All Brokers</option>
-          {accounts.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
-        </select>
-        <select value={filterYear} onChange={e => setFilterYear(e.target.value)} className="border border-slate-300 rounded-lg px-3 py-1.5 text-sm">
-          <option value="">All Years</option>
-          {years.map(y => <option key={y} value={y}>{y}</option>)}
+        <div className="w-44"><SearchableSelect options={[{ value: '', label: 'All Brokers' }, ...accounts.map(a => ({ value: a.id.toString(), label: a.name }))]} value={filterBroker} onChange={v => setFilterBroker(v.toString())} placeholder="All Brokers" /></div>
+        <div className="w-36"><SearchableSelect options={[{ value: '', label: 'All Years' }, ...years.map(y => ({ value: y.toString(), label: y.toString() }))]} value={filterYear} onChange={v => setFilterYear(v.toString())} placeholder="All Years" /></div>
         </select>
         <span className="text-xs text-slate-500">{filtered.length} records | Total: {formatCurrency(totalDividends)}</span>
       </div>

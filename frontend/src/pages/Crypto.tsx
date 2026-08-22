@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { Plus, TrendingUp, TrendingDown, Bitcoin, Wallet } from 'lucide-react';
 import { getActiveHoldings, getTransactions, getAssets, getAccounts, getOwners, createTransaction } from '../api';
+import SearchableSelect from '../components/SearchableSelect';
 import { formatCurrency, formatPercent } from '../utils/formatters';
 import type { Holding, Transaction, Asset, Account, Owner, TransactionRequest } from '../types';
 
@@ -88,15 +89,9 @@ export default function Crypto() {
           <h3 className="text-base font-semibold text-slate-800 mb-4">Add Crypto Transaction</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Coin</label>
-              <select value={form.assetId} onChange={e => setForm({...form, assetId: Number(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required>
-                <option value={0}>Select coin...</option>
-                {assets.map(a => <option key={a.id} value={a.id}>{a.symbol} - {a.name}</option>)}
-              </select></div>
+              <SearchableSelect options={assets.map(a => ({ value: a.id, label: `${a.symbol} - ${a.name}` }))} value={form.assetId} onChange={v => setForm({...form, assetId: Number(v)})} placeholder="Select coin..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Exchange</label>
-              <select value={form.accountId} onChange={e => setForm({...form, accountId: Number(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required>
-                <option value={0}>Select exchange...</option>
-                {accounts.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
-              </select></div>
+              <SearchableSelect options={accounts.map(a => ({ value: a.id, label: a.name }))} value={form.accountId} onChange={v => setForm({...form, accountId: Number(v)})} placeholder="Select exchange..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Type</label>
               <div className="flex rounded-lg overflow-hidden border border-slate-300">
                 <button type="button" onClick={() => setForm({...form, transactionType: 'BUY'})} className={`flex-1 py-2 text-sm font-medium ${form.transactionType === 'BUY' ? 'bg-green-600 text-white' : 'bg-white text-slate-600'}`}>Buy</button>

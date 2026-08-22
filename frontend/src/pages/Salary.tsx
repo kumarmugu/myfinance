@@ -147,13 +147,9 @@ export default function Salary() {
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Company *</label>
               <SearchableSelect options={companies.map(c => ({ value: c, label: c }))} value={bulkForm.company} onChange={v => setBulkForm({...bulkForm, company: v})} placeholder="Select..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">From Month</label>
-              <select value={bulkForm.fromMonth} onChange={e => setBulkForm({...bulkForm, fromMonth: parseInt(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-                {MONTHS.slice(1).map((m, i) => <option key={i+1} value={i+1}>{m}</option>)}
-              </select></div>
+              <SearchableSelect options={MONTHS.slice(1).map((m, i) => ({ value: i+1, label: m }))} value={bulkForm.fromMonth} onChange={v => setBulkForm({...bulkForm, fromMonth: Number(v)})} placeholder="From" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">To Month</label>
-              <select value={bulkForm.toMonth} onChange={e => setBulkForm({...bulkForm, toMonth: parseInt(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-                {MONTHS.slice(1).map((m, i) => <option key={i+1} value={i+1}>{m}</option>)}
-              </select></div>
+              <SearchableSelect options={MONTHS.slice(1).map((m, i) => ({ value: i+1, label: m }))} value={bulkForm.toMonth} onChange={v => setBulkForm({...bulkForm, toMonth: Number(v)})} placeholder="To" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Amount *</label>
               <input type="number" step="any" value={bulkForm.amount || ''} onChange={e => setBulkForm({...bulkForm, amount: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Basic</label>
@@ -188,9 +184,7 @@ export default function Salary() {
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Year *</label>
               <input type="number" value={form.year} onChange={e => setForm({...form, year: parseInt(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Month *</label>
-              <select value={form.month} onChange={e => setForm({...form, month: parseInt(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
-                {MONTHS.slice(1).map((m, i) => <option key={i+1} value={i+1}>{m}</option>)}
-              </select></div>
+              <SearchableSelect options={MONTHS.slice(1).map((m, i) => ({ value: i+1, label: m }))} value={form.month} onChange={v => setForm({...form, month: Number(v)})} placeholder="Month" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Company *</label>
               <SearchableSelect options={companies.map(c => ({ value: c, label: c }))} value={form.company} onChange={v => setForm({...form, company: v})} placeholder="Select company..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Amount *</label>

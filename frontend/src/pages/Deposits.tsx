@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Plus, ArrowDownCircle, ArrowUpCircle, Trash2, Building2 } from 'lucide-react';
+import { Plus, ArrowDownCircle, ArrowUpCircle, Trash2 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { getAccountDeposits, createAccountDeposit, deleteAccountDeposit, getAccounts } from '../api';
+import SearchableSelect from '../components/SearchableSelect';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import type { AccountDeposit, Account, Currency } from '../types';
 
@@ -110,10 +111,7 @@ export default function Deposits() {
           <h3 className="text-base font-semibold text-slate-800 mb-4">Record Deposit/Withdrawal</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Account *</label>
-              <select value={form.accountId} onChange={e => setForm({...form, accountId: Number(e.target.value)})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required>
-                <option value={0}>Select account...</option>
-                {accounts.filter(a => a.accountType === 'BROKER' || a.accountType === 'CRYPTO_EXCHANGE').map(a => <option key={a.id} value={a.id}>{a.name} ({a.currency})</option>)}
-              </select></div>
+              <SearchableSelect options={accounts.filter(a => a.accountType === 'BROKER' || a.accountType === 'CRYPTO_EXCHANGE').map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))} value={form.accountId} onChange={v => setForm({...form, accountId: Number(v)})} placeholder="Select account..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Type</label>
               <div className="flex rounded-lg overflow-hidden border border-slate-300">
                 <button type="button" onClick={() => setForm({...form, depositType: 'DEPOSIT'})} className={`flex-1 py-2 text-sm font-medium ${form.depositType === 'DEPOSIT' ? 'bg-green-600 text-white' : 'bg-white text-slate-600'}`}>Deposit</button>
@@ -135,11 +133,7 @@ export default function Deposits() {
 
       {/* Filter + Table */}
       <div className="flex items-center gap-3">
-        <Building2 size={15} className="text-slate-400" />
-        <select value={filterAccount} onChange={e => setFilterAccount(e.target.value)} className="border border-slate-300 rounded-lg px-3 py-1.5 text-sm">
-          <option value="">All Accounts</option>
-          {accounts.filter(a => a.accountType === 'BROKER' || a.accountType === 'CRYPTO_EXCHANGE').map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
-        </select>
+        <div className="w-48"><SearchableSelect options={[{ value: '', label: 'All Accounts' }, ...accounts.filter(a => a.accountType === 'BROKER' || a.accountType === 'CRYPTO_EXCHANGE').map(a => ({ value: a.id.toString(), label: a.name }))]} value={filterAccount} onChange={v => setFilterAccount(v.toString())} placeholder="All Accounts" /></div>
         <span className="text-xs text-slate-500">{filtered.length} records</span>
       </div>
 

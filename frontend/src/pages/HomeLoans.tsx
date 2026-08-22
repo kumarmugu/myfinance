@@ -180,7 +180,7 @@ export default function HomeLoans() {
                     <div><label className="block text-[10px] text-slate-500">Interest</label><input type="number" step="any" value={paymentForm.interestPortion || ''} onChange={e => setPaymentForm({...paymentForm, interestPortion: parseFloat(e.target.value) || 0})} className="w-full border rounded px-2 py-1 text-xs" /></div>
                     <div><label className="block text-[10px] text-slate-500">Balance After</label><input type="number" step="any" value={paymentForm.balanceAfter || ''} onChange={e => setPaymentForm({...paymentForm, balanceAfter: parseFloat(e.target.value) || 0})} className="w-full border rounded px-2 py-1 text-xs" /></div>
                     <div><label className="block text-[10px] text-slate-500">Type</label>
-                      <select value={paymentForm.paymentType} onChange={e => setPaymentForm({...paymentForm, paymentType: e.target.value})} className="w-full border rounded px-2 py-1 text-xs">
+                      <select value={paymentForm.paymentType} onChange={e => setPaymentForm({...paymentForm, paymentType: e.target.value})} className="w-full border rounded px-2 py-1.5 text-xs">
                         <option value="REGULAR">Regular</option><option value="LUMP_SUM">Lump Sum</option><option value="PREPAYMENT">Prepayment</option>
                       </select></div>
                     <div className="flex items-end gap-1"><button type="submit" className="px-2 py-1 bg-indigo-600 text-white rounded text-[10px] font-medium">Save</button><button type="button" onClick={() => setShowPaymentForm(false)} className="px-2 py-1 bg-slate-200 rounded text-[10px]">X</button></div>
