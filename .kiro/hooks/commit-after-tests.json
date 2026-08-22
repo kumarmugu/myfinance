@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Commit & Push After Tests",
+      "trigger": "Stop",
+      "description": "After tests run on session stop, commits any pending changes (including updated test-results.json, docs) and pushes to the current branch.",
+      "action": {
+        "type": "command",
+        "command": "cd /Users/mugu/Documents/Projects/myfinance && git add -A && git diff --cached --quiet || (git commit -m \"chore: auto-commit after test run [skip ci]\" && git push)",
+        "timeout": 60
+      }
+    }
+  ]
+}

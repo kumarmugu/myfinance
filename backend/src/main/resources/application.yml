@@ -27,3 +27,12 @@ app:
   jwt:
     secret: myfinance-jwt-secret-key-please-change-in-production-at-least-256-bits
     expiration: 86400000
+
+# OpenAPI / Swagger
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
