@@ -1,5 +1,5 @@
 #!/bin/bash
-# MyFinance Deployment Script
+# MyFinance Deployment Script (Multi-Tenant)
 # Run this on EC2 to pull latest code, build, and deploy.
 # Usage: bash scripts/deploy.sh [branch-name]
 #
@@ -8,6 +8,12 @@
 #   - Node.js 18+ (via nvm)
 #   - AWS CLI configured (for S3 upload)
 #   - Git with repo access
+#
+# FIRST DEPLOY NOTE:
+#   If upgrading from a pre-multi-tenant version, delete the old DB:
+#   rm -f /home/ec2-user/data/myfinance.mv.db
+#   The app will create a fresh DB with userId columns on all tables.
+#   Default admin: admin / admin123 (ADMIN role)
 
 set -e
 
