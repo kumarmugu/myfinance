@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home, Settings, FlaskConical } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home, Settings, FlaskConical, Users } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -22,6 +22,7 @@ import Salary from './pages/Salary';
 import HomeLoans from './pages/HomeLoans';
 import NetWorthConfig from './pages/NetWorthConfig';
 import TestResults from './pages/TestResults';
+import UserManagement from './pages/UserManagement';
 import UserGuide from './pages/UserGuide';
 import Docs from './pages/Docs';
 
@@ -92,6 +93,7 @@ function AppContent() {
         { to: '/net-worth-config', icon: Settings, label: 'Net Worth Config' },
         { to: '/guide', icon: HelpCircle, label: 'User Guide' },
         ...(isAdmin ? [
+          { to: '/admin/users', icon: Users, label: 'User Management' },
           { to: '/test-results', icon: FlaskConical, label: 'Test Results' },
           { to: '/docs', icon: FileText, label: 'Documentation' },
         ] : []),
@@ -175,6 +177,7 @@ function AppContent() {
               <Route path="/assets" element={<Assets />} />
               <Route path="/fx-rates" element={<FxRates />} />
               <Route path="/net-worth-config" element={<NetWorthConfig />} />
+              <Route path="/admin/users" element={<UserManagement />} />
               <Route path="/test-results" element={<TestResults />} />
               <Route path="/guide" element={<UserGuide />} />
               <Route path="/docs" element={<Docs />} />
