@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FileText, Server, Palette, Database, Layout, Layers, Globe, Users, BarChart3, Shield, Rocket } from 'lucide-react';
 
-type TabId = 'architecture' | 'design';
+type TabId = 'architecture' | 'design' | 'api';
 
 export default function Docs() {
   const [activeTab, setActiveTab] = useState<TabId>('architecture');
@@ -10,7 +10,7 @@ export default function Docs() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-slate-800">Documentation</h1>
-        <p className="text-slate-500 text-sm mt-1">Architecture and design documents for MyFinance</p>
+        <p className="text-slate-500 text-sm mt-1">Architecture, design, and API documentation</p>
       </div>
 
       {/* Tab Navigation */}
@@ -37,9 +37,45 @@ export default function Docs() {
           <Palette size={16} />
           Design
         </button>
+        <button
+          onClick={() => setActiveTab('api')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            activeTab === 'api'
+              ? 'bg-white text-indigo-700 shadow-sm'
+              : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Globe size={16} />
+          API Docs (Swagger)
+        </button>
       </div>
 
-      {activeTab === 'architecture' ? <ArchitectureDoc /> : <DesignDoc />}
+      {activeTab === 'architecture' ? <ArchitectureDoc /> : activeTab === 'design' ? <DesignDoc /> : <ApiDocsEmbed />}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────── */
+/*                   EMBEDDED SWAGGER UI                     */
+/* ─────────────────────────────────────────────────────── */
+
+function ApiDocsEmbed() {
+  return (
+    <div className="space-y-4">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-start gap-2">
+        <Globe size={16} className="text-blue-600 mt-0.5 shrink-0" />
+        <div>
+          <p className="text-sm text-blue-800 font-medium">Live API Documentation</p>
+          <p className="text-xs text-blue-600">This is the OpenAPI (Swagger) spec auto-generated from the backend. Requires the backend to be running on port 8080.</p>
+        </div>
+      </div>
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden" style={{ height: 'calc(100vh - 280px)' }}>
+        <iframe
+          src="http://localhost:8080/swagger-ui.html"
+          className="w-full h-full border-0"
+          title="Swagger UI - MyFinance API"
+        />
+      </div>
     </div>
   );
 }

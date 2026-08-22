@@ -33,9 +33,9 @@ Before completing work, ensure these are up to date:
 
 ### 4. OpenAPI Specification
 - Auto-generated via springdoc-openapi at runtime
-- Available at: `http://localhost:8080/v3/api-docs`
-- Swagger UI at: `http://localhost:8080/swagger-ui.html`
-- Ensure all new controllers have proper `@Operation` and `@Tag` annotations
+- Embedded in the app at: Documentation → API Docs (Swagger) tab
+- Raw JSON spec at: `http://localhost:8080/v3/api-docs`
+- Ensure all new controllers have proper `@Tag` annotations for grouping
 
 ## Documentation Quality
 
