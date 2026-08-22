@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { FileText, Server, Palette, Database, Layout, Layers, Globe, Users, BarChart3, Shield, Rocket } from 'lucide-react';
+import { FileText, Server, Palette, Database, Layout, Layers, Globe, Users, BarChart3, Shield, Rocket, Cloud } from 'lucide-react';
 import SwaggerUI from 'swagger-ui-react';
 import 'swagger-ui-react/swagger-ui.css';
 
-type TabId = 'architecture' | 'design' | 'api';
+type TabId = 'architecture' | 'design' | 'deployment' | 'api';
 
 export default function Docs() {
   const [activeTab, setActiveTab] = useState<TabId>('architecture');
@@ -40,6 +40,17 @@ export default function Docs() {
           Design
         </button>
         <button
+          onClick={() => setActiveTab('deployment')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            activeTab === 'deployment'
+              ? 'bg-white text-indigo-700 shadow-sm'
+              : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Cloud size={16} />
+          Deployment
+        </button>
+        <button
           onClick={() => setActiveTab('api')}
           className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'api'
@@ -52,7 +63,192 @@ export default function Docs() {
         </button>
       </div>
 
-      {activeTab === 'architecture' ? <ArchitectureDoc /> : activeTab === 'design' ? <DesignDoc /> : <ApiDocsEmbed />}
+      {activeTab === 'architecture' ? <ArchitectureDoc /> : activeTab === 'design' ? <DesignDoc /> : activeTab === 'deployment' ? <DeploymentDoc /> : <ApiDocsEmbed />}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────── */
+/*                    DEPLOYMENT DOCUMENT                    */
+/* ─────────────────────────────────────────────────────── */
+
+function DeploymentDoc() {
+  return (
+    <div className="space-y-8">
+      <DocSection icon={<Cloud size={20} className="text-indigo-600" />} title="1. Deployment Architecture">
+        <p className="text-sm text-slate-600 mb-4">Optimized for minimal cost: pay only when you use it. Frontend is always available (static), backend runs on-demand.</p>
+        <div className="bg-slate-900 text-green-400 p-5 rounded-lg font-mono text-xs overflow-x-auto">
+          <pre>{`
+┌─────────────────────────────────────────────────────────────────────┐
+│                         AWS Cloud                                     │
+│                                                                       │
+│  ┌──────────────────────┐         ┌──────────────────────────────┐  │
+│  │    S3 + CloudFront    │         │      EC2 (t3.micro)          │  │
+│  │                       │         │                              │  │
+│  │  React Frontend       │  API    │  Spring Boot Backend         │  │
+│  │  (Static Build)       │────────▶│  H2 Database (file-based)   │  │
+│  │                       │         │  Port 8080                   │  │
+│  │  Always available     │         │  Started/Stopped on demand   │  │
+│  │  ~$0.50/month         │         │  ~$0.30/month (1hr/day)     │  │
+│  └──────────────────────┘         └──────────────┬───────────────┘  │
+│                                                    │                  │
+│                                    ┌───────────────▼───────────────┐ │
+│                                    │         EBS Volume             │ │
+│                                    │   (8GB gp3 - persists         │ │
+│                                    │    when EC2 is stopped)        │ │
+│                                    │   ~$0.64/month                │ │
+│                                    └───────────────┬───────────────┘ │
+│                                                    │  Monthly         │
+│                                    ┌───────────────▼───────────────┐ │
+│                                    │     S3 Backup Bucket          │ │
+│                                    │   (DB snapshots, ~free)       │ │
+│                                    └───────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────┘
+
+User → CloudFront (https://myfinance.example.com)
+     → S3 serves React app
+     → React calls EC2 API (when backend is running)
+`}</pre>
+        </div>
+      </DocSection>
+
+      <DocSection icon={<Server size={20} className="text-indigo-600" />} title="2. Cost Estimate (1 hour/day usage)">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="text-left px-4 py-2 font-medium text-slate-600">Service</th>
+                <th className="text-left px-4 py-2 font-medium text-slate-600">Spec</th>
+                <th className="text-left px-4 py-2 font-medium text-slate-600">Usage</th>
+                <th className="text-right px-4 py-2 font-medium text-slate-600">Monthly Cost</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              <tr><td className="px-4 py-2.5 font-medium">S3 (Frontend)</td><td className="px-4 py-2.5">Static hosting</td><td className="px-4 py-2.5">~5MB build, low traffic</td><td className="px-4 py-2.5 text-right">~$0.03</td></tr>
+              <tr><td className="px-4 py-2.5 font-medium">CloudFront</td><td className="px-4 py-2.5">CDN + HTTPS</td><td className="px-4 py-2.5">~1000 requests/month</td><td className="px-4 py-2.5 text-right">~$0.50</td></tr>
+              <tr><td className="px-4 py-2.5 font-medium">EC2</td><td className="px-4 py-2.5">t3.micro (1 vCPU, 1GB)</td><td className="px-4 py-2.5">30 hrs/month (1hr/day)</td><td className="px-4 py-2.5 text-right">~$0.31</td></tr>
+              <tr><td className="px-4 py-2.5 font-medium">EBS Volume</td><td className="px-4 py-2.5">8GB gp3</td><td className="px-4 py-2.5">Always attached (even when stopped)</td><td className="px-4 py-2.5 text-right">~$0.64</td></tr>
+              <tr><td className="px-4 py-2.5 font-medium">Elastic IP</td><td className="px-4 py-2.5">Static public IP</td><td className="px-4 py-2.5">Free when EC2 is running</td><td className="px-4 py-2.5 text-right">~$3.60*</td></tr>
+              <tr><td className="px-4 py-2.5 font-medium">S3 (Backups)</td><td className="px-4 py-2.5">DB backup bucket</td><td className="px-4 py-2.5">~50MB/month</td><td className="px-4 py-2.5 text-right">~$0.01</td></tr>
+              <tr className="bg-indigo-50 font-semibold"><td className="px-4 py-2.5" colSpan={3}>Total Estimated Monthly Cost</td><td className="px-4 py-2.5 text-right text-indigo-700">~$5.09</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg p-3">
+          <p className="text-xs text-amber-700">* Elastic IP costs $3.60/month when EC2 is stopped (AWS charges for unused EIPs). <b>Alternative:</b> Skip Elastic IP and use the EC2 public DNS (changes on restart) or use a Lambda function to update DNS on start.</p>
+        </div>
+        <div className="mt-3 bg-green-50 border border-green-200 rounded-lg p-3">
+          <p className="text-xs text-green-700"><b>Cheapest option (~$1.50/month):</b> Skip Elastic IP + CloudFront. Use S3 website hosting directly + EC2 public DNS. Frontend calls backend via the dynamic EC2 URL (update .env on start).</p>
+        </div>
+      </DocSection>
+
+      <DocSection icon={<Layout size={20} className="text-indigo-600" />} title="3. Component Details">
+        <div className="space-y-4">
+          <div>
+            <h4 className="font-medium text-slate-700 mb-2">Frontend (S3 + CloudFront)</h4>
+            <ul className="list-disc list-inside text-sm text-slate-600 space-y-1">
+              <li>Run <code className="bg-slate-100 px-1 rounded">npm run build</code> to generate static files in <code className="bg-slate-100 px-1 rounded">dist/</code></li>
+              <li>Upload <code className="bg-slate-100 px-1 rounded">dist/</code> to S3 bucket with static website hosting</li>
+              <li>CloudFront provides HTTPS and caching (optional but recommended)</li>
+              <li>Frontend is <b>always accessible</b> even when backend is off</li>
+              <li>Shows a "Backend offline" message if API calls fail</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-medium text-slate-700 mb-2">Backend (EC2 t3.micro)</h4>
+            <ul className="list-disc list-inside text-sm text-slate-600 space-y-1">
+              <li>Amazon Linux 2023 or Ubuntu 22.04</li>
+              <li>Install Java 17 (Temurin) + Maven</li>
+              <li>Clone repo, run <code className="bg-slate-100 px-1 rounded">./mvnw spring-boot:run</code></li>
+              <li>H2 database stores data in <code className="bg-slate-100 px-1 rounded">/home/ec2-user/data/myfinance.mv.db</code></li>
+              <li>EBS volume persists data even when instance is stopped</li>
+              <li>Use a systemd service for auto-start on boot</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-medium text-slate-700 mb-2">Database Backup (Monthly to S3)</h4>
+            <ul className="list-disc list-inside text-sm text-slate-600 space-y-1">
+              <li>Cron job on EC2: <code className="bg-slate-100 px-1 rounded">0 2 1 * * aws s3 cp /data/myfinance.mv.db s3://myfinance-backups/$(date +%Y-%m).db</code></li>
+              <li>S3 Lifecycle policy to delete backups older than 12 months</li>
+              <li>Can also trigger backup before stopping the instance</li>
+            </ul>
+          </div>
+        </div>
+      </DocSection>
+
+      <DocSection icon={<Rocket size={20} className="text-indigo-600" />} title="4. Start/Stop Workflow">
+        <div className="space-y-4">
+          <h4 className="font-medium text-slate-700">Daily Usage Pattern</h4>
+          <div className="bg-slate-50 p-4 rounded-lg font-mono text-xs space-y-2">
+            <p className="text-green-500"># Start (when you want to use the app)</p>
+            <p>aws ec2 start-instances --instance-ids i-xxxxx</p>
+            <p className="text-slate-400"># Wait ~30 seconds for boot + Spring Boot startup</p>
+            <p className="text-slate-400"># Access: https://myfinance.example.com (frontend always up)</p>
+            <p className="text-slate-400"># Backend auto-starts via systemd on boot</p>
+            <p></p>
+            <p className="text-red-400"># Stop (when done, to save cost)</p>
+            <p>aws ec2 stop-instances --instance-ids i-xxxxx</p>
+            <p className="text-slate-400"># Data persists on EBS. No charge for compute.</p>
+          </div>
+
+          <h4 className="font-medium text-slate-700 mt-4">Automation Options</h4>
+          <ul className="list-disc list-inside text-sm text-slate-600 space-y-1">
+            <li><b>AWS CLI script:</b> Simple shell aliases for start/stop</li>
+            <li><b>AWS Lambda + EventBridge:</b> Auto-start at 8pm, auto-stop at 9pm (schedule)</li>
+            <li><b>Mobile shortcut:</b> AWS Console app on phone to start/stop</li>
+          </ul>
+        </div>
+      </DocSection>
+
+      <DocSection icon={<Shield size={20} className="text-indigo-600" />} title="5. Why NOT Containerize">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <h4 className="font-medium text-red-800 text-sm mb-2">Docker/ECS/Fargate — Not Needed</h4>
+            <ul className="list-disc list-inside text-xs text-red-600 space-y-1">
+              <li>Single-user app, no scaling needed</li>
+              <li>Fargate minimum cost: ~$10/month</li>
+              <li>ECS adds complexity for no benefit</li>
+              <li>Docker image registry adds cost</li>
+              <li>Cold start delays with Fargate</li>
+            </ul>
+          </div>
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <h4 className="font-medium text-green-800 text-sm mb-2">Plain EC2 — Best Fit</h4>
+            <ul className="list-disc list-inside text-xs text-green-600 space-y-1">
+              <li>Simple: just Java + JAR on Linux</li>
+              <li>Cheapest: only pay compute when running</li>
+              <li>EBS persists data across stops</li>
+              <li>Easy to SSH and manage</li>
+              <li>Instant start (no image pull)</li>
+            </ul>
+          </div>
+        </div>
+      </DocSection>
+
+      <DocSection icon={<Database size={20} className="text-indigo-600" />} title="6. Setup Steps">
+        <div className="space-y-3">
+          <div className="flex items-start gap-3">
+            <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold shrink-0">1</span>
+            <div><p className="text-sm font-medium text-slate-700">Create S3 bucket for frontend</p><p className="text-xs text-slate-500">Enable static website hosting, upload <code>dist/</code> after build</p></div>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold shrink-0">2</span>
+            <div><p className="text-sm font-medium text-slate-700">Launch EC2 t3.micro</p><p className="text-xs text-slate-500">Amazon Linux 2023, 8GB gp3 EBS, Security Group: allow 8080 from CloudFront/your IP</p></div>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold shrink-0">3</span>
+            <div><p className="text-sm font-medium text-slate-700">Install Java 17 + deploy JAR</p><p className="text-xs text-slate-500"><code>sudo yum install java-17-amazon-corretto</code>, copy myfinance.jar, create systemd service</p></div>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold shrink-0">4</span>
+            <div><p className="text-sm font-medium text-slate-700">Configure backup cron</p><p className="text-xs text-slate-500">Monthly cron to copy H2 db file to S3 backup bucket</p></div>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold shrink-0">5</span>
+            <div><p className="text-sm font-medium text-slate-700">Update frontend API URL</p><p className="text-xs text-slate-500">Set <code>VITE_API_URL</code> to EC2 public IP/DNS, rebuild and re-upload to S3</p></div>
+          </div>
+        </div>
+      </DocSection>
     </div>
   );
 }
