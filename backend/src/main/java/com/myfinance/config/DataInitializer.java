@@ -6,7 +6,6 @@ import com.myfinance.repository.*;
 import com.myfinance.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -15,6 +14,7 @@ import java.time.LocalDate;
 @Component
 @RequiredArgsConstructor
 @org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "app.init-data", havingValue = "true", matchIfMissing = true)
+@org.springframework.core.annotation.Order(2)
 public class DataInitializer implements CommandLineRunner {
 
     private final OwnerRepository ownerRepository;
@@ -31,7 +31,6 @@ public class DataInitializer implements CommandLineRunner {
     private final NetWorthSnapshotRepository netWorthSnapshotRepository;
     private final TransactionService transactionService;
     private final AppUserRepository appUserRepository;
-    private final PasswordEncoder passwordEncoder;
     private final SalaryRecordRepository salaryRecordRepository;
     private final TaxRecordRepository taxRecordRepository;
     private final WorkExperienceRepository workExperienceRepository;
@@ -42,14 +41,9 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) {
         if (ownerRepository.count() > 0) return;
 
-        // ─── Default Admin User ───
-        AppUser adminUser = appUserRepository.save(AppUser.builder()
-                .username("admin")
-                .email("admin@myfinance.local")
-                .password(passwordEncoder.encode("admin123"))
-                .displayName("Admin")
-                .role("ADMIN")
-                .build());
+        // Admin user is created by AdminUserInitializer
+        AppUser adminUser = appUserRepository.findByUsername("admin")
+                .orElseThrow(() -> new RuntimeException("Admin user not found"));
         Long adminId = adminUser.getId();
 
         // ═══════════════════════════════════════════════════════
