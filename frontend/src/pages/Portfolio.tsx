@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { getActiveHoldings, getSoldPositions, getShortTermTrades } from '../api';
 import { formatCurrency, formatPercent } from '../utils/formatters';
-import type { Holding, SoldPosition } from '../types';
+import type { Holding, SoldPosition, Currency } from '../types';
 import { ASSET_TYPE_LABELS, ASSET_TYPE_COLORS } from '../types';
 
 type Tab = 'holdings' | 'sold' | 'shortTerm';
@@ -13,6 +13,7 @@ export default function Portfolio() {
   const [sold, setSold] = useState<SoldPosition[]>([]);
   const [shortTerm, setShortTerm] = useState<SoldPosition[]>([]);
   const [loading, setLoading] = useState(true);
+  const [displayCurrency, setDisplayCurrency] = useState<Currency>('SGD');
 
   useEffect(() => { loadData(); }, []);
 
@@ -27,6 +28,9 @@ export default function Portfolio() {
   };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
+
+  const cFactor = displayCurrency === 'USD' ? 1 / 1.35 : 1;
+  const fmt = (v: number, cur?: Currency) => formatCurrency(v * cFactor, displayCurrency);
 
   const holdingsWithValue = holdings.map(h => {
     const currentPrice = h.asset.currentPrice || h.averageBuyPrice;
@@ -49,9 +53,15 @@ export default function Portfolio() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-800">Portfolio</h1>
-        <p className="text-slate-500 text-sm mt-1">Your current holdings, sold positions, and short-term trades</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-800">Portfolio</h1>
+          <p className="text-slate-500 text-sm mt-1">Your current holdings, sold positions, and short-term trades</p>
+        </div>
+        <div className="flex bg-white border border-slate-200 rounded-lg overflow-hidden">
+          <button onClick={() => setDisplayCurrency('SGD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'SGD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>SGD</button>
+          <button onClick={() => setDisplayCurrency('USD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'USD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>USD</button>
+        </div>
       </div>
 
       {/* Tabs */}

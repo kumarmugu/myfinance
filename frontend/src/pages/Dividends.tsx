@@ -16,6 +16,7 @@ export default function Dividends() {
   const [loading, setLoading] = useState(true);
   const [filterBroker, setFilterBroker] = useState<string>('');
   const [filterYear, setFilterYear] = useState<string>('');
+  const [displayCurrency, setDisplayCurrency] = useState<Currency>('SGD');
 
   const [form, setForm] = useState({ accountId: 0, ownerId: 0, instrument: '', amount: 0, currency: 'SGD' as Currency, receivedDate: new Date().toISOString().split('T')[0], year: new Date().getFullYear(), quarter: 'Q1', notes: '' });
 
@@ -72,9 +73,15 @@ export default function Dividends() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-2xl font-bold text-slate-800">Dividends</h1><p className="text-slate-500 text-sm mt-0.5">Track and manage dividend income</p></div>
-        <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
-          <Plus size={16} /> Record Dividend
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="flex bg-white border border-slate-200 rounded-lg overflow-hidden">
+            <button onClick={() => setDisplayCurrency('SGD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'SGD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>SGD</button>
+            <button onClick={() => setDisplayCurrency('USD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'USD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>USD</button>
+          </div>
+          <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
+            <Plus size={16} /> Record Dividend
+          </button>
+        </div>
       </div>
 
       {/* Summary */}
