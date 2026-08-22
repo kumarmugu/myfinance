@@ -11,4 +11,5 @@ public interface TaxRecordRepository extends JpaRepository<TaxRecord, Long> {
     List<TaxRecord> findAllByOrderByAssessmentYearDesc();
     List<TaxRecord> findByOwnerIdOrderByAssessmentYearDesc(Long ownerId);
     List<TaxRecord> findByCountryOrderByAssessmentYearDesc(String country);
+    List<TaxRecord> findByUserIdOrderByAssessmentYearDesc(Long userId);
 }

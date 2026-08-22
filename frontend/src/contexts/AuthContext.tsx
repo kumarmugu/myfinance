@@ -2,9 +2,11 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import api from '../api';
 
 interface AuthUser {
+  userId: number;
   username: string;
   displayName: string;
   email: string;
+  role: string;
 }
 
 interface AuthContextType {
@@ -12,6 +14,7 @@ interface AuthContextType {
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isAdmin: boolean;
   login: (username: string, password: string) => Promise<void>;
   register: (username: string, email: string, password: string, displayName?: string) => Promise<void>;
   logout: () => void;
@@ -75,6 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return (
     <AuthContext.Provider value={{
       user, token, isAuthenticated: !!token && !!user, isLoading,
+      isAdmin: user?.role === 'ADMIN',
       login, register, logout, changePassword, verifyPassword
     }}>
       {children}

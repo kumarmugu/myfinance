@@ -15,6 +15,7 @@ public class CurrencyRate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long userId;
 
     @Column(nullable = false, length = 10)
     private String fromCurrency;

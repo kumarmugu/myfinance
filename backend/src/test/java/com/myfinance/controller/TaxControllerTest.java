@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class TaxControllerTest {
+class TaxControllerTest extends BaseControllerTest {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
@@ -52,8 +52,8 @@ class TaxControllerTest {
     @Test
     @WithMockUser
     void shouldGetTaxSummary() throws Exception {
-        taxRecordRepository.save(TaxRecord.builder().assessmentYear(2023).employment(new BigDecimal("197000")).taxPayable(new BigDecimal("20000")).build());
-        taxRecordRepository.save(TaxRecord.builder().assessmentYear(2024).employment(new BigDecimal("220000")).taxPayable(new BigDecimal("24000")).build());
+        taxRecordRepository.save(TaxRecord.builder().assessmentYear(2023).employment(new BigDecimal("197000")).taxPayable(new BigDecimal("20000")).userId(testUser.getId()).build());
+        taxRecordRepository.save(TaxRecord.builder().assessmentYear(2024).employment(new BigDecimal("220000")).taxPayable(new BigDecimal("24000")).userId(testUser.getId()).build());
 
         mockMvc.perform(get("/api/tax/summary"))
                 .andExpect(status().isOk())

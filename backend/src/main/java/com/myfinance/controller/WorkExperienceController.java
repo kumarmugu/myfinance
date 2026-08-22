@@ -2,6 +2,7 @@ package com.myfinance.controller;
 
 import com.myfinance.model.WorkExperience;
 import com.myfinance.repository.WorkExperienceRepository;
+import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +15,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WorkExperienceController {
     private final WorkExperienceRepository repository;
+    private final TenantContext tenantContext;
 
     @GetMapping
     public List<WorkExperience> getAll(@RequestParam(required = false) Long ownerId) {
+        Long uid = tenantContext.getCurrentUserId();
         if (ownerId != null) return repository.findByOwnerIdOrderByStartDateDesc(ownerId);
-        return repository.findAllByOrderByStartDateDesc();
+        return repository.findByUserIdOrderByStartDateDesc(uid);
     }
 
     @GetMapping("/{id}")
@@ -28,6 +31,7 @@ public class WorkExperienceController {
 
     @PostMapping
     public ResponseEntity<WorkExperience> create(@RequestBody WorkExperience exp) {
+        exp.setUserId(tenantContext.getCurrentUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(exp));
     }
 

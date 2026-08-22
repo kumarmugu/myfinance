@@ -2,6 +2,7 @@ package com.myfinance.controller;
 
 import com.myfinance.dto.DashboardSummary;
 import com.myfinance.model.NetWorthSnapshot;
+import com.myfinance.security.TenantContext;
 import com.myfinance.service.DashboardService;
 import com.myfinance.service.NetWorthService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.Map;
 public class DashboardController {
     private final DashboardService dashboardService;
     private final NetWorthService netWorthService;
+    private final TenantContext tenantContext;
 
     @GetMapping("/summary")
     public DashboardSummary getSummary(@RequestParam(required = false) Long ownerId) {

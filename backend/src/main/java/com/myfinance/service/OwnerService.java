@@ -21,6 +21,7 @@ public class OwnerService {
     private final HoldingRepository holdingRepository;
 
     public List<Owner> getAllOwners() { return ownerRepository.findByIsActiveTrue(); }
+    public List<Owner> getByUserId(Long userId) { return ownerRepository.findByUserIdAndIsActiveTrue(userId); }
     public Owner getById(Long id) { return ownerRepository.findById(id).orElseThrow(() -> new RuntimeException("Owner not found: " + id)); }
     public Owner create(Owner owner) { return ownerRepository.save(owner); }
 

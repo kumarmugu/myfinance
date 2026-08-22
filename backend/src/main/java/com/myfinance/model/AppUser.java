@@ -26,6 +26,9 @@ public class AppUser {
     private String displayName;
 
     @Builder.Default
+    private String role = "USER"; // ADMIN or USER
+
+    @Builder.Default
     private Boolean isActive = true;
 
     private String resetToken;

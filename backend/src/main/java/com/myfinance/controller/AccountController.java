@@ -2,6 +2,7 @@ package com.myfinance.controller;
 
 import com.myfinance.model.Account;
 import com.myfinance.model.enums.AccountType;
+import com.myfinance.security.TenantContext;
 import com.myfinance.service.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountService accountService;
+    private final TenantContext tenantContext;
 
     @GetMapping
     public List<Account> getAll() { return accountService.getAllAccounts(); }
@@ -31,6 +33,7 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<Account> create(@Valid @RequestBody Account account) {
+        account.setUserId(tenantContext.getCurrentUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(accountService.create(account));
     }
 

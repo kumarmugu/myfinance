@@ -1,6 +1,7 @@
 package com.myfinance.controller;
 
 import com.myfinance.model.SoldPosition;
+import com.myfinance.security.TenantContext;
 import com.myfinance.service.SoldPositionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SoldPositionController {
     private final SoldPositionService soldPositionService;
+    private final TenantContext tenantContext;
 
     @GetMapping
     public List<SoldPosition> getAll(
@@ -30,6 +32,7 @@ public class SoldPositionController {
 
     @PostMapping
     public ResponseEntity<SoldPosition> create(@Valid @RequestBody SoldPosition sp) {
+        sp.setUserId(tenantContext.getCurrentUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(soldPositionService.create(sp));
     }
 

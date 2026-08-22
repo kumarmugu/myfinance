@@ -3,6 +3,7 @@ package com.myfinance.controller;
 import com.myfinance.model.AccountDeposit;
 import com.myfinance.model.AllocationTarget;
 import com.myfinance.repository.AllocationTargetRepository;
+import com.myfinance.security.TenantContext;
 import com.myfinance.service.AccountDepositService;
 import com.myfinance.service.NetWorthService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class PlanningController {
     private final AllocationTargetRepository allocationTargetRepository;
     private final NetWorthService netWorthService;
     private final AccountDepositService accountDepositService;
+    private final TenantContext tenantContext;
 
     @GetMapping("/allocation")
     public Map<String, Object> getAllocation(@RequestParam(required = false) Long ownerId) {
@@ -48,6 +50,7 @@ public class PlanningController {
 
     @PostMapping("/deposits")
     public ResponseEntity<AccountDeposit> createDeposit(@RequestBody AccountDeposit deposit) {
+        deposit.setUserId(tenantContext.getCurrentUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(accountDepositService.create(deposit));
     }
 

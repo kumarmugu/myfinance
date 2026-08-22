@@ -10,4 +10,5 @@ import java.util.List;
 public interface HomeLoanRepository extends JpaRepository<HomeLoan, Long> {
     List<HomeLoan> findByIsActiveTrueOrderByPropertyNameAsc();
     List<HomeLoan> findByOwnerIdOrderByPropertyNameAsc(Long ownerId);
+    List<HomeLoan> findByUserIdAndIsActiveTrue(Long userId);
 }

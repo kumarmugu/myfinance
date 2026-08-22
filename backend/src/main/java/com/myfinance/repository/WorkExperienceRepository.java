@@ -10,4 +10,5 @@ import java.util.List;
 public interface WorkExperienceRepository extends JpaRepository<WorkExperience, Long> {
     List<WorkExperience> findAllByOrderByStartDateDesc();
     List<WorkExperience> findByOwnerIdOrderByStartDateDesc(Long ownerId);
+    List<WorkExperience> findByUserIdOrderByStartDateDesc(Long userId);
 }

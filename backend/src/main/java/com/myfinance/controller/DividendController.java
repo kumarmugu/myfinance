@@ -1,6 +1,7 @@
 package com.myfinance.controller;
 
 import com.myfinance.model.Dividend;
+import com.myfinance.security.TenantContext;
 import com.myfinance.service.DividendService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DividendController {
     private final DividendService dividendService;
+    private final TenantContext tenantContext;
 
     @GetMapping
     public List<Dividend> getAll(
@@ -32,6 +34,7 @@ public class DividendController {
 
     @PostMapping
     public ResponseEntity<Dividend> create(@Valid @RequestBody Dividend dividend) {
+        dividend.setUserId(tenantContext.getCurrentUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(dividendService.create(dividend));
     }
 

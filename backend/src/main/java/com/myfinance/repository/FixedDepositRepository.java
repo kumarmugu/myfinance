@@ -22,4 +22,6 @@ public interface FixedDepositRepository extends JpaRepository<FixedDeposit, Long
 
     @Query("SELECT fd FROM FixedDeposit fd WHERE fd.status = 'ACTIVE' ORDER BY fd.maturityDate ASC")
     List<FixedDeposit> findAllActiveOrderByMaturity();
+
+    List<FixedDeposit> findByUserId(Long userId);
 }

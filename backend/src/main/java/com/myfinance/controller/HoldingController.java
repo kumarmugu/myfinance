@@ -2,6 +2,7 @@ package com.myfinance.controller;
 
 import com.myfinance.model.Holding;
 import com.myfinance.model.enums.AssetType;
+import com.myfinance.security.TenantContext;
 import com.myfinance.service.HoldingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HoldingController {
     private final HoldingService holdingService;
+    private final TenantContext tenantContext;
 
     @GetMapping
     public List<Holding> getActive(@RequestParam(required = false) Long ownerId) {

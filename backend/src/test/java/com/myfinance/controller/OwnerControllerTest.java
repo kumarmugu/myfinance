@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class OwnerControllerTest {
+class OwnerControllerTest extends BaseControllerTest {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
@@ -46,8 +46,8 @@ class OwnerControllerTest {
     @Test
     @WithMockUser
     void shouldGetAllOwners() throws Exception {
-        ownerRepository.save(Owner.builder().name("Alice").relationship(OwnerRelationship.SELF).build());
-        ownerRepository.save(Owner.builder().name("Bob").relationship(OwnerRelationship.SPOUSE).build());
+        ownerRepository.save(Owner.builder().name("Alice").relationship(OwnerRelationship.SELF).userId(testUser.getId()).build());
+        ownerRepository.save(Owner.builder().name("Bob").relationship(OwnerRelationship.SPOUSE).userId(testUser.getId()).build());
 
         mockMvc.perform(get("/api/owners"))
                 .andExpect(status().isOk())

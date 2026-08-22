@@ -2,6 +2,7 @@ package com.myfinance.controller;
 
 import com.myfinance.model.RetirementFundEntry;
 import com.myfinance.repository.RetirementFundEntryRepository;
+import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +17,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RetirementFundController {
     private final RetirementFundEntryRepository repository;
+    private final TenantContext tenantContext;
 
     @GetMapping
     public List<RetirementFundEntry> getAll(
             @RequestParam(required = false) String fundType,
             @RequestParam(required = false) Long ownerId) {
+        Long uid = tenantContext.getCurrentUserId();
         if (fundType != null) return repository.findByFundTypeOrderByEntryDateDesc(fundType);
         if (ownerId != null) return repository.findByOwnerIdOrderByEntryDateDesc(ownerId);
-        return repository.findAllByOrderByEntryDateDesc();
+        return repository.findByUserIdOrderByEntryDateDesc(uid);
     }
 
     @GetMapping("/summary")
@@ -46,6 +49,7 @@ public class RetirementFundController {
 
     @PostMapping
     public ResponseEntity<RetirementFundEntry> create(@RequestBody RetirementFundEntry entry) {
+        entry.setUserId(tenantContext.getCurrentUserId());
         if (entry.getYear() == null && entry.getEntryDate() != null) {
             entry.setYear(entry.getEntryDate().getYear());
             entry.setMonth(entry.getEntryDate().getMonthValue());

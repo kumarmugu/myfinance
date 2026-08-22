@@ -4,6 +4,7 @@ import com.myfinance.model.*;
 import com.myfinance.model.enums.InvestmentPurpose;
 import com.myfinance.model.enums.TransactionType;
 import com.myfinance.repository.TransactionRepository;
+import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ public class TransactionService {
     private final AssetService assetService;
     private final AccountService accountService;
     private final OwnerService ownerService;
+    private final TenantContext tenantContext;
 
     public List<Transaction> getAll() { return transactionRepository.findAllByOrderByTransactionDateDesc(); }
     public List<Transaction> getByOwner(Long ownerId) { return transactionRepository.findByOwnerIdOrderByTransactionDateDesc(ownerId); }
@@ -53,7 +55,8 @@ public class TransactionService {
                 .totalAmount(totalAmount).fees(fees != null ? fees : BigDecimal.ZERO)
                 .currency(currency != null ? com.myfinance.model.enums.Currency.valueOf(currency) : account.getCurrency())
                 .transactionDate(date != null ? date : LocalDate.now())
-                .notes(notes).purpose(purpose).build();
+                .notes(notes).purpose(purpose)
+                .userId(tenantContext.getCurrentUserId()).build();
 
         Transaction saved = transactionRepository.save(tx);
         updateHolding(asset, account, owner, type, quantity, pricePerUnit, purpose);
@@ -79,7 +82,8 @@ public class TransactionService {
                         .asset(asset).account(account).owner(owner)
                         .quantity(quantity).averageBuyPrice(pricePerUnit)
                         .investedAmount(quantity.multiply(pricePerUnit))
-                        .currency(account.getCurrency()).purpose(purpose).build());
+                        .currency(account.getCurrency()).purpose(purpose)
+                        .userId(tenantContext.getCurrentUserId()).build());
             }
         } else if (type == TransactionType.SELL) {
             if (holdingOpt.isPresent()) {

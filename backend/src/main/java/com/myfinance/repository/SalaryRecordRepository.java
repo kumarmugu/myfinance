@@ -18,4 +18,6 @@ public interface SalaryRecordRepository extends JpaRepository<SalaryRecord, Long
 
     @Query("SELECT s.year, SUM(s.amount) FROM SalaryRecord s WHERE s.isBonus = true GROUP BY s.year ORDER BY s.year")
     List<Object[]> bonusByYear();
+
+    List<SalaryRecord> findByUserIdOrderByYearDescMonthDesc(Long userId);
 }

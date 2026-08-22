@@ -13,4 +13,5 @@ public interface AssetRepository extends JpaRepository<Asset, Long> {
     List<Asset> findByAssetType(AssetType type);
     Optional<Asset> findBySymbol(String symbol);
     List<Asset> findByNameContainingIgnoreCaseOrSymbolContainingIgnoreCase(String name, String symbol);
+    List<Asset> findByUserId(Long userId);
 }

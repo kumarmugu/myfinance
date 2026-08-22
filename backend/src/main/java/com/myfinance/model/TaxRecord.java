@@ -14,6 +14,7 @@ public class TaxRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long userId;
 
     @Column(nullable = false)
     private Integer assessmentYear;

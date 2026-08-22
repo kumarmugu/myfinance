@@ -2,6 +2,7 @@ package com.myfinance.controller;
 
 import com.myfinance.model.TaxRecord;
 import com.myfinance.repository.TaxRecordRepository;
+import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +18,19 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TaxController {
     private final TaxRecordRepository repository;
+    private final TenantContext tenantContext;
 
     @GetMapping
     public List<TaxRecord> getAll(@RequestParam(required = false) Long ownerId, @RequestParam(required = false) String country) {
+        Long uid = tenantContext.getCurrentUserId();
         if (ownerId != null) return repository.findByOwnerIdOrderByAssessmentYearDesc(ownerId);
         if (country != null) return repository.findByCountryOrderByAssessmentYearDesc(country);
-        return repository.findAllByOrderByAssessmentYearDesc();
+        return repository.findByUserIdOrderByAssessmentYearDesc(uid);
     }
 
     @GetMapping("/summary")
     public Map<String, Object> getSummary() {
-        List<TaxRecord> all = repository.findAllByOrderByAssessmentYearDesc();
+        List<TaxRecord> all = repository.findByUserIdOrderByAssessmentYearDesc(tenantContext.getCurrentUserId());
         BigDecimal totalPaid = all.stream()
                 .map(t -> t.getTaxPayable() != null ? t.getTaxPayable() : BigDecimal.ZERO)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -49,6 +52,7 @@ public class TaxController {
 
     @PostMapping
     public ResponseEntity<TaxRecord> create(@RequestBody TaxRecord record) {
+        record.setUserId(tenantContext.getCurrentUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(record));
     }
 

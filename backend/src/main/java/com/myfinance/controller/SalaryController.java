@@ -2,6 +2,7 @@ package com.myfinance.controller;
 
 import com.myfinance.model.SalaryRecord;
 import com.myfinance.repository.SalaryRecordRepository;
+import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +17,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SalaryController {
     private final SalaryRecordRepository repository;
+    private final TenantContext tenantContext;
 
     @GetMapping
     public List<SalaryRecord> getAll(@RequestParam(required = false) Integer year, @RequestParam(required = false) String country) {
+        Long uid = tenantContext.getCurrentUserId();
         if (year != null) return repository.findByYearOrderByMonthAsc(year);
         if (country != null) return repository.findByCountryOrderByYearDescMonthDesc(country);
-        return repository.findAllByOrderByYearDescMonthDesc();
+        return repository.findByUserIdOrderByYearDescMonthDesc(uid);
     }
 
     @GetMapping("/summary")
@@ -61,6 +64,7 @@ public class SalaryController {
 
     @PostMapping
     public ResponseEntity<SalaryRecord> create(@RequestBody SalaryRecord record) {
+        record.setUserId(tenantContext.getCurrentUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(record));
     }
 

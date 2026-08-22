@@ -12,4 +12,6 @@ public interface NetWorthConfigRepository extends JpaRepository<NetWorthConfig, 
     Optional<NetWorthConfig> findByAssetType(String assetType);
     List<NetWorthConfig> findByIncludeInNetWorthTrue();
     List<NetWorthConfig> findAllByOrderByAssetTypeAsc();
+    List<NetWorthConfig> findByUserIdOrderByAssetTypeAsc(Long userId);
+    List<NetWorthConfig> findByUserIdAndIncludeInNetWorthTrue(Long userId);
 }

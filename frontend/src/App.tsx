@@ -34,7 +34,7 @@ function App() {
 }
 
 function AppContent() {
-  const { isAuthenticated, isLoading, user, logout } = useAuth();
+  const { isAuthenticated, isLoading, user, logout, isAdmin } = useAuth();
 
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center bg-slate-50"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
@@ -90,9 +90,11 @@ function AppContent() {
         { to: '/assets', icon: Coins, label: 'Assets' },
         { to: '/fx-rates', icon: RefreshCw, label: 'FX Rates' },
         { to: '/net-worth-config', icon: Settings, label: 'Net Worth Config' },
-        { to: '/test-results', icon: FlaskConical, label: 'Test Results' },
         { to: '/guide', icon: HelpCircle, label: 'User Guide' },
-        { to: '/docs', icon: FileText, label: 'Documentation' },
+        ...(isAdmin ? [
+          { to: '/test-results', icon: FlaskConical, label: 'Test Results' },
+          { to: '/docs', icon: FileText, label: 'Documentation' },
+        ] : []),
       ],
     },
   ];

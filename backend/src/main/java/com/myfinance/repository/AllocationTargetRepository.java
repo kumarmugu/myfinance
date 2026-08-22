@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface AllocationTargetRepository extends JpaRepository<AllocationTarget, Long> {
     List<AllocationTarget> findByOwnerId(Long ownerId);
+    List<AllocationTarget> findByUserId(Long userId);
 }

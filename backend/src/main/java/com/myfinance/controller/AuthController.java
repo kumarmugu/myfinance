@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -50,14 +51,19 @@ public class AuthController {
 
         userRepository.save(user);
 
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", user.getId());
+        claims.put("role", user.getRole());
         UserDetails userDetails = new User(user.getUsername(), user.getPassword(), Collections.emptyList());
-        String token = jwtService.generateToken(userDetails);
+        String token = jwtService.generateToken(claims, userDetails);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(AuthResponse.builder()
                 .token(token)
+                .userId(user.getId())
                 .username(user.getUsername())
                 .displayName(user.getDisplayName())
                 .email(user.getEmail())
+                .role(user.getRole())
                 .build());
     }
 
@@ -73,14 +79,19 @@ public class AuthController {
         AppUser user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", user.getId());
+        claims.put("role", user.getRole());
         UserDetails userDetails = new User(user.getUsername(), user.getPassword(), Collections.emptyList());
-        String token = jwtService.generateToken(userDetails);
+        String token = jwtService.generateToken(claims, userDetails);
 
         return ResponseEntity.ok(AuthResponse.builder()
                 .token(token)
+                .userId(user.getId())
                 .username(user.getUsername())
                 .displayName(user.getDisplayName())
                 .email(user.getEmail())
+                .role(user.getRole())
                 .build());
     }
 
@@ -164,9 +175,11 @@ public class AuthController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         return ResponseEntity.ok(Map.of(
+                "userId", user.getId(),
                 "username", user.getUsername(),
                 "displayName", user.getDisplayName(),
-                "email", user.getEmail()
+                "email", user.getEmail(),
+                "role", user.getRole()
         ));
     }
 }

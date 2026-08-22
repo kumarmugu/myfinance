@@ -43,18 +43,20 @@ public class DataInitializer implements CommandLineRunner {
         if (ownerRepository.count() > 0) return;
 
         // ─── Default Admin User ───
-        appUserRepository.save(AppUser.builder()
+        AppUser adminUser = appUserRepository.save(AppUser.builder()
                 .username("admin")
                 .email("admin@myfinance.local")
                 .password(passwordEncoder.encode("admin123"))
                 .displayName("Admin")
+                .role("ADMIN")
                 .build());
+        Long adminId = adminUser.getId();
 
         // ═══════════════════════════════════════════════════════
         // OWNERS
         // ═══════════════════════════════════════════════════════
-        Owner self = ownerRepository.save(Owner.builder().name("Primary User").relationship(OwnerRelationship.SELF).build());
-        Owner spouse = ownerRepository.save(Owner.builder().name("Spouse").relationship(OwnerRelationship.SPOUSE).build());
+        Owner self = ownerRepository.save(Owner.builder().name("Primary User").relationship(OwnerRelationship.SELF).userId(adminId).build());
+        Owner spouse = ownerRepository.save(Owner.builder().name("Spouse").relationship(OwnerRelationship.SPOUSE).userId(adminId).build());
 
         // ═══════════════════════════════════════════════════════
         // ACCOUNTS

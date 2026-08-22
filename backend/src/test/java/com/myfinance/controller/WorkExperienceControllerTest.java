@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class WorkExperienceControllerTest {
+class WorkExperienceControllerTest extends BaseControllerTest {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
@@ -49,8 +49,8 @@ class WorkExperienceControllerTest {
     @Test
     @WithMockUser
     void shouldListSortedByDate() throws Exception {
-        repository.save(WorkExperience.builder().company("Old Co").startDate(LocalDate.of(2015, 1, 1)).endDate(LocalDate.of(2018, 6, 1)).build());
-        repository.save(WorkExperience.builder().company("New Co").startDate(LocalDate.of(2020, 1, 1)).isCurrent(true).build());
+        repository.save(WorkExperience.builder().company("Old Co").startDate(LocalDate.of(2015, 1, 1)).endDate(LocalDate.of(2018, 6, 1)).userId(testUser.getId()).build());
+        repository.save(WorkExperience.builder().company("New Co").startDate(LocalDate.of(2020, 1, 1)).isCurrent(true).userId(testUser.getId()).build());
 
         mockMvc.perform(get("/api/work-experience"))
                 .andExpect(status().isOk())

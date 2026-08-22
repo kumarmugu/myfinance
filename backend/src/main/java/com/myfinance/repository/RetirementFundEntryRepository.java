@@ -19,4 +19,6 @@ public interface RetirementFundEntryRepository extends JpaRepository<RetirementF
 
     @Query("SELECT r.year, SUM(r.amount) FROM RetirementFundEntry r WHERE r.fundType = :fundType AND r.entryType = 'CONTRIBUTION' GROUP BY r.year ORDER BY r.year")
     List<Object[]> contributionsByYear(String fundType);
+
+    List<RetirementFundEntry> findByUserIdOrderByEntryDateDesc(Long userId);
 }

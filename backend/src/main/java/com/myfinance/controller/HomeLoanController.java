@@ -4,6 +4,7 @@ import com.myfinance.model.HomeLoan;
 import com.myfinance.model.LoanPayment;
 import com.myfinance.repository.HomeLoanRepository;
 import com.myfinance.repository.LoanPaymentRepository;
+import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,13 @@ import java.util.List;
 public class HomeLoanController {
     private final HomeLoanRepository loanRepository;
     private final LoanPaymentRepository paymentRepository;
+    private final TenantContext tenantContext;
 
     @GetMapping
     public List<HomeLoan> getAll(@RequestParam(required = false) Long ownerId) {
+        Long uid = tenantContext.getCurrentUserId();
         if (ownerId != null) return loanRepository.findByOwnerIdOrderByPropertyNameAsc(ownerId);
-        return loanRepository.findByIsActiveTrueOrderByPropertyNameAsc();
+        return loanRepository.findByUserIdAndIsActiveTrue(uid);
     }
 
     @GetMapping("/{id}")
@@ -31,6 +34,7 @@ public class HomeLoanController {
 
     @PostMapping
     public ResponseEntity<HomeLoan> create(@RequestBody HomeLoan loan) {
+        loan.setUserId(tenantContext.getCurrentUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(loanRepository.save(loan));
     }
 
@@ -74,6 +78,7 @@ public class HomeLoanController {
     public ResponseEntity<LoanPayment> createPayment(@PathVariable Long loanId, @RequestBody LoanPayment payment) {
         HomeLoan loan = getById(loanId);
         payment.setLoan(loan);
+        payment.setUserId(tenantContext.getCurrentUserId());
         LoanPayment saved = paymentRepository.save(payment);
         // Update outstanding balance on loan
         if (payment.getBalanceAfter() != null) {

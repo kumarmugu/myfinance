@@ -3,6 +3,7 @@ package com.myfinance.controller;
 import com.myfinance.model.NetWorthConfig;
 import com.myfinance.model.enums.AssetType;
 import com.myfinance.repository.NetWorthConfigRepository;
+import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +15,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class NetWorthConfigController {
     private final NetWorthConfigRepository repository;
+    private final TenantContext tenantContext;
 
     @GetMapping
     public List<NetWorthConfig> getAll() {
-        List<NetWorthConfig> existing = repository.findAllByOrderByAssetTypeAsc();
+        Long uid = tenantContext.getCurrentUserId();
+        List<NetWorthConfig> existing = repository.findByUserIdOrderByAssetTypeAsc(uid);
 
         // Ensure all asset types have a config entry (auto-create missing ones)
         Set<String> existingTypes = existing.stream().map(NetWorthConfig::getAssetType).collect(Collectors.toSet());
@@ -28,14 +31,14 @@ public class NetWorthConfigController {
                 toCreate.add(NetWorthConfig.builder()
                         .assetType(type.name())
                         .includeInNetWorth(true)
-                        .label(formatLabel(type.name()))
+                        .label(formatLabel(type.name())).userId(uid)
                         .build());
             }
         }
 
         if (!toCreate.isEmpty()) {
             repository.saveAll(toCreate);
-            existing = repository.findAllByOrderByAssetTypeAsc();
+            existing = repository.findByUserIdOrderByAssetTypeAsc(uid);
         }
 
         return existing;
@@ -56,7 +59,7 @@ public class NetWorthConfigController {
 
     @GetMapping("/included-types")
     public List<String> getIncludedTypes() {
-        return repository.findByIncludeInNetWorthTrue().stream()
+        return repository.findByUserIdAndIncludeInNetWorthTrue(tenantContext.getCurrentUserId()).stream()
                 .map(NetWorthConfig::getAssetType)
                 .collect(Collectors.toList());
     }

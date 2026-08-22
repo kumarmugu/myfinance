@@ -2,6 +2,7 @@ package com.myfinance.controller;
 
 import com.myfinance.model.Asset;
 import com.myfinance.model.enums.AssetType;
+import com.myfinance.security.TenantContext;
 import com.myfinance.service.AssetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AssetController {
     private final AssetService assetService;
+    private final TenantContext tenantContext;
 
     @GetMapping
     public List<Asset> getAll() { return assetService.getAll(); }
@@ -41,6 +43,7 @@ public class AssetController {
 
     @PostMapping
     public ResponseEntity<Asset> create(@Valid @RequestBody Asset asset) {
+        asset.setUserId(tenantContext.getCurrentUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(assetService.create(asset));
     }
 

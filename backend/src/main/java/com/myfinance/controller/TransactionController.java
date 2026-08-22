@@ -2,6 +2,7 @@ package com.myfinance.controller;
 
 import com.myfinance.dto.TransactionRequest;
 import com.myfinance.model.Transaction;
+import com.myfinance.security.TenantContext;
 import com.myfinance.service.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionController {
     private final TransactionService transactionService;
+    private final TenantContext tenantContext;
 
     @GetMapping
     public List<Transaction> getAll(@RequestParam(required = false) Long ownerId) {

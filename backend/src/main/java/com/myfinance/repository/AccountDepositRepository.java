@@ -10,4 +10,5 @@ import java.util.List;
 public interface AccountDepositRepository extends JpaRepository<AccountDeposit, Long> {
     List<AccountDeposit> findByAccountIdOrderByDepositDateDesc(Long accountId);
     List<AccountDeposit> findAllByOrderByDepositDateDesc();
+    List<AccountDeposit> findByUserId(Long userId);
 }

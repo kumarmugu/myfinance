@@ -11,6 +11,7 @@ public class NetWorthConfig {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long userId;
 
     @Column(nullable = false, unique = true)
     private String assetType; // e.g. INDEX_FUND, CRYPTO, SAVINGS, etc.

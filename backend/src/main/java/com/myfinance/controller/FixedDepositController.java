@@ -6,6 +6,7 @@ import com.myfinance.model.FixedDeposit;
 import com.myfinance.model.enums.FDStatus;
 import com.myfinance.repository.BankRepository;
 import com.myfinance.repository.FDHolderRepository;
+import com.myfinance.security.TenantContext;
 import com.myfinance.service.FixedDepositService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class FixedDepositController {
     private final FixedDepositService fdService;
     private final BankRepository bankRepository;
     private final FDHolderRepository fdHolderRepository;
+    private final TenantContext tenantContext;
 
     @GetMapping
     public List<FixedDeposit> getAll(
@@ -97,6 +99,7 @@ public class FixedDepositController {
 
     @PostMapping
     public ResponseEntity<FixedDeposit> create(@Valid @RequestBody FixedDeposit fd) {
+        fd.setUserId(tenantContext.getCurrentUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(fdService.create(fd));
     }
 

@@ -21,4 +21,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query("SELECT t FROM Transaction t WHERE t.transactionDate >= :startDate ORDER BY t.transactionDate DESC")
     List<Transaction> findRecentTransactions(@Param("startDate") LocalDate startDate);
+
+    List<Transaction> findByUserIdOrderByTransactionDateDesc(Long userId);
 }

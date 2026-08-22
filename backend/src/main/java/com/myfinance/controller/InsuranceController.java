@@ -4,6 +4,7 @@ import com.myfinance.model.InsuranceBonusEntry;
 import com.myfinance.model.InsurancePolicy;
 import com.myfinance.repository.InsuranceBonusEntryRepository;
 import com.myfinance.repository.InsurancePolicyRepository;
+import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,13 @@ import java.util.List;
 public class InsuranceController {
     private final InsurancePolicyRepository repository;
     private final InsuranceBonusEntryRepository bonusRepository;
+    private final TenantContext tenantContext;
 
     @GetMapping
     public List<InsurancePolicy> getAll(@RequestParam(required = false) Long ownerId) {
+        Long uid = tenantContext.getCurrentUserId();
         if (ownerId != null) return repository.findByOwnerIdOrderByPolicyNameAsc(ownerId);
-        return repository.findByIsActiveTrueOrderByPolicyNameAsc();
+        return repository.findByUserIdAndIsActiveTrue(uid);
     }
 
     @GetMapping("/{id}")
@@ -30,6 +33,7 @@ public class InsuranceController {
 
     @PostMapping
     public ResponseEntity<InsurancePolicy> create(@RequestBody InsurancePolicy policy) {
+        policy.setUserId(tenantContext.getCurrentUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(policy));
     }
 
@@ -69,6 +73,7 @@ public class InsuranceController {
     public ResponseEntity<InsuranceBonusEntry> createBonusEntry(@PathVariable Long policyId, @RequestBody InsuranceBonusEntry entry) {
         InsurancePolicy policy = getById(policyId);
         entry.setPolicy(policy);
+        entry.setUserId(tenantContext.getCurrentUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(bonusRepository.save(entry));
     }
 

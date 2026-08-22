@@ -11,4 +11,5 @@ import java.util.List;
 public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> findByAccountType(AccountType type);
     List<Account> findByOwnerId(Long ownerId);
+    List<Account> findByUserId(Long userId);
 }

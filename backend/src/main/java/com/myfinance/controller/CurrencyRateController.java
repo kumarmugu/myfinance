@@ -3,6 +3,7 @@ package com.myfinance.controller;
 import com.myfinance.model.CurrencyRate;
 import com.myfinance.model.enums.Currency;
 import com.myfinance.repository.CurrencyRateRepository;
+import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CurrencyRateController {
     private final CurrencyRateRepository repository;
+    private final TenantContext tenantContext;
 
     @GetMapping
-    public List<CurrencyRate> getAll() { return repository.findAll(); }
+    public List<CurrencyRate> getAll() { return repository.findByUserId(tenantContext.getCurrentUserId()); }
 
     @GetMapping("/currencies")
     public List<String> getAvailableCurrencies() {
@@ -28,7 +30,7 @@ public class CurrencyRateController {
             currencies.add(c.name());
         }
         // Add any additional from stored rates
-        List<CurrencyRate> rates = repository.findAll();
+        List<CurrencyRate> rates = repository.findByUserId(tenantContext.getCurrentUserId());
         for (CurrencyRate r : rates) {
             currencies.add(r.getFromCurrency());
             currencies.add(r.getToCurrency());
@@ -38,6 +40,7 @@ public class CurrencyRateController {
 
     @PostMapping
     public ResponseEntity<CurrencyRate> create(@RequestBody CurrencyRate rate) {
+        rate.setUserId(tenantContext.getCurrentUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(rate));
     }
 

@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class HomeLoanControllerTest {
+class HomeLoanControllerTest extends BaseControllerTest {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
@@ -59,7 +59,7 @@ class HomeLoanControllerTest {
     @Test
     @WithMockUser
     void shouldListActiveLoans() throws Exception {
-        repository.save(HomeLoan.builder().propertyName("House A").propertyValue(new BigDecimal("500000")).loanAmount(new BigDecimal("400000")).interestRate(new BigDecimal("3")).tenureMonths(240).currency(Currency.SGD).build());
+        repository.save(HomeLoan.builder().propertyName("House A").propertyValue(new BigDecimal("500000")).loanAmount(new BigDecimal("400000")).interestRate(new BigDecimal("3")).tenureMonths(240).currency(Currency.SGD).userId(testUser.getId()).build());
 
         mockMvc.perform(get("/api/home-loans"))
                 .andExpect(status().isOk())

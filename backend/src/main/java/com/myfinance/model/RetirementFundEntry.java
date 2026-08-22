@@ -15,6 +15,7 @@ public class RetirementFundEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long userId;
 
     @Column(nullable = false)
     private String fundType; // CPF, EPF, SPF, SRS

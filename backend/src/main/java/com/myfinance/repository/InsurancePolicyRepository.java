@@ -10,4 +10,5 @@ import java.util.List;
 public interface InsurancePolicyRepository extends JpaRepository<InsurancePolicy, Long> {
     List<InsurancePolicy> findByIsActiveTrueOrderByPolicyNameAsc();
     List<InsurancePolicy> findByOwnerIdOrderByPolicyNameAsc(Long ownerId);
+    List<InsurancePolicy> findByUserIdAndIsActiveTrue(Long userId);
 }

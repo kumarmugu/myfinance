@@ -16,6 +16,7 @@ public class HomeLoan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long userId;
 
     @Column(nullable = false)
     private String propertyName; // e.g. "Condo at Woodlands"

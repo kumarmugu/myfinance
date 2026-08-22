@@ -17,4 +17,6 @@ public interface SoldPositionRepository extends JpaRepository<SoldPosition, Long
 
     @Query("SELECT sp FROM SoldPosition sp WHERE sp.isShortTerm = true OR sp.purpose = 'TRADING' OR sp.purpose = 'SHORT_TERM' ORDER BY sp.soldDate DESC")
     List<SoldPosition> findShortTermTrades();
+
+    List<SoldPosition> findByUserIdOrderBySoldDateDesc(Long userId);
 }

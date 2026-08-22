@@ -16,4 +16,5 @@ public interface NetWorthSnapshotRepository extends JpaRepository<NetWorthSnapsh
     Optional<NetWorthSnapshot> findByOwnerIdAndYear(Long ownerId, Integer year);
     Optional<NetWorthSnapshot> findTopByOrderBySnapshotDateDesc();
     List<NetWorthSnapshot> findBySnapshotDateBetweenOrderBySnapshotDateAsc(LocalDate start, LocalDate end);
+    List<NetWorthSnapshot> findByUserIdOrderBySnapshotDateDesc(Long userId);
 }
