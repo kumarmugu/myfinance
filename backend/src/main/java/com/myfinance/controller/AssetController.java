@@ -18,10 +18,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AssetController {
     private final AssetService assetService;
+    private final com.myfinance.repository.AssetRepository assetRepository;
     private final TenantContext tenantContext;
 
     @GetMapping
-    public List<Asset> getAll() { return assetService.getAll(); }
+    public List<Asset> getAll() { return assetRepository.findByUserId(tenantContext.getCurrentUserId()); }
 
     @GetMapping("/types")
     public List<String> getAssetTypes() {

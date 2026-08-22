@@ -17,10 +17,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountService accountService;
+    private final com.myfinance.repository.AccountRepository accountRepository;
     private final TenantContext tenantContext;
 
     @GetMapping
-    public List<Account> getAll() { return accountService.getAllAccounts(); }
+    public List<Account> getAll() { return accountRepository.findByUserId(tenantContext.getCurrentUserId()); }
 
     @GetMapping("/{id}")
     public Account getById(@PathVariable Long id) { return accountService.getById(id); }

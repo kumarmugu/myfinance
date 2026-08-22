@@ -39,7 +39,7 @@ export default function Accounts() {
       setShowAccountForm(false); setEditingAccount(null);
       setAccForm({ name: '', accountType: 'BROKER', currency: 'SGD', accountNumber: '', description: '', ownerId: 0 });
       loadData();
-    } catch (err) { console.error(err); alert('Failed'); }
+    } catch (err: any) { console.error(err); alert(err.response?.data?.message || err.message || 'Failed to save account'); }
   };
 
   const startEditAccount = (acc: Account) => {
