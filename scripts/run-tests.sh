@@ -48,10 +48,10 @@ print(json.dumps(suites))
 fi
 
 # ─── Frontend Tests ───
-echo "[2/2] Running frontend tests..."
+echo "[2/2] Running frontend tests with coverage..."
 cd "$PROJECT_DIR/frontend"
 FRONTEND_JSON_FILE="$PROJECT_DIR/frontend/test-output.json"
-npx vitest --run --reporter=json --outputFile="$FRONTEND_JSON_FILE" 2>/dev/null || true
+npx vitest --run --reporter=json --outputFile="$FRONTEND_JSON_FILE" --coverage 2>/dev/null || true
 
 # Parse frontend results from vitest JSON output file
 FRONTEND_RESULTS="[]"
@@ -89,7 +89,7 @@ echo "$BACKEND_RESULTS" > /tmp/myfinance_backend_results.json
 echo "$FRONTEND_RESULTS" > /tmp/myfinance_frontend_results.json
 
 python3 << PYEOF
-import json
+import json, os, xml.etree.ElementTree as ET
 
 with open('/tmp/myfinance_backend_results.json') as f:
     backend = json.loads(f.read().strip() or '[]')
@@ -101,15 +101,48 @@ total = sum(len(s['tests']) for s in all_suites)
 passed = sum(1 for s in all_suites for t in s['tests'] if t['status'] == 'pass')
 failed = sum(1 for s in all_suites for t in s['tests'] if t['status'] == 'fail')
 
+# Parse backend coverage from JaCoCo XML
+backend_coverage = None
+jacoco_file = '$PROJECT_DIR/backend/target/site/jacoco/jacoco.xml'
+if os.path.exists(jacoco_file):
+    try:
+        tree = ET.parse(jacoco_file)
+        root = tree.getroot()
+        for counter in root.findall('counter'):
+            if counter.get('type') == 'LINE':
+                missed = int(counter.get('missed', 0))
+                covered = int(counter.get('covered', 0))
+                total_lines = missed + covered
+                if total_lines > 0:
+                    backend_coverage = round((covered / total_lines) * 100, 1)
+    except: pass
+
+# Parse frontend coverage from coverage-summary.json
+frontend_coverage = None
+fe_cov_file = '$PROJECT_DIR/frontend/coverage/coverage-summary.json'
+if os.path.exists(fe_cov_file):
+    try:
+        with open(fe_cov_file) as f:
+            cov = json.load(f)
+        frontend_coverage = cov.get('total', {}).get('lines', {}).get('pct')
+    except: pass
+
 result = {
     'timestamp': '$TIMESTAMP',
     'summary': {'total': total, 'passed': passed, 'failed': failed, 'suites': len(all_suites)},
+    'coverage': {
+        'backend': backend_coverage,
+        'frontend': frontend_coverage,
+    },
     'suites': all_suites
 }
 
 with open('$RESULTS_FILE', 'w') as f:
     json.dump(result, f, indent=2)
-print(f'Results written: {passed}/{total} passed, {failed} failed, {len(all_suites)} suites')
+
+cov_str = f"Backend: {backend_coverage or '?'}% | Frontend: {frontend_coverage or '?'}%"
+print(f'Results: {passed}/{total} passed, {failed} failed, {len(all_suites)} suites')
+print(f'Coverage: {cov_str}')
 PYEOF
 
 rm -f /tmp/myfinance_backend_results.json /tmp/myfinance_frontend_results.json

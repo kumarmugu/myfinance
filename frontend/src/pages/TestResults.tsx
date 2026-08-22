@@ -57,10 +57,10 @@ export default function TestResults() {
     );
   }
 
-  const { summary, suites, timestamp } = data;
-  const filtered = filter === 'all' ? suites : suites.filter(s => s.type === filter);
-  const backendCount = suites.filter(s => s.type === 'backend').reduce((s, st) => s + st.tests.length, 0);
-  const frontendCount = suites.filter(s => s.type === 'frontend').reduce((s, st) => s + st.tests.length, 0);
+  const { summary, suites, timestamp, coverage } = data as any;
+  const filtered = filter === 'all' ? suites : suites.filter((s: any) => s.type === filter);
+  const backendCount = suites.filter((s: any) => s.type === 'backend').reduce((s: number, st: any) => s + st.tests.length, 0);
+  const frontendCount = suites.filter((s: any) => s.type === 'frontend').reduce((s: number, st: any) => s + st.tests.length, 0);
 
   return (
     <div className="space-y-6 max-w-4xl">
@@ -107,6 +107,34 @@ export default function TestResults() {
           <div className={`h-full rounded-full transition-all ${summary.failed === 0 ? 'bg-green-500' : 'bg-amber-500'}`} style={{ width: `${summary.total > 0 ? (summary.passed / summary.total) * 100 : 0}%` }} />
         </div>
       </div>
+
+      {/* Code Coverage */}
+      {coverage && (coverage.backend !== null || coverage.frontend !== null) && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-slate-700">Backend Coverage</span>
+              <span className="text-sm font-bold text-blue-600">{coverage.backend != null ? `${coverage.backend}%` : 'N/A'}</span>
+            </div>
+            {coverage.backend != null && (
+              <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-full bg-blue-500 rounded-full" style={{ width: `${coverage.backend}%` }} />
+              </div>
+            )}
+          </div>
+          <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-slate-700">Frontend Coverage</span>
+              <span className="text-sm font-bold text-purple-600">{coverage.frontend != null ? `${coverage.frontend}%` : 'N/A'}</span>
+            </div>
+            {coverage.frontend != null && (
+              <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-full bg-purple-500 rounded-full" style={{ width: `${coverage.frontend}%` }} />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Filter */}
       <div className="flex gap-1 bg-slate-100 rounded-lg p-1 w-fit">
