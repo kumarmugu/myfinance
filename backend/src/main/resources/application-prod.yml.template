@@ -1,0 +1,27 @@
+# ═══════════════════════════════════════════════════════
+# PRODUCTION PROFILE TEMPLATE
+# Copy this to application-prod.yml and fill in your values.
+# The actual application-prod.yml is gitignored (contains secrets).
+#
+# To run in prod mode:
+#   ./mvnw spring-boot:run -Dspring-boot.run.profiles=prod
+#   or: java -jar myfinance.jar --spring.profiles.active=prod
+# ═══════════════════════════════════════════════════════
+
+spring:
+  datasource:
+    url: jdbc:h2:file:./data-prod/myfinance-live;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: <YOUR_DB_USERNAME>
+    password: <YOUR_DB_PASSWORD>
+  h2:
+    console:
+      enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+# Disable sample data in production
+app:
+  init-data: false
+  jwt:
+    secret: <YOUR_JWT_SECRET_MIN_256_BITS>

@@ -1,8 +1,14 @@
 #!/bin/bash
 # MyFinance Application Startup Script
 # Starts both backend (Spring Boot) and frontend (Vite dev server)
+#
+# Usage:
+#   ./start.sh          # Start with dev database (default)
+#   ./start.sh prod     # Start with production database
 
 set -e
+
+PROFILE="${1:-}"
 
 echo "========================================="
 echo "  MyFinance - Personal Finance Manager"
@@ -21,8 +27,15 @@ fi
 
 # Start Backend
 echo "[1/2] Starting Spring Boot backend on port 8080..."
-cd backend
-./mvnw spring-boot:run &
+if [ "$PROFILE" = "prod" ]; then
+  echo "      Mode: PRODUCTION (live database)"
+  cd backend
+  ./mvnw spring-boot:run -Dspring-boot.run.profiles=prod &
+else
+  echo "      Mode: DEVELOPMENT (sample data)"
+  cd backend
+  ./mvnw spring-boot:run &
+fi
 BACKEND_PID=$!
 cd ..
 

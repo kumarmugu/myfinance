@@ -1,8 +1,10 @@
 # Backend
 backend/target/
 backend/data/
+backend/data-prod/
 backend/*.db
 backend/.mvn/wrapper/maven-wrapper.jar
+backend/src/main/resources/application-prod.yml
 
 # Frontend
 frontend/node_modules/
