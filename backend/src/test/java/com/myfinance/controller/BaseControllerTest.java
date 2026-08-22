@@ -5,11 +5,13 @@ import com.myfinance.repository.AppUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
 
 /**
  * Base class for controller tests that need multi-tenant user context.
- * Creates a test user "testuser" that @WithMockUser("testuser") can resolve to.
+ * Uses @DirtiesContext to reset the application context (and DB) between test classes.
  */
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public abstract class BaseControllerTest {
 
     @Autowired
@@ -22,7 +24,6 @@ public abstract class BaseControllerTest {
 
     @BeforeEach
     void setupTestUser() {
-        // Ensure a test user exists that matches @WithMockUser default username "user"
         if (appUserRepository.findByUsername("user").isEmpty()) {
             testUser = appUserRepository.save(AppUser.builder()
                     .username("user")

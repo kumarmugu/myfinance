@@ -92,4 +92,11 @@ class CurrencyRateControllerTest extends BaseControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.fromCurrency", is("BTC")));
     }
+
+    @Test
+    @WithMockUser
+    void shouldListAllRates() throws Exception {
+        repository.save(CurrencyRate.builder().fromCurrency("JPY").toCurrency("SGD").rate(new BigDecimal("0.009")).effectiveDate(LocalDate.now()).userId(testUser.getId()).build());
+        mockMvc.perform(get("/api/currency-rates")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))));
+    }
 }

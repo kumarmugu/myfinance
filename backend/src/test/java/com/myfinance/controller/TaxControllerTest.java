@@ -85,4 +85,11 @@ class TaxControllerTest extends BaseControllerTest {
         mockMvc.perform(get("/api/tax"))
                 .andExpect(jsonPath("$", hasSize(0)));
     }
+
+    @Test
+    @WithMockUser
+    void shouldGetTaxById() throws Exception {
+        TaxRecord saved = taxRecordRepository.save(TaxRecord.builder().assessmentYear(2025).employment(new BigDecimal("250000")).taxPayable(new BigDecimal("30000")).userId(testUser.getId()).build());
+        mockMvc.perform(get("/api/tax/" + saved.getId())).andExpect(status().isOk()).andExpect(jsonPath("$.assessmentYear", is(2025)));
+    }
 }

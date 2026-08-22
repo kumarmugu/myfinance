@@ -57,4 +57,20 @@ class WorkExperienceControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("$[0].company", is("New Co")))
                 .andExpect(jsonPath("$[1].company", is("Old Co")));
     }
+
+    @Test
+    @WithMockUser
+    void shouldUpdateWorkExperience() throws Exception {
+        WorkExperience exp = repository.save(WorkExperience.builder().company("Old").startDate(LocalDate.of(2020, 1, 1)).userId(testUser.getId()).build());
+        WorkExperience update = WorkExperience.builder().company("New Co").position("Lead").startDate(LocalDate.of(2020, 1, 1)).build();
+        mockMvc.perform(put("/api/work-experience/" + exp.getId()).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(update)))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.company", is("New Co")));
+    }
+
+    @Test
+    @WithMockUser
+    void shouldDeleteWorkExperience() throws Exception {
+        WorkExperience exp = repository.save(WorkExperience.builder().company("Del").startDate(LocalDate.of(2019, 1, 1)).userId(testUser.getId()).build());
+        mockMvc.perform(delete("/api/work-experience/" + exp.getId())).andExpect(status().isNoContent());
+    }
 }

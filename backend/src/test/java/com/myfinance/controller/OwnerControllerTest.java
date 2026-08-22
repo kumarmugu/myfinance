@@ -80,4 +80,11 @@ class OwnerControllerTest extends BaseControllerTest {
                     .andExpect(jsonPath("$.relationship", is(rel.name())));
         }
     }
+
+    @Test
+    @WithMockUser
+    void shouldDeleteOwnerWithNoReferences() throws Exception {
+        Owner o = ownerRepository.save(Owner.builder().name("ToDelete").relationship(OwnerRelationship.SELF).userId(testUser.getId()).build());
+        mockMvc.perform(delete("/api/owners/" + o.getId())).andExpect(status().isNoContent());
+    }
 }

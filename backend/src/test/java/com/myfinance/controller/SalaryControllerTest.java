@@ -84,4 +84,20 @@ class SalaryControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("$.grandTotal", is(26000.0)))
                 .andExpect(jsonPath("$.years", is(1)));
     }
+
+    @Test
+    @WithMockUser
+    void shouldUpdateSalary() throws Exception {
+        SalaryRecord rec = repository.save(SalaryRecord.builder().year(2026).month(1).company("X").amount(new BigDecimal("10000")).userId(testUser.getId()).build());
+        SalaryRecord update = SalaryRecord.builder().year(2026).month(1).company("Y").amount(new BigDecimal("12000")).build();
+        mockMvc.perform(put("/api/salary/" + rec.getId()).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(update)))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.company", is("Y")));
+    }
+
+    @Test
+    @WithMockUser
+    void shouldDeleteSalary() throws Exception {
+        SalaryRecord rec = repository.save(SalaryRecord.builder().year(2026).month(6).company("Z").amount(new BigDecimal("5000")).userId(testUser.getId()).build());
+        mockMvc.perform(delete("/api/salary/" + rec.getId())).andExpect(status().isNoContent());
+    }
 }

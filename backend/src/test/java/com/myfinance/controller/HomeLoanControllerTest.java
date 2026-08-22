@@ -77,4 +77,13 @@ class HomeLoanControllerTest extends BaseControllerTest {
         mockMvc.perform(get("/api/home-loans"))
                 .andExpect(jsonPath("$", hasSize(0)));
     }
+
+    @Test
+    @WithMockUser
+    void shouldUpdateHomeLoan() throws Exception {
+        HomeLoan loan = repository.save(HomeLoan.builder().propertyName("Old").propertyValue(new BigDecimal("500000")).loanAmount(new BigDecimal("400000")).interestRate(new BigDecimal("3")).tenureMonths(300).currency(Currency.SGD).userId(testUser.getId()).build());
+        HomeLoan update = HomeLoan.builder().propertyName("Updated").propertyValue(new BigDecimal("600000")).loanAmount(new BigDecimal("400000")).interestRate(new BigDecimal("3.5")).tenureMonths(300).build();
+        mockMvc.perform(put("/api/home-loans/" + loan.getId()).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(update)))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.propertyName", is("Updated")));
+    }
 }

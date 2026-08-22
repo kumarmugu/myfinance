@@ -75,4 +75,13 @@ class AccountControllerTest extends BaseControllerTest {
         mockMvc.perform(delete("/api/accounts/" + acc.getId()))
                 .andExpect(status().isNoContent());
     }
+
+    @Test
+    @WithMockUser
+    void shouldUpdateAccount() throws Exception {
+        Account acc = accountRepository.save(Account.builder().name("Old").accountType(AccountType.BROKER).currency(Currency.USD).owner(testOwner).userId(testUser.getId()).build());
+        Account update = Account.builder().name("Updated").accountType(AccountType.BANK).currency(Currency.SGD).owner(testOwner).build();
+        mockMvc.perform(put("/api/accounts/" + acc.getId()).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(update)))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.name", is("Updated")));
+    }
 }

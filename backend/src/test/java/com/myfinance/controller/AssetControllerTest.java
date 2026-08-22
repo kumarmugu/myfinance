@@ -92,4 +92,20 @@ class AssetControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].symbol", is("AAPL")));
     }
+
+    @Test
+    @WithMockUser
+    void shouldUpdateAsset() throws Exception {
+        Asset a = assetRepository.save(Asset.builder().name("Old").symbol("OLD-T").assetType(AssetType.CRYPTO).currency(Currency.USD).userId(testUser.getId()).build());
+        Asset update = Asset.builder().name("New Name").symbol("OLD-T").assetType(AssetType.CRYPTO).currency(Currency.USD).build();
+        mockMvc.perform(put("/api/assets/" + a.getId()).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(update)))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.name", is("New Name")));
+    }
+
+    @Test
+    @WithMockUser
+    void shouldDeleteAssetWithNoReferences() throws Exception {
+        Asset a = assetRepository.save(Asset.builder().name("Del").symbol("DEL-T").assetType(AssetType.OTHER).currency(Currency.USD).userId(testUser.getId()).build());
+        mockMvc.perform(delete("/api/assets/" + a.getId())).andExpect(status().isNoContent());
+    }
 }
