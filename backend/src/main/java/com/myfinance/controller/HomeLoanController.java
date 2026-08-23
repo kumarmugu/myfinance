@@ -6,6 +6,7 @@ import com.myfinance.repository.HomeLoanRepository;
 import com.myfinance.repository.LoanPaymentRepository;
 import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/home-loans")
 @RequiredArgsConstructor
+@Slf4j
 public class HomeLoanController {
     private final HomeLoanRepository loanRepository;
     private final LoanPaymentRepository paymentRepository;
@@ -34,12 +36,16 @@ public class HomeLoanController {
 
     @PostMapping
     public ResponseEntity<HomeLoan> create(@RequestBody HomeLoan loan) {
+        log.info("Creating home loan: property={}", loan.getPropertyName());
         loan.setUserId(tenantContext.getCurrentUserId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(loanRepository.save(loan));
+        HomeLoan saved = loanRepository.save(loan);
+        log.info("Created home loan id={}", saved.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @PutMapping("/{id}")
     public HomeLoan update(@PathVariable Long id, @RequestBody HomeLoan updated) {
+        log.info("Updating home loan id={}", id);
         HomeLoan existing = getById(id);
         existing.setPropertyName(updated.getPropertyName());
         existing.setPropertyAddress(updated.getPropertyAddress());
@@ -62,6 +68,7 @@ public class HomeLoanController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("Soft-deleting home loan id={}", id);
         HomeLoan loan = getById(id);
         loan.setIsActive(false);
         loanRepository.save(loan);
@@ -76,6 +83,7 @@ public class HomeLoanController {
 
     @PostMapping("/{loanId}/payments")
     public ResponseEntity<LoanPayment> createPayment(@PathVariable Long loanId, @RequestBody LoanPayment payment) {
+        log.info("Creating loan payment for loanId={}, amount={}", loanId, payment.getAmount());
         HomeLoan loan = getById(loanId);
         payment.setLoan(loan);
         payment.setUserId(tenantContext.getCurrentUserId());
@@ -85,11 +93,13 @@ public class HomeLoanController {
             loan.setOutstandingBalance(payment.getBalanceAfter());
             loanRepository.save(loan);
         }
+        log.info("Created loan payment id={}", saved.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @DeleteMapping("/payments/{paymentId}")
     public ResponseEntity<Void> deletePayment(@PathVariable Long paymentId) {
+        log.info("Deleting loan payment id={}", paymentId);
         paymentRepository.deleteById(paymentId);
         return ResponseEntity.noContent().build();
     }

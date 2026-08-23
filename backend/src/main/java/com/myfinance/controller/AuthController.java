@@ -6,6 +6,7 @@ import com.myfinance.repository.AppUserRepository;
 import com.myfinance.security.JwtService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +27,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final AppUserRepository userRepository;
@@ -41,10 +43,12 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody AuthRequest request) {
+        log.info("Login attempt for user={}", request.getUsername());
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         } catch (Exception e) {
+            log.warn("Login failed for user={}", request.getUsername());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid username or password"));
         }
 
@@ -57,6 +61,7 @@ public class AuthController {
         UserDetails userDetails = new User(user.getUsername(), user.getPassword(), Collections.emptyList());
         String token = jwtService.generateToken(claims, userDetails);
 
+        log.info("Login successful for user={}", user.getUsername());
         return ResponseEntity.ok(AuthResponse.builder()
                 .token(token)
                 .userId(user.getId())
@@ -71,11 +76,13 @@ public class AuthController {
     public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
+        log.info("Password change requested for user={}", username);
 
         AppUser user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            log.warn("Password change failed for user={}: incorrect current password", username);
             return ResponseEntity.badRequest().body(Map.of("error", "Current password is incorrect"));
         }
 
@@ -87,6 +94,7 @@ public class AuthController {
 
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        log.info("Password reset requested for email={}", request.getEmail());
         var userOpt = userRepository.findByEmail(request.getEmail());
 
         // Always return success to avoid email enumeration
@@ -97,7 +105,7 @@ public class AuthController {
             user.setResetTokenExpiry(LocalDateTime.now().plusHours(1));
             userRepository.save(user);
             // In production, send email. For now, log it.
-            System.out.println("Password reset token for " + user.getEmail() + ": " + token);
+            log.info("Password reset token generated for email={}", user.getEmail());
         }
 
         return ResponseEntity.ok(Map.of("message", "If the email exists, a reset link has been sent"));
@@ -108,11 +116,13 @@ public class AuthController {
         var userOpt = userRepository.findByResetToken(request.getToken());
 
         if (userOpt.isEmpty()) {
+            log.warn("Password reset failed: invalid or expired token");
             return ResponseEntity.badRequest().body(Map.of("error", "Invalid or expired reset token"));
         }
 
         AppUser user = userOpt.get();
         if (user.getResetTokenExpiry() != null && user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
+            log.warn("Password reset failed for user={}: token expired", user.getUsername());
             return ResponseEntity.badRequest().body(Map.of("error", "Reset token has expired"));
         }
 
@@ -121,6 +131,7 @@ public class AuthController {
         user.setResetTokenExpiry(null);
         userRepository.save(user);
 
+        log.info("Password reset successful for user={}", user.getUsername());
         return ResponseEntity.ok(Map.of("message", "Password has been reset successfully"));
     }
 

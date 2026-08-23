@@ -4,6 +4,7 @@ import com.myfinance.model.AuditLog;
 import com.myfinance.security.TenantContext;
 import com.myfinance.service.AuditService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.time.LocalTime;
 @RestController
 @RequestMapping("/api/audit")
 @RequiredArgsConstructor
+@Slf4j
 public class AuditController {
 
     private final AuditService auditService;
@@ -33,8 +35,11 @@ public class AuditController {
             @RequestParam(defaultValue = "50") int size) {
 
         if (!tenantContext.isAdmin()) {
+            log.warn("Non-admin user attempted to access audit logs");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Admin access required");
         }
+
+        log.debug("Fetching audit logs: userId={}, action={}, entity={}, from={}, to={}", userId, action, entity, from, to);
 
         LocalDateTime fromDateTime = from != null ? from.atStartOfDay() : null;
         LocalDateTime toDateTime = to != null ? to.atTime(LocalTime.MAX) : null;

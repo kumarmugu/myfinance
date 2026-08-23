@@ -5,6 +5,7 @@ import com.myfinance.model.enums.AssetType;
 import com.myfinance.repository.NetWorthConfigRepository;
 import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/net-worth-config")
 @RequiredArgsConstructor
+@Slf4j
 public class NetWorthConfigController {
     private final NetWorthConfigRepository repository;
     private final TenantContext tenantContext;
@@ -46,6 +48,7 @@ public class NetWorthConfigController {
 
     @PutMapping("/{id}")
     public NetWorthConfig update(@PathVariable Long id, @RequestBody NetWorthConfig updated) {
+        log.info("Updating net-worth config id={}, includeInNetWorth={}", id, updated.getIncludeInNetWorth());
         NetWorthConfig existing = repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
         existing.setIncludeInNetWorth(updated.getIncludeInNetWorth());
         if (updated.getLabel() != null) existing.setLabel(updated.getLabel());
@@ -54,6 +57,7 @@ public class NetWorthConfigController {
 
     @PutMapping("/batch")
     public List<NetWorthConfig> batchUpdate(@RequestBody List<NetWorthConfig> configs) {
+        log.info("Batch updating {} net-worth configs", configs.size());
         return repository.saveAll(configs);
     }
 

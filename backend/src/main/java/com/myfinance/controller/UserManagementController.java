@@ -4,6 +4,7 @@ import com.myfinance.model.AppUser;
 import com.myfinance.repository.AppUserRepository;
 import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/admin/users")
 @RequiredArgsConstructor
+@Slf4j
 public class UserManagementController {
     private final AppUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -23,6 +25,7 @@ public class UserManagementController {
     @GetMapping
     public ResponseEntity<?> getAll() {
         if (!tenantContext.isAdmin()) {
+            log.warn("Non-admin user attempted to list users");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Admin access required"));
         }
         List<AppUser> users = userRepository.findAll();
@@ -34,6 +37,7 @@ public class UserManagementController {
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody Map<String, String> request) {
         if (!tenantContext.isAdmin()) {
+            log.warn("Non-admin user attempted to create user");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Admin access required"));
         }
 
@@ -44,9 +48,11 @@ public class UserManagementController {
         String role = request.getOrDefault("role", "USER");
 
         if (userRepository.existsByUsername(username)) {
+            log.warn("User creation failed: username={} already taken", username);
             return ResponseEntity.badRequest().body(Map.of("error", "Username already taken"));
         }
 
+        log.info("Creating user: username={}, role={}", username, role);
         AppUser user = AppUser.builder()
                 .username(username)
                 .email(email)
@@ -56,6 +62,7 @@ public class UserManagementController {
                 .build();
 
         userRepository.save(user);
+        log.info("Created user id={}, username={}", user.getId(), username);
         user.setPassword(null);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
@@ -63,8 +70,10 @@ public class UserManagementController {
     @PutMapping("/{id}/role")
     public ResponseEntity<?> updateRole(@PathVariable Long id, @RequestBody Map<String, String> request) {
         if (!tenantContext.isAdmin()) {
+            log.warn("Non-admin user attempted to update user role");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Admin access required"));
         }
+        log.info("Updating role for user id={} to {}", id, request.get("role"));
         AppUser user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         user.setRole(request.get("role"));
         userRepository.save(user);
@@ -75,10 +84,12 @@ public class UserManagementController {
     @PutMapping("/{id}/toggle-active")
     public ResponseEntity<?> toggleActive(@PathVariable Long id) {
         if (!tenantContext.isAdmin()) {
+            log.warn("Non-admin user attempted to toggle user active status");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Admin access required"));
         }
         AppUser user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         user.setIsActive(!user.getIsActive());
+        log.info("Toggled user id={} active={}", id, user.getIsActive());
         userRepository.save(user);
         user.setPassword(null);
         return ResponseEntity.ok(user);

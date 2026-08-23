@@ -6,6 +6,7 @@ import com.myfinance.security.TenantContext;
 import com.myfinance.service.AssetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/assets")
 @RequiredArgsConstructor
+@Slf4j
 public class AssetController {
     private final AssetService assetService;
     private final com.myfinance.repository.AssetRepository assetRepository;
@@ -44,21 +46,35 @@ public class AssetController {
 
     @PostMapping
     public ResponseEntity<Asset> create(@Valid @RequestBody Asset asset) {
+        log.info("Creating asset: name={}, type={}", asset.getName(), asset.getAssetType());
         asset.setUserId(tenantContext.getCurrentUserId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(assetService.create(asset));
+        Asset saved = assetService.create(asset);
+        log.info("Created asset id={}", saved.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @PutMapping("/{id}")
-    public Asset update(@PathVariable Long id, @Valid @RequestBody Asset asset) { return assetService.update(id, asset); }
+    public Asset update(@PathVariable Long id, @Valid @RequestBody Asset asset) {
+        log.info("Updating asset id={}", id);
+        return assetService.update(id, asset);
+    }
 
     @PatchMapping("/{id}/price")
-    public Asset updatePrice(@PathVariable Long id, @RequestParam BigDecimal price) { return assetService.updatePrice(id, price); }
+    public Asset updatePrice(@PathVariable Long id, @RequestParam BigDecimal price) {
+        log.info("Updating price for asset id={}, price={}", id, price);
+        return assetService.updatePrice(id, price);
+    }
 
     @PatchMapping("/{id}/net-worth")
     public Asset toggleNetWorth(@PathVariable Long id, @RequestParam boolean include) {
+        log.info("Toggling net-worth for asset id={}, include={}", id, include);
         return assetService.toggleNetWorth(id, include);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) { assetService.delete(id); return ResponseEntity.noContent().build(); }
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("Deleting asset id={}", id);
+        assetService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -10,6 +10,7 @@ import com.myfinance.security.TenantContext;
 import com.myfinance.service.FixedDepositService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/fixed-deposits")
 @RequiredArgsConstructor
+@Slf4j
 public class FixedDepositController {
     private final FixedDepositService fdService;
     private final BankRepository bankRepository;
@@ -87,6 +89,7 @@ public class FixedDepositController {
 
     @PatchMapping("/{id}/net-worth")
     public FixedDeposit toggleNetWorthInclusion(@PathVariable Long id, @RequestBody Map<String, Object> body) {
+        log.info("Updating net-worth inclusion for fixed deposit id={}", id);
         FixedDeposit fd = fdService.getById(id);
         if (body.containsKey("includeInNetWorth")) {
             fd.setIncludeInNetWorth((Boolean) body.get("includeInNetWorth"));
@@ -99,15 +102,25 @@ public class FixedDepositController {
 
     @PostMapping
     public ResponseEntity<FixedDeposit> create(@Valid @RequestBody FixedDeposit fd) {
+        log.info("Creating fixed deposit: bank={}, principal={}", fd.getBank() != null ? fd.getBank().getShortName() : "N/A", fd.getPrincipalAmount());
         fd.setUserId(tenantContext.getCurrentUserId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(fdService.create(fd));
+        FixedDeposit saved = fdService.create(fd);
+        log.info("Created fixed deposit id={}", saved.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @PutMapping("/{id}")
-    public FixedDeposit update(@PathVariable Long id, @Valid @RequestBody FixedDeposit fd) { return fdService.update(id, fd); }
+    public FixedDeposit update(@PathVariable Long id, @Valid @RequestBody FixedDeposit fd) {
+        log.info("Updating fixed deposit id={}", id);
+        return fdService.update(id, fd);
+    }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) { fdService.delete(id); return ResponseEntity.noContent().build(); }
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("Deleting fixed deposit id={}", id);
+        fdService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 
     // ─── Reference Data ───
     @GetMapping("/banks")
@@ -117,8 +130,14 @@ public class FixedDepositController {
     public List<FDHolder> getHolders() { return fdHolderRepository.findAll(); }
 
     @PostMapping("/banks")
-    public Bank createBank(@RequestBody Bank bank) { return bankRepository.save(bank); }
+    public Bank createBank(@RequestBody Bank bank) {
+        log.info("Creating bank: {}", bank.getShortName());
+        return bankRepository.save(bank);
+    }
 
     @PostMapping("/holders")
-    public FDHolder createHolder(@RequestBody FDHolder holder) { return fdHolderRepository.save(holder); }
+    public FDHolder createHolder(@RequestBody FDHolder holder) {
+        log.info("Creating FD holder: {}", holder.getName());
+        return fdHolderRepository.save(holder);
+    }
 }

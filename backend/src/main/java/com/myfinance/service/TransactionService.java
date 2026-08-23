@@ -6,6 +6,7 @@ import com.myfinance.model.enums.TransactionType;
 import com.myfinance.repository.TransactionRepository;
 import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
@@ -59,6 +61,7 @@ public class TransactionService {
                 .userId(tenantContext.getCurrentUserId()).build();
 
         Transaction saved = transactionRepository.save(tx);
+        log.info("Created Transaction id={} type={} assetId={} quantity={}", saved.getId(), type, assetId, quantity);
         updateHolding(asset, account, owner, type, quantity, pricePerUnit, purpose);
         return saved;
     }
@@ -89,16 +92,23 @@ public class TransactionService {
             if (holdingOpt.isPresent()) {
                 Holding h = holdingOpt.get();
                 BigDecimal newQty = h.getQuantity().subtract(quantity);
-                if (newQty.compareTo(BigDecimal.ZERO) < 0) throw new RuntimeException("Cannot sell more than held");
+                if (newQty.compareTo(BigDecimal.ZERO) < 0) {
+                    log.error("Failed to sell: quantity {} exceeds holding for assetId={}", quantity, asset.getId());
+                    throw new RuntimeException("Cannot sell more than held");
+                }
                 BigDecimal soldInvestment = quantity.multiply(h.getAverageBuyPrice());
                 h.setQuantity(newQty);
                 h.setInvestedAmount(h.getInvestedAmount().subtract(soldInvestment));
                 holdingService.save(h);
             } else {
+                log.error("Failed to sell: no holding found for assetId={} accountId={} ownerId={}", asset.getId(), account.getId(), owner.getId());
                 throw new RuntimeException("No holding found to sell");
             }
         }
     }
 
-    public void delete(Long id) { transactionRepository.deleteById(id); }
+    public void delete(Long id) {
+        transactionRepository.deleteById(id);
+        log.info("Deleted Transaction id={}", id);
+    }
 }

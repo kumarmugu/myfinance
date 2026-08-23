@@ -6,6 +6,7 @@ import com.myfinance.security.TenantContext;
 import com.myfinance.service.DashboardService;
 import com.myfinance.service.NetWorthService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/dashboard")
 @RequiredArgsConstructor
+@Slf4j
 public class DashboardController {
     private final DashboardService dashboardService;
     private final NetWorthService netWorthService;
@@ -30,7 +32,10 @@ public class DashboardController {
     public Map<String, BigDecimal> getAllocation() { return netWorthService.getCurrentAllocation(); }
 
     @PostMapping("/snapshot")
-    public NetWorthSnapshot takeSnapshot(@RequestParam(required = false) Long ownerId) { return netWorthService.takeSnapshot(ownerId); }
+    public NetWorthSnapshot takeSnapshot(@RequestParam(required = false) Long ownerId) {
+        log.info("Taking net-worth snapshot for ownerId={}", ownerId);
+        return netWorthService.takeSnapshot(ownerId);
+    }
 
     @GetMapping("/net-worth/history")
     public List<NetWorthSnapshot> getHistory(@RequestParam(required = false) Long ownerId) {

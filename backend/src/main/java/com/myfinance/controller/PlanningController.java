@@ -7,6 +7,7 @@ import com.myfinance.security.TenantContext;
 import com.myfinance.service.AccountDepositService;
 import com.myfinance.service.NetWorthService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/planning")
 @RequiredArgsConstructor
+@Slf4j
 public class PlanningController {
     private final AllocationTargetRepository allocationTargetRepository;
     private final NetWorthService netWorthService;
@@ -40,6 +42,7 @@ public class PlanningController {
 
     @PutMapping("/allocation")
     public List<AllocationTarget> updateTargets(@RequestBody List<AllocationTarget> targets) {
+        log.info("Updating {} allocation targets", targets.size());
         return allocationTargetRepository.saveAll(targets);
     }
 
@@ -50,10 +53,17 @@ public class PlanningController {
 
     @PostMapping("/deposits")
     public ResponseEntity<AccountDeposit> createDeposit(@RequestBody AccountDeposit deposit) {
+        log.info("Creating deposit: amount={}", deposit.getAmount());
         deposit.setUserId(tenantContext.getCurrentUserId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(accountDepositService.create(deposit));
+        AccountDeposit saved = accountDepositService.create(deposit);
+        log.info("Created deposit id={}", saved.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @DeleteMapping("/deposits/{id}")
-    public ResponseEntity<Void> deleteDeposit(@PathVariable Long id) { accountDepositService.delete(id); return ResponseEntity.noContent().build(); }
+    public ResponseEntity<Void> deleteDeposit(@PathVariable Long id) {
+        log.info("Deleting deposit id={}", id);
+        accountDepositService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

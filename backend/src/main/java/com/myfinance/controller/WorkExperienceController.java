@@ -4,6 +4,7 @@ import com.myfinance.model.WorkExperience;
 import com.myfinance.repository.WorkExperienceRepository;
 import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/work-experience")
 @RequiredArgsConstructor
+@Slf4j
 public class WorkExperienceController {
     private final WorkExperienceRepository repository;
     private final TenantContext tenantContext;
@@ -31,12 +33,16 @@ public class WorkExperienceController {
 
     @PostMapping
     public ResponseEntity<WorkExperience> create(@RequestBody WorkExperience exp) {
+        log.info("Creating work experience: company={}, position={}", exp.getCompany(), exp.getPosition());
         exp.setUserId(tenantContext.getCurrentUserId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(exp));
+        WorkExperience saved = repository.save(exp);
+        log.info("Created work experience id={}", saved.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @PutMapping("/{id}")
     public WorkExperience update(@PathVariable Long id, @RequestBody WorkExperience updated) {
+        log.info("Updating work experience id={}", id);
         WorkExperience existing = getById(id);
         existing.setCompany(updated.getCompany());
         existing.setPosition(updated.getPosition());
@@ -53,6 +59,7 @@ public class WorkExperienceController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("Deleting work experience id={}", id);
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }

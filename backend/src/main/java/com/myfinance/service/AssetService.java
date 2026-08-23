@@ -8,6 +8,7 @@ import com.myfinance.repository.DividendRepository;
 import com.myfinance.repository.HoldingRepository;
 import com.myfinance.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AssetService {
@@ -28,7 +30,11 @@ public class AssetService {
     public Optional<Asset> getBySymbol(String symbol) { return assetRepository.findBySymbol(symbol); }
     public List<Asset> getByType(AssetType type) { return assetRepository.findByAssetType(type); }
     public List<Asset> search(String query) { return assetRepository.findByNameContainingIgnoreCaseOrSymbolContainingIgnoreCase(query, query); }
-    public Asset create(Asset asset) { return assetRepository.save(asset); }
+    public Asset create(Asset asset) {
+        Asset saved = assetRepository.save(asset);
+        log.info("Created Asset id={} symbol={}", saved.getId(), saved.getSymbol());
+        return saved;
+    }
     public Asset update(Long id, Asset updated) {
         Asset existing = getById(id);
         existing.setName(updated.getName());
@@ -38,7 +44,9 @@ public class AssetService {
         existing.setCurrency(updated.getCurrency());
         existing.setExchange(updated.getExchange());
         existing.setDescription(updated.getDescription());
-        return assetRepository.save(existing);
+        Asset saved = assetRepository.save(existing);
+        log.info("Updated Asset id={} symbol={}", id, saved.getSymbol());
+        return saved;
     }
     public Asset updatePrice(Long id, BigDecimal price) {
         Asset asset = getById(id);
@@ -66,9 +74,11 @@ public class AssetService {
         if (divCount > 0) references.add(divCount + " Dividend(s)");
 
         if (!references.isEmpty()) {
+            log.warn("Cannot delete Asset id={}, referenced by: {}", id, references);
             throw new ReferenceConstraintException("Asset '" + asset.getSymbol() + " - " + asset.getName() + "'", references);
         }
 
         assetRepository.deleteById(id);
+        log.info("Deleted Asset id={}", id);
     }
 }

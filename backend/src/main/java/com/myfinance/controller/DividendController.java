@@ -5,6 +5,7 @@ import com.myfinance.security.TenantContext;
 import com.myfinance.service.DividendService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/dividends")
 @RequiredArgsConstructor
+@Slf4j
 public class DividendController {
     private final DividendService dividendService;
     private final TenantContext tenantContext;
@@ -34,10 +36,17 @@ public class DividendController {
 
     @PostMapping
     public ResponseEntity<Dividend> create(@Valid @RequestBody Dividend dividend) {
+        log.info("Creating dividend: amount={}", dividend.getAmount());
         dividend.setUserId(tenantContext.getCurrentUserId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(dividendService.create(dividend));
+        Dividend saved = dividendService.create(dividend);
+        log.info("Created dividend id={}", saved.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) { dividendService.delete(id); return ResponseEntity.noContent().build(); }
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("Deleting dividend id={}", id);
+        dividendService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -4,6 +4,7 @@ import com.myfinance.model.SalaryRecord;
 import com.myfinance.repository.SalaryRecordRepository;
 import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/salary")
 @RequiredArgsConstructor
+@Slf4j
 public class SalaryController {
     private final SalaryRecordRepository repository;
     private final TenantContext tenantContext;
@@ -64,12 +66,16 @@ public class SalaryController {
 
     @PostMapping
     public ResponseEntity<SalaryRecord> create(@RequestBody SalaryRecord record) {
+        log.info("Creating salary record: year={}, month={}, company={}", record.getYear(), record.getMonth(), record.getCompany());
         record.setUserId(tenantContext.getCurrentUserId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(record));
+        SalaryRecord saved = repository.save(record);
+        log.info("Created salary record id={}", saved.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @PutMapping("/{id}")
     public SalaryRecord update(@PathVariable Long id, @RequestBody SalaryRecord updated) {
+        log.info("Updating salary record id={}", id);
         SalaryRecord existing = repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
         existing.setYear(updated.getYear());
         existing.setMonth(updated.getMonth());
@@ -91,6 +97,7 @@ public class SalaryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("Deleting salary record id={}", id);
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }

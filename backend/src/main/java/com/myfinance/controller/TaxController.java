@@ -4,6 +4,7 @@ import com.myfinance.model.TaxRecord;
 import com.myfinance.repository.TaxRecordRepository;
 import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/tax")
 @RequiredArgsConstructor
+@Slf4j
 public class TaxController {
     private final TaxRecordRepository repository;
     private final TenantContext tenantContext;
@@ -52,12 +54,16 @@ public class TaxController {
 
     @PostMapping
     public ResponseEntity<TaxRecord> create(@RequestBody TaxRecord record) {
+        log.info("Creating tax record: assessmentYear={}, country={}", record.getAssessmentYear(), record.getCountry());
         record.setUserId(tenantContext.getCurrentUserId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(record));
+        TaxRecord saved = repository.save(record);
+        log.info("Created tax record id={}", saved.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @PutMapping("/{id}")
     public TaxRecord update(@PathVariable Long id, @RequestBody TaxRecord updated) {
+        log.info("Updating tax record id={}", id);
         TaxRecord existing = getById(id);
         existing.setAssessmentYear(updated.getAssessmentYear());
         existing.setEmployment(updated.getEmployment());
@@ -76,6 +82,7 @@ public class TaxController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("Deleting tax record id={}", id);
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }

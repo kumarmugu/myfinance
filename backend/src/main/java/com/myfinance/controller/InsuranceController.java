@@ -6,6 +6,7 @@ import com.myfinance.repository.InsuranceBonusEntryRepository;
 import com.myfinance.repository.InsurancePolicyRepository;
 import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/insurance")
 @RequiredArgsConstructor
+@Slf4j
 public class InsuranceController {
     private final InsurancePolicyRepository repository;
     private final InsuranceBonusEntryRepository bonusRepository;
@@ -33,12 +35,16 @@ public class InsuranceController {
 
     @PostMapping
     public ResponseEntity<InsurancePolicy> create(@RequestBody InsurancePolicy policy) {
+        log.info("Creating insurance policy: name={}, type={}", policy.getPolicyName(), policy.getPolicyType());
         policy.setUserId(tenantContext.getCurrentUserId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(policy));
+        InsurancePolicy saved = repository.save(policy);
+        log.info("Created insurance policy id={}", saved.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @PutMapping("/{id}")
     public InsurancePolicy update(@PathVariable Long id, @RequestBody InsurancePolicy updated) {
+        log.info("Updating insurance policy id={}", id);
         InsurancePolicy existing = getById(id);
         existing.setPolicyName(updated.getPolicyName());
         existing.setProvider(updated.getProvider());
@@ -57,6 +63,7 @@ public class InsuranceController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("Soft-deleting insurance policy id={}", id);
         InsurancePolicy p = getById(id);
         p.setIsActive(false);
         repository.save(p);
@@ -71,6 +78,7 @@ public class InsuranceController {
 
     @PostMapping("/{policyId}/bonus")
     public ResponseEntity<InsuranceBonusEntry> createBonusEntry(@PathVariable Long policyId, @RequestBody InsuranceBonusEntry entry) {
+        log.info("Creating bonus entry for policyId={}, year={}", policyId, entry.getYearNumber());
         InsurancePolicy policy = getById(policyId);
         entry.setPolicy(policy);
         entry.setUserId(tenantContext.getCurrentUserId());
@@ -79,6 +87,7 @@ public class InsuranceController {
 
     @PutMapping("/bonus/{entryId}")
     public InsuranceBonusEntry updateBonusEntry(@PathVariable Long entryId, @RequestBody InsuranceBonusEntry updated) {
+        log.info("Updating bonus entry id={}", entryId);
         InsuranceBonusEntry existing = bonusRepository.findById(entryId).orElseThrow(() -> new RuntimeException("Entry not found"));
         existing.setYearNumber(updated.getYearNumber());
         existing.setYearDate(updated.getYearDate());
@@ -95,6 +104,7 @@ public class InsuranceController {
 
     @DeleteMapping("/bonus/{entryId}")
     public ResponseEntity<Void> deleteBonusEntry(@PathVariable Long entryId) {
+        log.info("Deleting bonus entry id={}", entryId);
         bonusRepository.deleteById(entryId);
         return ResponseEntity.noContent().build();
     }

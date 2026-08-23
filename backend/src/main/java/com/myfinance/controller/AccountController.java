@@ -6,6 +6,7 @@ import com.myfinance.security.TenantContext;
 import com.myfinance.service.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/accounts")
 @RequiredArgsConstructor
+@Slf4j
 public class AccountController {
     private final AccountService accountService;
     private final com.myfinance.repository.AccountRepository accountRepository;
@@ -34,13 +36,23 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<Account> create(@Valid @RequestBody Account account) {
+        log.info("Creating account: name={}, type={}", account.getName(), account.getAccountType());
         account.setUserId(tenantContext.getCurrentUserId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(accountService.create(account));
+        Account saved = accountService.create(account);
+        log.info("Created account id={}", saved.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @PutMapping("/{id}")
-    public Account update(@PathVariable Long id, @Valid @RequestBody Account account) { return accountService.update(id, account); }
+    public Account update(@PathVariable Long id, @Valid @RequestBody Account account) {
+        log.info("Updating account id={}", id);
+        return accountService.update(id, account);
+    }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) { accountService.delete(id); return ResponseEntity.noContent().build(); }
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("Deleting account id={}", id);
+        accountService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

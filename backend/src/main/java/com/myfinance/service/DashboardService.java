@@ -4,6 +4,7 @@ import com.myfinance.dto.DashboardSummary;
 import com.myfinance.model.Holding;
 import com.myfinance.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DashboardService {
@@ -19,6 +21,7 @@ public class DashboardService {
     private final AccountRepository accountRepository;
 
     public DashboardSummary getSummary(Long ownerId) {
+        log.info("Generating dashboard summary for ownerId={}", ownerId);
         List<Holding> holdings = ownerId != null
                 ? holdingService.getActiveByOwner(ownerId)
                 : holdingService.getActiveHoldings();

@@ -4,6 +4,7 @@ import com.myfinance.model.RetirementFundEntry;
 import com.myfinance.repository.RetirementFundEntryRepository;
 import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/retirement-fund")
 @RequiredArgsConstructor
+@Slf4j
 public class RetirementFundController {
     private final RetirementFundEntryRepository repository;
     private final TenantContext tenantContext;
@@ -49,16 +51,20 @@ public class RetirementFundController {
 
     @PostMapping
     public ResponseEntity<RetirementFundEntry> create(@RequestBody RetirementFundEntry entry) {
+        log.info("Creating retirement fund entry: fundType={}, amount={}", entry.getFundType(), entry.getAmount());
         entry.setUserId(tenantContext.getCurrentUserId());
         if (entry.getYear() == null && entry.getEntryDate() != null) {
             entry.setYear(entry.getEntryDate().getYear());
             entry.setMonth(entry.getEntryDate().getMonthValue());
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(entry));
+        RetirementFundEntry saved = repository.save(entry);
+        log.info("Created retirement fund entry id={}", saved.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @PutMapping("/{id}")
     public RetirementFundEntry update(@PathVariable Long id, @RequestBody RetirementFundEntry updated) {
+        log.info("Updating retirement fund entry id={}", id);
         RetirementFundEntry existing = repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
         existing.setFundType(updated.getFundType());
         existing.setEntryType(updated.getEntryType());
@@ -75,6 +81,7 @@ public class RetirementFundController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("Deleting retirement fund entry id={}", id);
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }

@@ -6,6 +6,7 @@ import com.myfinance.security.TenantContext;
 import com.myfinance.service.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/transactions")
 @RequiredArgsConstructor
+@Slf4j
 public class TransactionController {
     private final TransactionService transactionService;
     private final TenantContext tenantContext;
@@ -44,14 +46,20 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity<Transaction> create(@Valid @RequestBody TransactionRequest req) {
+        log.info("Creating transaction: assetId={}, type={}, quantity={}, price={}", req.getAssetId(), req.getTransactionType(), req.getQuantity(), req.getPricePerUnit());
         Transaction tx = transactionService.create(
                 req.getAssetId(), req.getAccountId(), req.getOwnerId(),
                 req.getTransactionType(), req.getQuantity(), req.getPricePerUnit(),
                 req.getFees(), req.getCurrency(), req.getTransactionDate(), req.getNotes(),
                 req.getPurpose());
+        log.info("Created transaction id={}", tx.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(tx);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) { transactionService.delete(id); return ResponseEntity.noContent().build(); }
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("Deleting transaction id={}", id);
+        transactionService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
