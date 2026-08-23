@@ -84,15 +84,15 @@ function AppContent() {
         { to: '/transactions', icon: ArrowLeftRight, label: 'Transactions' },
         { to: '/dividends', icon: DollarSign, label: 'Dividends' },
         { to: '/crypto', icon: Bitcoin, label: 'Crypto' },
-        { to: '/deposits', icon: Banknote, label: 'Deposits' },
+        { to: '/deposits', icon: Banknote, label: 'Cash Flows' },
       ],
     },
     {
-      label: 'Fixed Deposits',
+      label: 'Savings & Loans',
       items: [
-        { to: '/fixed-deposits', icon: Landmark, label: 'All Deposits' },
         { to: '/bank-savings', icon: Building2, label: 'Bank Savings' },
-        { to: '/insurance', icon: Shield, label: 'Insurance' },
+        { to: '/fixed-deposits', icon: Landmark, label: 'Sri Lanka FDs' },
+        { to: '/insurance', icon: Shield, label: 'Life Insurance' },
         { to: '/home-loans', icon: Home, label: 'Home Loans' },
       ],
     },
@@ -115,7 +115,7 @@ function AppContent() {
     {
       label: 'Settings',
       items: [
-        { to: '/accounts', icon: Building2, label: 'Accounts' },
+        { to: '/accounts', icon: Building2, label: 'Accounts & Owners' },
         { to: '/assets', icon: Coins, label: 'Assets' },
         { to: '/fx-rates', icon: RefreshCw, label: 'FX Rates' },
         { to: '/net-worth-config', icon: Settings, label: 'Net Worth Config' },
