@@ -64,8 +64,8 @@ class SalaryControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     void shouldFilterByYear() throws Exception {
-        repository.save(SalaryRecord.builder().year(2025).month(1).company("BCS").amount(new BigDecimal("13000")).build());
-        repository.save(SalaryRecord.builder().year(2026).month(1).company("BCS").amount(new BigDecimal("14000")).build());
+        repository.save(SalaryRecord.builder().year(2025).month(1).company("BCS").amount(new BigDecimal("13000")).userId(testUser.getId()).build());
+        repository.save(SalaryRecord.builder().year(2026).month(1).company("BCS").amount(new BigDecimal("14000")).userId(testUser.getId()).build());
 
         mockMvc.perform(get("/api/salary?year=2026"))
                 .andExpect(status().isOk())
@@ -76,8 +76,8 @@ class SalaryControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     void shouldReturnSummary() throws Exception {
-        repository.save(SalaryRecord.builder().year(2025).month(1).company("BCS").amount(new BigDecimal("13000")).build());
-        repository.save(SalaryRecord.builder().year(2025).month(2).company("BCS").amount(new BigDecimal("13000")).build());
+        repository.save(SalaryRecord.builder().year(2025).month(1).company("BCS").amount(new BigDecimal("13000")).userId(testUser.getId()).build());
+        repository.save(SalaryRecord.builder().year(2025).month(2).company("BCS").amount(new BigDecimal("13000")).userId(testUser.getId()).build());
 
         mockMvc.perform(get("/api/salary/summary"))
                 .andExpect(status().isOk())

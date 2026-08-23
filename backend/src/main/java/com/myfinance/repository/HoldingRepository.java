@@ -28,4 +28,10 @@ public interface HoldingRepository extends JpaRepository<Holding, Long> {
 
     @Query("SELECT h FROM Holding h WHERE h.quantity > 0 AND h.userId = :userId")
     List<Holding> findActiveHoldingsByUserId(@Param("userId") Long userId);
+
+    @Query("SELECT h FROM Holding h WHERE h.quantity > 0 AND h.userId = :userId AND h.account.id = :accountId")
+    List<Holding> findActiveByUserIdAndAccountId(@Param("userId") Long userId, @Param("accountId") Long accountId);
+
+    @Query("SELECT h FROM Holding h JOIN h.asset a WHERE a.assetType = :assetType AND h.quantity > 0 AND h.userId = :userId")
+    List<Holding> findByAssetTypeAndUserId(@Param("assetType") AssetType assetType, @Param("userId") Long userId);
 }

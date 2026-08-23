@@ -11,4 +11,6 @@ public interface AccountDepositRepository extends JpaRepository<AccountDeposit, 
     List<AccountDeposit> findByAccountIdOrderByDepositDateDesc(Long accountId);
     List<AccountDeposit> findAllByOrderByDepositDateDesc();
     List<AccountDeposit> findByUserId(Long userId);
+
+    List<AccountDeposit> findByUserIdOrderByDepositDateDesc(Long userId);
 }

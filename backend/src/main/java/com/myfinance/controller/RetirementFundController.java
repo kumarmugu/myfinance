@@ -26,14 +26,15 @@ public class RetirementFundController {
             @RequestParam(required = false) String fundType,
             @RequestParam(required = false) Long ownerId) {
         Long uid = tenantContext.getCurrentUserId();
-        if (fundType != null) return repository.findByFundTypeOrderByEntryDateDesc(fundType);
+        if (fundType != null) return repository.findByUserIdAndFundTypeOrderByEntryDateDesc(uid, fundType);
         if (ownerId != null) return repository.findByOwnerIdOrderByEntryDateDesc(ownerId);
         return repository.findByUserIdOrderByEntryDateDesc(uid);
     }
 
     @GetMapping("/summary")
     public Map<String, Object> getSummary() {
-        List<Object[]> data = repository.summaryByFundAndType();
+        Long uid = tenantContext.getCurrentUserId();
+        List<Object[]> data = repository.summaryByFundAndTypeForUser(uid);
         Map<String, Map<String, BigDecimal>> summary = new HashMap<>();
 
         for (Object[] row : data) {
@@ -45,7 +46,7 @@ public class RetirementFundController {
 
         Map<String, Object> result = new HashMap<>();
         result.put("byFund", summary);
-        result.put("totalEntries", repository.count());
+        result.put("totalEntries", repository.findByUserIdOrderByEntryDateDesc(uid).size());
         return result;
     }
 

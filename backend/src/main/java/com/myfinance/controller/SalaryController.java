@@ -24,15 +24,16 @@ public class SalaryController {
     @GetMapping
     public List<SalaryRecord> getAll(@RequestParam(required = false) Integer year, @RequestParam(required = false) String country) {
         Long uid = tenantContext.getCurrentUserId();
-        if (year != null) return repository.findByYearOrderByMonthAsc(year);
-        if (country != null) return repository.findByCountryOrderByYearDescMonthDesc(country);
+        if (year != null) return repository.findByUserIdAndYearOrderByMonthAsc(uid, year);
+        if (country != null) return repository.findByUserIdAndCountryOrderByYearDescMonthDesc(uid, country);
         return repository.findByUserIdOrderByYearDescMonthDesc(uid);
     }
 
     @GetMapping("/summary")
     public Map<String, Object> getSummary() {
-        List<Object[]> yearlyTotals = repository.sumByYear();
-        List<Object[]> bonusTotals = repository.bonusByYear();
+        Long uid = tenantContext.getCurrentUserId();
+        List<Object[]> yearlyTotals = repository.sumByYearForUser(uid);
+        List<Object[]> bonusTotals = repository.bonusByYearForUser(uid);
 
         List<Map<String, Object>> yearly = yearlyTotals.stream().map(row -> {
             Map<String, Object> m = new HashMap<>();
@@ -58,7 +59,8 @@ public class SalaryController {
 
     @GetMapping("/years")
     public List<Integer> getAvailableYears() {
-        return repository.findAllByOrderByYearDescMonthDesc().stream()
+        Long uid = tenantContext.getCurrentUserId();
+        return repository.findByUserIdOrderByYearDescMonthDesc(uid).stream()
                 .map(SalaryRecord::getYear)
                 .distinct()
                 .collect(Collectors.toList());

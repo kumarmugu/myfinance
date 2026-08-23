@@ -20,13 +20,20 @@ public class HoldingController {
 
     @GetMapping
     public List<Holding> getActive(@RequestParam(required = false) Long ownerId) {
-        log.debug("Fetching active holdings, ownerId={}", ownerId);
-        return ownerId != null ? holdingService.getActiveByOwner(ownerId) : holdingService.getActiveHoldings();
+        Long uid = tenantContext.getCurrentUserId();
+        log.debug("Fetching active holdings, ownerId={}, userId={}", ownerId, uid);
+        return ownerId != null ? holdingService.getActiveByOwner(ownerId) : holdingService.getActiveByUserId(uid);
     }
 
     @GetMapping("/account/{accountId}")
-    public List<Holding> getByAccount(@PathVariable Long accountId) { return holdingService.getByAccount(accountId); }
+    public List<Holding> getByAccount(@PathVariable Long accountId) {
+        Long uid = tenantContext.getCurrentUserId();
+        return holdingService.getByAccountForUser(uid, accountId);
+    }
 
     @GetMapping("/type/{type}")
-    public List<Holding> getByType(@PathVariable AssetType type) { return holdingService.getByAssetType(type); }
+    public List<Holding> getByType(@PathVariable AssetType type) {
+        Long uid = tenantContext.getCurrentUserId();
+        return holdingService.getByAssetTypeForUser(type, uid);
+    }
 }

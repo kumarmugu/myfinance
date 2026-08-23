@@ -31,9 +31,18 @@ public class NetWorthService {
     }
 
     public NetWorthSnapshot takeSnapshot(Long ownerId) {
-        List<Holding> holdings = ownerId != null
-                ? holdingService.getActiveByOwner(ownerId)
-                : holdingService.getActiveHoldings();
+        return takeSnapshot(ownerId, null);
+    }
+
+    public NetWorthSnapshot takeSnapshot(Long ownerId, Long userId) {
+        List<Holding> holdings;
+        if (ownerId != null) {
+            holdings = holdingService.getActiveByOwner(ownerId);
+        } else if (userId != null) {
+            holdings = holdingService.getActiveByUserId(userId);
+        } else {
+            holdings = holdingService.getActiveHoldings();
+        }
 
         // Filter by net worth config (which asset types are included)
         Set<String> includedTypes = getIncludedTypes();
@@ -72,6 +81,17 @@ public class NetWorthService {
     public Map<String, BigDecimal> getCurrentAllocation() {
         Set<String> includedTypes = getIncludedTypes();
         List<Holding> holdings = holdingService.getActiveHoldings().stream()
+                .filter(h -> includedTypes.contains(h.getAsset().getAssetType().name()))
+                .collect(Collectors.toList());
+        return holdings.stream()
+                .collect(Collectors.groupingBy(
+                        h -> h.getAsset().getAssetType().name(),
+                        Collectors.reducing(BigDecimal.ZERO, this::holdingValue, BigDecimal::add)));
+    }
+
+    public Map<String, BigDecimal> getCurrentAllocationForUser(Long userId) {
+        Set<String> includedTypes = getIncludedTypes();
+        List<Holding> holdings = holdingService.getActiveByUserId(userId).stream()
                 .filter(h -> includedTypes.contains(h.getAsset().getAssetType().name()))
                 .collect(Collectors.toList());
         return holdings.stream()

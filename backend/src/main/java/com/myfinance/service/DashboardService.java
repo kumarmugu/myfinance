@@ -21,10 +21,19 @@ public class DashboardService {
     private final AccountRepository accountRepository;
 
     public DashboardSummary getSummary(Long ownerId) {
-        log.info("Generating dashboard summary for ownerId={}", ownerId);
-        List<Holding> holdings = ownerId != null
-                ? holdingService.getActiveByOwner(ownerId)
-                : holdingService.getActiveHoldings();
+        return getSummary(ownerId, null);
+    }
+
+    public DashboardSummary getSummary(Long ownerId, Long userId) {
+        log.info("Generating dashboard summary for ownerId={}, userId={}", ownerId, userId);
+        List<Holding> holdings;
+        if (ownerId != null) {
+            holdings = holdingService.getActiveByOwner(ownerId);
+        } else if (userId != null) {
+            holdings = holdingService.getActiveByUserId(userId);
+        } else {
+            holdings = holdingService.getActiveHoldings();
+        }
 
         BigDecimal totalInvested = holdings.stream()
                 .map(Holding::getInvestedAmount)

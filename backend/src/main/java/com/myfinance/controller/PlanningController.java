@@ -29,10 +29,11 @@ public class PlanningController {
 
     @GetMapping("/allocation")
     public Map<String, Object> getAllocation(@RequestParam(required = false) Long ownerId) {
+        Long uid = tenantContext.getCurrentUserId();
         List<AllocationTarget> targets = ownerId != null
                 ? allocationTargetRepository.findByOwnerId(ownerId)
-                : allocationTargetRepository.findAll();
-        Map<String, BigDecimal> current = netWorthService.getCurrentAllocation();
+                : allocationTargetRepository.findByUserId(uid);
+        Map<String, BigDecimal> current = netWorthService.getCurrentAllocationForUser(uid);
 
         Map<String, Object> result = new HashMap<>();
         result.put("targets", targets);
@@ -48,7 +49,8 @@ public class PlanningController {
 
     @GetMapping("/deposits")
     public List<AccountDeposit> getDeposits(@RequestParam(required = false) Long accountId) {
-        return accountId != null ? accountDepositService.getByAccount(accountId) : accountDepositService.getAll();
+        Long uid = tenantContext.getCurrentUserId();
+        return accountId != null ? accountDepositService.getByAccount(accountId) : accountDepositService.getAllForUser(uid);
     }
 
     @PostMapping("/deposits")

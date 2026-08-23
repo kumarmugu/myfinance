@@ -18,15 +18,24 @@ public class FixedDepositService {
     private final FixedDepositRepository fdRepository;
 
     public List<FixedDeposit> getAll() { return fdRepository.findAll(); }
+    public List<FixedDeposit> getAllForUser(Long userId) { return fdRepository.findByUserId(userId); }
     public FixedDeposit getById(Long id) { return fdRepository.findById(id).orElseThrow(() -> new RuntimeException("FD not found: " + id)); }
     public List<FixedDeposit> getByStatus(FDStatus status) { return fdRepository.findByStatus(status); }
+    public List<FixedDeposit> getByStatusForUser(Long userId, FDStatus status) { return fdRepository.findByUserIdAndStatus(userId, status); }
     public List<FixedDeposit> getByHolder(Long holderId) { return fdRepository.findByHolderId(holderId); }
+    public List<FixedDeposit> getByHolderForUser(Long userId, Long holderId) { return fdRepository.findByUserIdAndHolderId(userId, holderId); }
     public List<FixedDeposit> getByBank(Long bankId) { return fdRepository.findByBankId(bankId); }
+    public List<FixedDeposit> getByBankForUser(Long userId, Long bankId) { return fdRepository.findByUserIdAndBankId(userId, bankId); }
     public List<FixedDeposit> getActiveByMaturity() { return fdRepository.findAllActiveOrderByMaturity(); }
     public List<FixedDeposit> getRequiringUpdate() { return fdRepository.findByRequiresUpdateTrue(); }
+    public List<FixedDeposit> getRequiringUpdateForUser(Long userId) { return fdRepository.findByUserIdAndRequiresUpdateTrue(userId); }
 
     public List<FixedDeposit> getMaturingWithinDays(int days) {
         return fdRepository.findMaturingBefore(LocalDate.now().plusDays(days));
+    }
+
+    public List<FixedDeposit> getMaturingWithinDaysForUser(Long userId, int days) {
+        return fdRepository.findMaturingBeforeForUser(userId, LocalDate.now().plusDays(days));
     }
 
     public FixedDeposit create(FixedDeposit fd) {

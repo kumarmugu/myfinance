@@ -23,4 +23,14 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     List<Transaction> findRecentTransactions(@Param("startDate") LocalDate startDate);
 
     List<Transaction> findByUserIdOrderByTransactionDateDesc(Long userId);
+
+    List<Transaction> findByUserIdAndAccountIdOrderByTransactionDateDesc(Long userId, Long accountId);
+
+    List<Transaction> findByUserIdAndAssetIdOrderByTransactionDateDesc(Long userId, Long assetId);
+
+    @Query("SELECT t FROM Transaction t WHERE t.userId = :userId AND t.transactionDate BETWEEN :start AND :end ORDER BY t.transactionDate DESC")
+    List<Transaction> findByUserIdAndDateRange(@Param("userId") Long userId, @Param("start") LocalDate start, @Param("end") LocalDate end);
+
+    @Query("SELECT t FROM Transaction t WHERE t.userId = :userId AND t.transactionDate >= :startDate ORDER BY t.transactionDate DESC")
+    List<Transaction> findRecentByUser(@Param("userId") Long userId, @Param("startDate") LocalDate startDate);
 }

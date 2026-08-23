@@ -3,10 +3,12 @@ package com.myfinance.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myfinance.model.AppUser;
 import com.myfinance.model.Owner;
+import com.myfinance.model.SalaryRecord;
 import com.myfinance.model.TaxRecord;
 import com.myfinance.model.enums.OwnerRelationship;
 import com.myfinance.repository.AppUserRepository;
 import com.myfinance.repository.OwnerRepository;
+import com.myfinance.repository.SalaryRecordRepository;
 import com.myfinance.repository.TaxRecordRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +38,7 @@ class MultiTenantIsolationTest {
     @Autowired private AppUserRepository appUserRepository;
     @Autowired private OwnerRepository ownerRepository;
     @Autowired private TaxRecordRepository taxRecordRepository;
+    @Autowired private SalaryRecordRepository salaryRecordRepository;
     @Autowired private PasswordEncoder passwordEncoder;
 
     private AppUser userA;

@@ -25,14 +25,18 @@ public class DividendController {
             @RequestParam(required = false) Long ownerId,
             @RequestParam(required = false) Long accountId,
             @RequestParam(required = false) Integer year) {
+        Long uid = tenantContext.getCurrentUserId();
         if (ownerId != null) return dividendService.getByOwner(ownerId);
         if (accountId != null) return dividendService.getByAccount(accountId);
         if (year != null) return dividendService.getByYear(year);
-        return dividendService.getAll();
+        return dividendService.getByUser(uid);
     }
 
     @GetMapping("/summary")
-    public List<Object[]> getSummaryByYear() { return dividendService.getSummaryByYear(); }
+    public List<Object[]> getSummaryByYear() {
+        Long uid = tenantContext.getCurrentUserId();
+        return dividendService.getSummaryByYearForUser(uid);
+    }
 
     @PostMapping
     public ResponseEntity<Dividend> create(@Valid @RequestBody Dividend dividend) {

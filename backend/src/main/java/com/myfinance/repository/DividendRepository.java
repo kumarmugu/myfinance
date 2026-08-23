@@ -3,6 +3,7 @@ package com.myfinance.repository;
 import com.myfinance.model.Dividend;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,4 +20,7 @@ public interface DividendRepository extends JpaRepository<Dividend, Long> {
     List<Object[]> sumByYear();
 
     List<Dividend> findByUserIdOrderByReceivedDateDesc(Long userId);
+
+    @Query("SELECT d.year, SUM(d.amount) FROM Dividend d WHERE d.userId = :userId GROUP BY d.year ORDER BY d.year")
+    List<Object[]> sumByYearForUser(@Param("userId") Long userId);
 }

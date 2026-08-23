@@ -27,11 +27,16 @@ public class TransactionService {
     private final TenantContext tenantContext;
 
     public List<Transaction> getAll() { return transactionRepository.findAllByOrderByTransactionDateDesc(); }
+    public List<Transaction> getByUser(Long userId) { return transactionRepository.findByUserIdOrderByTransactionDateDesc(userId); }
     public List<Transaction> getByOwner(Long ownerId) { return transactionRepository.findByOwnerIdOrderByTransactionDateDesc(ownerId); }
     public List<Transaction> getByAccount(Long accountId) { return transactionRepository.findByAccountIdOrderByTransactionDateDesc(accountId); }
+    public List<Transaction> getByAccountForUser(Long userId, Long accountId) { return transactionRepository.findByUserIdAndAccountIdOrderByTransactionDateDesc(userId, accountId); }
     public List<Transaction> getByAsset(Long assetId) { return transactionRepository.findByAssetIdOrderByTransactionDateDesc(assetId); }
+    public List<Transaction> getByAssetForUser(Long userId, Long assetId) { return transactionRepository.findByUserIdAndAssetIdOrderByTransactionDateDesc(userId, assetId); }
     public List<Transaction> getByDateRange(LocalDate start, LocalDate end) { return transactionRepository.findByTransactionDateBetweenOrderByTransactionDateDesc(start, end); }
+    public List<Transaction> getByDateRangeForUser(Long userId, LocalDate start, LocalDate end) { return transactionRepository.findByUserIdAndDateRange(userId, start, end); }
     public List<Transaction> getRecent(int days) { return transactionRepository.findRecentTransactions(LocalDate.now().minusDays(days)); }
+    public List<Transaction> getRecentForUser(Long userId, int days) { return transactionRepository.findRecentByUser(userId, LocalDate.now().minusDays(days)); }
 
     @Transactional
     public Transaction create(Long assetId, Long accountId, Long ownerId, TransactionType type,

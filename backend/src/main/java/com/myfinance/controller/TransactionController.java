@@ -25,24 +25,35 @@ public class TransactionController {
 
     @GetMapping
     public List<Transaction> getAll(@RequestParam(required = false) Long ownerId) {
-        return ownerId != null ? transactionService.getByOwner(ownerId) : transactionService.getAll();
+        Long uid = tenantContext.getCurrentUserId();
+        return ownerId != null ? transactionService.getByOwner(ownerId) : transactionService.getByUser(uid);
     }
 
     @GetMapping("/account/{accountId}")
-    public List<Transaction> getByAccount(@PathVariable Long accountId) { return transactionService.getByAccount(accountId); }
+    public List<Transaction> getByAccount(@PathVariable Long accountId) {
+        Long uid = tenantContext.getCurrentUserId();
+        return transactionService.getByAccountForUser(uid, accountId);
+    }
 
     @GetMapping("/asset/{assetId}")
-    public List<Transaction> getByAsset(@PathVariable Long assetId) { return transactionService.getByAsset(assetId); }
+    public List<Transaction> getByAsset(@PathVariable Long assetId) {
+        Long uid = tenantContext.getCurrentUserId();
+        return transactionService.getByAssetForUser(uid, assetId);
+    }
 
     @GetMapping("/date-range")
     public List<Transaction> getByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
-        return transactionService.getByDateRange(start, end);
+        Long uid = tenantContext.getCurrentUserId();
+        return transactionService.getByDateRangeForUser(uid, start, end);
     }
 
     @GetMapping("/recent")
-    public List<Transaction> getRecent(@RequestParam(defaultValue = "30") int days) { return transactionService.getRecent(days); }
+    public List<Transaction> getRecent(@RequestParam(defaultValue = "30") int days) {
+        Long uid = tenantContext.getCurrentUserId();
+        return transactionService.getRecentForUser(uid, days);
+    }
 
     @PostMapping
     public ResponseEntity<Transaction> create(@Valid @RequestBody TransactionRequest req) {

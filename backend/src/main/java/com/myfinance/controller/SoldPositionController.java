@@ -24,13 +24,17 @@ public class SoldPositionController {
     public List<SoldPosition> getAll(
             @RequestParam(required = false) Long ownerId,
             @RequestParam(required = false) Long accountId) {
+        Long uid = tenantContext.getCurrentUserId();
         if (ownerId != null) return soldPositionService.getByOwner(ownerId);
         if (accountId != null) return soldPositionService.getByAccount(accountId);
-        return soldPositionService.getAll();
+        return soldPositionService.getByUser(uid);
     }
 
     @GetMapping("/short-term")
-    public List<SoldPosition> getShortTerm() { return soldPositionService.getShortTerm(); }
+    public List<SoldPosition> getShortTerm() {
+        Long uid = tenantContext.getCurrentUserId();
+        return soldPositionService.getShortTermForUser(uid);
+    }
 
     @PostMapping
     public ResponseEntity<SoldPosition> create(@Valid @RequestBody SoldPosition sp) {

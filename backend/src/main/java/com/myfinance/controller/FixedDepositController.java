@@ -36,24 +36,32 @@ public class FixedDepositController {
             @RequestParam(required = false) Long holderId,
             @RequestParam(required = false) Long bankId,
             @RequestParam(required = false) FDStatus status) {
-        if (holderId != null) return fdService.getByHolder(holderId);
-        if (bankId != null) return fdService.getByBank(bankId);
-        if (status != null) return fdService.getByStatus(status);
-        return fdService.getAll();
+        Long uid = tenantContext.getCurrentUserId();
+        if (holderId != null) return fdService.getByHolderForUser(uid, holderId);
+        if (bankId != null) return fdService.getByBankForUser(uid, bankId);
+        if (status != null) return fdService.getByStatusForUser(uid, status);
+        return fdService.getAllForUser(uid);
     }
 
     @GetMapping("/{id}")
     public FixedDeposit getById(@PathVariable Long id) { return fdService.getById(id); }
 
     @GetMapping("/maturing")
-    public List<FixedDeposit> getMaturing(@RequestParam(defaultValue = "90") int days) { return fdService.getMaturingWithinDays(days); }
+    public List<FixedDeposit> getMaturing(@RequestParam(defaultValue = "90") int days) {
+        Long uid = tenantContext.getCurrentUserId();
+        return fdService.getMaturingWithinDaysForUser(uid, days);
+    }
 
     @GetMapping("/requires-update")
-    public List<FixedDeposit> getRequiringUpdate() { return fdService.getRequiringUpdate(); }
+    public List<FixedDeposit> getRequiringUpdate() {
+        Long uid = tenantContext.getCurrentUserId();
+        return fdService.getRequiringUpdateForUser(uid);
+    }
 
     @GetMapping("/summary")
     public Map<String, Object> getSummary() {
-        List<FixedDeposit> all = fdService.getAll();
+        Long uid = tenantContext.getCurrentUserId();
+        List<FixedDeposit> all = fdService.getAllForUser(uid);
         List<FixedDeposit> active = all.stream().filter(fd -> fd.getStatus() == FDStatus.ACTIVE).collect(Collectors.toList());
 
         BigDecimal totalPrincipal = active.stream().map(FixedDeposit::getPrincipalAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -71,9 +79,9 @@ public class FixedDepositController {
         result.put("totalPrincipal", totalPrincipal);
         result.put("totalExpectedInterest", totalInterest);
         result.put("byBank", byBank);
-        result.put("maturingWithin30Days", fdService.getMaturingWithinDays(30).size());
-        result.put("maturingWithin90Days", fdService.getMaturingWithinDays(90).size());
-        result.put("requiresUpdate", fdService.getRequiringUpdate().size());
+        result.put("maturingWithin30Days", fdService.getMaturingWithinDaysForUser(uid, 30).size());
+        result.put("maturingWithin90Days", fdService.getMaturingWithinDaysForUser(uid, 90).size());
+        result.put("requiresUpdate", fdService.getRequiringUpdateForUser(uid).size());
 
         // Net worth inclusion
         BigDecimal includedInNetWorth = active.stream()

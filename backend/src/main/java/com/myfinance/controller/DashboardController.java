@@ -25,16 +25,21 @@ public class DashboardController {
 
     @GetMapping("/summary")
     public DashboardSummary getSummary(@RequestParam(required = false) Long ownerId) {
-        return dashboardService.getSummary(ownerId);
+        Long uid = tenantContext.getCurrentUserId();
+        return dashboardService.getSummary(ownerId, uid);
     }
 
     @GetMapping("/allocation")
-    public Map<String, BigDecimal> getAllocation() { return netWorthService.getCurrentAllocation(); }
+    public Map<String, BigDecimal> getAllocation() {
+        Long uid = tenantContext.getCurrentUserId();
+        return netWorthService.getCurrentAllocationForUser(uid);
+    }
 
     @PostMapping("/snapshot")
     public NetWorthSnapshot takeSnapshot(@RequestParam(required = false) Long ownerId) {
-        log.info("Taking net-worth snapshot for ownerId={}", ownerId);
-        return netWorthService.takeSnapshot(ownerId);
+        Long uid = tenantContext.getCurrentUserId();
+        log.info("Taking net-worth snapshot for ownerId={}, userId={}", ownerId, uid);
+        return netWorthService.takeSnapshot(ownerId, uid);
     }
 
     @GetMapping("/net-worth/history")
