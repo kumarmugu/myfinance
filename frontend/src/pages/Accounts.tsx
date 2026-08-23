@@ -25,7 +25,7 @@ export default function Accounts() {
   const loadData = async () => {
     try {
       const [accRes, ownRes] = await Promise.all([getAccounts(), getOwners()]);
-      setAccounts(accRes.data); setOwners(ownRes.data);
+      setAccounts(accRes.data.filter((a: Account) => a.accountType !== 'BANK')); setOwners(ownRes.data);
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
   };
@@ -104,7 +104,7 @@ export default function Accounts() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div><h1 className="text-2xl font-bold text-slate-800">Accounts & Owners</h1><p className="text-slate-500 text-sm mt-1">Manage brokers, banks, and portfolio owners</p></div>
+        <div><h1 className="text-2xl font-bold text-slate-800">Accounts & Owners</h1><p className="text-slate-500 text-sm mt-1">Manage brokers, crypto exchanges, and portfolio owners</p></div>
       </div>
 
       {/* Tabs */}
@@ -133,7 +133,7 @@ export default function Accounts() {
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Name *</label><input type="text" value={accForm.name} onChange={e => setAccForm({...accForm, name: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" required /></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
                   <div className="flex rounded-lg overflow-hidden border border-slate-300">
-                    {([['BROKER', 'Broker'], ['BANK', 'Bank'], ['CRYPTO_EXCHANGE', 'Crypto']] as const).map(([val, label]) => (
+                    {([['BROKER', 'Broker'], ['CRYPTO_EXCHANGE', 'Crypto']] as const).map(([val, label]) => (
                       <button key={val} type="button" onClick={() => setAccForm({...accForm, accountType: val as AccountType})}
                         className={`flex-1 py-2 text-sm font-medium transition-colors ${accForm.accountType === val ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`}>{label}</button>
                     ))}
