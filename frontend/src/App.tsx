@@ -184,7 +184,7 @@ function AppContent() {
         <main className="flex-1 overflow-auto">
           <div className="p-8">
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={isAdmin ? <UserManagement /> : <Dashboard />} />
               <Route path="/portfolio" element={<Portfolio />} />
               <Route path="/transactions" element={<Transactions />} />
               <Route path="/dividends" element={<Dividends />} />
