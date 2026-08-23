@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
 import api from '../api';
 
 interface AuthUser {
@@ -65,6 +65,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('token');
     delete api.defaults.headers.common['Authorization'];
   };
+
+  // ─── Inactivity auto-logout (1 hour) ───
+  const INACTIVITY_TIMEOUT = 60 * 60 * 1000; // 1 hour in ms
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const resetInactivityTimer = useCallback(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    if (token && user) {
+      timeoutRef.current = setTimeout(() => {
+        logout();
+      }, INACTIVITY_TIMEOUT);
+    }
+  }, [token, user]);
+
+  useEffect(() => {
+    if (!token || !user) return;
+
+    const events = ['mousedown', 'keydown', 'touchstart', 'scroll', 'mousemove'];
+    const handleActivity = () => resetInactivityTimer();
+
+    events.forEach(e => window.addEventListener(e, handleActivity, { passive: true }));
+    resetInactivityTimer(); // Start timer on mount / login
+
+    return () => {
+      events.forEach(e => window.removeEventListener(e, handleActivity));
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [token, user, resetInactivityTimer]);
 
   const changePassword = async (currentPassword: string, newPassword: string) => {
     await api.post('/auth/change-password', { currentPassword, newPassword });

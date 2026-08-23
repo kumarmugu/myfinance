@@ -45,7 +45,11 @@ export default function BankSavings() {
       if (editing) { await api.put(`/bank-savings/${editing.id}`, form); }
       else { await api.post('/bank-savings', form); }
       setShowForm(false); setEditing(null); resetForm(); loadData();
-    } catch (err) { console.error(err); showToast('Failed'); }
+      showToast(editing ? 'Account updated' : 'Account added', 'success');
+    } catch (err: any) {
+      console.error(err);
+      showToast(err.response?.data?.message || err.response?.data?.error || err.message || 'Failed to save account');
+    }
   };
 
   const startEdit = (acc: BankSavingsAccount) => {
@@ -90,7 +94,7 @@ export default function BankSavings() {
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Bank</label>
               <input type="text" value={form.bankName} onChange={e => setForm({...form, bankName: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="e.g. DBS, OCBC, BOC" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Balance *</label>
-              <input type="number" step="any" value={form.balance || ''} onChange={e => setForm({...form, balance: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
+              <input type="number" step="any" value={form.balance || ''} onChange={e => setForm({...form, balance: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="0.00" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Currency</label>
               <SearchableSelect options={['SGD','USD','LKR','INR'].map(c => ({ value: c, label: c }))} value={form.currency} onChange={v => setForm({...form, currency: v})} placeholder="Currency" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Country</label>
