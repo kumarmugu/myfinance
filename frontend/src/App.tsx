@@ -91,7 +91,7 @@ function AppContent() {
       label: 'Savings & Loans',
       items: [
         { to: '/bank-savings', icon: Building2, label: 'Bank Savings' },
-        { to: '/fixed-deposits', icon: Landmark, label: 'Sri Lanka FDs' },
+        { to: '/fixed-deposits', icon: Landmark, label: 'Fixed Deposits' },
         { to: '/insurance', icon: Shield, label: 'Life Insurance' },
         { to: '/home-loans', icon: Home, label: 'Home Loans' },
       ],

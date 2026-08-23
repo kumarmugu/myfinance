@@ -14,4 +14,5 @@ public class AuthResponse {
     private String displayName;
     private String email;
     private String role;
+    private Boolean slFdEnabled;
 }

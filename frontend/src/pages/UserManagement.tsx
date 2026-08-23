@@ -9,6 +9,7 @@ interface AppUser {
   displayName: string;
   role: string;
   isActive: boolean;
+  slFdEnabled: boolean;
   createdAt: string;
 }
 
@@ -42,6 +43,11 @@ export default function UserManagement() {
 
   const toggleActive = async (id: number) => {
     await api.put(`/admin/users/${id}/toggle-active`);
+    loadUsers();
+  };
+
+  const toggleSlFd = async (id: number) => {
+    await api.put(`/admin/users/${id}/toggle-sl-fd`);
     loadUsers();
   };
 
@@ -99,6 +105,7 @@ export default function UserManagement() {
               <th className="text-left px-5 py-3 font-medium text-slate-600">User</th>
               <th className="text-left px-5 py-3 font-medium text-slate-600">Email</th>
               <th className="text-left px-5 py-3 font-medium text-slate-600">Role</th>
+              <th className="text-center px-5 py-3 font-medium text-slate-600">SL FD</th>
               <th className="text-left px-5 py-3 font-medium text-slate-600">Status</th>
               <th className="px-5 py-3 w-32"></th>
             </tr>
@@ -121,6 +128,11 @@ export default function UserManagement() {
                 <td className="px-5 py-3.5">
                   <button onClick={() => changeRole(u.id, u.role === 'ADMIN' ? 'USER' : 'ADMIN')} className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full cursor-pointer transition-colors ${u.role === 'ADMIN' ? 'bg-amber-100 text-amber-700 hover:bg-amber-200' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>
                     <Shield size={11} /> {u.role}
+                  </button>
+                </td>
+                <td className="px-5 py-3.5 text-center">
+                  <button onClick={() => toggleSlFd(u.id)} className={`text-[11px] font-medium px-2.5 py-1 rounded-full transition-colors ${u.slFdEnabled ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}>
+                    {u.slFdEnabled ? 'Enabled' : 'Disabled'}
                   </button>
                 </td>
                 <td className="px-5 py-3.5">

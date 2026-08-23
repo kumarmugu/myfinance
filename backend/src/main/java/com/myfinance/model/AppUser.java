@@ -31,6 +31,9 @@ public class AppUser {
     @Builder.Default
     private Boolean isActive = true;
 
+    @Builder.Default
+    private Boolean slFdEnabled = false;
+
     private String resetToken;
     private LocalDateTime resetTokenExpiry;
 

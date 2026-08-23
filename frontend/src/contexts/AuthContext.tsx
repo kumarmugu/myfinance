@@ -7,6 +7,7 @@ interface AuthUser {
   displayName: string;
   email: string;
   role: string;
+  slFdEnabled: boolean;
 }
 
 interface AuthContextType {
@@ -15,6 +16,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   isAdmin: boolean;
+  slFdEnabled: boolean;
   login: (username: string, password: string) => Promise<void>;
   register: (username: string, email: string, password: string, displayName?: string) => Promise<void>;
   logout: () => void;
@@ -107,6 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider value={{
       user, token, isAuthenticated: !!token && !!user, isLoading,
       isAdmin: user?.role === 'ADMIN',
+      slFdEnabled: Boolean(user?.slFdEnabled),
       login, register, logout, changePassword, verifyPassword
     }}>
       {children}

@@ -69,6 +69,7 @@ public class AuthController {
                 .displayName(user.getDisplayName())
                 .email(user.getEmail())
                 .role(user.getRole())
+                .slFdEnabled(Boolean.TRUE.equals(user.getSlFdEnabled()))
                 .build());
     }
 
@@ -162,7 +163,8 @@ public class AuthController {
                 "username", user.getUsername(),
                 "displayName", user.getDisplayName(),
                 "email", user.getEmail(),
-                "role", user.getRole()
+                "role", user.getRole(),
+                "slFdEnabled", Boolean.TRUE.equals(user.getSlFdEnabled())
         ));
     }
 }

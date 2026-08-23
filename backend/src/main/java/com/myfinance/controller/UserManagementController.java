@@ -94,4 +94,17 @@ public class UserManagementController {
         user.setPassword(null);
         return ResponseEntity.ok(user);
     }
+
+    @PutMapping("/{id}/toggle-sl-fd")
+    public ResponseEntity<?> toggleSlFd(@PathVariable Long id) {
+        if (!tenantContext.isAdmin()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Admin access required"));
+        }
+        AppUser user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setSlFdEnabled(!Boolean.TRUE.equals(user.getSlFdEnabled()));
+        log.info("Toggled user id={} slFdEnabled={}", id, user.getSlFdEnabled());
+        userRepository.save(user);
+        user.setPassword(null);
+        return ResponseEntity.ok(user);
+    }
 }
