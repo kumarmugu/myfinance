@@ -3,12 +3,14 @@ import { Plus, Pencil, Trash2, AlertCircle, Calendar, ChevronDown, ChevronUp } f
 import { getInsurancePolicies, createInsurancePolicy, updateInsurancePolicy, deleteInsurancePolicy, getInsuranceBonusEntries, createInsuranceBonusEntry, deleteInsuranceBonusEntry } from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import type { InsurancePolicy, Currency } from '../types';
+import { useToast } from '../contexts/ToastContext';
 
 const POLICY_TYPES = ['TERM_LIFE', 'WHOLE_LIFE', 'ENDOWMENT', 'ILP', 'HEALTH', 'CRITICAL_ILLNESS', 'OTHER'];
 
 export default function Insurance() {
   const [policies, setPolicies] = useState<InsurancePolicy[]>([]);
   const [loading, setLoading] = useState(true);
+  const { showToast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<InsurancePolicy | null>(null);
   const [form, setForm] = useState({ policyName: '', provider: '', policyNumber: '', policyType: 'TERM_LIFE', annualPremium: 0, currency: 'SGD' as Currency, coverageAmount: 0, cashValue: 0, startDate: '', maturityDate: '', includeInNetWorth: false, beneficiary: '', notes: '' });
@@ -31,7 +33,7 @@ export default function Insurance() {
       if (editing) { await updateInsurancePolicy(editing.id, form); }
       else { await createInsurancePolicy(form); }
       setShowForm(false); setEditing(null); resetForm(); loadData();
-    } catch (err) { console.error(err); alert('Failed'); }
+    } catch (err) { console.error(err); showToast('Failed'); }
   };
 
   const startEdit = (p: InsurancePolicy) => {
@@ -61,7 +63,7 @@ export default function Insurance() {
       setBonusEntries(res.data);
       setShowBonusForm(false);
       setBonusForm({ yearNumber: bonusEntries.length + 2, yearDate: '', age: 0, premiumAmount: 0, expectedBonus: 0, expectedBonusTotal: 0, expectedTotal: 0, actualBonus: 0, actualBonusTotal: 0 });
-    } catch (err) { console.error(err); alert('Failed'); }
+    } catch (err) { console.error(err); showToast('Failed'); }
   };
 
   const handleDeleteBonusEntry = async (entryId: number) => {

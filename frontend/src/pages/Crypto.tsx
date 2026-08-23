@@ -5,6 +5,7 @@ import { getActiveHoldings, getTransactions, getAssets, getAccounts, getOwners, 
 import SearchableSelect from '../components/SearchableSelect';
 import { formatCurrency, formatPercent } from '../utils/formatters';
 import type { Holding, Transaction, Asset, Account, Owner, TransactionRequest } from '../types';
+import { useToast } from '../contexts/ToastContext';
 
 const CRYPTO_COLORS = ['#f7931a', '#627eea', '#14f195', '#e84142', '#2775ca', '#26a17b', '#8247e5', '#00d395'];
 
@@ -12,6 +13,7 @@ export default function Crypto() {
   const [holdings, setHoldings] = useState<Holding[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [assets, setAssets] = useState<Asset[]>([]);
+  const { showToast } = useToast();
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [owners, setOwners] = useState<Owner[]>([]);
   void owners; // used for form ownerId default
@@ -45,7 +47,7 @@ export default function Crypto() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try { await createTransaction(form); setShowForm(false); loadData(); }
-    catch (err) { console.error(err); alert('Failed'); }
+    catch (err) { console.error(err); showToast('Failed'); }
   };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;

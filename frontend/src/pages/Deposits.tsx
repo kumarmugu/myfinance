@@ -5,11 +5,13 @@ import { getAccountDeposits, createAccountDeposit, deleteAccountDeposit, getAcco
 import SearchableSelect from '../components/SearchableSelect';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import type { AccountDeposit, Account, Currency } from '../types';
+import { useToast } from '../contexts/ToastContext';
 
 export default function Deposits() {
   const [deposits, setDeposits] = useState<AccountDeposit[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
+  const { showToast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [filterAccount, setFilterAccount] = useState<string>('');
   const [displayCurrency, setDisplayCurrency] = useState<Currency>('SGD');
@@ -33,7 +35,7 @@ export default function Deposits() {
       setShowForm(false);
       setForm({ accountId: 0, amount: 0, depositType: 'DEPOSIT', currency: 'SGD', depositDate: new Date().toISOString().split('T')[0], notes: '' });
       loadData();
-    } catch (err) { console.error(err); alert('Failed'); }
+    } catch (err) { console.error(err); showToast('Failed'); }
   };
 
   const handleDelete = async (id: number) => { if (confirm('Delete?')) { await deleteAccountDeposit(id); loadData(); } };

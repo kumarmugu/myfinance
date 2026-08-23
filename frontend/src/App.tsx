@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home, Settings, FlaskConical, Users, KeyRound } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home, Settings, FlaskConical, Users, KeyRound, ClipboardList } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ToastProvider } from './contexts/ToastContext';
+import ToastContainer from './components/ToastContainer';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Transactions from './pages/Transactions';
@@ -27,12 +29,16 @@ import TestResults from './pages/TestResults';
 import UserManagement from './pages/UserManagement';
 import UserGuide from './pages/UserGuide';
 import Docs from './pages/Docs';
+import AuditTrail from './pages/AuditTrail';
 
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <ToastProvider>
+      <AuthProvider>
+        <AppContent />
+        <ToastContainer />
+      </AuthProvider>
+    </ToastProvider>
   );
 }
 
@@ -52,7 +58,10 @@ function AppContent() {
     // ─── ADMIN-ONLY NAV ───
     {
       label: null,
-      items: [{ to: '/admin/users', icon: Users, label: 'User Management' }],
+      items: [
+        { to: '/admin/users', icon: Users, label: 'User Management' },
+        { to: '/admin/audit', icon: ClipboardList, label: 'Audit Trail' },
+      ],
     },
     {
       label: 'Admin Tools',
@@ -196,6 +205,7 @@ function AppContent() {
               <Route path="/fx-rates" element={<FxRates />} />
               <Route path="/net-worth-config" element={<NetWorthConfig />} />
               <Route path="/admin/users" element={isAdmin ? <UserManagement /> : <Dashboard />} />
+              <Route path="/admin/audit" element={isAdmin ? <AuditTrail /> : <Dashboard />} />
               <Route path="/test-results" element={isAdmin ? <TestResults /> : <Dashboard />} />
               <Route path="/guide" element={<UserGuide />} />
               <Route path="/docs" element={isAdmin ? <Docs /> : <Dashboard />} />

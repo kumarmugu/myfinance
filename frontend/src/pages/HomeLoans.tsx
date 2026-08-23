@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, Home, ChevronDown, ChevronUp } from 'lucide-react';
 import { getHomeLoans, createHomeLoan, updateHomeLoan, deleteHomeLoan, getLoanPayments, createLoanPayment, deleteLoanPayment } from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
+import { useToast } from '../contexts/ToastContext';
 
 export default function HomeLoans() {
   const [loans, setLoans] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const { showToast } = useToast();
   const [editing, setEditing] = useState<any>(null);
   const [expandedLoan, setExpandedLoan] = useState<number | null>(null);
   const [payments, setPayments] = useState<any[]>([]);
@@ -35,7 +37,7 @@ export default function HomeLoans() {
       if (editing) { await updateHomeLoan(editing.id, form); }
       else { await createHomeLoan(form); }
       setShowForm(false); setEditing(null); resetForm(); loadData();
-    } catch (err) { console.error(err); alert('Failed'); }
+    } catch (err) { console.error(err); showToast('Failed'); }
   };
 
   const startEdit = (loan: any) => {
@@ -60,7 +62,7 @@ export default function HomeLoans() {
       setPayments((await getLoanPayments(expandedLoan)).data);
       setShowPaymentForm(false);
       loadData();
-    } catch (err) { console.error(err); alert('Failed'); }
+    } catch (err) { console.error(err); showToast('Failed'); }
   };
 
   const handleDeletePayment = async (paymentId: number) => {

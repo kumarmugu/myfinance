@@ -5,12 +5,14 @@ import { getAllocationPlan, updateAllocationTargets, getAccountDeposits, getNetW
 import { formatCurrency } from '../utils/formatters';
 import type { AllocationTarget, AccountDeposit, NetWorthSnapshot } from '../types';
 import { ASSET_TYPE_LABELS, ASSET_TYPE_COLORS } from '../types';
+import { useToast } from '../contexts/ToastContext';
 
 type Tab = 'allocation' | 'networth' | 'deposits';
 
 export default function Planning() {
   const [tab, setTab] = useState<Tab>('allocation');
   const [targets, setTargets] = useState<AllocationTarget[]>([]);
+  const { showToast } = useToast();
   const [current, setCurrent] = useState<Record<string, number>>({});
   const [deposits, setDeposits] = useState<AccountDeposit[]>([]);
   const [history, setHistory] = useState<NetWorthSnapshot[]>([]);
@@ -41,7 +43,7 @@ export default function Planning() {
       await updateAllocationTargets(editedTargets);
       setEditingTargets(false);
       loadData();
-    } catch (err) { console.error(err); alert('Failed to save targets'); }
+    } catch (err) { console.error(err); showToast('Failed to save targets'); }
   };
 
   const updateTarget = (index: number, field: 'targetPercentage' | 'targetAmount', value: number) => {

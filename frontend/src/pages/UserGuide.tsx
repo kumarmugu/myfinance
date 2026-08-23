@@ -1,4 +1,4 @@
-import { LayoutDashboard, TrendingUp, Landmark, DollarSign, Bitcoin, Banknote, Target, Calculator, Shield, RefreshCw, Building2, FileBarChart, Receipt, Briefcase, Wallet, Home, Settings, ArrowRight } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, Landmark, DollarSign, Bitcoin, Banknote, Target, Calculator, Shield, RefreshCw, FileBarChart, Receipt, Briefcase, Wallet, Home, Settings, ArrowRight } from 'lucide-react';
 
 export default function UserGuide() {
   return (

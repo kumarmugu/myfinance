@@ -3,6 +3,7 @@ import { Plus, Trash2, Building2, TrendingUp, Bitcoin, Pencil, Eye, EyeOff, User
 import { getAccounts, createAccount, updateAccount, deleteAccount, getOwners, createOwner, updateOwner, deleteOwner } from '../api';
 import SearchableSelect from '../components/SearchableSelect';
 import type { Account, AccountType, Currency, Owner, OwnerRelationship } from '../types';
+import { useToast } from '../contexts/ToastContext';
 
 export default function Accounts() {
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -14,6 +15,7 @@ export default function Accounts() {
   const [editingOwner, setEditingOwner] = useState<Owner | null>(null);
   const [unmasked, setUnmasked] = useState<Set<number>>(new Set());
   const [loading, setLoading] = useState(true);
+  const { showToast } = useToast();
 
   const [accForm, setAccForm] = useState({ name: '', accountType: 'BROKER' as AccountType, currency: 'SGD' as Currency, accountNumber: '', description: '', ownerId: 0 });
   const [ownerForm, setOwnerForm] = useState({ name: '', relationship: 'SELF' as OwnerRelationship });
@@ -39,7 +41,7 @@ export default function Accounts() {
       setShowAccountForm(false); setEditingAccount(null);
       setAccForm({ name: '', accountType: 'BROKER', currency: 'SGD', accountNumber: '', description: '', ownerId: 0 });
       loadData();
-    } catch (err: any) { console.error(err); alert(err.response?.data?.message || err.message || 'Failed to save account'); }
+    } catch (err: any) { console.error(err); showToast(err.response?.data?.message || err.message || 'Failed to save account'); }
   };
 
   const startEditAccount = (acc: Account) => {
@@ -54,7 +56,7 @@ export default function Accounts() {
       catch (err: any) {
         const msg = err.response?.data?.message || 'Failed to delete';
         const refs = err.response?.data?.references;
-        alert(refs ? `${msg}\n\nReferenced by:\n• ${refs.join('\n• ')}` : msg);
+        showToast(refs ? `${msg}\n\nReferenced by:\n• ${refs.join('\n• ')}` : msg);
       }
     }
   };
@@ -79,7 +81,7 @@ export default function Accounts() {
       setShowOwnerForm(false); setEditingOwner(null);
       setOwnerForm({ name: '', relationship: 'SELF' });
       loadData();
-    } catch (err) { console.error(err); alert('Failed'); }
+    } catch (err) { console.error(err); showToast('Failed'); }
   };
 
   const startEditOwner = (o: Owner) => { setEditingOwner(o); setOwnerForm({ name: o.name, relationship: o.relationship }); setShowOwnerForm(true); };
@@ -89,7 +91,7 @@ export default function Accounts() {
       catch (err: any) {
         const msg = err.response?.data?.message || 'Failed to delete';
         const refs = err.response?.data?.references;
-        alert(refs ? `${msg}\n\nReferenced by:\n• ${refs.join('\n• ')}` : msg);
+        showToast(refs ? `${msg}\n\nReferenced by:\n• ${refs.join('\n• ')}` : msg);
       }
     }
   };

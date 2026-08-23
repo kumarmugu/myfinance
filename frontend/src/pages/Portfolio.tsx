@@ -29,8 +29,6 @@ export default function Portfolio() {
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
-  const cFactor = displayCurrency === 'USD' ? 1 / 1.35 : 1;
-  const fmt = (v: number, cur?: Currency) => formatCurrency(v * cFactor, displayCurrency);
 
   const holdingsWithValue = holdings.map(h => {
     const currentPrice = h.asset.currentPrice || h.averageBuyPrice;

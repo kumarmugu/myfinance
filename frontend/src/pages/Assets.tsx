@@ -4,12 +4,14 @@ import { getAssets, createAsset, deleteAsset } from '../api';
 import SearchableSelect from '../components/SearchableSelect';
 import type { Asset, AssetType, Currency } from '../types';
 import { ASSET_TYPE_LABELS } from '../types';
+import { useToast } from '../contexts/ToastContext';
 
 export default function Assets() {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({ name: '', symbol: '', assetType: 'GROWTH_EQUITY' as AssetType, currency: 'USD' as Currency, exchange: '', description: '' });
+  const { showToast } = useToast();
 
   useEffect(() => { loadData(); }, []);
   const loadData = async () => { try { setAssets((await getAssets()).data); } catch (err) { console.error(err); } finally { setLoading(false); } };
@@ -17,7 +19,7 @@ export default function Assets() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try { await createAsset(form); setShowForm(false); setForm({ name: '', symbol: '', assetType: 'GROWTH_EQUITY', currency: 'USD', exchange: '', description: '' }); loadData(); }
-    catch (err) { console.error(err); alert('Failed'); }
+    catch (err) { console.error(err); showToast('Failed to create asset'); }
   };
   const handleDelete = async (id: number) => {
     if (confirm('Delete?')) {
@@ -25,7 +27,7 @@ export default function Assets() {
       catch (err: any) {
         const msg = err.response?.data?.message || 'Failed to delete';
         const refs = err.response?.data?.references;
-        alert(refs ? `${msg}\n\nReferenced by:\n• ${refs.join('\n• ')}` : msg);
+        showToast(refs ? `${msg}\n\nReferenced by:\n• ${refs.join('\n• ')}` : msg);
       }
     }
   };

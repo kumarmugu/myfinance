@@ -3,6 +3,7 @@ import { Plus, Pencil, Trash2, Check } from 'lucide-react';
 import api from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
+import { useToast } from '../contexts/ToastContext';
 
 interface BankSavingsAccount {
   id: number;
@@ -20,6 +21,7 @@ interface BankSavingsAccount {
 export default function BankSavings() {
   const [accounts, setAccounts] = useState<BankSavingsAccount[]>([]);
   const [loading, setLoading] = useState(true);
+  const { showToast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<BankSavingsAccount | null>(null);
   const [form, setForm] = useState({
@@ -43,7 +45,7 @@ export default function BankSavings() {
       if (editing) { await api.put(`/bank-savings/${editing.id}`, form); }
       else { await api.post('/bank-savings', form); }
       setShowForm(false); setEditing(null); resetForm(); loadData();
-    } catch (err) { console.error(err); alert('Failed'); }
+    } catch (err) { console.error(err); showToast('Failed'); }
   };
 
   const startEdit = (acc: BankSavingsAccount) => {

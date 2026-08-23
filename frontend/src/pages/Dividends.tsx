@@ -5,11 +5,13 @@ import { getDividends, getDividendSummary, createDividend, deleteDividend, getAc
 import { formatCurrency, formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import type { Dividend, Account, Owner, Currency } from '../types';
+import { useToast } from '../contexts/ToastContext';
 
 export default function Dividends() {
   const [dividends, setDividends] = useState<Dividend[]>([]);
   const [summary, setSummary] = useState<Array<{ year: number; total: number }>>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const { showToast } = useToast();
   const [owners, setOwners] = useState<Owner[]>([]);
   void owners; // used for form ownerId default
   const [showForm, setShowForm] = useState(false);
@@ -41,7 +43,7 @@ export default function Dividends() {
       setShowForm(false);
       setForm({ accountId: 0, ownerId: 0, instrument: '', amount: 0, currency: 'SGD', receivedDate: new Date().toISOString().split('T')[0], year: new Date().getFullYear(), quarter: 'Q1', notes: '' });
       loadData();
-    } catch (err) { console.error(err); alert('Failed'); }
+    } catch (err) { console.error(err); showToast('Failed'); }
   };
 
   const handleDelete = async (id: number) => { if (confirm('Delete?')) { await deleteDividend(id); loadData(); } };

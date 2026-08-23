@@ -147,8 +147,8 @@ export default function TestResults() {
 
       {/* Test Suites */}
       <div className="space-y-3">
-        {filtered.map(suite => {
-          const passed = suite.tests.filter(t => t.status === 'pass').length;
+        {filtered.map((suite: any) => {
+          const passed = suite.tests.filter((t: any) => t.status === 'pass').length;
           const total = suite.tests.length;
           const allPassed = passed === total;
 
@@ -165,7 +165,7 @@ export default function TestResults() {
                 <span className="text-xs text-slate-500">{passed}/{total} passed</span>
               </div>
               <div className="divide-y divide-slate-50">
-                {suite.tests.map(test => (
+                {suite.tests.map((test: any) => (
                   <div key={test.name} className="flex items-center justify-between px-5 py-2 hover:bg-slate-50">
                     <div className="flex items-center gap-2">
                       {test.status === 'pass' ? <CheckCircle size={14} className="text-green-500" /> : test.status === 'fail' ? <XCircle size={14} className="text-red-500" /> : <Clock size={14} className="text-amber-500" />}

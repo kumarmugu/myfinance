@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Check, X, Save } from 'lucide-react';
 import api from '../api';
+import { useToast } from '../contexts/ToastContext';
 
 interface NetWorthConfigItem {
   id: number;
@@ -13,6 +14,7 @@ export default function NetWorthConfig() {
   const [configs, setConfigs] = useState<NetWorthConfigItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const { showToast } = useToast();
 
   useEffect(() => { loadData(); }, []);
 
@@ -33,7 +35,7 @@ export default function NetWorthConfig() {
     try {
       await api.put('/net-worth-config/batch', configs);
       loadData();
-    } catch (err) { console.error(err); alert('Failed to save'); }
+    } catch (err) { console.error(err); showToast('Failed to save'); }
     finally { setSaving(false); }
   };
 

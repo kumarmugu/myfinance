@@ -4,6 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { getSalaryRecords, getSalarySummary, createSalaryRecord, updateSalaryRecord, deleteSalaryRecord, getWorkExperiences } from '../api';
 import { formatCurrency } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
+import { useToast } from '../contexts/ToastContext';
 
 interface SalaryRecord {
   id: number; year: number; month: number; company: string; amount: number;
@@ -17,6 +18,7 @@ const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep
 export default function Salary() {
   const [records, setRecords] = useState<SalaryRecord[]>([]);
   const [summary, setSummary] = useState<any>(null);
+  const { showToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [showBulkForm, setShowBulkForm] = useState(false);
@@ -63,7 +65,7 @@ export default function Salary() {
       if (editing) { await updateSalaryRecord(editing.id, form); }
       else { await createSalaryRecord(form); }
       setShowForm(false); setEditing(null); resetForm(); loadData();
-    } catch (err) { console.error(err); alert('Failed'); }
+    } catch (err) { console.error(err); showToast('Failed'); }
   };
 
   const startEdit = (r: SalaryRecord) => {
@@ -92,7 +94,7 @@ export default function Salary() {
         });
       }
       setShowBulkForm(false); loadData();
-    } catch (err) { console.error(err); alert('Failed to bulk add'); }
+    } catch (err) { console.error(err); showToast('Failed to bulk add'); }
   };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;

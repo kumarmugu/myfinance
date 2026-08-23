@@ -4,11 +4,13 @@ import { getCurrencyRates, getAvailableCurrencies, createCurrencyRate, updateCur
 import { formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import type { CurrencyRate } from '../types';
+import { useToast } from '../contexts/ToastContext';
 
 export default function FxRates() {
   const [rates, setRates] = useState<CurrencyRate[]>([]);
   const [currencies, setCurrencies] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const { showToast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<CurrencyRate | null>(null);
   const [form, setForm] = useState({ fromCurrency: 'USD', toCurrency: 'SGD', rate: '', effectiveDate: new Date().toISOString().split('T')[0] });
@@ -69,7 +71,7 @@ export default function FxRates() {
   const handleDeleteCurrency = (code: string) => {
     // Check if any rates use this currency
     const inUse = rates.some(r => r.fromCurrency === code || r.toCurrency === code);
-    if (inUse) { alert(`Cannot delete "${code}" — it is used in existing FX rates. Delete those rates first.`); return; }
+    if (inUse) { showToast(`Cannot delete "${code}" — it is used in existing FX rates. Delete those rates first.`); return; }
     if (!confirm(`Remove "${code}" from the currency list?`)) return;
     setCurrencies(currencies.filter(c => c !== code));
   };

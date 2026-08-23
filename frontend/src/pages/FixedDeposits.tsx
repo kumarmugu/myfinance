@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Plus, Calendar, Globe, Check, Pencil, Trash2 } from 'lucide-react';
+import { Plus, Calendar, Globe, Pencil, Trash2 } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { getFixedDeposits, getFDSummary, getMaturingFDs, getBanks, getFDHolders, createFixedDeposit, updateFixedDeposit, deleteFixedDeposit, toggleFDNetWorth } from '../api';
 import { formatDate, daysBetween } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import type { FixedDeposit, FDSummary, Bank, FDHolder } from '../types';
+import { useToast } from '../contexts/ToastContext';
 
 const BANK_COLORS = ['#6366f1', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#14b8a6'];
 
@@ -23,6 +24,7 @@ export default function FixedDeposits() {
   const [summary, setSummary] = useState<FDSummary | null>(null);
   const [maturing, setMaturing] = useState<FixedDeposit[]>([]);
   const [banks, setBanks] = useState<Bank[]>([]);
+  const { showToast } = useToast();
   const [holders, setHolders] = useState<FDHolder[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterBank, setFilterBank] = useState<string>('');
@@ -46,17 +48,6 @@ export default function FixedDeposits() {
       setFds(fdRes.data); setSummary(sumRes.data); setMaturing(matRes.data); setBanks(bankRes.data); setHolders(holderRes.data);
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
-  };
-
-  const handleToggleNetWorth = async (fd: FixedDeposit) => {
-    if (fd.includeInNetWorth) {
-      // Turn off
-      await toggleFDNetWorth(fd.id, false, undefined);
-      loadData();
-    } else {
-      // Show input for SGD amount
-      setNetWorthInput({ id: fd.id, amount: '' });
-    }
   };
 
   const submitNetWorthAmount = async () => {
@@ -98,7 +89,7 @@ export default function FixedDeposits() {
       if (editing) { await updateFixedDeposit(editing.id, payload); }
       else { await createFixedDeposit(payload); }
       setShowForm(false); setEditing(null); resetFdForm(); loadData();
-    } catch (err) { console.error(err); alert('Failed to save FD'); }
+    } catch (err) { console.error(err); showToast('Failed to save FD'); }
   };
 
   const startEditFd = (fd: FixedDeposit) => {
