@@ -3,6 +3,7 @@ package com.myfinance.config;
 import com.myfinance.model.AppUser;
 import com.myfinance.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Order(1)
+@Slf4j
 public class AdminUserInitializer implements CommandLineRunner {
 
     private final AppUserRepository appUserRepository;
@@ -30,7 +32,7 @@ public class AdminUserInitializer implements CommandLineRunner {
                     .displayName("Admin")
                     .role("ADMIN")
                     .build());
-            System.out.println("Admin user created (admin / admin123)");
+            log.info("Admin user created (admin / admin123) — change password immediately!");
         }
     }
 }

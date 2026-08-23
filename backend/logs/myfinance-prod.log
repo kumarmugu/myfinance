@@ -1,0 +1,83 @@
+2026-08-23 15:29:52 [main] INFO  com.myfinance.MyFinanceApplication - Starting MyFinanceApplication using Java 17.0.20 with PID 39875 (/Users/mugu/Documents/Projects/myfinance/backend/target/classes started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-08-23 15:29:52 [main] INFO  com.myfinance.MyFinanceApplication - The following 1 profile is active: "prod"
+2026-08-23 15:29:53 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-23 15:29:53 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 118 ms. Found 27 JPA repository interfaces.
+2026-08-23 15:29:54 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-08-23 15:29:54 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-08-23 15:29:54 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-08-23 15:29:54 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-08-23 15:29:54 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2068 ms
+2026-08-23 15:29:55 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-23 15:29:55 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-08-23 15:29:55 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-08-23 15:29:55 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-23 15:29:55 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-08-23 15:29:55 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data-prod/myfinance user=SA
+2026-08-23 15:29:55 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-08-23 15:29:55 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-23 15:29:57 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-23 15:29:57 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-23 15:29:58 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-23 15:30:02 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7b96476b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4d01a100, org.springframework.security.web.context.SecurityContextHolderFilter@5acee0a3, org.springframework.security.web.header.HeaderWriterFilter@3d10a00a, org.springframework.web.filter.CorsFilter@222674b5, org.springframework.security.web.authentication.logout.LogoutFilter@1c03be27, com.myfinance.security.JwtAuthFilter@19266ca3, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@555df150, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@46978465, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@250e2047, org.springframework.security.web.session.SessionManagementFilter@4110e312, org.springframework.security.web.access.ExceptionTranslationFilter@45c20d8f, org.springframework.security.web.access.intercept.AuthorizationFilter@bac9c81]
+2026-08-23 15:30:03 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2026-08-23 15:30:03 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 11.372 seconds (process running for 11.842)
+2026-08-23 15:30:03 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-08-23 15:30:43 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-08-23 15:30:43 [http-nio-8080-exec-1] INFO  c.m.controller.AuthController - Login attempt for user=admin
+2026-08-23 15:30:43 [http-nio-8080-exec-1] INFO  c.m.controller.AuthController - Login successful for user=admin
+2026-08-23 15:30:43 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (417ms)
+2026-08-23 15:30:58 [http-nio-8080-exec-3] INFO  c.m.controller.AuthController - Login attempt for user=admin
+2026-08-23 15:30:58 [http-nio-8080-exec-3] INFO  c.m.controller.AuthController - Login successful for user=admin
+2026-08-23 15:30:58 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (86ms)
+2026-08-23 15:30:58 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (8ms)
+2026-08-23 15:30:58 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (10ms)
+2026-08-23 15:30:59 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (6ms)
+2026-08-23 15:30:59 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (7ms)
+2026-08-23 15:30:59 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (6ms)
+2026-08-23 15:31:17 [http-nio-8080-exec-4] INFO  c.m.controller.AuthController - Login attempt for user=admin
+2026-08-23 15:31:17 [http-nio-8080-exec-4] INFO  c.m.controller.AuthController - Login successful for user=admin
+2026-08-23 15:31:17 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (89ms)
+2026-08-23 15:31:17 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (7ms)
+2026-08-23 15:31:38 [http-nio-8080-exec-8] INFO  c.m.controller.AuthController - Login attempt for user=admin
+2026-08-23 15:31:38 [http-nio-8080-exec-8] INFO  c.m.controller.AuthController - Login successful for user=admin
+2026-08-23 15:31:38 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (86ms)
+2026-08-23 15:31:38 [http-nio-8080-exec-10] INFO  c.m.c.UserManagementController - Creating user: username=mugu, role=USER
+2026-08-23 15:31:39 [http-nio-8080-exec-10] INFO  c.m.c.UserManagementController - Created user id=2, username=mugu
+2026-08-23 15:31:39 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/admin/users → 201 (105ms)
+2026-08-23 15:31:39 [http-nio-8080-exec-2] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-08-23 15:31:39 [http-nio-8080-exec-2] INFO  c.m.controller.AuthController - Login successful for user=mugu
+2026-08-23 15:31:39 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (93ms)
+2026-08-23 15:32:04 [http-nio-8080-exec-4] INFO  c.m.controller.AuthController - Login attempt for user=admin
+2026-08-23 15:32:04 [http-nio-8080-exec-4] INFO  c.m.controller.AuthController - Login successful for user=admin
+2026-08-23 15:32:04 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (92ms)
+2026-08-23 15:32:04 [http-nio-8080-exec-6] INFO  c.m.c.UserManagementController - Creating user: username=testprod, role=USER
+2026-08-23 15:32:05 [http-nio-8080-exec-6] INFO  c.m.c.UserManagementController - Created user id=3, username=testprod
+2026-08-23 15:32:05 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/admin/users → 201 (97ms)
+2026-08-23 15:32:05 [http-nio-8080-exec-8] INFO  c.m.controller.AuthController - Login attempt for user=testprod
+2026-08-23 15:32:05 [http-nio-8080-exec-8] INFO  c.m.controller.AuthController - Login successful for user=testprod
+2026-08-23 15:32:05 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (101ms)
+2026-08-23 15:32:27 [http-nio-8080-exec-10] INFO  c.m.controller.AuthController - Login attempt for user=testprod
+2026-08-23 15:32:28 [http-nio-8080-exec-10] INFO  c.m.controller.AuthController - Login successful for user=testprod
+2026-08-23 15:32:28 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (85ms)
+2026-08-23 15:32:28 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-08-23 15:32:28 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-08-23 15:32:28 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/generic-fd → 200 (4ms)
+2026-08-23 15:32:28 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (3ms)
+2026-08-23 15:32:41 [http-nio-8080-exec-10] INFO  c.m.controller.AuthController - Login attempt for user=testprod
+2026-08-23 15:32:41 [http-nio-8080-exec-10] INFO  c.m.controller.AuthController - Login successful for user=testprod
+2026-08-23 15:32:41 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (87ms)
+2026-08-23 15:32:41 [http-nio-8080-exec-2] INFO  c.m.controller.OwnerController - Creating owner: name=Self
+2026-08-23 15:32:41 [http-nio-8080-exec-2] INFO  com.myfinance.service.OwnerService - Created Owner id=1 name=Self
+2026-08-23 15:32:41 [http-nio-8080-exec-2] INFO  c.m.controller.OwnerController - Created owner id=1
+2026-08-23 15:32:41 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/owners → 201 (15ms)
+2026-08-23 15:32:41 [http-nio-8080-exec-4] INFO  c.m.c.CurrencyRateController - Creating currency rate: USD→SGD, rate=1.35
+2026-08-23 15:32:41 [http-nio-8080-exec-4] INFO  c.m.c.CurrencyRateController - Created currency rate id=1
+2026-08-23 15:32:41 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/currency-rates → 201 (15ms)
+2026-08-23 15:32:42 [http-nio-8080-exec-6] INFO  c.m.c.GenericFixedDepositController - Creating generic FD: bank=DBS, principal=100000
+2026-08-23 15:32:42 [http-nio-8080-exec-6] INFO  c.m.c.GenericFixedDepositController - Created generic FD id=1
+2026-08-23 15:32:42 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/generic-fd → 201 (12ms)
+2026-08-23 15:32:42 [http-nio-8080-exec-8] INFO  c.m.controller.BankSavingsController - Created bank savings id=1 for userId=3
+2026-08-23 15:32:42 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/bank-savings → 201 (12ms)
+2026-08-23 15:32:52 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-23 15:32:52 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-08-23 15:32:52 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
