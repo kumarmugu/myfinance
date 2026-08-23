@@ -23,7 +23,7 @@ public class CurrencyRate {
     @Column(nullable = false, length = 10)
     private String toCurrency;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 18, scale = 8)
     private BigDecimal rate;
 
     @Column(nullable = false)
