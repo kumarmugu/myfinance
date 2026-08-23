@@ -5,6 +5,7 @@ import com.myfinance.model.enums.*;
 import com.myfinance.repository.*;
 import com.myfinance.service.TransactionService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 @org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(name = "app.init-data", havingValue = "true", matchIfMissing = true)
 @org.springframework.core.annotation.Order(2)
 public class DataInitializer implements CommandLineRunner {
@@ -335,7 +337,7 @@ public class DataInitializer implements CommandLineRunner {
         // ═══════════════════════════════════════════════════════
         homeLoanRepository.save(HomeLoan.builder().propertyName("HDB Flat - Woodlands").propertyValue(bd("550000")).loanAmount(bd("400000")).interestRate(bd("2.6")).loanType("HDB").tenureMonths(300).monthlyEmi(bd("1800")).outstandingBalance(bd("380000")).startDate(LocalDate.of(2024, 6, 1)).bank("HDB").currency(Currency.SGD).includeInNetWorth(true).owner(self).build());
 
-        System.out.println("Sample data initialized successfully!");
+        log.info("Sample data initialized successfully!");
     }
 
     private BigDecimal bd(String val) { return new BigDecimal(val); }
