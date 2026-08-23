@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Plus, Trash2 } from 'lucide-react';
-import { getAssets, createAsset, deleteAsset } from '../api';
+import { Plus, Trash2, Pencil } from 'lucide-react';
+import { getAssets, createAsset, updateAsset, deleteAsset } from '../api';
 import SearchableSelect from '../components/SearchableSelect';
 import type { Asset, AssetType, Currency } from '../types';
 import { ASSET_TYPE_LABELS } from '../types';
@@ -9,6 +9,7 @@ import { useToast } from '../contexts/ToastContext';
 export default function Assets() {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [editing, setEditing] = useState<Asset | null>(null);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({ name: '', symbol: '', assetType: 'GROWTH_EQUITY' as AssetType, currency: 'USD' as Currency, exchange: '', description: '' });
   const { showToast } = useToast();
@@ -16,11 +17,37 @@ export default function Assets() {
   useEffect(() => { loadData(); }, []);
   const loadData = async () => { try { setAssets((await getAssets()).data); } catch (err) { console.error(err); } finally { setLoading(false); } };
 
+  const resetForm = () => setForm({ name: '', symbol: '', assetType: 'GROWTH_EQUITY', currency: 'USD', exchange: '', description: '' });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try { await createAsset(form); setShowForm(false); setForm({ name: '', symbol: '', assetType: 'GROWTH_EQUITY', currency: 'USD', exchange: '', description: '' }); loadData(); }
-    catch (err) { console.error(err); showToast('Failed to create asset'); }
+    try {
+      if (editing) {
+        await updateAsset(editing.id, form);
+      } else {
+        await createAsset(form);
+      }
+      setShowForm(false); setEditing(null); resetForm(); loadData();
+      showToast(editing ? 'Asset updated' : 'Asset created', 'success');
+    } catch (err: any) {
+      console.error(err);
+      showToast(err.response?.data?.message || 'Failed to save asset');
+    }
   };
+
+  const startEdit = (asset: Asset) => {
+    setEditing(asset);
+    setForm({
+      name: asset.name,
+      symbol: asset.symbol,
+      assetType: asset.assetType,
+      currency: asset.currency,
+      exchange: asset.exchange || '',
+      description: asset.description || '',
+    });
+    setShowForm(true);
+  };
+
   const handleDelete = async (id: number) => {
     if (confirm('Delete?')) {
       try { await deleteAsset(id); loadData(); }
@@ -38,14 +65,15 @@ export default function Assets() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-2xl font-bold text-slate-800">Assets</h1><p className="text-slate-500 text-sm mt-1">Manage stocks, ETFs, funds, and crypto</p></div>
-        <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> New Asset</button>
+        <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> New Asset</button>
       </div>
 
       {showForm && (
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+          <h3 className="text-base font-semibold text-slate-800 mb-4">{editing ? 'Edit Asset' : 'Add Asset'}</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div><label className="block text-sm font-medium text-slate-700 mb-1">Name</label><input type="text" value={form.name} onChange={e => setForm({...form, name: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
-            <div><label className="block text-sm font-medium text-slate-700 mb-1">Symbol</label><input type="text" value={form.symbol} onChange={e => setForm({...form, symbol: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
+            <div><label className="block text-sm font-medium text-slate-700 mb-1">Name *</label><input type="text" value={form.name} onChange={e => setForm({...form, name: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
+            <div><label className="block text-sm font-medium text-slate-700 mb-1">Symbol *</label><input type="text" value={form.symbol} onChange={e => setForm({...form, symbol: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
             <div className="lg:col-span-2"><label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
               <div className="flex flex-wrap gap-1.5">
                 {Object.entries(ASSET_TYPE_LABELS).map(([k, v]) => (
@@ -56,9 +84,10 @@ export default function Assets() {
             <div><label className="block text-sm font-medium text-slate-700 mb-1">Currency</label>
               <SearchableSelect options={['USD','SGD','EUR','LKR','INR','GBP','AUD','JPY','CNY','MYR','HKD','CAD'].map(c => ({ value: c, label: c }))} value={form.currency} onChange={v => setForm({...form, currency: v as Currency})} placeholder="Select currency..." /></div>
             <div><label className="block text-sm font-medium text-slate-700 mb-1">Exchange</label><input type="text" value={form.exchange} onChange={e => setForm({...form, exchange: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="e.g. NYSE, SGX" /></div>
+            <div><label className="block text-sm font-medium text-slate-700 mb-1">Description</label><input type="text" value={form.description} onChange={e => setForm({...form, description: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Optional" /></div>
             <div className="flex items-end gap-2">
-              <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium">Save</button>
-              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
+              <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">{editing ? 'Update' : 'Save'}</button>
+              <button type="button" onClick={() => { setShowForm(false); setEditing(null); }} className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
             </div>
           </form>
         </div>
@@ -74,20 +103,26 @@ export default function Assets() {
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Type</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Exchange</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Currency</th>
-                <th className="px-4 py-3"></th>
+                <th className="px-4 py-3 w-20"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {assets.map(a => (
-                <tr key={a.id} className="hover:bg-slate-50">
+                <tr key={a.id} className="hover:bg-slate-50 group">
                   <td className="px-4 py-3 font-medium text-slate-800">{a.symbol}</td>
                   <td className="px-4 py-3 text-slate-600">{a.name}</td>
                   <td className="px-4 py-3"><span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{ASSET_TYPE_LABELS[a.assetType] || a.assetType}</span></td>
                   <td className="px-4 py-3 text-slate-600">{a.exchange || '-'}</td>
                   <td className="px-4 py-3 text-slate-600">{a.currency}</td>
-                  <td className="px-4 py-3"><button onClick={() => handleDelete(a.id)} className="text-slate-400 hover:text-red-500"><Trash2 size={16} /></button></td>
+                  <td className="px-4 py-3">
+                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button onClick={() => startEdit(a)} className="text-slate-400 hover:text-indigo-600"><Pencil size={14} /></button>
+                      <button onClick={() => handleDelete(a.id)} className="text-slate-400 hover:text-red-500"><Trash2 size={14} /></button>
+                    </div>
+                  </td>
                 </tr>
               ))}
+              {assets.length === 0 && <tr><td colSpan={6} className="px-4 py-12 text-center text-slate-400">No assets configured. Click "New Asset" to add one.</td></tr>}
             </tbody>
           </table>
         </div>
