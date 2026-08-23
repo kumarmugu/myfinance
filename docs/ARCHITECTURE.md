@@ -10,6 +10,9 @@ MyFinance is a personal finance management application designed to track, analyz
 
 | Layer | Technology | Version | Purpose |
 |-------|-----------|---------|---------|
+| **Security** | Spring Security + JWT | 6.x | Authentication & authorization |
+| **Testing** | JUnit 5 + Vitest | 5.x / 4.x | Backend + Frontend tests |
+| **Coverage** | JaCoCo + v8 | | 84.5% backend / 90.2% frontend |
 | **Backend** | Java | 17 | Core language |
 | **Framework** | Spring Boot | 3.2.5 | REST API, DI, JPA |
 | **ORM** | Hibernate / Spring Data JPA | 6.x | Database access |
@@ -27,7 +30,6 @@ MyFinance is a personal finance management application designed to track, analyz
 ### Future Considerations
 - **PostgreSQL** for production (migration from H2)
 - **Redis** for caching exchange rates
-- **Spring Security** for authentication (optional, single-user app)
 - **Docker** for containerized deployment
 
 ---
@@ -39,29 +41,41 @@ MyFinance is a personal finance management application designed to track, analyz
 │                        Frontend (SPA)                         │
 │   React 18 + TypeScript + Tailwind CSS + Recharts            │
 │   ┌──────────┬──────────┬──────────┬──────────┬───────────┐ │
-│   │Dashboard │Portfolio │Fixed Dep │Planning  │Reports    │ │
-│   │          │& Trading │          │& SRS     │           │ │
+│   │Dashboard │Portfolio │Fixed Dep │Planning  │Admin      │ │
+│   │          │& Trading │          │& SRS     │(Audit/Users)│
 │   └──────────┴──────────┴──────────┴──────────┴───────────┘ │
-│                         Axios HTTP Client                     │
+│   ┌──────────────────────────────────────────────────────┐   │
+│   │  Toast Notifications │ Auth Context │ Inactivity Timer│  │
+│   └──────────────────────────────────────────────────────┘   │
+│                         Axios HTTP Client (with logging)      │
 └────────────────────────────┬────────────────────────────────┘
-                             │ REST API (JSON)
+                             │ REST API (JSON) + JWT Bearer Token
                              ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                    Backend (Spring Boot)                      │
 │   ┌─────────────────────────────────────────────────────┐   │
-│   │                  Controllers (REST)                   │   │
+│   │           Security Layer (JWT Auth Filter)           │   │
 │   ├─────────────────────────────────────────────────────┤   │
-│   │                  Services (Business Logic)           │   │
+│   │           Request Logging Filter                     │   │
 │   ├─────────────────────────────────────────────────────┤   │
-│   │                  Repositories (Data Access)          │   │
+│   │           Controllers (REST) + @Slf4j               │   │
 │   ├─────────────────────────────────────────────────────┤   │
-│   │                  JPA Entities (Domain Model)         │   │
+│   │           AOP Audit Aspect (auto-logs mutations)     │   │
+│   ├─────────────────────────────────────────────────────┤   │
+│   │           Services (Business Logic) + @Slf4j        │   │
+│   ├─────────────────────────────────────────────────────┤   │
+│   │           Repositories (Spring Data JPA)            │   │
+│   ├─────────────────────────────────────────────────────┤   │
+│   │           JPA Entities (Domain Model)               │   │
 │   └─────────────────────────────────────────────────────┘   │
+│   Log file: ./logs/myfinance.log                             │
 └────────────────────────────┬────────────────────────────────┘
                              │ JDBC
                              ▼
 ┌─────────────────────────────────────────────────────────────┐
 │              Database (H2 dev / PostgreSQL prod)              │
+│   Tables: app_users, audit_logs, owners, accounts, assets,   │
+│   transactions, holdings, fixed_deposits, bank_savings, ...  │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -123,6 +137,25 @@ Comprehensive dashboards and reports.
 - **Performance Reports** - By asset type, by broker, by time period
 - **Year-over-Year Comparison** - Annual growth tracking
 - **Allocation Analysis** - Actual vs target allocation visualization
+
+### 4.7 Security & Administration Module
+Authentication, authorization, and audit capabilities.
+
+- **JWT Authentication** - Stateless token-based auth (HS512, 24h expiry)
+- **User Management** - Admin creates/manages users, roles (USER/ADMIN)
+- **Multi-Tenant Isolation** - TenantContext ensures data isolation per user
+- **Audit Trail** - AOP-based auto-logging of all CREATE/UPDATE/DELETE
+- **Password Management** - Change, forgot, reset with token
+- **Inactivity Logout** - Frontend auto-logout after 1 hour of no activity
+
+### 4.8 Observability Module
+Production-grade logging and monitoring.
+
+- **Request Logging** - All HTTP requests logged with method, path, status, duration
+- **Application Logging** - @Slf4j on all controllers and services
+- **Frontend Logging** - API interceptor logs all requests/responses to console
+- **Error Tracking** - GlobalExceptionHandler logs all unhandled exceptions
+- **Log File** - `backend/logs/myfinance.log`
 
 ---
 
@@ -450,87 +483,126 @@ myfinance/
 │   ├── src/main/java/com/myfinance/
 │   │   ├── MyFinanceApplication.java
 │   │   ├── config/
-│   │   │   ├── CorsConfig.java
-│   │   │   ├── JacksonConfig.java
+│   │   │   ├── AdminUserInitializer.java
+│   │   │   ├── AuditAspect.java          ← AOP audit interceptor
+│   │   │   ├── DataInitializer.java
 │   │   │   ├── GlobalExceptionHandler.java
-│   │   │   └── DataInitializer.java
+│   │   │   ├── JacksonConfig.java
+│   │   │   ├── ReferenceConstraintException.java
+│   │   │   └── RequestLoggingConfig.java  ← HTTP request logger
 │   │   ├── controller/
 │   │   │   ├── AccountController.java
 │   │   │   ├── AssetController.java
+│   │   │   ├── AuditController.java       ← Admin audit trail
+│   │   │   ├── AuthController.java        ← Login/register/reset
+│   │   │   ├── BankSavingsController.java
+│   │   │   ├── CurrencyRateController.java
 │   │   │   ├── DashboardController.java
 │   │   │   ├── DividendController.java
 │   │   │   ├── FixedDepositController.java
 │   │   │   ├── HoldingController.java
+│   │   │   ├── HomeLoanController.java
+│   │   │   ├── InsuranceController.java
+│   │   │   ├── NetWorthConfigController.java
+│   │   │   ├── OwnerController.java
 │   │   │   ├── PlanningController.java
-│   │   │   ├── ReportController.java
-│   │   │   └── TransactionController.java
+│   │   │   ├── RetirementFundController.java
+│   │   │   ├── SalaryController.java
+│   │   │   ├── SoldPositionController.java
+│   │   │   ├── TaxController.java
+│   │   │   ├── TransactionController.java
+│   │   │   ├── UserManagementController.java ← Admin user CRUD
+│   │   │   └── WorkExperienceController.java
 │   │   ├── dto/
+│   │   │   ├── AuthRequest.java
+│   │   │   ├── AuthResponse.java
+│   │   │   ├── ChangePasswordRequest.java
 │   │   │   ├── DashboardSummary.java
-│   │   │   ├── TransactionRequest.java
-│   │   │   ├── FixedDepositRequest.java
-│   │   │   ├── AllocationReport.java
-│   │   │   ├── PerformanceReport.java
-│   │   │   └── YoYComparison.java
+│   │   │   ├── ForgotPasswordRequest.java
+│   │   │   ├── RegisterRequest.java
+│   │   │   ├── ResetPasswordRequest.java
+│   │   │   └── TransactionRequest.java
 │   │   ├── model/
 │   │   │   ├── Account.java
 │   │   │   ├── AccountDeposit.java
+│   │   │   ├── AllocationTarget.java
+│   │   │   ├── AppUser.java              ← User entity
 │   │   │   ├── Asset.java
+│   │   │   ├── AuditLog.java             ← Audit trail entity
 │   │   │   ├── Bank.java
+│   │   │   ├── BankSavings.java
 │   │   │   ├── CurrencyRate.java
 │   │   │   ├── Dividend.java
 │   │   │   ├── FDHolder.java
 │   │   │   ├── FixedDeposit.java
 │   │   │   ├── Holding.java
+│   │   │   ├── InsurancePolicy.java
 │   │   │   ├── NetWorthSnapshot.java
 │   │   │   ├── Owner.java
-│   │   │   ├── SRSPlan.java
-│   │   │   ├── AllocationTarget.java
+│   │   │   ├── RetirementFundEntry.java
 │   │   │   ├── SoldPosition.java
 │   │   │   ├── Transaction.java
 │   │   │   └── enums/
-│   │   │       ├── AccountType.java
-│   │   │       ├── AssetType.java
-│   │   │       ├── Currency.java
-│   │   │       ├── FDStatus.java
-│   │   │       ├── OwnerRelationship.java
-│   │   │       └── TransactionType.java
 │   │   ├── repository/
-│   │   │   └── (one per entity)
+│   │   │   └── (one per entity, 25 total)
+│   │   ├── security/
+│   │   │   ├── CustomUserDetailsService.java
+│   │   │   ├── JwtAuthFilter.java
+│   │   │   ├── JwtService.java
+│   │   │   ├── SecurityConfig.java
+│   │   │   └── TenantContext.java
 │   │   └── service/
-│   │       └── (one per domain area)
+│   │       ├── AccountService.java
+│   │       ├── AssetService.java
+│   │       ├── AuditService.java
+│   │       ├── DashboardService.java
+│   │       ├── HoldingService.java
+│   │       ├── NetWorthService.java
+│   │       ├── OwnerService.java
+│   │       └── TransactionService.java
+│   ├── src/test/java/com/myfinance/
+│   │   ├── controller/          (23 test files, 165 tests)
+│   │   ├── service/             (2 test files, 15 tests)
+│   │   └── security/            (1 test file, 10 tests)
 │   ├── src/main/resources/
 │   │   └── application.yml
+│   ├── logs/
+│   │   └── myfinance.log       ← Runtime log output
 │   └── pom.xml
 ├── frontend/
 │   ├── src/
 │   │   ├── api/
-│   │   │   ├── index.ts
-│   │   │   ├── fixedDeposits.ts
-│   │   │   ├── planning.ts
-│   │   │   └── reports.ts
+│   │   │   └── index.ts        ← API client with logging interceptor
 │   │   ├── components/
-│   │   │   ├── common/
-│   │   │   ├── charts/
-│   │   │   └── forms/
+│   │   │   ├── SearchableSelect.tsx
+│   │   │   └── ToastContainer.tsx   ← Toast notification UI
+│   │   ├── contexts/
+│   │   │   ├── AuthContext.tsx      ← Auth + inactivity logout
+│   │   │   └── ToastContext.tsx     ← Toast state management
 │   │   ├── pages/
+│   │   │   ├── AuditTrail.tsx       ← Admin audit log viewer
 │   │   │   ├── Dashboard.tsx
 │   │   │   ├── Portfolio.tsx
-│   │   │   ├── Transactions.tsx
-│   │   │   ├── FixedDeposits.tsx
-│   │   │   ├── Planning.tsx
-│   │   │   ├── Reports.tsx
-│   │   │   ├── Accounts.tsx
-│   │   │   ├── Assets.tsx
-│   │   │   ├── Dividends.tsx
-│   │   │   └── Docs.tsx
+│   │   │   ├── BankSavings.tsx
+│   │   │   ├── UserManagement.tsx
+│   │   │   └── ... (20+ pages)
+│   │   ├── test/
+│   │   │   ├── setup.ts
+│   │   │   ├── api.test.ts
+│   │   │   └── types.test.ts
 │   │   ├── types/
 │   │   │   └── index.ts
 │   │   ├── utils/
-│   │   │   ├── currency.ts
 │   │   │   └── formatters.ts
-│   │   └── App.tsx
+│   │   ├── App.tsx
+│   │   └── index.css            ← Includes toast animation
+│   ├── public/
+│   │   └── test-results.json    ← Test data for admin page
 │   ├── package.json
-│   └── vite.config.ts
+│   └── vitest.config.ts
+├── scripts/
+│   ├── run-tests.sh             ← Full test runner
+│   └── generate-results.py      ← Test results JSON generator
 └── docs/
     ├── ARCHITECTURE.md
     └── DESIGN.md
@@ -568,25 +640,30 @@ myfinance/
 
 ## 14. Non-Functional Requirements
 
-| Requirement | Target |
-|-------------|--------|
-| Response Time | < 500ms for all API calls |
-| Data Integrity | ACID transactions for financial operations |
-| Availability | Single-user app, availability not critical |
-| Security | Local deployment, no auth needed initially |
-| Backup | H2 file-based DB, easy file backup |
-| Browser Support | Chrome, Firefox, Safari (latest) |
-| Mobile | Responsive design (Tailwind breakpoints) |
+| Requirement | Target | Status |
+|-------------|--------|--------|
+| Response Time | < 500ms for all API calls | Met (logged via RequestLoggingFilter) |
+| Data Integrity | ACID transactions for financial operations | Met |
+| Security | JWT auth, multi-tenant isolation, BCrypt passwords | Implemented |
+| Test Coverage | 80%+ code coverage | Met (84.5% backend, 90.2% frontend) |
+| Logging | Production-grade structured logging | Implemented (file + console) |
+| Audit | All mutations tracked with user/timestamp | Implemented (AOP-based) |
+| Session | Auto-logout after 1 hour inactivity | Implemented |
+| Browser Support | Chrome, Firefox, Safari (latest) | Met |
+| Mobile | Responsive design (Tailwind breakpoints) | Met |
 
 ---
 
 ## 15. Versioning & Roadmap
 
-| Version | Scope |
-|---------|-------|
-| **v1.0** (Current) | Basic portfolio tracking with Indian market sample data |
-| **v2.0** (Target) | Multi-currency, multi-owner, Singapore/US market support |
-| **v2.1** | Fixed Deposits module |
-| **v2.2** | Financial Planning & SRS module |
-| **v2.3** | Advanced reporting & historical charts |
-| **v3.0** | Data import from CSV/Excel, automated price updates |
+| Version | Scope | Status |
+|---------|-------|--------|
+| **v1.0** | Basic portfolio tracking with sample data | Done |
+| **v2.0** | Multi-currency, multi-owner, Singapore/US market | Done |
+| **v2.1** | Fixed Deposits module | Done |
+| **v2.2** | Financial Planning & SRS module | Done |
+| **v2.3** | Bank Savings, Insurance, Home Loans, Salary, Tax, Work Experience | Done |
+| **v2.4** | JWT Authentication, Multi-tenant isolation, User Management | Done |
+| **v2.5** | Audit Trail, Toast Notifications, Production Logging | Done |
+| **v2.6** | 80%+ Test Coverage (228 tests), Integration Tests | Done |
+| **v3.0** | Data import from CSV/Excel, automated price updates | Planned |

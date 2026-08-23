@@ -4,6 +4,33 @@
 
 ### 1.1 Core Tables
 
+#### `app_users`
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| id | BIGINT | PK, AUTO_INCREMENT | Primary key |
+| username | VARCHAR(50) | NOT NULL, UNIQUE | Login username |
+| email | VARCHAR(100) | NOT NULL, UNIQUE | Email address |
+| password | VARCHAR(255) | NOT NULL | BCrypt encoded |
+| display_name | VARCHAR(100) | | Display name |
+| role | VARCHAR(10) | DEFAULT 'USER' | USER or ADMIN |
+| is_active | BOOLEAN | DEFAULT true | Account active |
+| reset_token | VARCHAR(255) | | Password reset token |
+| reset_token_expiry | TIMESTAMP | | Token expiry time |
+| created_at | TIMESTAMP | NOT NULL | |
+| updated_at | TIMESTAMP | | |
+
+#### `audit_logs`
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| id | BIGINT | PK, AUTO_INCREMENT | Primary key |
+| user_id | BIGINT | INDEX | Who performed action |
+| username | VARCHAR(50) | | Username for display |
+| action | VARCHAR(20) | NOT NULL, INDEX | CREATE, UPDATE, DELETE |
+| entity | VARCHAR(50) | NOT NULL, INDEX | Entity type (Account, Asset...) |
+| entity_id | BIGINT | | Affected record ID |
+| details | VARCHAR(1000) | | Additional context |
+| timestamp | TIMESTAMP | NOT NULL, INDEX | When it happened |
+
 #### `owners`
 | Column | Type | Constraints | Description |
 |--------|------|-------------|-------------|
@@ -1035,36 +1062,184 @@ date,asset_symbol,account,type,quantity,price,currency,notes
 
 ### 12.1 Backend Testing
 
-| Layer | Tool | Focus |
-|-------|------|-------|
-| Unit Tests | JUnit 5 + Mockito | Service logic, calculations |
-| Integration Tests | Spring Boot Test + H2 | Repository queries, API flow |
-| API Tests | MockMvc | Controller endpoints, validation |
+| Layer | Tool | Focus | Tests |
+|-------|------|-------|-------|
+| Integration Tests | SpringBootTest + MockMvc + H2 | Full API flow, auth, multi-tenant | 181 |
+| Service Tests | SpringBootTest + JUnit 5 | Business logic, transactions | 15 |
+| Security Tests | JUnit 5 + JwtService | Token generation/validation | 10 |
 
-### 12.2 Key Test Scenarios
+**Coverage: 84.5% instruction / 87.4% line**
+
+### 12.2 Frontend Testing
+
+| Layer | Tool | Focus | Tests |
+|-------|------|-------|-------|
+| Component Tests | Vitest + React Testing Library | Toast system, AuditTrail page | 25 |
+| Module Tests | Vitest | API exports, type definitions | 22 |
+
+**Coverage: 90.2% lines**
+
+### 12.3 Test Suites Summary (228 total)
+
+| Suite | Type | Tests | Focus |
+|-------|------|-------|-------|
+| AuthControllerTest + Extended | Backend | 21 | Login, register, forgot/reset password, JWT |
+| UserManagementControllerTest | Backend | 9 | Admin CRUD, role guard |
+| AuditControllerTest | Backend | 7 | Admin access, filters, pagination |
+| AccountControllerTest | Backend | 4 | Account CRUD, reference checks |
+| AssetControllerTest | Backend | 7 | Asset CRUD, types, search |
+| TransactionControllerTest | Backend | 4 | Buy/sell, holdings creation |
+| FixedDepositControllerTest | Backend | 16 | Full FD CRUD, banks, holders, net-worth |
+| InsuranceControllerTest | Backend | 11 | Policies, bonus entries |
+| PlanningControllerTest | Backend | 10 | Allocation targets, deposits |
+| RetirementFundControllerTest | Backend | 12 | CPF/SRS/EPF entries |
+| MultiTenantIsolationTest | Backend | 5 | Cross-user data isolation |
+| TransactionServiceTest | Backend | 6 | Buy/sell logic, avg price, errors |
+| AccountServiceTest | Backend | 9 | CRUD + reference constraints |
+| JwtServiceTest | Backend | 10 | Token gen/validate/claims |
+| ToastContainer + Context | Frontend | 15 | Render, dismiss, auto-remove |
+| AuditTrail page | Frontend | 10 | Filters, loading, empty state |
+| SearchableSelect | Frontend | 7 | Dropdown behavior |
+
+### 12.4 Running Tests
+
+```bash
+# Backend (requires JDK 17)
+cd backend
+JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home ./mvnw test
+
+# Frontend
+cd frontend
+npm test
+
+# Generate test-results.json for the Test Results page
+bash scripts/run-tests.sh
+```
+
+### 12.5 Key Test Scenarios Covered
 
 - Transaction creates/updates holding correctly
 - Average buy price calculation with multiple buys
-- Sell transaction reduces holding properly
-- Net worth snapshot calculation accuracy
-- FD interest calculation
-- Currency conversion accuracy
-- Allocation gap calculation
+- Sell transaction reduces holding; oversell throws error
+- Multi-tenant data isolation (User A cannot see User B's data)
+- Admin-only endpoint guard (403 for non-admin)
+- JWT token generation, validation, expiry, tampering detection
+- Reference constraint enforcement (cannot delete account with holdings)
+- Audit log creation, filtering by action/entity/date
+- Toast notification rendering, auto-dismiss, manual dismiss
+- Password reset flow (forgot → token → reset)
 
 ---
 
-## 13. Security Considerations
+## 13. Security & Authentication
 
-### 13.1 Current (Single User, Local)
+### 13.1 Authentication System
 
-- No authentication required
-- CORS configured for localhost only
-- H2 console accessible in dev mode only
+| Feature | Implementation |
+|---------|---------------|
+| Auth mechanism | JWT (HS512) with 24-hour expiry |
+| Password storage | BCrypt encoded |
+| Self-registration | Disabled (admin creates users) |
+| Password reset | Token-based with 1-hour expiry |
+| Session | Stateless (no server-side sessions) |
+| Inactivity logout | Frontend auto-logout after 1 hour |
 
-### 13.2 Future (If Deployed)
+### 13.2 Authorization
 
-- Spring Security with JWT
-- HTTPS enforcement
-- Rate limiting on APIs
-- Input sanitization (already via Bean Validation)
-- Sensitive data encryption at rest
+| Role | Access |
+|------|--------|
+| USER | All financial data (own data only via multi-tenant) |
+| ADMIN | User Management, Audit Trail, Test Results, Docs |
+
+### 13.3 Multi-Tenant Isolation
+
+All data queries filter by `userId` via `TenantContext.getCurrentUserId()`. Each entity table has a `userId` column. The JWT token carries `userId` and `role` claims.
+
+### 13.4 Security Configuration
+
+```java
+.authorizeHttpRequests(auth -> auth
+    .requestMatchers("/api/auth/**").permitAll()
+    .requestMatchers("/h2-console/**").permitAll()
+    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+    .anyRequest().authenticated()
+)
+```
+
+### 13.5 Audit Trail
+
+All CREATE/UPDATE/DELETE operations are automatically logged via AOP (`AuditAspect`):
+
+| Field | Description |
+|-------|-------------|
+| userId | Who performed the action |
+| username | Username for display |
+| action | CREATE, UPDATE, DELETE |
+| entity | Controller name (Account, Asset, etc.) |
+| entityId | ID of affected record |
+| details | Method name for context |
+| timestamp | When it happened |
+
+Admin can query audit logs with filters: action, entity, date range, pagination.
+
+---
+
+## 14. Logging & Observability
+
+### 14.1 Backend Logging
+
+| Layer | Level | What's logged |
+|-------|-------|---------------|
+| Controllers | INFO | All CREATE/UPDATE/DELETE with entity + ID |
+| Controllers | DEBUG | GET requests with params |
+| Services | INFO | Successful mutations |
+| Services | WARN | Business rule violations (reference constraints) |
+| Services | ERROR | Unexpected failures |
+| Security | DEBUG | JWT validation failures |
+| GlobalExceptionHandler | WARN/ERROR | All unhandled exceptions |
+| RequestLoggingFilter | INFO | Every HTTP request with method, path, status, duration |
+
+**Log file:** `backend/logs/myfinance.log`
+
+**Log format:** `yyyy-MM-dd HH:mm:ss [thread] LEVEL logger - message`
+
+### 14.2 Frontend Logging
+
+All API calls logged to browser console:
+```
+[API] POST /bank-savings {"accountName":"DBS","balance":5000,...}
+[API] 201 POST /bank-savings
+[API] 403 GET /api/audit {error details}
+```
+
+### 14.3 Configuration (application.yml)
+
+```yaml
+logging:
+  level:
+    com.myfinance: DEBUG
+    org.springframework.web: INFO
+  file:
+    name: ./logs/myfinance.log
+```
+
+---
+
+## 15. UI Notification System
+
+### Toast Notifications
+
+Replaced all `alert()` calls with an inline toast system:
+
+| Type | Color | Use case |
+|------|-------|----------|
+| error | Red banner | API failures, validation errors |
+| success | Green banner | Create/update confirmations |
+| info | Blue banner | Informational messages |
+
+**Behavior:**
+- Auto-dismiss after 4 seconds
+- Manual dismiss via X button
+- Stacked (multiple toasts visible)
+- Slide-in animation from right
+- Positioned fixed top-right (z-9999)
