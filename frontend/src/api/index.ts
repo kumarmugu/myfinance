@@ -16,12 +16,25 @@ if (storedToken) {
   api.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
 }
 
-// Intercept 401 responses to trigger logout
+// ─── Request/Response Logging ───
+api.interceptors.request.use(
+  config => {
+    console.log(`[API] ${config.method?.toUpperCase()} ${config.url}`, config.data || '');
+    return config;
+  }
+);
+
 api.interceptors.response.use(
-  response => response,
+  response => {
+    console.log(`[API] ${response.status} ${response.config.method?.toUpperCase()} ${response.config.url}`);
+    return response;
+  },
   error => {
+    const status = error.response?.status || 'NETWORK_ERROR';
+    const data = error.response?.data;
+    console.error(`[API] ${status} ${error.config?.method?.toUpperCase()} ${error.config?.url}`, data || error.message);
+
     if (error.response?.status === 401) {
-      // Only clear token and redirect for actual auth failures, not 403 (forbidden)
       localStorage.removeItem('token');
       delete api.defaults.headers.common['Authorization'];
       window.location.href = '/';

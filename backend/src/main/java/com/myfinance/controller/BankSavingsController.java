@@ -4,6 +4,7 @@ import com.myfinance.model.BankSavings;
 import com.myfinance.repository.BankSavingsRepository;
 import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/bank-savings")
 @RequiredArgsConstructor
+@Slf4j
 public class BankSavingsController {
     private final BankSavingsRepository repository;
     private final TenantContext tenantContext;
@@ -47,8 +49,13 @@ public class BankSavingsController {
 
     @PostMapping
     public ResponseEntity<BankSavings> create(@RequestBody BankSavings savings) {
+        log.debug("Creating bank savings: accountName={}, bankName={}, balance={}, currency={}, country={}",
+                savings.getAccountName(), savings.getBankName(), savings.getBalance(),
+                savings.getCurrency(), savings.getCountry());
         savings.setUserId(tenantContext.getCurrentUserId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(savings));
+        BankSavings saved = repository.save(savings);
+        log.info("Created bank savings id={} for userId={}", saved.getId(), saved.getUserId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @PutMapping("/{id}")

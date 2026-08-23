@@ -36,3 +36,14 @@ springdoc:
     path: /swagger-ui.html
     operations-sorter: method
     tags-sorter: alpha
+
+# Logging
+logging:
+  level:
+    com.myfinance: DEBUG
+    org.springframework.web: INFO
+  file:
+    name: ./logs/myfinance.log
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    console: "%d{HH:mm:ss} %-5level %logger{20} - %msg%n"
