@@ -27,16 +27,15 @@ public class CurrencyRateController {
     @GetMapping("/currencies")
     public List<String> getAvailableCurrencies() {
         Set<String> currencies = new TreeSet<>();
-        // Add all enum values
-        for (Currency c : Currency.values()) {
-            currencies.add(c.name());
-        }
-        // Add any additional from stored rates
+        // Only return currencies from the user's stored rates
         List<CurrencyRate> rates = repository.findByUserId(tenantContext.getCurrentUserId());
         for (CurrencyRate r : rates) {
             currencies.add(r.getFromCurrency());
             currencies.add(r.getToCurrency());
         }
+        // Always include SGD and USD as base currencies
+        currencies.add("SGD");
+        currencies.add("USD");
         return new ArrayList<>(currencies);
     }
 
