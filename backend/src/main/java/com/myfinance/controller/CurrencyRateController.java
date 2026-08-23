@@ -1,8 +1,9 @@
 package com.myfinance.controller;
 
 import com.myfinance.model.CurrencyRate;
-import com.myfinance.model.enums.Currency;
+import com.myfinance.model.UserCurrency;
 import com.myfinance.repository.CurrencyRateRepository;
+import com.myfinance.repository.UserCurrencyRepository;
 import com.myfinance.security.TenantContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,25 +20,66 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CurrencyRateController {
     private final CurrencyRateRepository repository;
+    private final UserCurrencyRepository userCurrencyRepository;
     private final TenantContext tenantContext;
 
     @GetMapping
     public List<CurrencyRate> getAll() { return repository.findByUserId(tenantContext.getCurrentUserId()); }
 
+    // ─── User Currencies (CRUD) ───
+
     @GetMapping("/currencies")
     public List<String> getAvailableCurrencies() {
-        Set<String> currencies = new TreeSet<>();
-        // Only return currencies from the user's stored rates
-        List<CurrencyRate> rates = repository.findByUserId(tenantContext.getCurrentUserId());
-        for (CurrencyRate r : rates) {
-            currencies.add(r.getFromCurrency());
-            currencies.add(r.getToCurrency());
-        }
-        // Always include SGD and USD as base currencies
-        currencies.add("SGD");
-        currencies.add("USD");
-        return new ArrayList<>(currencies);
+        Long uid = tenantContext.getCurrentUserId();
+        List<UserCurrency> userCurrencies = userCurrencyRepository.findByUserIdOrderByCodeAsc(uid);
+        return userCurrencies.stream().map(UserCurrency::getCode).collect(Collectors.toList());
     }
+
+    @GetMapping("/currencies/all")
+    public List<UserCurrency> getAllCurrencies() {
+        Long uid = tenantContext.getCurrentUserId();
+        return userCurrencyRepository.findByUserIdOrderByCodeAsc(uid);
+    }
+
+    @PostMapping("/currencies")
+    public ResponseEntity<?> addCurrency(@RequestBody Map<String, String> body) {
+        Long uid = tenantContext.getCurrentUserId();
+        String code = body.get("code") != null ? body.get("code").toUpperCase().trim() : "";
+        String name = body.getOrDefault("name", "");
+
+        if (code.isEmpty() || code.length() > 5) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Currency code must be 1-5 characters"));
+        }
+        if (userCurrencyRepository.existsByUserIdAndCode(uid, code)) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Currency '" + code + "' already exists"));
+        }
+
+        UserCurrency saved = userCurrencyRepository.save(UserCurrency.builder()
+                .userId(uid).code(code).name(name).build());
+        log.info("Added currency code={} for userId={}", code, uid);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    }
+
+    @DeleteMapping("/currencies/{code}")
+    public ResponseEntity<?> removeCurrency(@PathVariable String code) {
+        Long uid = tenantContext.getCurrentUserId();
+        Optional<UserCurrency> found = userCurrencyRepository.findByUserIdAndCode(uid, code.toUpperCase());
+        if (found.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        // Check if any FX rates use this currency
+        List<CurrencyRate> rates = repository.findByUserId(uid);
+        boolean inUse = rates.stream().anyMatch(r ->
+                r.getFromCurrency().equals(code.toUpperCase()) || r.getToCurrency().equals(code.toUpperCase()));
+        if (inUse) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "Currency '" + code + "' is used in FX rates. Delete those rates first."));
+        }
+        userCurrencyRepository.delete(found.get());
+        log.info("Removed currency code={} for userId={}", code, uid);
+        return ResponseEntity.noContent().build();
+    }
+
+    // ─── FX Rates (CRUD) ───
 
     @PostMapping
     public ResponseEntity<CurrencyRate> create(@RequestBody CurrencyRate rate) {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, RefreshCw } from 'lucide-react';
-import { getCurrencyRates, getAvailableCurrencies, createCurrencyRate, updateCurrencyRate, deleteCurrencyRate } from '../api';
+import api, { getCurrencyRates, getAvailableCurrencies, createCurrencyRate, updateCurrencyRate, deleteCurrencyRate } from '../api';
 import { formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import type { CurrencyRate } from '../types';
@@ -60,20 +60,29 @@ export default function FxRates() {
 
   const handleDelete = async (id: number) => { if (confirm('Delete this rate?')) { await deleteCurrencyRate(id); loadData(); } };
 
-  const handleAddCurrency = () => {
+  const handleAddCurrency = async () => {
     const code = newCurrency.trim().toUpperCase();
     if (!code || code.length < 2) return;
     if (currencies.includes(code)) { setNewCurrency(''); return; }
-    setCurrencies([...currencies, code].sort());
-    setNewCurrency('');
+    try {
+      await api.post('/currency-rates/currencies', { code });
+      setCurrencies([...currencies, code].sort());
+      setNewCurrency('');
+    } catch (err: any) {
+      showToast(err.response?.data?.error || 'Failed to add currency');
+    }
   };
 
-  const handleDeleteCurrency = (code: string) => {
-    // Check if any rates use this currency
+  const handleDeleteCurrency = async (code: string) => {
     const inUse = rates.some(r => r.fromCurrency === code || r.toCurrency === code);
     if (inUse) { showToast(`Cannot delete "${code}" — it is used in existing FX rates. Delete those rates first.`); return; }
     if (!confirm(`Remove "${code}" from the currency list?`)) return;
-    setCurrencies(currencies.filter(c => c !== code));
+    try {
+      await api.delete(`/currency-rates/currencies/${code}`);
+      setCurrencies(currencies.filter(c => c !== code));
+    } catch (err: any) {
+      showToast(err.response?.data?.error || 'Failed to remove currency');
+    }
   };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
