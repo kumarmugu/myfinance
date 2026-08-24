@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home, Settings, FlaskConical, Users, KeyRound, ClipboardList } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home, Settings, FlaskConical, Users, KeyRound, ClipboardList, Building } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import ToastContainer from './components/ToastContainer';
@@ -30,6 +30,7 @@ import UserManagement from './pages/UserManagement';
 import UserGuide from './pages/UserGuide';
 import Docs from './pages/Docs';
 import AuditTrail from './pages/AuditTrail';
+import Properties from './pages/Properties';
 
 function App() {
   return (
@@ -92,6 +93,7 @@ function AppContent() {
       items: [
         { to: '/bank-savings', icon: Building2, label: 'Bank Savings' },
         { to: '/fixed-deposits', icon: Landmark, label: 'Fixed Deposits' },
+        { to: '/properties', icon: Building, label: 'Real Estate' },
         { to: '/insurance', icon: Shield, label: 'Life Insurance' },
         { to: '/home-loans', icon: Home, label: 'Home Loans' },
       ],
@@ -194,6 +196,7 @@ function AppContent() {
               <Route path="/bank-savings" element={<BankSavings />} />
               <Route path="/insurance" element={<Insurance />} />
               <Route path="/home-loans" element={<HomeLoans />} />
+              <Route path="/properties" element={<Properties />} />
               <Route path="/tax" element={<Tax />} />
               <Route path="/work-experience" element={<WorkExperience />} />
               <Route path="/salary" element={<Salary />} />
