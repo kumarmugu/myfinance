@@ -31,6 +31,7 @@ import UserGuide from './pages/UserGuide';
 import Docs from './pages/Docs';
 import AuditTrail from './pages/AuditTrail';
 import Properties from './pages/Properties';
+import PreciousMetals from './pages/PreciousMetals';
 
 function App() {
   return (
@@ -94,6 +95,7 @@ function AppContent() {
         { to: '/bank-savings', icon: Building2, label: 'Bank Savings', feature: 'BANK_SAVINGS' },
         { to: '/fixed-deposits', icon: Landmark, label: 'Fixed Deposits', feature: 'FIXED_DEPOSITS' },
         { to: '/properties', icon: Building, label: 'Real Estate', feature: 'REAL_ESTATE' },
+        { to: '/precious-metals', icon: Coins, label: 'Gold & Silver', feature: 'PRECIOUS_METALS' },
         { to: '/insurance', icon: Shield, label: 'Life Insurance', feature: 'INSURANCE' },
         { to: '/home-loans', icon: Home, label: 'Home Loans', feature: 'HOME_LOANS' },
       ],
@@ -200,6 +202,7 @@ function AppContent() {
               <Route path="/insurance" element={<Insurance />} />
               <Route path="/home-loans" element={<HomeLoans />} />
               <Route path="/properties" element={<Properties />} />
+              <Route path="/precious-metals" element={<PreciousMetals />} />
               <Route path="/tax" element={<Tax />} />
               <Route path="/work-experience" element={<WorkExperience />} />
               <Route path="/salary" element={<Salary />} />
