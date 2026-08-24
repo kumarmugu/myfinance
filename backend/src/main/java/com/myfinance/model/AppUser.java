@@ -34,6 +34,14 @@ public class AppUser {
     @Builder.Default
     private Boolean slFdEnabled = false;
 
+    /**
+     * Comma-separated list of enabled feature modules.
+     * Available: PORTFOLIO,CRYPTO,DIVIDENDS,CASH_FLOWS,BANK_SAVINGS,FIXED_DEPOSITS,SL_FD,REAL_ESTATE,INSURANCE,HOME_LOANS,SALARY,TAX,WORK_EXPERIENCE,SRS_CPF,REPORTS
+     * If null or empty, ALL features are enabled (backward compatible).
+     */
+    @Column(length = 500)
+    private String enabledFeatures;
+
     private String resetToken;
     private LocalDateTime resetTokenExpiry;
 

@@ -107,4 +107,20 @@ public class UserManagementController {
         user.setPassword(null);
         return ResponseEntity.ok(user);
     }
+
+    @PutMapping("/{id}/features")
+    public ResponseEntity<?> updateFeatures(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        if (!tenantContext.isAdmin()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Admin access required"));
+        }
+        AppUser user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        String features = request.getOrDefault("enabledFeatures", "");
+        user.setEnabledFeatures(features);
+        // Keep slFdEnabled in sync
+        user.setSlFdEnabled(features.contains("SL_FD"));
+        log.info("Updated features for user id={}: {}", id, features);
+        userRepository.save(user);
+        user.setPassword(null);
+        return ResponseEntity.ok(user);
+    }
 }

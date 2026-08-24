@@ -10,13 +10,33 @@ interface AppUser {
   role: string;
   isActive: boolean;
   slFdEnabled: boolean;
+  enabledFeatures: string;
   createdAt: string;
 }
+
+const ALL_FEATURES = [
+  { key: 'PORTFOLIO', label: 'Portfolio & Transactions' },
+  { key: 'CRYPTO', label: 'Crypto' },
+  { key: 'DIVIDENDS', label: 'Dividends' },
+  { key: 'CASH_FLOWS', label: 'Cash Flows' },
+  { key: 'BANK_SAVINGS', label: 'Bank Savings' },
+  { key: 'FIXED_DEPOSITS', label: 'Fixed Deposits' },
+  { key: 'SL_FD', label: 'Sri Lanka FDs' },
+  { key: 'REAL_ESTATE', label: 'Real Estate' },
+  { key: 'INSURANCE', label: 'Life Insurance' },
+  { key: 'HOME_LOANS', label: 'Home Loans' },
+  { key: 'SALARY', label: 'Salary' },
+  { key: 'TAX', label: 'Tax Records' },
+  { key: 'WORK_EXPERIENCE', label: 'Work Experience' },
+  { key: 'SRS_CPF', label: 'SRS & CPF' },
+  { key: 'REPORTS', label: 'Reports' },
+];
 
 export default function UserManagement() {
   const [users, setUsers] = useState<AppUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editingFeatures, setEditingFeatures] = useState<AppUser | null>(null);
   const [form, setForm] = useState({ username: '', email: '', password: '', displayName: '', role: 'USER' });
   const [error, setError] = useState('');
 
@@ -46,8 +66,22 @@ export default function UserManagement() {
     loadUsers();
   };
 
-  const toggleSlFd = async (id: number) => {
-    await api.put(`/admin/users/${id}/toggle-sl-fd`);
+  const toggleFeature = async (user: AppUser, featureKey: string) => {
+    const current = user.enabledFeatures ? user.enabledFeatures.split(',').filter(Boolean) : [];
+    const updated = current.includes(featureKey)
+      ? current.filter(f => f !== featureKey)
+      : [...current, featureKey];
+    await api.put(`/admin/users/${user.id}/features`, { enabledFeatures: updated.join(',') });
+    loadUsers();
+  };
+
+  const enableAllFeatures = async (user: AppUser) => {
+    await api.put(`/admin/users/${user.id}/features`, { enabledFeatures: ALL_FEATURES.map(f => f.key).join(',') });
+    loadUsers();
+  };
+
+  const disableAllFeatures = async (user: AppUser) => {
+    await api.put(`/admin/users/${user.id}/features`, { enabledFeatures: '' });
     loadUsers();
   };
 
@@ -105,7 +139,7 @@ export default function UserManagement() {
               <th className="text-left px-5 py-3 font-medium text-slate-600">User</th>
               <th className="text-left px-5 py-3 font-medium text-slate-600">Email</th>
               <th className="text-left px-5 py-3 font-medium text-slate-600">Role</th>
-              <th className="text-center px-5 py-3 font-medium text-slate-600">SL FD</th>
+              <th className="text-center px-5 py-3 font-medium text-slate-600">Features</th>
               <th className="text-left px-5 py-3 font-medium text-slate-600">Status</th>
               <th className="px-5 py-3 w-32"></th>
             </tr>
@@ -131,8 +165,8 @@ export default function UserManagement() {
                   </button>
                 </td>
                 <td className="px-5 py-3.5 text-center">
-                  <button onClick={() => toggleSlFd(u.id)} className={`text-[11px] font-medium px-2.5 py-1 rounded-full transition-colors ${u.slFdEnabled ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}>
-                    {u.slFdEnabled ? 'Enabled' : 'Disabled'}
+                  <button onClick={() => setEditingFeatures(u)} className="text-[11px] font-medium px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors">
+                    {u.enabledFeatures ? u.enabledFeatures.split(',').filter(Boolean).length + ' modules' : 'All'}
                   </button>
                 </td>
                 <td className="px-5 py-3.5">
@@ -158,10 +192,47 @@ export default function UserManagement() {
           <li><b>Admin</b> can see all users, create accounts, toggle active/disabled, change roles</li>
           <li><b>User</b> can only see their own data — completely isolated from other users</li>
           <li>Click the role badge to toggle between ADMIN and USER</li>
+          <li>Click "Features" to enable/disable modules per user</li>
           <li>Disabled users cannot log in but their data is preserved</li>
-          <li>Users can also self-register via the login page</li>
         </ul>
       </div>
+
+      {/* Features Modal */}
+      {editingFeatures && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setEditingFeatures(null)}>
+          <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-xl" onClick={e => e.stopPropagation()}>
+            <h3 className="text-lg font-semibold text-slate-800 mb-1">Feature Modules</h3>
+            <p className="text-xs text-slate-500 mb-4">Configure which features are available for <b>{editingFeatures.displayName || editingFeatures.username}</b></p>
+
+            <div className="flex gap-2 mb-4">
+              <button onClick={() => enableAllFeatures(editingFeatures)} className="text-xs px-3 py-1.5 bg-green-50 text-green-700 rounded-lg hover:bg-green-100">Enable All</button>
+              <button onClick={() => disableAllFeatures(editingFeatures)} className="text-xs px-3 py-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100">Disable All</button>
+            </div>
+
+            <div className="space-y-1.5 max-h-80 overflow-y-auto">
+              {ALL_FEATURES.map(f => {
+                const enabled = !editingFeatures.enabledFeatures || editingFeatures.enabledFeatures.split(',').includes(f.key);
+                return (
+                  <label key={f.key} className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-50 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={enabled}
+                      onChange={() => toggleFeature(editingFeatures, f.key)}
+                      className="rounded border-slate-300 text-indigo-600"
+                    />
+                    <span className="text-sm text-slate-700">{f.label}</span>
+                  </label>
+                );
+              })}
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-slate-100">
+              <p className="text-[10px] text-slate-400">Note: If no features are selected, all modules are shown (backward compatible).</p>
+              <button onClick={() => setEditingFeatures(null)} className="mt-3 w-full px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">Done</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

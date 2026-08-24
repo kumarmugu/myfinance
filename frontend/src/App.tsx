@@ -44,7 +44,7 @@ function App() {
 }
 
 function AppContent() {
-  const { isAuthenticated, isLoading, user, logout, isAdmin } = useAuth();
+  const { isAuthenticated, isLoading, user, logout, isAdmin, hasFeature } = useAuth();
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   if (isLoading) {
@@ -81,37 +81,37 @@ function AppContent() {
     {
       label: 'Investments',
       items: [
-        { to: '/portfolio', icon: TrendingUp, label: 'Portfolio' },
-        { to: '/transactions', icon: ArrowLeftRight, label: 'Transactions' },
-        { to: '/dividends', icon: DollarSign, label: 'Dividends' },
-        { to: '/crypto', icon: Bitcoin, label: 'Crypto' },
-        { to: '/deposits', icon: Banknote, label: 'Cash Flows' },
+        { to: '/portfolio', icon: TrendingUp, label: 'Portfolio', feature: 'PORTFOLIO' },
+        { to: '/transactions', icon: ArrowLeftRight, label: 'Transactions', feature: 'PORTFOLIO' },
+        { to: '/dividends', icon: DollarSign, label: 'Dividends', feature: 'DIVIDENDS' },
+        { to: '/crypto', icon: Bitcoin, label: 'Crypto', feature: 'CRYPTO' },
+        { to: '/deposits', icon: Banknote, label: 'Cash Flows', feature: 'CASH_FLOWS' },
       ],
     },
     {
       label: 'Savings & Loans',
       items: [
-        { to: '/bank-savings', icon: Building2, label: 'Bank Savings' },
-        { to: '/fixed-deposits', icon: Landmark, label: 'Fixed Deposits' },
-        { to: '/properties', icon: Building, label: 'Real Estate' },
-        { to: '/insurance', icon: Shield, label: 'Life Insurance' },
-        { to: '/home-loans', icon: Home, label: 'Home Loans' },
+        { to: '/bank-savings', icon: Building2, label: 'Bank Savings', feature: 'BANK_SAVINGS' },
+        { to: '/fixed-deposits', icon: Landmark, label: 'Fixed Deposits', feature: 'FIXED_DEPOSITS' },
+        { to: '/properties', icon: Building, label: 'Real Estate', feature: 'REAL_ESTATE' },
+        { to: '/insurance', icon: Shield, label: 'Life Insurance', feature: 'INSURANCE' },
+        { to: '/home-loans', icon: Home, label: 'Home Loans', feature: 'HOME_LOANS' },
       ],
     },
     {
       label: 'Planning',
       items: [
         { to: '/planning', icon: Target, label: 'Allocation & Net Worth' },
-        { to: '/srs-cpf', icon: Calculator, label: 'SRS & CPF' },
-        { to: '/tax', icon: Receipt, label: 'Tax Records' },
-        { to: '/work-experience', icon: Briefcase, label: 'Work Experience' },
-        { to: '/salary', icon: Wallet, label: 'Salary' },
+        { to: '/srs-cpf', icon: Calculator, label: 'SRS & CPF', feature: 'SRS_CPF' },
+        { to: '/tax', icon: Receipt, label: 'Tax Records', feature: 'TAX' },
+        { to: '/work-experience', icon: Briefcase, label: 'Work Experience', feature: 'WORK_EXPERIENCE' },
+        { to: '/salary', icon: Wallet, label: 'Salary', feature: 'SALARY' },
       ],
     },
     {
       label: 'Reports',
       items: [
-        { to: '/reports', icon: FileBarChart, label: 'Reports' },
+        { to: '/reports', icon: FileBarChart, label: 'Reports', feature: 'REPORTS' },
       ],
     },
     {
@@ -124,7 +124,10 @@ function AppContent() {
         { to: '/guide', icon: HelpCircle, label: 'User Guide' },
       ],
     },
-  ];
+  ].map(section => ({
+    ...section,
+    items: section.items.filter((item: any) => !item.feature || hasFeature(item.feature))
+  })).filter(section => section.items.length > 0);
 
   return (
     <Router>

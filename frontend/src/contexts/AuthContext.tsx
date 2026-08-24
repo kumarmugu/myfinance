@@ -8,6 +8,7 @@ interface AuthUser {
   email: string;
   role: string;
   slFdEnabled: boolean;
+  enabledFeatures: string;
 }
 
 interface AuthContextType {
@@ -17,6 +18,7 @@ interface AuthContextType {
   isLoading: boolean;
   isAdmin: boolean;
   slFdEnabled: boolean;
+  hasFeature: (feature: string) => boolean;
   login: (username: string, password: string) => Promise<void>;
   register: (username: string, email: string, password: string, displayName?: string) => Promise<void>;
   logout: () => void;
@@ -105,11 +107,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return res.data.valid;
   };
 
+  const hasFeature = (feature: string): boolean => {
+    if (!user) return false;
+    if (!user.enabledFeatures) return true; // empty = all enabled
+    return user.enabledFeatures.split(',').includes(feature);
+  };
+
   return (
     <AuthContext.Provider value={{
       user, token, isAuthenticated: !!token && !!user, isLoading,
       isAdmin: user?.role === 'ADMIN',
       slFdEnabled: Boolean(user?.slFdEnabled),
+      hasFeature,
       login, register, logout, changePassword, verifyPassword
     }}>
       {children}
