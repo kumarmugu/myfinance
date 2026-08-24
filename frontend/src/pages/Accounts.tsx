@@ -104,7 +104,7 @@ export default function Accounts() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div><h1 className="text-2xl font-bold text-slate-800">Accounts & Owners</h1><p className="text-slate-500 text-sm mt-1">Manage brokers, crypto exchanges, and portfolio owners</p></div>
+        <div><h1 className="text-2xl font-bold text-slate-800">Brokers & Owners</h1><p className="text-slate-500 text-sm mt-1">Manage broker accounts, crypto exchanges, and portfolio owners</p></div>
       </div>
 
       {/* Tabs */}

@@ -115,7 +115,7 @@ function AppContent() {
     {
       label: 'Settings',
       items: [
-        { to: '/accounts', icon: Building2, label: 'Accounts & Owners' },
+        { to: '/accounts', icon: Building2, label: 'Brokers & Owners' },
         { to: '/assets', icon: Coins, label: 'Assets' },
         { to: '/fx-rates', icon: RefreshCw, label: 'FX Rates' },
         { to: '/net-worth-config', icon: Settings, label: 'Net Worth Config' },
