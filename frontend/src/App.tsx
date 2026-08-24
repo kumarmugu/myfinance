@@ -192,27 +192,27 @@ function AppContent() {
           <div className="p-8">
             <Routes>
               <Route path="/" element={isAdmin ? <UserManagement /> : <Dashboard />} />
-              <Route path="/portfolio" element={<Portfolio />} />
-              <Route path="/transactions" element={<Transactions />} />
-              <Route path="/dividends" element={<Dividends />} />
-              <Route path="/crypto" element={<Crypto />} />
-              <Route path="/deposits" element={<Deposits />} />
-              <Route path="/fixed-deposits" element={<FixedDeposits />} />
-              <Route path="/bank-savings" element={<BankSavings />} />
-              <Route path="/insurance" element={<Insurance />} />
-              <Route path="/home-loans" element={<HomeLoans />} />
-              <Route path="/properties" element={<Properties />} />
-              <Route path="/precious-metals" element={<PreciousMetals />} />
-              <Route path="/tax" element={<Tax />} />
-              <Route path="/work-experience" element={<WorkExperience />} />
-              <Route path="/salary" element={<Salary />} />
-              <Route path="/planning" element={<Planning />} />
-              <Route path="/srs-cpf" element={<SrsCpf />} />
-              <Route path="/reports" element={<Reports />} />
-              <Route path="/accounts" element={<Accounts />} />
-              <Route path="/assets" element={<Assets />} />
-              <Route path="/fx-rates" element={<FxRates />} />
-              <Route path="/net-worth-config" element={<NetWorthConfig />} />
+              <Route path="/portfolio" element={!isAdmin ? <Portfolio /> : <UserManagement />} />
+              <Route path="/transactions" element={!isAdmin ? <Transactions /> : <UserManagement />} />
+              <Route path="/dividends" element={!isAdmin ? <Dividends /> : <UserManagement />} />
+              <Route path="/crypto" element={!isAdmin ? <Crypto /> : <UserManagement />} />
+              <Route path="/deposits" element={!isAdmin ? <Deposits /> : <UserManagement />} />
+              <Route path="/fixed-deposits" element={!isAdmin ? <FixedDeposits /> : <UserManagement />} />
+              <Route path="/bank-savings" element={!isAdmin ? <BankSavings /> : <UserManagement />} />
+              <Route path="/insurance" element={!isAdmin ? <Insurance /> : <UserManagement />} />
+              <Route path="/home-loans" element={!isAdmin ? <HomeLoans /> : <UserManagement />} />
+              <Route path="/properties" element={!isAdmin ? <Properties /> : <UserManagement />} />
+              <Route path="/precious-metals" element={!isAdmin ? <PreciousMetals /> : <UserManagement />} />
+              <Route path="/tax" element={!isAdmin ? <Tax /> : <UserManagement />} />
+              <Route path="/work-experience" element={!isAdmin ? <WorkExperience /> : <UserManagement />} />
+              <Route path="/salary" element={!isAdmin ? <Salary /> : <UserManagement />} />
+              <Route path="/planning" element={!isAdmin ? <Planning /> : <UserManagement />} />
+              <Route path="/srs-cpf" element={!isAdmin ? <SrsCpf /> : <UserManagement />} />
+              <Route path="/reports" element={!isAdmin ? <Reports /> : <UserManagement />} />
+              <Route path="/accounts" element={!isAdmin ? <Accounts /> : <UserManagement />} />
+              <Route path="/assets" element={!isAdmin ? <Assets /> : <UserManagement />} />
+              <Route path="/fx-rates" element={!isAdmin ? <FxRates /> : <UserManagement />} />
+              <Route path="/net-worth-config" element={!isAdmin ? <NetWorthConfig /> : <UserManagement />} />
               <Route path="/admin/users" element={isAdmin ? <UserManagement /> : <Dashboard />} />
               <Route path="/admin/audit" element={isAdmin ? <AuditTrail /> : <Dashboard />} />
               <Route path="/test-results" element={isAdmin ? <TestResults /> : <Dashboard />} />
