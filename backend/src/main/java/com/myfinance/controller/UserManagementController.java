@@ -59,6 +59,7 @@ public class UserManagementController {
                 .password(passwordEncoder.encode(password))
                 .displayName(displayName)
                 .role(role)
+                .enabledFeatures(request.getOrDefault("enabledFeatures", ""))
                 .build();
 
         userRepository.save(user);

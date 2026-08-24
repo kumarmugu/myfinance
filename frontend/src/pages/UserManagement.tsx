@@ -38,7 +38,7 @@ export default function UserManagement() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingFeatures, setEditingFeatures] = useState<AppUser | null>(null);
-  const [form, setForm] = useState({ username: '', email: '', password: '', displayName: '', role: 'USER' });
+  const [form, setForm] = useState({ username: '', email: '', password: '', displayName: '', role: 'USER', enabledFeatures: ALL_FEATURES.map(f => f.key) });
   const [error, setError] = useState('');
 
   useEffect(() => { loadUsers(); }, []);
@@ -53,9 +53,9 @@ export default function UserManagement() {
     e.preventDefault();
     setError('');
     try {
-      await api.post('/admin/users', form);
+      await api.post('/admin/users', { ...form, enabledFeatures: form.enabledFeatures.join(',') });
       setShowForm(false);
-      setForm({ username: '', email: '', password: '', displayName: '', role: 'USER' });
+      setForm({ username: '', email: '', password: '', displayName: '', role: 'USER', enabledFeatures: ALL_FEATURES.map(f => f.key) });
       loadUsers();
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to create user');
@@ -124,6 +124,25 @@ export default function UserManagement() {
                 <button type="button" onClick={() => setForm({...form, role: 'USER'})} className={`flex-1 py-2 text-sm font-medium transition-colors ${form.role === 'USER' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600'}`}>User</button>
                 <button type="button" onClick={() => setForm({...form, role: 'ADMIN'})} className={`flex-1 py-2 text-sm font-medium transition-colors ${form.role === 'ADMIN' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600'}`}>Admin</button>
               </div></div>
+            {form.role === 'USER' && (
+            <div className="lg:col-span-3">
+              <label className="block text-xs font-medium text-slate-600 mb-2">Feature Modules</label>
+              <div className="flex gap-2 mb-2">
+                <button type="button" onClick={() => setForm({...form, enabledFeatures: ALL_FEATURES.map(f => f.key)})} className="text-[10px] px-2 py-1 bg-green-50 text-green-700 rounded hover:bg-green-100">All</button>
+                <button type="button" onClick={() => setForm({...form, enabledFeatures: []})} className="text-[10px] px-2 py-1 bg-red-50 text-red-600 rounded hover:bg-red-100">None</button>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1.5">
+                {ALL_FEATURES.map(f => (
+                  <label key={f.key} className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-slate-50 cursor-pointer">
+                    <input type="checkbox" checked={form.enabledFeatures.includes(f.key)}
+                      onChange={() => setForm({...form, enabledFeatures: form.enabledFeatures.includes(f.key) ? form.enabledFeatures.filter(k => k !== f.key) : [...form.enabledFeatures, f.key]})}
+                      className="rounded border-slate-300 text-indigo-600" />
+                    <span className="text-xs text-slate-700">{f.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            )}
             <div className="flex items-end gap-2">
               <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">Create</button>
               <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>

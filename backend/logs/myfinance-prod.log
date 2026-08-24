@@ -137,3 +137,7 @@
 2026-08-24 21:38:22 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (4ms)
 2026-08-24 21:38:56 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (8ms)
 2026-08-24 21:38:56 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (4ms)
+2026-08-24 21:40:56 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (8ms)
+2026-08-24 21:40:56 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (12ms)
+2026-08-24 21:41:17 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (5ms)
+2026-08-24 21:41:38 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (5ms)
