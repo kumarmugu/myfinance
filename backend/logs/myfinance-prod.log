@@ -73,3 +73,32 @@
 2026-08-25 21:00:08 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
 2026-08-25 21:00:08 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
 2026-08-25 21:00:09 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-25 21:00:13 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1bfdd7a4, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@41a17eaa, org.springframework.security.web.context.SecurityContextHolderFilter@6769ea39, org.springframework.security.web.header.HeaderWriterFilter@35ad6d3, org.springframework.web.filter.CorsFilter@1dfe6286, org.springframework.security.web.authentication.logout.LogoutFilter@3ac662ba, com.myfinance.security.JwtAuthFilter@5feceb2f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5c38ab84, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4392d1ad, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1332f571, org.springframework.security.web.session.SessionManagementFilter@78a7a3ca, org.springframework.security.web.access.ExceptionTranslationFilter@7b960a6d, org.springframework.security.web.access.intercept.AuthorizationFilter@77b6f0f]
+2026-08-25 21:00:13 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2026-08-25 21:00:13 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 9.108 seconds (process running for 9.426)
+2026-08-25 21:01:23 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-08-25 21:01:23 [http-nio-8080-exec-1] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-08-25 21:01:23 [http-nio-8080-exec-1] WARN  c.m.controller.AuthController - Login failed for user=mugu
+2026-08-25 21:01:23 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 401 (299ms)
+2026-08-25 21:01:30 [http-nio-8080-exec-2] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-08-25 21:01:30 [http-nio-8080-exec-2] WARN  c.m.controller.AuthController - Login failed for user=mugu
+2026-08-25 21:01:30 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 401 (91ms)
+2026-08-25 21:01:47 [http-nio-8080-exec-3] INFO  c.m.controller.AuthController - Login attempt for user=admin
+2026-08-25 21:01:47 [http-nio-8080-exec-3] WARN  c.m.controller.AuthController - Login failed for user=admin
+2026-08-25 21:01:47 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 401 (87ms)
+2026-08-25 21:01:57 [http-nio-8080-exec-4] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-08-25 21:01:57 [http-nio-8080-exec-4] INFO  c.m.controller.AuthController - Login successful for user=mugu
+2026-08-25 21:01:57 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (146ms)
+2026-08-25 21:01:57 [http-nio-8080-exec-6] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-25 21:01:57 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (13ms)
+2026-08-25 21:01:57 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (12ms)
+2026-08-25 21:01:57 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (17ms)
+2026-08-25 21:01:57 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-08-25 21:01:57 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (33ms)
+2026-08-25 21:01:57 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (8ms)
+2026-08-25 21:01:57 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (9ms)
+2026-08-25 21:01:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-25 21:01:57 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (9ms)
+2026-08-25 21:02:09 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-25 21:02:09 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-08-25 21:02:09 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
