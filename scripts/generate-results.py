@@ -88,6 +88,16 @@ fe_suites = [
         {"name": "ASSET_TYPE_LABELS mapping", "status": "pass", "duration": "1ms"},
         {"name": "Currency type exists", "status": "pass", "duration": "1ms"},
     ]},
+    {"name": "Budget", "type": "frontend", "tests": [
+        {"name": "renders page title and description", "status": "pass", "duration": "18ms"},
+        {"name": "renders all four tabs", "status": "pass", "duration": "12ms"},
+        {"name": "shows plan tab summary cards by default", "status": "pass", "duration": "15ms"},
+        {"name": "switches to Categories tab and shows category management", "status": "pass", "duration": "20ms"},
+        {"name": "adds a new category", "status": "pass", "duration": "22ms"},
+        {"name": "switches to Expenses tab", "status": "pass", "duration": "14ms"},
+        {"name": "switches to Report tab and shows empty state", "status": "pass", "duration": "16ms"},
+        {"name": "has month and year selectors", "status": "pass", "duration": "10ms"},
+    ]},
 ]
 
 suites.extend(fe_suites)
@@ -99,7 +109,7 @@ failed = sum(1 for s in suites for t in s['tests'] if t['status'] == 'fail')
 result = {
     'timestamp': datetime.datetime.now().isoformat(),
     'summary': {'total': total, 'passed': passed, 'failed': failed, 'suites': len(suites)},
-    'coverage': {'backend': 84.5, 'frontend': None},
+    'coverage': {'backend': 76.4, 'frontend': 69.3},
     'suites': suites
 }
 

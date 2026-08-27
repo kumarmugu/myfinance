@@ -5,7 +5,7 @@ import api from '../api';
 import { formatCurrency } from '../utils/formatters';
 import { useToast } from '../contexts/ToastContext';
 
-type Tab = 'plan' | 'expenses' | 'report';
+type Tab = 'plan' | 'expenses' | 'report' | 'categories';
 
 interface Category { id: number; name: string; parentCategory?: string; }
 interface BudgetPlan { id: number; year: number; month: number; savingsTargetPct: number; }
@@ -45,6 +45,11 @@ export default function Budget() {
 
   // Report state
   const [report, setReport] = useState<MonthlyReport | null>(null);
+
+  // Categories state
+  const [newCatName, setNewCatName] = useState('');
+  const [newCatParent, setNewCatParent] = useState('Essential');
+  const [editingCat, setEditingCat] = useState<Category | null>(null);
 
   useEffect(() => { loadCategories(); }, []);
   useEffect(() => { loadTabData(); }, [tab, year, month]);
@@ -131,6 +136,38 @@ export default function Budget() {
     try { await api.delete(`/budget/allocations/${id}`); loadPlan(); } catch { showToast('Failed to delete'); }
   };
 
+  // ─── Category Actions ───
+  const addCategory = async () => {
+    if (!newCatName.trim()) return;
+    try {
+      await api.post('/budget/categories', { name: newCatName.trim(), parentCategory: newCatParent, sortOrder: categories.length + 1 });
+      setNewCatName('');
+      loadCategories();
+      showToast('Category added', 'success');
+    } catch (err: any) {
+      showToast(err.response?.data?.error || 'Failed to add category');
+    }
+  };
+
+  const saveEditCategory = async () => {
+    if (!editingCat) return;
+    try {
+      await api.put(`/budget/categories/${editingCat.id}`, { name: editingCat.name, parentCategory: editingCat.parentCategory, sortOrder: (editingCat as any).sortOrder || 0, isActive: true });
+      setEditingCat(null);
+      loadCategories();
+      showToast('Category updated', 'success');
+    } catch { showToast('Failed to update category'); }
+  };
+
+  const deleteCategory = async (id: number) => {
+    if (!confirm('Delete this category? It will be hidden from future use.')) return;
+    try {
+      await api.delete(`/budget/categories/${id}`);
+      loadCategories();
+      showToast('Category deleted', 'success');
+    } catch { showToast('Failed to delete category'); }
+  };
+
   // ─── Expense Actions ───
   const saveExpense = async () => {
     if (!expForm.expenseDate || !expForm.description || !expForm.categoryId || !expForm.amount) return;
@@ -187,9 +224,9 @@ export default function Budget() {
 
       {/* Tabs */}
       <div className="flex gap-1 bg-slate-100 rounded-lg p-1 w-fit">
-        {(['plan', 'expenses', 'report'] as Tab[]).map(t => (
+        {(['plan', 'expenses', 'report', 'categories'] as Tab[]).map(t => (
           <button key={t} onClick={() => setTab(t)} className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${tab === t ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}>
-            {t === 'plan' ? 'Plan' : t === 'expenses' ? 'Expenses' : 'Report'}
+            {t === 'plan' ? 'Plan' : t === 'expenses' ? 'Expenses' : t === 'report' ? 'Report' : 'Categories'}
           </button>
         ))}
       </div>
@@ -522,6 +559,85 @@ export default function Budget() {
               </div>
             </>
           )}
+        </div>
+      )}
+
+      {/* ═══ CATEGORIES TAB ═══ */}
+      {tab === 'categories' && (
+        <div className="space-y-6">
+          {/* Add Category */}
+          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+            <h3 className="font-semibold text-slate-800 mb-4">Add Expense Category</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <input type="text" placeholder="Category name" value={newCatName} onChange={e => setNewCatName(e.target.value)}
+                className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" />
+              <select value={newCatParent} onChange={e => setNewCatParent(e.target.value)}
+                className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
+                <option>Essential</option>
+                <option>Lifestyle</option>
+                <option>Education</option>
+                <option>Family</option>
+                <option>Special</option>
+                <option>Other</option>
+              </select>
+              <button onClick={addCategory} className="flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                <Plus size={14} /> Add Category
+              </button>
+            </div>
+          </div>
+
+          {/* Categories List */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="p-4 border-b border-slate-200">
+              <h3 className="font-semibold text-slate-800">Your Categories ({categories.length})</h3>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-slate-50 border-b border-slate-200">
+                  <tr>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Category</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Group</th>
+                    <th className="text-right px-4 py-3 font-medium text-slate-600 w-24"></th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {categories.map(c => (
+                    <tr key={c.id} className="hover:bg-slate-50">
+                      {editingCat?.id === c.id ? (
+                        <>
+                          <td className="px-4 py-2">
+                            <input type="text" value={editingCat.name} onChange={e => setEditingCat({ ...editingCat, name: e.target.value })}
+                              className="w-full border border-slate-300 rounded px-2 py-1.5 text-sm focus:ring-2 focus:ring-indigo-500" />
+                          </td>
+                          <td className="px-4 py-2">
+                            <select value={editingCat.parentCategory || 'Other'} onChange={e => setEditingCat({ ...editingCat, parentCategory: e.target.value })}
+                              className="w-full border border-slate-300 rounded px-2 py-1.5 text-sm focus:ring-2 focus:ring-indigo-500">
+                              <option>Essential</option><option>Lifestyle</option><option>Education</option>
+                              <option>Family</option><option>Special</option><option>Other</option>
+                            </select>
+                          </td>
+                          <td className="px-4 py-2 text-right flex justify-end gap-2">
+                            <button onClick={saveEditCategory} className="text-green-600 hover:text-green-800"><Save size={14} /></button>
+                            <button onClick={() => setEditingCat(null)} className="text-slate-400 hover:text-slate-600"><X size={14} /></button>
+                          </td>
+                        </>
+                      ) : (
+                        <>
+                          <td className="px-4 py-3 font-medium text-slate-800">{c.name}</td>
+                          <td className="px-4 py-3"><span className="text-xs px-2 py-0.5 rounded-full font-medium bg-slate-100 text-slate-600">{c.parentCategory || 'Other'}</span></td>
+                          <td className="px-4 py-3 text-right flex justify-end gap-2">
+                            <button onClick={() => setEditingCat(c)} className="text-slate-400 hover:text-indigo-600"><Pencil size={14} /></button>
+                            <button onClick={() => deleteCategory(c.id)} className="text-slate-400 hover:text-red-600"><Trash2 size={14} /></button>
+                          </td>
+                        </>
+                      )}
+                    </tr>
+                  ))}
+                  {categories.length === 0 && <tr><td colSpan={3} className="px-4 py-12 text-center text-slate-400">No categories yet. Add one above.</td></tr>}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       )}
     </div>

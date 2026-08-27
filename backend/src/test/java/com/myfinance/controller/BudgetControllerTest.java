@@ -295,4 +295,117 @@ class BudgetControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("$.categories[0].categoryName", is("Groceries")))
                 .andExpect(jsonPath("$.categories[0].planned", is(800.00)));
     }
+
+    @Test
+    @WithMockUser
+    void shouldDetectOverBudget() throws Exception {
+        BudgetPlan plan = planRepository.save(BudgetPlan.builder()
+                .year(2026).month(9).savingsTargetPct(new BigDecimal("50.00")).userId(testUser.getId()).build());
+        BudgetCategory cat = categoryRepository.save(BudgetCategory.builder()
+                .name("Rent").parentCategory("Essential").sortOrder(1).userId(testUser.getId()).build());
+        // Income 6000, savings 50% = 3000, available = 3000, but planned = 3400 → over budget by 400
+        incomeRepository.save(BudgetIncome.builder().budgetPlan(plan).source("Salary").amount(new BigDecimal("6000")).userId(testUser.getId()).build());
+        allocationRepository.save(BudgetAllocation.builder().budgetPlan(plan).category(cat).plannedAmount(new BigDecimal("3400")).userId(testUser.getId()).build());
+
+        mockMvc.perform(get("/api/budget/report/2026/9"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.isOverBudget", is(true)))
+                .andExpect(jsonPath("$.excess", is(400.00)));
+    }
+
+    @Test
+    @WithMockUser
+    void shouldReturnAnnualReport() throws Exception {
+        BudgetCategory cat = categoryRepository.save(BudgetCategory.builder()
+                .name("Groceries").parentCategory("Essential").sortOrder(1).userId(testUser.getId()).build());
+
+        // Jan plan
+        BudgetPlan jan = planRepository.save(BudgetPlan.builder()
+                .year(2026).month(1).savingsTargetPct(new BigDecimal("50.00")).userId(testUser.getId()).build());
+        incomeRepository.save(BudgetIncome.builder().budgetPlan(jan).source("Salary").amount(new BigDecimal("6000")).userId(testUser.getId()).build());
+        allocationRepository.save(BudgetAllocation.builder().budgetPlan(jan).category(cat).plannedAmount(new BigDecimal("2900")).userId(testUser.getId()).build());
+
+        // Feb plan
+        BudgetPlan feb = planRepository.save(BudgetPlan.builder()
+                .year(2026).month(2).savingsTargetPct(new BigDecimal("50.00")).userId(testUser.getId()).build());
+        incomeRepository.save(BudgetIncome.builder().budgetPlan(feb).source("Salary").amount(new BigDecimal("6000")).userId(testUser.getId()).build());
+        allocationRepository.save(BudgetAllocation.builder().budgetPlan(feb).category(cat).plannedAmount(new BigDecimal("3000")).userId(testUser.getId()).build());
+
+        mockMvc.perform(get("/api/budget/report/2026"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.year", is(2026)))
+                .andExpect(jsonPath("$.months", hasSize(12)))
+                .andExpect(jsonPath("$.annualIncome", is(12000.00)))
+                .andExpect(jsonPath("$.annualPlannedExpense", is(5900.00)))
+                .andExpect(jsonPath("$.annualPlannedSavings", is(6100.00)));
+    }
+
+    @Test
+    @WithMockUser
+    void shouldUpdateCategory() throws Exception {
+        BudgetCategory cat = categoryRepository.save(BudgetCategory.builder()
+                .name("Old Name").parentCategory("Essential").sortOrder(1).userId(testUser.getId()).isActive(true).build());
+
+        BudgetCategory update = BudgetCategory.builder()
+                .name("New Name").parentCategory("Lifestyle").sortOrder(5).isActive(true).build();
+
+        mockMvc.perform(put("/api/budget/categories/" + cat.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(update)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("New Name")))
+                .andExpect(jsonPath("$.parentCategory", is("Lifestyle")));
+    }
+
+    @Test
+    @WithMockUser
+    void shouldUpdateIncome() throws Exception {
+        BudgetPlan plan = planRepository.save(BudgetPlan.builder()
+                .year(2026).month(8).savingsTargetPct(new BigDecimal("50.00")).userId(testUser.getId()).build());
+        BudgetIncome income = incomeRepository.save(BudgetIncome.builder()
+                .budgetPlan(plan).source("Salary").amount(new BigDecimal("5000")).userId(testUser.getId()).build());
+
+        Map<String, Object> update = Map.of("source", "Salary", "amount", "5500.00");
+        mockMvc.perform(put("/api/budget/income/" + income.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(update)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.amount", is(5500.00)));
+    }
+
+    @Test
+    @WithMockUser
+    void shouldUpdateAllocation() throws Exception {
+        BudgetPlan plan = planRepository.save(BudgetPlan.builder()
+                .year(2026).month(8).savingsTargetPct(new BigDecimal("50.00")).userId(testUser.getId()).build());
+        BudgetCategory cat = categoryRepository.save(BudgetCategory.builder()
+                .name("Groceries").parentCategory("Essential").sortOrder(1).userId(testUser.getId()).build());
+        BudgetAllocation alloc = allocationRepository.save(BudgetAllocation.builder()
+                .budgetPlan(plan).category(cat).plannedAmount(new BigDecimal("500")).userId(testUser.getId()).build());
+
+        Map<String, Object> update = Map.of("category", Map.of("id", cat.getId()), "plannedAmount", "650.00");
+        mockMvc.perform(put("/api/budget/allocations/" + alloc.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(update)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.plannedAmount", is(650.00)));
+    }
+
+    @Test
+    @WithMockUser
+    void shouldListPlans() throws Exception {
+        planRepository.save(BudgetPlan.builder().year(2026).month(1).savingsTargetPct(new BigDecimal("50.00")).userId(testUser.getId()).build());
+        planRepository.save(BudgetPlan.builder().year(2026).month(2).savingsTargetPct(new BigDecimal("50.00")).userId(testUser.getId()).build());
+
+        mockMvc.perform(get("/api/budget/plans?year=2026"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+    @Test
+    @WithMockUser
+    void shouldReturnNoContentForMissingPlan() throws Exception {
+        mockMvc.perform(get("/api/budget/plans/2099/1"))
+                .andExpect(status().isNoContent());
+    }
 }
