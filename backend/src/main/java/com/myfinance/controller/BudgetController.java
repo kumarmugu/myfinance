@@ -163,6 +163,7 @@ public class BudgetController {
     // ─── Reports ───
 
     @GetMapping("/report/{year}/{month}")
+    @Transactional(readOnly = true)
     public Map<String, Object> getMonthlyReport(@PathVariable int year, @PathVariable int month) {
         Long uid = tenantContext.getCurrentUserId();
         return budgetService.getMonthlyReport(uid, year, month);

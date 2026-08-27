@@ -49,11 +49,20 @@ class CurrencyRateControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     void shouldGetAvailableCurrencies() throws Exception {
+        // Add some currencies for the user
+        mockMvc.perform(post("/api/currency-rates/currencies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"code\":\"SGD\",\"name\":\"Singapore Dollar\"}"))
+                .andExpect(status().isCreated());
+        mockMvc.perform(post("/api/currency-rates/currencies")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"code\":\"USD\",\"name\":\"US Dollar\"}"))
+                .andExpect(status().isCreated());
+
         mockMvc.perform(get("/api/currency-rates/currencies"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasItem("SGD")))
-                .andExpect(jsonPath("$", hasItem("USD")))
-                .andExpect(jsonPath("$", hasItem("INR")));
+                .andExpect(jsonPath("$", hasItem("USD")));
     }
 
     @Test

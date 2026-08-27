@@ -21,7 +21,7 @@ public class BudgetIncome {
 
     private Long userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "budget_plan_id", nullable = false)
     private BudgetPlan budgetPlan;
 
