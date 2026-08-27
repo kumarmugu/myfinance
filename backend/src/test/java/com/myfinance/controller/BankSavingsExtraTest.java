@@ -1,0 +1,72 @@
+package com.myfinance.controller;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myfinance.model.BankSavings;
+import com.myfinance.model.enums.Currency;
+import com.myfinance.repository.BankSavingsRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.math.BigDecimal;
+
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+/**
+ * Additional BankSavings tests covering gaps not exercised by BankSavingsControllerTest:
+ * update (PUT) and updateBalance (PATCH /{id}/balance).
+ */
+@SpringBootTest
+@AutoConfigureMockMvc
+class BankSavingsExtraTest extends BaseControllerTest {
+
+    @Autowired private MockMvc mockMvc;
+    @Autowired private ObjectMapper objectMapper;
+    @Autowired private BankSavingsRepository repository;
+
+    @BeforeEach
+    void setup() { repository.deleteAll(); }
+
+    @Test
+    @WithMockUser
+    void shouldUpdateBankSavings() throws Exception {
+        BankSavings saved = repository.save(BankSavings.builder()
+                .accountName("Old Account").bankName("DBS").balance(new BigDecimal("1000"))
+                .currency(Currency.SGD).country("Singapore").includeInNetWorth(true)
+                .userId(testUser.getId()).build());
+
+        BankSavings update = BankSavings.builder()
+                .accountName("New Account").bankName("OCBC").balance(new BigDecimal("2500"))
+                .currency(Currency.USD).country("Singapore").includeInNetWorth(true).build();
+
+        mockMvc.perform(put("/api/bank-savings/" + saved.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(update)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accountName", is("New Account")))
+                .andExpect(jsonPath("$.bankName", is("OCBC")))
+                .andExpect(jsonPath("$.balance", is(2500)));
+    }
+
+    @Test
+    @WithMockUser
+    void shouldUpdateBalance() throws Exception {
+        BankSavings saved = repository.save(BankSavings.builder()
+                .accountName("Savings").bankName("DBS").balance(new BigDecimal("1000"))
+                .currency(Currency.SGD).country("Singapore").includeInNetWorth(true)
+                .userId(testUser.getId()).build());
+
+        mockMvc.perform(patch("/api/bank-savings/" + saved.getId() + "/balance")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"balance\":7777.50}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.balance", is(7777.50)));
+    }
+}
