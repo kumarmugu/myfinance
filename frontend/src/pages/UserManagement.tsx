@@ -31,6 +31,7 @@ const ALL_FEATURES = [
   { key: 'WORK_EXPERIENCE', label: 'Work Experience' },
   { key: 'SRS_CPF', label: 'SRS & CPF' },
   { key: 'REPORTS', label: 'Reports' },
+  { key: 'BUDGET', label: 'Budget & Expenses' },
 ];
 
 export default function UserManagement() {

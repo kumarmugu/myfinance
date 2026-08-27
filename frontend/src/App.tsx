@@ -32,6 +32,7 @@ import Docs from './pages/Docs';
 import AuditTrail from './pages/AuditTrail';
 import Properties from './pages/Properties';
 import PreciousMetals from './pages/PreciousMetals';
+import Budget from './pages/Budget';
 
 function App() {
   return (
@@ -104,6 +105,7 @@ function AppContent() {
       label: 'Planning',
       items: [
         { to: '/planning', icon: Target, label: 'Allocation & Net Worth' },
+        { to: '/budget', icon: Receipt, label: 'Budget & Expenses', feature: 'BUDGET' },
         { to: '/srs-cpf', icon: Calculator, label: 'SRS & CPF', feature: 'SRS_CPF' },
         { to: '/tax', icon: Receipt, label: 'Tax Records', feature: 'TAX' },
         { to: '/work-experience', icon: Briefcase, label: 'Work Experience', feature: 'WORK_EXPERIENCE' },
@@ -207,6 +209,7 @@ function AppContent() {
               <Route path="/work-experience" element={!isAdmin ? <WorkExperience /> : <UserManagement />} />
               <Route path="/salary" element={!isAdmin ? <Salary /> : <UserManagement />} />
               <Route path="/planning" element={!isAdmin ? <Planning /> : <UserManagement />} />
+              <Route path="/budget" element={!isAdmin ? <Budget /> : <UserManagement />} />
               <Route path="/srs-cpf" element={!isAdmin ? <SrsCpf /> : <UserManagement />} />
               <Route path="/reports" element={!isAdmin ? <Reports /> : <UserManagement />} />
               <Route path="/accounts" element={!isAdmin ? <Accounts /> : <UserManagement />} />
