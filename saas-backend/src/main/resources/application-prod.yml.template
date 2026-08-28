@@ -1,0 +1,45 @@
+# ═══════════════════════════════════════════════════════
+# SaaS BACKEND — PRODUCTION PROFILE TEMPLATE
+# Copy to application-prod.yml (gitignored) and/or provide values via environment
+# variables / secret store. NEVER commit real secrets.
+#
+# Run:
+#   ./mvnw spring-boot:run -Dspring-boot.run.profiles=prod
+#   or: java -jar saas-backend.jar --spring.profiles.active=prod
+# ═══════════════════════════════════════════════════════
+
+server:
+  port: 8090
+
+spring:
+  datasource:
+    url: jdbc:h2:file:./data-prod/myfinance-saas;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: <DB_USERNAME>
+    password: <DB_PASSWORD>
+  h2:
+    console:
+      enabled: false
+
+app:
+  cors:
+    allowed-origins: https://www.yourdomain.com
+  jwt:
+    secret: <SAAS_JWT_SECRET_MIN_256_BITS>
+  finance-app:
+    base-url: https://app.yourdomain.com          # existing MyFinance backend (internal)
+    provisioning-token: <PROVISIONING_TOKEN>       # must match backend PROVISIONING_TOKEN
+  payment:
+    provider: stripe
+  stripe:
+    secret-key: <STRIPE_SECRET_KEY>
+    publishable-key: <STRIPE_PUBLISHABLE_KEY>
+    webhook-secret: <STRIPE_WEBHOOK_SECRET>
+  email:
+    provider: smtp
+    from: no-reply@yourdomain.com
+    from-name: MyFinance
+  public-web-url: https://www.yourdomain.com
+  finance-app-login-url: https://app.yourdomain.com/login
+
+# SMTP (when email.provider=smtp)
+# SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD via environment.

@@ -1,0 +1,113 @@
+server:
+  port: 8090
+  # Do not leak server details / stack traces to clients.
+  error:
+    include-message: never
+    include-stacktrace: never
+    include-binding-errors: never
+
+spring:
+  application:
+    name: myfinance-saas
+  datasource:
+    url: jdbc:h2:file:./data/myfinance-saas;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+  # Email (SMTP) — only used when app.email.provider=smtp. Safe to leave blank for the
+  # default no-op/console provider.
+  mail:
+    host: ${SMTP_HOST:}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+app:
+  # Public web origin(s) allowed by CORS (the saas-web SPA).
+  cors:
+    allowed-origins: ${SAAS_WEB_ORIGIN:http://localhost:5174}
+
+  # Portal customer-auth JWT (ISOLATED from the finance app's auth).
+  jwt:
+    secret: ${SAAS_JWT_SECRET:saas-portal-dev-secret-please-change-in-production-min-256-bits!!}
+    expiration: 3600000            # 1 hour access token
+    verification-expiration: 86400000   # 24h email verification token
+    reset-expiration: 3600000      # 1h password reset token
+
+  # Trial configuration.
+  trial:
+    days: 7
+
+  # Background job intervals (milliseconds).
+  scheduling:
+    trial-sweep-ms: 3600000       # hourly
+    reconciliation-ms: 300000     # every 5 minutes
+
+  # Integration with the existing MyFinance app (server-to-server provisioning API).
+  finance-app:
+    base-url: ${FINANCE_APP_BASE_URL:http://localhost:8080}
+    provisioning-token: ${PROVISIONING_TOKEN:}
+
+  # Payment provider selection + Stripe config. Secrets come from the environment.
+  payment:
+    provider: ${PAYMENT_PROVIDER:stripe}
+  stripe:
+    secret-key: ${STRIPE_SECRET_KEY:}
+    publishable-key: ${STRIPE_PUBLISHABLE_KEY:}
+    webhook-secret: ${STRIPE_WEBHOOK_SECRET:}
+
+  # Email provider: noop (logs only), console, or smtp.
+  email:
+    provider: ${EMAIL_PROVIDER:noop}
+    from: ${EMAIL_FROM:no-reply@myfinance.local}
+    from-name: ${EMAIL_FROM_NAME:MyFinance}
+
+  # Public URL of the saas-web app (used to build links in emails).
+  public-web-url: ${SAAS_WEB_URL:http://localhost:5174}
+  # Public login URL of the existing finance app (for the "Login" redirect).
+  finance-app-login-url: ${FINANCE_APP_LOGIN_URL:http://localhost:5173}
+
+# OpenAPI / Swagger
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+
+# Actuator: expose only health (and info) publicly.
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+
+logging:
+  level:
+    com.myfinance.saas: INFO
+    org.springframework.web: INFO
+  file:
+    name: ./logs/myfinance-saas.log
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    console: "%d{HH:mm:ss} %-5level %logger{20} - %msg%n"

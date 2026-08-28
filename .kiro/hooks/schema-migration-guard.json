@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Schema Migration Guard",
+      "trigger": "PreToolUse",
+      "description": "When a JPA entity/model is about to be written, reminds the agent that ddl-auto=update means changes must be additive and must not break the existing production database in data-prod/.",
+      "matcher": "fs_write|str_replace",
+      "action": {
+        "type": "agent",
+        "prompt": "A file write is about to happen. IF the target is a JPA entity under backend/src/main/java/com/myfinance/model/ (an @Entity class), verify the schema change is SAFE for the existing production database (backend/data-prod/), because Hibernate runs with ddl-auto=update:\n- Changes must be ADDITIVE: new nullable columns, new tables, new entities are fine.\n- Do NOT rename or drop columns/tables, do NOT add a NOT NULL column without a default, do NOT change a column type in a lossy way — these can break or fail against existing prod data.\n- New money fields must be BigDecimal; new user-owned entities must have a userId field.\nIf the write is not to a model/entity file, ignore this and proceed normally."
+      }
+    }
+  ]
+}

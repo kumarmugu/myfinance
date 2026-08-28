@@ -1,5 +1,6 @@
 package com.myfinance.security;
 
+import com.myfinance.provisioning.ProvisioningTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final ProvisioningTokenFilter provisioningTokenFilter;
     private final UserDetailsService userDetailsService;
 
     @Value("${app.cors.allowed-origins}")
@@ -42,10 +44,14 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                // Internal provisioning API: token-authenticated by ProvisioningTokenFilter
+                // (requires ROLE_PROVISIONING). Not reachable by regular users/JWTs.
+                .requestMatchers("/api/internal/provisioning/**").hasRole("PROVISIONING")
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authenticationProvider())
+            .addFilterBefore(provisioningTokenFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             .headers(headers -> headers.frameOptions(frame -> frame.disable()));
 

@@ -25,3 +25,8 @@ app:
   init-data: false
   jwt:
     secret: <YOUR_JWT_SECRET_MIN_256_BITS>
+  # Shared secret for the internal provisioning API used by the SaaS backend.
+  # Prefer setting via the PROVISIONING_TOKEN environment variable rather than in this file.
+  # Leave unset to keep the /api/internal/provisioning/** endpoints disabled (503).
+  provisioning:
+    token: ${PROVISIONING_TOKEN:}

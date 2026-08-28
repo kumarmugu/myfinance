@@ -11,6 +11,25 @@ frontend/node_modules/
 frontend/dist/
 frontend/coverage/
 
+# SaaS backend
+saas-backend/target/
+saas-backend/data/
+saas-backend/data-prod/
+saas-backend/logs/
+saas-backend/*.db
+saas-backend/.mvn/wrapper/maven-wrapper.jar
+saas-backend/src/main/resources/application-prod.yml
+
+# SaaS web
+saas-web/node_modules/
+saas-web/dist/
+saas-web/coverage/
+
+# Local env files
+.env
+.env.local
+*.env
+
 # IDE
 .idea/
 *.iml

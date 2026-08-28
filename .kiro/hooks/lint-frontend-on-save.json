@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Lint Frontend On Save",
+      "trigger": "PostFileSave",
+      "description": "Runs ESLint on the frontend whenever a TypeScript/TSX file under frontend/src is saved, so lint problems surface immediately.",
+      "matcher": "frontend/src/.*\\.(ts|tsx)$",
+      "action": {
+        "type": "command",
+        "command": "cd /Users/mugu/Documents/Projects/myfinance/frontend && npm run lint",
+        "timeout": 120
+      }
+    }
+  ]
+}

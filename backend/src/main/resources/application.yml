@@ -27,6 +27,11 @@ app:
   jwt:
     secret: myfinance-jwt-secret-key-please-change-in-production-at-least-256-bits
     expiration: 86400000
+  # Internal provisioning API token (server-to-server, used by the SaaS backend).
+  # Empty by default = provisioning endpoints are disabled (return 503).
+  # Set via the PROVISIONING_TOKEN environment variable / secret store in real environments.
+  provisioning:
+    token: ${PROVISIONING_TOKEN:}
 
 # OpenAPI / Swagger
 springdoc:
