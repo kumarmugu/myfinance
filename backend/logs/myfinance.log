@@ -1863,3 +1863,347 @@
 2026-08-28 08:41:51 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2026-08-28 08:41:51 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-33 - Shutdown initiated...
 2026-08-28 08:41:51 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-33 - Shutdown completed.
+2026-08-28 08:44:11 [main] INFO  c.myfinance.security.JwtServiceTest - Starting JwtServiceTest using Java 17.0.20 with PID 28639 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-08-28 08:44:11 [main] DEBUG c.myfinance.security.JwtServiceTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-08-28 08:44:11 [main] INFO  c.myfinance.security.JwtServiceTest - No active profile set, falling back to 1 default profile: "default"
+2026-08-28 08:44:13 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-28 08:44:13 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 233 ms. Found 35 JPA repository interfaces.
+2026-08-28 08:44:14 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-28 08:44:14 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-08-28 08:44:14 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-08-28 08:44:15 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-28 08:44:15 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-08-28 08:44:16 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-08-28 08:44:16 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-08-28 08:44:16 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-28 08:44:18 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-28 08:44:18 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:19 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-28 08:44:23 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4cabd3cd, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@76405c4e, org.springframework.security.web.context.SecurityContextHolderFilter@581323d6, org.springframework.security.web.header.HeaderWriterFilter@7255f867, org.springframework.web.filter.CorsFilter@3f87dc8e, org.springframework.security.web.authentication.logout.LogoutFilter@76b65114, com.myfinance.provisioning.ProvisioningTokenFilter@3772963d, com.myfinance.security.JwtAuthFilter@6d0d853f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6ca5bc1c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3743111, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2f48752d, org.springframework.security.web.session.SessionManagementFilter@557f8588, org.springframework.security.web.access.ExceptionTranslationFilter@6f2957d7, org.springframework.security.web.access.intercept.AuthorizationFilter@3f0ed018]
+2026-08-28 08:44:24 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-08-28 08:44:24 [main] INFO  c.myfinance.security.JwtServiceTest - Started JwtServiceTest in 14.222 seconds (process running for 22.097)
+2026-08-28 08:44:24 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-08-28 08:44:25 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:25 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-08-28 08:44:25 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-08-28 08:44:26 [main] DEBUG c.myfinance.security.JwtAuthFilter - JWT authentication failed: malformed
+2026-08-28 08:44:26 [main] DEBUG c.myfinance.security.JwtAuthFilter - Invalid JWT token for user=mugu
+2026-08-28 08:44:26 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.provisioning.ProvisioningControllerTest]: ProvisioningControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-28 08:44:26 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.provisioning.ProvisioningControllerTest
+2026-08-28 08:44:26 [main] INFO  c.m.p.ProvisioningControllerTest - Starting ProvisioningControllerTest using Java 17.0.20 with PID 28639 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-08-28 08:44:26 [main] DEBUG c.m.p.ProvisioningControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-08-28 08:44:26 [main] INFO  c.m.p.ProvisioningControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-08-28 08:44:27 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-28 08:44:27 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 74 ms. Found 35 JPA repository interfaces.
+2026-08-28 08:44:27 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-28 08:44:27 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-08-28 08:44:27 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-28 08:44:27 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2026-08-28 08:44:27 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:testdb user=SA
+2026-08-28 08:44:27 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2026-08-28 08:44:27 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-28 08:44:28 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-28 08:44:28 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:33 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@483c1ea2, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3a7e6d4a, org.springframework.security.web.context.SecurityContextHolderFilter@6cb41b9b, org.springframework.security.web.header.HeaderWriterFilter@64905d65, org.springframework.web.filter.CorsFilter@131357b0, org.springframework.security.web.authentication.logout.LogoutFilter@5da5f2b5, com.myfinance.provisioning.ProvisioningTokenFilter@2cd04fd7, com.myfinance.security.JwtAuthFilter@2d36dc25, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3ed74f02, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@58ca46c8, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@73a9881, org.springframework.security.web.session.SessionManagementFilter@5fa2d418, org.springframework.security.web.access.ExceptionTranslationFilter@60b640f7, org.springframework.security.web.access.intercept.AuthorizationFilter@5378e8a3]
+2026-08-28 08:44:34 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-08-28 08:44:34 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-08-28 08:44:34 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-08-28 08:44:34 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-08-28 08:44:34 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-08-28 08:44:34 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-08-28 08:44:34 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 2 ms
+2026-08-28 08:44:34 [main] INFO  c.m.p.ProvisioningControllerTest - Started ProvisioningControllerTest in 7.768 seconds (process running for 31.857)
+2026-08-28 08:44:34 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-08-28 08:44:34 [main] WARN  c.m.p.ProvisioningTokenFilter - Rejected provisioning request with missing/invalid token from 127.0.0.1
+2026-08-28 08:44:34 [main] INFO  c.m.provisioning.ProvisioningService - Provisioned new finance user id=2 username=saas-customer for email(hash)=e90f7a48
+2026-08-28 08:44:35 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 201 (287ms)
+2026-08-28 08:44:35 [main] INFO  c.m.provisioning.ProvisioningService - Provisioning idempotent hit: existing user id=2 for email(hash)=e90f7a48
+2026-08-28 08:44:35 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 200 (8ms)
+2026-08-28 08:44:35 [main] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/internal/provisioning/users → 404 (15ms)
+2026-08-28 08:44:35 [main] WARN  c.m.config.GlobalExceptionHandler - Validation failed: 1 field error(s)
+2026-08-28 08:44:35 [main] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 400 (18ms)
+2026-08-28 08:44:35 [main] INFO  c.m.provisioning.ProvisioningService - Provisioned new finance user id=3 username=saas-customer for email(hash)=e90f7a48
+2026-08-28 08:44:35 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 201 (84ms)
+2026-08-28 08:44:35 [main] INFO  c.m.provisioning.ProvisioningService - Updated access for user id=3 active=false for email(hash)=e90f7a48
+2026-08-28 08:44:35 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/status → 200 (26ms)
+2026-08-28 08:44:35 [main] INFO  c.m.provisioning.ProvisioningService - Provisioned new finance user id=4 username=saas-customer for email(hash)=e90f7a48
+2026-08-28 08:44:35 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 201 (88ms)
+2026-08-28 08:44:35 [main] WARN  c.m.p.ProvisioningTokenFilter - Rejected provisioning request with missing/invalid token from 127.0.0.1
+2026-08-28 08:44:35 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:35 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
+2026-08-28 08:44:35 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+2026-08-28 08:44:35 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.HomeLoanControllerTest]: HomeLoanControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-28 08:44:35 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.HomeLoanControllerTest
+2026-08-28 08:44:35 [main] INFO  c.m.c.HomeLoanControllerTest - Starting HomeLoanControllerTest using Java 17.0.20 with PID 28639 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-08-28 08:44:35 [main] DEBUG c.m.c.HomeLoanControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-08-28 08:44:35 [main] INFO  c.m.c.HomeLoanControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-08-28 08:44:35 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-28 08:44:35 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 44 ms. Found 35 JPA repository interfaces.
+2026-08-28 08:44:35 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-28 08:44:35 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-08-28 08:44:36 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-28 08:44:36 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Starting...
+2026-08-28 08:44:36 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Added connection conn20: url=jdbc:h2:mem:testdb user=SA
+2026-08-28 08:44:36 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Start completed.
+2026-08-28 08:44:36 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-28 08:44:36 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-28 08:44:36 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:39 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@49d7d1ae, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@42e29e6c, org.springframework.security.web.context.SecurityContextHolderFilter@6759042b, org.springframework.security.web.header.HeaderWriterFilter@279b27eb, org.springframework.web.filter.CorsFilter@26b22488, org.springframework.security.web.authentication.logout.LogoutFilter@7c7ef800, com.myfinance.provisioning.ProvisioningTokenFilter@61af95aa, com.myfinance.security.JwtAuthFilter@72bf956a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3821ddc, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7dd8d638, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6a0ed4aa, org.springframework.security.web.session.SessionManagementFilter@401dd841, org.springframework.security.web.access.ExceptionTranslationFilter@30ea8aa6, org.springframework.security.web.access.intercept.AuthorizationFilter@54530470]
+2026-08-28 08:44:39 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-08-28 08:44:39 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-08-28 08:44:39 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-08-28 08:44:39 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-08-28 08:44:39 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-08-28 08:44:39 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-08-28 08:44:39 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-08-28 08:44:39 [main] INFO  c.m.c.HomeLoanControllerTest - Started HomeLoanControllerTest in 4.446 seconds (process running for 37.357)
+2026-08-28 08:44:40 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-08-28 08:44:40 [main] INFO  c.m.controller.HomeLoanController - Soft-deleting home loan id=1
+2026-08-28 08:44:40 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/home-loans/1 → 204 (23ms)
+2026-08-28 08:44:40 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/home-loans → 200 (14ms)
+2026-08-28 08:44:40 [main] INFO  c.m.controller.HomeLoanController - Updating home loan id=2
+2026-08-28 08:44:40 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/home-loans/2 → 200 (26ms)
+2026-08-28 08:44:40 [main] INFO  c.m.controller.HomeLoanController - Creating home loan: property=Condo Woodlands
+2026-08-28 08:44:40 [main] INFO  c.m.controller.HomeLoanController - Created home loan id=3
+2026-08-28 08:44:40 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/home-loans → 201 (13ms)
+2026-08-28 08:44:40 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/home-loans → 200 (5ms)
+2026-08-28 08:44:40 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:40 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown initiated...
+2026-08-28 08:44:40 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown completed.
+2026-08-28 08:44:40 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.BankSavingsControllerTest]: BankSavingsControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-28 08:44:40 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.BankSavingsControllerTest
+2026-08-28 08:44:40 [main] INFO  c.m.c.BankSavingsControllerTest - Starting BankSavingsControllerTest using Java 17.0.20 with PID 28639 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-08-28 08:44:40 [main] DEBUG c.m.c.BankSavingsControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-08-28 08:44:40 [main] INFO  c.m.c.BankSavingsControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-08-28 08:44:40 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-28 08:44:40 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 33 ms. Found 35 JPA repository interfaces.
+2026-08-28 08:44:40 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-28 08:44:40 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-08-28 08:44:40 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-28 08:44:40 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Starting...
+2026-08-28 08:44:40 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-4 - Added connection conn30: url=jdbc:h2:mem:testdb user=SA
+2026-08-28 08:44:40 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Start completed.
+2026-08-28 08:44:40 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-28 08:44:41 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-28 08:44:41 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:43 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@143f4bab, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6f2270cc, org.springframework.security.web.context.SecurityContextHolderFilter@7cb0b07e, org.springframework.security.web.header.HeaderWriterFilter@2d31757b, org.springframework.web.filter.CorsFilter@37b46c7e, org.springframework.security.web.authentication.logout.LogoutFilter@2df273f, com.myfinance.provisioning.ProvisioningTokenFilter@43b8a6b3, com.myfinance.security.JwtAuthFilter@7693a04a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3a5e173a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1c6227a7, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@70220d11, org.springframework.security.web.session.SessionManagementFilter@2da95727, org.springframework.security.web.access.ExceptionTranslationFilter@322e90d2, org.springframework.security.web.access.intercept.AuthorizationFilter@45205e3f]
+2026-08-28 08:44:43 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-08-28 08:44:43 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-08-28 08:44:43 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-08-28 08:44:43 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-08-28 08:44:43 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-08-28 08:44:43 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-08-28 08:44:43 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-08-28 08:44:43 [main] INFO  c.m.c.BankSavingsControllerTest - Started BankSavingsControllerTest in 3.394 seconds (process running for 41.106)
+2026-08-28 08:44:43 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-08-28 08:44:43 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (12ms)
+2026-08-28 08:44:43 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PATCH /api/bank-savings/2/net-worth → 200 (11ms)
+2026-08-28 08:44:43 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (6ms)
+2026-08-28 08:44:43 [main] DEBUG c.m.controller.BankSavingsController - Creating bank savings: accountName=DBS Savings, bankName=DBS, balance=50000, currency=SGD, country=Singapore
+2026-08-28 08:44:43 [main] INFO  c.m.controller.BankSavingsController - Created bank savings id=4 for userId=2
+2026-08-28 08:44:43 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/bank-savings → 201 (11ms)
+2026-08-28 08:44:43 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:43 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown initiated...
+2026-08-28 08:44:43 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown completed.
+2026-08-28 08:44:43 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.BankSavingsExtraTest]: BankSavingsExtraTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-28 08:44:43 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.BankSavingsExtraTest
+2026-08-28 08:44:43 [main] INFO  c.m.controller.BankSavingsExtraTest - Starting BankSavingsExtraTest using Java 17.0.20 with PID 28639 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-08-28 08:44:43 [main] DEBUG c.m.controller.BankSavingsExtraTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-08-28 08:44:43 [main] INFO  c.m.controller.BankSavingsExtraTest - No active profile set, falling back to 1 default profile: "default"
+2026-08-28 08:44:44 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-28 08:44:44 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 28 ms. Found 35 JPA repository interfaces.
+2026-08-28 08:44:44 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-28 08:44:44 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-08-28 08:44:44 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-28 08:44:44 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Starting...
+2026-08-28 08:44:44 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-5 - Added connection conn40: url=jdbc:h2:mem:testdb user=SA
+2026-08-28 08:44:44 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Start completed.
+2026-08-28 08:44:44 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-28 08:44:44 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-28 08:44:44 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:46 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1e2cf0b8, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2cdd11d7, org.springframework.security.web.context.SecurityContextHolderFilter@5b74afee, org.springframework.security.web.header.HeaderWriterFilter@7479d850, org.springframework.web.filter.CorsFilter@51818bf0, org.springframework.security.web.authentication.logout.LogoutFilter@490f798b, com.myfinance.provisioning.ProvisioningTokenFilter@3dc42026, com.myfinance.security.JwtAuthFilter@1aadb0cd, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4d4a11b1, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@774bfb10, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5b8648e7, org.springframework.security.web.session.SessionManagementFilter@9c92713, org.springframework.security.web.access.ExceptionTranslationFilter@19c1ed3c, org.springframework.security.web.access.intercept.AuthorizationFilter@7ceecc73]
+2026-08-28 08:44:46 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-08-28 08:44:46 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-08-28 08:44:46 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-08-28 08:44:46 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-08-28 08:44:46 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-08-28 08:44:46 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-08-28 08:44:46 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-08-28 08:44:47 [main] INFO  c.m.controller.BankSavingsExtraTest - Started BankSavingsExtraTest in 3.057 seconds (process running for 44.425)
+2026-08-28 08:44:47 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-08-28 08:44:47 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/bank-savings/1 → 200 (13ms)
+2026-08-28 08:44:47 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PATCH /api/bank-savings/2/balance → 200 (9ms)
+2026-08-28 08:44:47 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:47 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Shutdown initiated...
+2026-08-28 08:44:47 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Shutdown completed.
+2026-08-28 08:44:47 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.DividendControllerTest]: DividendControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-28 08:44:47 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.DividendControllerTest
+2026-08-28 08:44:47 [main] INFO  c.m.c.DividendControllerTest - Starting DividendControllerTest using Java 17.0.20 with PID 28639 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-08-28 08:44:47 [main] DEBUG c.m.c.DividendControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-08-28 08:44:47 [main] INFO  c.m.c.DividendControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-08-28 08:44:47 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-28 08:44:47 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 29 ms. Found 35 JPA repository interfaces.
+2026-08-28 08:44:47 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-28 08:44:47 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-08-28 08:44:47 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-28 08:44:47 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-6 - Starting...
+2026-08-28 08:44:47 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-6 - Added connection conn50: url=jdbc:h2:mem:testdb user=SA
+2026-08-28 08:44:47 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-6 - Start completed.
+2026-08-28 08:44:47 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-28 08:44:47 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-28 08:44:47 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:50 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@78dd70ea, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7f407673, org.springframework.security.web.context.SecurityContextHolderFilter@495b942b, org.springframework.security.web.header.HeaderWriterFilter@589b41a0, org.springframework.web.filter.CorsFilter@45047702, org.springframework.security.web.authentication.logout.LogoutFilter@37460b81, com.myfinance.provisioning.ProvisioningTokenFilter@511ec28e, com.myfinance.security.JwtAuthFilter@2a663019, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1fcb6e1e, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1d5fba06, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@67680203, org.springframework.security.web.session.SessionManagementFilter@2043e147, org.springframework.security.web.access.ExceptionTranslationFilter@dab7dbb, org.springframework.security.web.access.intercept.AuthorizationFilter@13d62312]
+2026-08-28 08:44:50 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-08-28 08:44:50 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-08-28 08:44:50 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-08-28 08:44:50 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-08-28 08:44:50 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-08-28 08:44:50 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-08-28 08:44:50 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-08-28 08:44:50 [main] INFO  c.m.c.DividendControllerTest - Started DividendControllerTest in 3.038 seconds (process running for 47.709)
+2026-08-28 08:44:50 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-08-28 08:44:50 [main] INFO  c.m.controller.DividendController - Creating dividend: amount=150
+2026-08-28 08:44:50 [main] INFO  c.m.controller.DividendController - Created dividend id=1
+2026-08-28 08:44:50 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends → 201 (17ms)
+2026-08-28 08:44:50 [main] INFO  c.m.controller.DividendController - Deleting dividend id=2
+2026-08-28 08:44:50 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/dividends/2 → 204 (8ms)
+2026-08-28 08:44:50 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (18ms)
+2026-08-28 08:44:50 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:50 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-6 - Shutdown initiated...
+2026-08-28 08:44:50 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-6 - Shutdown completed.
+2026-08-28 08:44:50 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.TransactionControllerTest]: TransactionControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-28 08:44:50 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.TransactionControllerTest
+2026-08-28 08:44:50 [main] INFO  c.m.c.TransactionControllerTest - Starting TransactionControllerTest using Java 17.0.20 with PID 28639 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-08-28 08:44:50 [main] DEBUG c.m.c.TransactionControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-08-28 08:44:50 [main] INFO  c.m.c.TransactionControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-08-28 08:44:50 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-28 08:44:50 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 24 ms. Found 35 JPA repository interfaces.
+2026-08-28 08:44:50 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-28 08:44:50 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-08-28 08:44:50 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-28 08:44:50 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-7 - Starting...
+2026-08-28 08:44:50 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-7 - Added connection conn60: url=jdbc:h2:mem:testdb user=SA
+2026-08-28 08:44:50 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-7 - Start completed.
+2026-08-28 08:44:50 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-28 08:44:51 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-28 08:44:51 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:53 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@64f7ce2a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2a563817, org.springframework.security.web.context.SecurityContextHolderFilter@202a307a, org.springframework.security.web.header.HeaderWriterFilter@4994130c, org.springframework.web.filter.CorsFilter@610e9a51, org.springframework.security.web.authentication.logout.LogoutFilter@5bc2a5b6, com.myfinance.provisioning.ProvisioningTokenFilter@784f9ee3, com.myfinance.security.JwtAuthFilter@108716ba, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@457cd57b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2c99a2ab, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@20fbc76a, org.springframework.security.web.session.SessionManagementFilter@6fdd3b0c, org.springframework.security.web.access.ExceptionTranslationFilter@4e2562d6, org.springframework.security.web.access.intercept.AuthorizationFilter@195b1dff]
+2026-08-28 08:44:53 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-08-28 08:44:53 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-08-28 08:44:53 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-08-28 08:44:53 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-08-28 08:44:53 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-08-28 08:44:53 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-08-28 08:44:53 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-08-28 08:44:53 [main] INFO  c.m.c.TransactionControllerTest - Started TransactionControllerTest in 3.036 seconds (process running for 51.001)
+2026-08-28 08:44:53 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-08-28 08:44:53 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=1, type=BUY, quantity=10, price=50
+2026-08-28 08:44:53 [main] INFO  c.m.service.TransactionService - Created Transaction id=1 type=BUY assetId=1 quantity=10
+2026-08-28 08:44:53 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=1 assetId=1 quantity=10
+2026-08-28 08:44:53 [main] INFO  c.m.controller.TransactionController - Created transaction id=1
+2026-08-28 08:44:53 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (38ms)
+2026-08-28 08:44:53 [main] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-08-28 08:44:53 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (9ms)
+2026-08-28 08:44:53 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=2, type=BUY, quantity=10, price=400
+2026-08-28 08:44:53 [main] INFO  c.m.service.TransactionService - Created Transaction id=2 type=BUY assetId=2 quantity=10
+2026-08-28 08:44:53 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=2 quantity=10
+2026-08-28 08:44:53 [main] INFO  c.m.controller.TransactionController - Created transaction id=2
+2026-08-28 08:44:53 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (18ms)
+2026-08-28 08:44:53 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=BUY, quantity=5, price=100
+2026-08-28 08:44:53 [main] INFO  c.m.service.TransactionService - Created Transaction id=3 type=BUY assetId=3 quantity=5
+2026-08-28 08:44:53 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=3 assetId=3 quantity=5
+2026-08-28 08:44:53 [main] INFO  c.m.controller.TransactionController - Created transaction id=3
+2026-08-28 08:44:53 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (16ms)
+2026-08-28 08:44:53 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (6ms)
+2026-08-28 08:44:53 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=4, type=BUY, quantity=1, price=100
+2026-08-28 08:44:53 [main] INFO  c.m.service.TransactionService - Created Transaction id=4 type=BUY assetId=4 quantity=1
+2026-08-28 08:44:53 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=4 assetId=4 quantity=1
+2026-08-28 08:44:53 [main] INFO  c.m.controller.TransactionController - Created transaction id=4
+2026-08-28 08:44:53 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (16ms)
+2026-08-28 08:44:53 [main] INFO  c.m.controller.TransactionController - Deleting transaction id=4
+2026-08-28 08:44:53 [main] INFO  c.m.service.TransactionService - Deleted Transaction id=4
+2026-08-28 08:44:53 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/4 → 204 (8ms)
+2026-08-28 08:44:53 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:53 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-7 - Shutdown initiated...
+2026-08-28 08:44:53 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-7 - Shutdown completed.
+2026-08-28 08:44:53 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.FixedDepositControllerTest]: FixedDepositControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-28 08:44:53 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.FixedDepositControllerTest
+2026-08-28 08:44:53 [main] INFO  c.m.c.FixedDepositControllerTest - Starting FixedDepositControllerTest using Java 17.0.20 with PID 28639 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-08-28 08:44:53 [main] DEBUG c.m.c.FixedDepositControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-08-28 08:44:53 [main] INFO  c.m.c.FixedDepositControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-08-28 08:44:54 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-28 08:44:54 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 24 ms. Found 35 JPA repository interfaces.
+2026-08-28 08:44:54 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-28 08:44:54 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-08-28 08:44:54 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-28 08:44:54 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-8 - Starting...
+2026-08-28 08:44:54 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-8 - Added connection conn70: url=jdbc:h2:mem:testdb user=SA
+2026-08-28 08:44:54 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-8 - Start completed.
+2026-08-28 08:44:54 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-28 08:44:54 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-28 08:44:54 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:56 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4e8f347b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@ae56aa1, org.springframework.security.web.context.SecurityContextHolderFilter@28e94f86, org.springframework.security.web.header.HeaderWriterFilter@6172c71e, org.springframework.web.filter.CorsFilter@13411043, org.springframework.security.web.authentication.logout.LogoutFilter@4b61f9e2, com.myfinance.provisioning.ProvisioningTokenFilter@1d05a8b3, com.myfinance.security.JwtAuthFilter@63ece34, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1857435d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6fea3d7e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4a160bc6, org.springframework.security.web.session.SessionManagementFilter@3b5facb6, org.springframework.security.web.access.ExceptionTranslationFilter@14f48f41, org.springframework.security.web.access.intercept.AuthorizationFilter@5731c7fa]
+2026-08-28 08:44:56 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-08-28 08:44:56 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-08-28 08:44:56 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-08-28 08:44:56 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-08-28 08:44:56 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-08-28 08:44:56 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-08-28 08:44:56 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-08-28 08:44:56 [main] INFO  c.m.c.FixedDepositControllerTest - Started FixedDepositControllerTest in 2.96 seconds (process running for 54.332)
+2026-08-28 08:44:56 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (10ms)
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/requires-update → 200 (8ms)
+2026-08-28 08:44:57 [main] INFO  c.m.c.FixedDepositController - Creating FD holder: Alice Smith
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/fixed-deposits/holders → 200 (7ms)
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (8ms)
+2026-08-28 08:44:57 [main] INFO  c.m.c.FixedDepositController - Creating fixed deposit: bank=DBS, principal=500000
+2026-08-28 08:44:57 [main] INFO  c.m.c.FixedDepositController - Created fixed deposit id=7
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/fixed-deposits → 201 (17ms)
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (9ms)
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (6ms)
+2026-08-28 08:44:57 [main] INFO  c.m.c.FixedDepositController - Creating bank: POSB
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/fixed-deposits/banks → 200 (7ms)
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (6ms)
+2026-08-28 08:44:57 [main] INFO  c.m.c.FixedDepositController - Deleting fixed deposit id=14
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/fixed-deposits/14 → 204 (8ms)
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (3ms)
+2026-08-28 08:44:57 [main] INFO  c.m.c.FixedDepositController - Updating fixed deposit id=15
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/fixed-deposits/15 → 200 (10ms)
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/16 → 200 (3ms)
+2026-08-28 08:44:57 [main] INFO  c.m.c.FixedDepositController - Updating net-worth inclusion for fixed deposit id=17
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PATCH /api/fixed-deposits/17/net-worth → 200 (7ms)
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (4ms)
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (11ms)
+2026-08-28 08:44:57 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (4ms)
+2026-08-28 08:44:57 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:44:57 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-8 - Shutdown initiated...
+2026-08-28 08:44:57 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-8 - Shutdown completed.
+2026-08-28 08:44:57 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.WorkExperienceControllerTest]: WorkExperienceControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-28 08:44:57 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.WorkExperienceControllerTest
+2026-08-28 08:44:57 [main] INFO  c.m.c.WorkExperienceControllerTest - Starting WorkExperienceControllerTest using Java 17.0.20 with PID 28639 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-08-28 08:44:57 [main] DEBUG c.m.c.WorkExperienceControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-08-28 08:44:57 [main] INFO  c.m.c.WorkExperienceControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-08-28 08:44:57 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-28 08:44:57 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 22 ms. Found 35 JPA repository interfaces.
+2026-08-28 08:44:57 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-28 08:44:57 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-08-28 08:44:57 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-28 08:44:57 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-9 - Starting...
+2026-08-28 08:44:57 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-9 - Added connection conn80: url=jdbc:h2:mem:testdb user=SA
+2026-08-28 08:44:57 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-9 - Start completed.
+2026-08-28 08:44:57 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-28 08:44:58 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-28 08:44:58 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:45:00 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3bbe9295, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@384bb436, org.springframework.security.web.context.SecurityContextHolderFilter@460d0108, org.springframework.security.web.header.HeaderWriterFilter@617c3769, org.springframework.web.filter.CorsFilter@4df867c8, org.springframework.security.web.authentication.logout.LogoutFilter@710e5f13, com.myfinance.provisioning.ProvisioningTokenFilter@e1f135c, com.myfinance.security.JwtAuthFilter@483d4782, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5dde1d0a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5d19bea7, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4b49225a, org.springframework.security.web.session.SessionManagementFilter@1e2393b1, org.springframework.security.web.access.ExceptionTranslationFilter@5e68b40f, org.springframework.security.web.access.intercept.AuthorizationFilter@4ce94bd6]
+2026-08-28 08:45:00 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-08-28 08:45:00 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-08-28 08:45:00 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-08-28 08:45:00 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-08-28 08:45:00 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-08-28 08:45:00 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-08-28 08:45:00 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-08-28 08:45:00 [main] INFO  c.m.c.WorkExperienceControllerTest - Started WorkExperienceControllerTest in 2.829 seconds (process running for 57.736)
+2026-08-28 08:45:00 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-28 08:45:00 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-9 - Shutdown initiated...
+2026-08-28 08:45:00 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-9 - Shutdown completed.
