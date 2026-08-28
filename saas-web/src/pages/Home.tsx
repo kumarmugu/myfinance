@@ -37,7 +37,7 @@ export default function Home() {
           </div>
           <p className="mt-3 text-sm text-slate-500">7-day free trial · No credit card required</p>
         </div>
-        <MediaPlaceholder alt="MyFinance dashboard preview" label="Dashboard preview" className="w-full" />
+        <MediaPlaceholder src={site.hero.image} alt="MyFinance dashboard preview" label="Dashboard preview" className="w-full" />
       </section>
 
       {/* Feature highlights */}

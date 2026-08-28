@@ -38,7 +38,7 @@ export default function Features() {
                 Try it free →
               </Link>
             </div>
-            <MediaPlaceholder alt={`${f.title} screenshot`} label={`${f.title} screenshot`} className="w-full" />
+            <MediaPlaceholder src={f.image} alt={`${f.title} screenshot`} label={`${f.title} screenshot`} className="w-full" />
           </section>
         ))}
       </div>

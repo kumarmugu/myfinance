@@ -1,7 +1,12 @@
+import { useState } from 'react';
+
 /**
- * Renders a product image if a real asset exists, otherwise a clearly-labeled placeholder.
- * The placeholder is deliberately obvious so it can never be mistaken for real product
- * functionality (per the requirement to avoid fake/misleading screenshots).
+ * Renders a product image if a real asset exists at {@code src}, otherwise a clearly-labeled
+ * placeholder. If the image fails to load (file not present under public/media), it falls back
+ * to the placeholder so the page never shows a broken image.
+ *
+ * To add real media: drop a file in `saas-web/public/media/` and reference it as
+ * `/media/<filename>` in `src/content/site.ts` (this is already wired for hero + each feature).
  */
 export default function MediaPlaceholder({
   src,
@@ -14,8 +19,22 @@ export default function MediaPlaceholder({
   label?: string;
   className?: string;
 }) {
-  // In this scaffold, real assets aren't bundled; always show the labeled placeholder.
-  // When real images are added under public/media, switch to an <img> with onError fallback.
+  const [failed, setFailed] = useState(false);
+
+  const showImage = !!src && !failed;
+
+  if (showImage) {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        onError={() => setFailed(true)}
+        className={`rounded-xl border border-slate-200 object-cover w-full ${className}`}
+      />
+    );
+  }
+
   return (
     <div
       role="img"
