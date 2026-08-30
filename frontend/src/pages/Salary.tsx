@@ -461,8 +461,8 @@ export default function Salary() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {records.map(r => (
-                <tr key={r.id} className={`hover:bg-slate-50 group ${filterYear && r.year === filterYear ? 'bg-indigo-50 ring-1 ring-inset ring-indigo-200' : r.isBonus ? 'bg-green-50/50' : ''}`}>
+              {records.filter(r => !filterYear || r.year === filterYear).map(r => (
+                <tr key={r.id} className={`hover:bg-slate-50 group ${r.isBonus ? 'bg-green-50/50' : ''}`}>
                   <td className="px-3 py-2.5 text-slate-800 font-medium text-xs">{MONTHS[r.month]} {r.year}</td>
                   <td className="px-3 py-2.5 text-slate-600 text-xs">
                     {r.company}
@@ -490,7 +490,7 @@ export default function Salary() {
                   </td>
                 </tr>
               ))}
-              {records.length === 0 && <tr><td colSpan={11} className="px-4 py-12 text-center text-slate-400">No salary records</td></tr>}
+              {records.filter(r => !filterYear || r.year === filterYear).length === 0 && <tr><td colSpan={11} className="px-4 py-12 text-center text-slate-400">No salary records{filterYear ? ` for ${filterYear}` : ''}</td></tr>}
             </tbody>
           </table>
         </div>
