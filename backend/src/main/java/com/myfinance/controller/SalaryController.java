@@ -49,13 +49,17 @@ public class SalaryController {
 
         for (SalaryRecord s : all) {
             int y = s.getYear() != null ? s.getYear() : 0;
-            BigDecimal base = fx.toBase(s.getAmount(), s.getCurrency(), uid);
-            yearTotal.merge(y, base, BigDecimal::add);
             if (Boolean.TRUE.equals(s.getIsBonus())) {
-                yearBonus.merge(y, base, BigDecimal::add);
+                // Bonuses have no take-home breakdown; use the bonus amount as-is.
+                BigDecimal bonusBase = fx.toBase(s.getAmount(), s.getCurrency(), uid);
+                yearBonus.merge(y, bonusBase, BigDecimal::add);
+                yearTotal.merge(y, bonusBase, BigDecimal::add);
             } else {
-                yearSalary.merge(y, base, BigDecimal::add);
+                // Monthly salary is aggregated on NET TAKE-HOME (gross − deductions − employee contributions).
+                BigDecimal takeHomeBase = fx.toBase(s.getNetTakeHome(), s.getCurrency(), uid);
+                yearSalary.merge(y, takeHomeBase, BigDecimal::add);
                 yearSalaryMonths.merge(y, 1, Integer::sum);
+                yearTotal.merge(y, takeHomeBase, BigDecimal::add);
             }
         }
 

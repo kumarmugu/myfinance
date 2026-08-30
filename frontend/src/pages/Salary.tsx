@@ -190,7 +190,7 @@ export default function Salary() {
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Grand Total <span className="normal-case text-slate-400">({effectiveCurrency})</span></p><p className="text-lg font-bold text-slate-800 mt-1">{disp(grandTotal)}</p></div>
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">{filterYear ? `Year ${filterYear}` : 'All'} Total</p><p className="text-lg font-bold text-indigo-600 mt-1">{disp(shownTotal)}</p></div>
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Bonus (All)</p><p className="text-lg font-bold text-green-600 mt-1">{disp(bonusTotalBase)}</p></div>
-        <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Latest Monthly Avg</p><p className="text-lg font-bold text-slate-800 mt-1">{disp(latestMonthlyAvg)}</p></div>
+        <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Latest Avg Take-Home</p><p className="text-lg font-bold text-slate-800 mt-1">{disp(latestMonthlyAvg)}</p></div>
       </div>
 
       {/* Yearly summary table */}
@@ -202,11 +202,11 @@ export default function Salary() {
               <thead className="bg-slate-50 border-b border-slate-200">
                 <tr>
                   <th className="text-left px-4 py-2.5 font-medium text-slate-600">Year</th>
-                  <th className="text-right px-4 py-2.5 font-medium text-slate-600">Salary Total</th>
+                  <th className="text-right px-4 py-2.5 font-medium text-slate-600">Take-Home Total</th>
                   <th className="text-right px-4 py-2.5 font-medium text-slate-600">Bonus</th>
                   <th className="text-right px-4 py-2.5 font-medium text-slate-600">Total</th>
                   <th className="text-right px-4 py-2.5 font-medium text-slate-600">Months</th>
-                  <th className="text-right px-4 py-2.5 font-medium text-slate-600">Monthly Avg</th>
+                  <th className="text-right px-4 py-2.5 font-medium text-slate-600">Avg Monthly Take-Home</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -229,7 +229,7 @@ export default function Salary() {
       {/* Monthly-average growth chart */}
       {growthChart.length > 0 && (
         <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
-          <h3 className="text-sm font-semibold text-slate-800 mb-3">Monthly Average Salary Growth <span className="text-slate-400 font-normal">({effectiveCurrency})</span></h3>
+          <h3 className="text-sm font-semibold text-slate-800 mb-3">Monthly Average Take-Home Growth <span className="text-slate-400 font-normal">({effectiveCurrency})</span></h3>
           <ResponsiveContainer width="100%" height={220}>
             <LineChart data={growthChart}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />

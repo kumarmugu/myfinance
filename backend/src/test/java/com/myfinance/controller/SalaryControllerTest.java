@@ -125,6 +125,22 @@ class SalaryControllerTest extends BaseControllerTest {
 
     @Test
     @WithMockUser
+    void summaryIsBasedOnNetTakeHome() throws Exception {
+        // Gross 5000 basic, 500 deductions, 400 CPF employee -> net take-home 4100.
+        repository.save(SalaryRecord.builder().year(2025).month(1).company("BCS")
+                .amount(new BigDecimal("5000")).basic(new BigDecimal("5000"))
+                .deductions(new BigDecimal("500")).cpfEmployee(new BigDecimal("400"))
+                .userId(testUser.getId()).build());
+
+        mockMvc.perform(get("/api/salary/summary"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.grandTotal", closeTo(4100.0, 0.01)))
+                .andExpect(jsonPath("$.yearly[0].salaryTotal", closeTo(4100.0, 0.01)))
+                .andExpect(jsonPath("$.yearly[0].monthlyAvg", closeTo(4100.0, 0.01)));
+    }
+
+    @Test
+    @WithMockUser
     void shouldUpdateSalary() throws Exception {
         SalaryRecord rec = repository.save(SalaryRecord.builder().year(2026).month(1).company("X").amount(new BigDecimal("10000")).userId(testUser.getId()).build());
         SalaryRecord update = SalaryRecord.builder().year(2026).month(1).company("Y").amount(new BigDecimal("12000")).build();
