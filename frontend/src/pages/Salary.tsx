@@ -34,6 +34,7 @@ export default function Salary() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [showBulkForm, setShowBulkForm] = useState(false);
+  const [showBonusForm, setShowBonusForm] = useState(false);
   const [editing, setEditing] = useState<SalaryRecord | null>(null);
   const [filterYear, setFilterYear] = useState<number | undefined>();
   const [companies, setCompanies] = useState<string[]>([]);
@@ -52,6 +53,11 @@ export default function Salary() {
     currency: 'SGD', contributionScheme: 'CPF', contributionRemitted: false,
     cpfEmployee: 0, cpfEmployer: 0, epfEmployee: 0, epfEmployer: 0, etfEmployer: 0
   });
+  const emptyBonus = {
+    year: new Date().getFullYear(), month: new Date().getMonth() + 1, company: '',
+    amount: 0, bonusMonths: 0, currency: 'SGD', country: 'Singapore', notes: ''
+  };
+  const [bonusForm, setBonusForm] = useState({ ...emptyBonus });
 
   useEffect(() => { loadData(); loadCompanies(); }, [filterYear]);
 
@@ -121,6 +127,20 @@ export default function Salary() {
     } catch (err) { console.error(err); showToast('Failed to bulk add'); }
   };
 
+  const handleBonusSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await createSalaryRecord({
+        year: bonusForm.year, month: bonusForm.month, company: bonusForm.company,
+        amount: bonusForm.amount, bonusMonths: bonusForm.bonusMonths,
+        currency: bonusForm.currency, country: bonusForm.country, notes: bonusForm.notes,
+        isBonus: true,
+      });
+      setShowBonusForm(false); setBonusForm({ ...emptyBonus }); loadData();
+      showToast('Bonus added', 'success');
+    } catch (err) { console.error(err); showToast('Failed to add bonus'); }
+  };
+
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
   const years = [...new Set(records.map(r => r.year))].sort((a, b) => b - a);
@@ -158,8 +178,9 @@ export default function Salary() {
                 className={`px-3 py-1.5 text-xs font-medium transition-colors ${effectiveCurrency === code ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>{code}</button>
             ))}
           </div>
-          <button onClick={() => { setShowBulkForm(!showBulkForm); setShowForm(false); }} className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200"><Copy size={16} /> Bulk Add</button>
-          <button onClick={() => { setShowForm(!showForm); setShowBulkForm(false); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Entry</button>
+          <button onClick={() => { setShowBulkForm(!showBulkForm); setShowForm(false); setShowBonusForm(false); }} className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200"><Copy size={16} /> Bulk Add</button>
+          <button onClick={() => { setShowBonusForm(!showBonusForm); setShowForm(false); setShowBulkForm(false); setBonusForm({ ...emptyBonus }); }} className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700"><Plus size={16} /> Add Bonus</button>
+          <button onClick={() => { setShowForm(!showForm); setShowBulkForm(false); setShowBonusForm(false); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Entry</button>
         </div>
       </div>
 
@@ -299,6 +320,36 @@ export default function Salary() {
         </div>
       )}
 
+      {/* Add Bonus Form */}
+      {showBonusForm && (
+        <div className="bg-white rounded-xl p-6 border border-green-200 shadow-sm">
+          <h3 className="text-base font-semibold text-slate-800 mb-1">Add Bonus</h3>
+          <p className="text-xs text-slate-500 mb-4">Record a bonus for a specific year, month and company.</p>
+          <form onSubmit={handleBonusSubmit} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Year *</label>
+              <input type="number" value={bonusForm.year} onChange={e => setBonusForm({...bonusForm, year: parseInt(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Month *</label>
+              <SearchableSelect options={MONTHS.slice(1).map((m, i) => ({ value: i+1, label: m }))} value={bonusForm.month} onChange={v => setBonusForm({...bonusForm, month: Number(v)})} placeholder="Month" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Company *</label>
+              <SearchableSelect options={companies.map(c => ({ value: c, label: c }))} value={bonusForm.company} onChange={v => setBonusForm({...bonusForm, company: v})} placeholder="Select company..." /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Bonus Amount *</label>
+              <input type="number" step="any" value={bonusForm.amount || ''} onChange={e => setBonusForm({...bonusForm, amount: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Bonus Months</label>
+              <input type="number" step="0.1" value={bonusForm.bonusMonths || ''} onChange={e => setBonusForm({...bonusForm, bonusMonths: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="e.g. 2.5" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Currency</label>
+              <SearchableSelect options={CURRENCY_OPTIONS.map(c => ({ value: c, label: c }))} value={bonusForm.currency} onChange={v => setBonusForm({...bonusForm, currency: String(v)})} placeholder="Currency" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Country</label>
+              <SearchableSelect options={['Singapore','Sri Lanka'].map(c => ({ value: c, label: c }))} value={bonusForm.country} onChange={v => setBonusForm({...bonusForm, country: String(v)})} placeholder="Country" /></div>
+            <div className="col-span-2 md:col-span-3 lg:col-span-4"><label className="block text-xs font-medium text-slate-600 mb-1">Notes</label>
+              <input type="text" value={bonusForm.notes} onChange={e => setBonusForm({...bonusForm, notes: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="e.g. Annual performance bonus, 13th month" /></div>
+            <div className="flex items-end gap-2 col-span-2">
+              <button type="submit" className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700">Add Bonus</button>
+              <button type="button" onClick={() => setShowBonusForm(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
+            </div>
+          </form>
+        </div>
+      )}
+
       {/* Year Filter */}
       <div className="flex items-center gap-2 flex-wrap">
         <button onClick={() => setFilterYear(undefined)} className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${!filterYear ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-300 hover:border-indigo-300'}`}>All</button>
@@ -318,7 +369,7 @@ export default function Salary() {
               <SearchableSelect options={MONTHS.slice(1).map((m, i) => ({ value: i+1, label: m }))} value={form.month} onChange={v => setForm({...form, month: Number(v)})} placeholder="Month" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Company *</label>
               <SearchableSelect options={companies.map(c => ({ value: c, label: c }))} value={form.company} onChange={v => setForm({...form, company: v})} placeholder="Select company..." /></div>
-            <div><label className="block text-xs font-medium text-slate-600 mb-1">{form.isBonus ? 'Bonus Amount *' : 'Amount *'}</label>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Amount *</label>
               <input type="number" step="any" value={form.amount || ''} onChange={e => setForm({...form, amount: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Basic</label>
               <input type="number" step="any" value={form.basic || ''} onChange={e => setForm({...form, basic: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
@@ -363,15 +414,8 @@ export default function Salary() {
                 </label>
               </div>
             )}
-            <div className="flex items-end">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" checked={form.isBonus} onChange={e => setForm({...form, isBonus: e.target.checked})} className="rounded border-slate-300 text-indigo-600" />
-                <span className="text-sm text-slate-700">Bonus</span>
-              </label></div>
-            {form.isBonus && <div><label className="block text-xs font-medium text-slate-600 mb-1">Bonus Months</label>
-              <input type="number" step="0.1" value={form.bonusMonths || ''} onChange={e => setForm({...form, bonusMonths: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="e.g. 2.5" /></div>}
             <div className="col-span-2 md:col-span-3 lg:col-span-6"><label className="block text-xs font-medium text-slate-600 mb-1">Notes</label>
-              <input type="text" value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder={form.isBonus ? 'e.g. Annual performance bonus, 13th month' : 'Optional notes'} /></div>
+              <input type="text" value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Optional notes" /></div>
             <div className="flex items-end gap-2 col-span-2">
               <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">{editing ? 'Update' : 'Save'}</button>
               <button type="button" onClick={() => { setShowForm(false); setEditing(null); }} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
