@@ -49,7 +49,7 @@ export default function Salary() {
   const [form, setForm] = useState({ ...emptyForm });
   const [bulkForm, setBulkForm] = useState({
     year: new Date().getFullYear(), company: '', fromMonth: 1, toMonth: 12,
-    amount: 0, basic: 0, allowance: 0, mobile: 0, deductions: 0, country: 'Singapore',
+    amount: 0, basic: 0, allowance: 0, mobile: 0, support: 0, weekend: 0, mealAllowance: 0, deductions: 0, country: 'Singapore',
     currency: 'SGD', contributionScheme: 'CPF', contributionRemitted: false,
     cpfEmployee: 0, cpfEmployer: 0, epfEmployee: 0, epfEmployer: 0, etfEmployer: 0
   });
@@ -115,7 +115,8 @@ export default function Salary() {
         await createSalaryRecord({
           year: bulkForm.year, month: m, company: bulkForm.company,
           amount: bulkForm.amount, basic: bulkForm.basic, allowance: bulkForm.allowance,
-          mobile: bulkForm.mobile, deductions: bulkForm.deductions, country: bulkForm.country,
+          mobile: bulkForm.mobile, support: bulkForm.support, weekend: bulkForm.weekend, mealAllowance: bulkForm.mealAllowance,
+          deductions: bulkForm.deductions, country: bulkForm.country,
           currency: bulkForm.currency, contributionScheme: bulkForm.contributionScheme,
           contributionRemitted: bulkForm.contributionRemitted,
           cpfEmployee: bulkForm.cpfEmployee, cpfEmployer: bulkForm.cpfEmployer,
@@ -279,6 +280,12 @@ export default function Salary() {
               <input type="number" step="any" value={bulkForm.allowance || ''} onChange={e => setBulkForm({...bulkForm, allowance: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Mobile</label>
               <input type="number" step="any" value={bulkForm.mobile || ''} onChange={e => setBulkForm({...bulkForm, mobile: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Support</label>
+              <input type="number" step="any" value={bulkForm.support || ''} onChange={e => setBulkForm({...bulkForm, support: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Weekend</label>
+              <input type="number" step="any" value={bulkForm.weekend || ''} onChange={e => setBulkForm({...bulkForm, weekend: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Meal Allowance</label>
+              <input type="number" step="any" value={bulkForm.mealAllowance || ''} onChange={e => setBulkForm({...bulkForm, mealAllowance: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Deductions</label>
               <input type="number" step="any" value={bulkForm.deductions || ''} onChange={e => setBulkForm({...bulkForm, deductions: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Currency</label>
