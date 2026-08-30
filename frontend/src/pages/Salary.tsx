@@ -154,7 +154,7 @@ export default function Salary() {
   const displayOptions = Object.keys(displayRates).length > 0 ? Object.keys(displayRates) : [baseCurrency];
   const effectiveCurrency = displayRates[displayCurrency] != null ? displayCurrency : baseCurrency;
   const cFactor = displayRates[effectiveCurrency] ?? 1;
-  const disp = (baseAmount: number) => formatCurrency((baseAmount || 0) * cFactor, effectiveCurrency);
+  const disp = (baseAmount: number) => formatCurrency((baseAmount || 0) * cFactor, effectiveCurrency, { exact: true });
 
   const yearlyRows: any[] = summary?.yearly || [];
   const grandTotal = summary?.grandTotal || 0;
@@ -459,11 +459,11 @@ export default function Salary() {
                     {r.notes && <span className="block text-[10px] text-slate-400" title={r.notes}>{r.notes.length > 40 ? r.notes.slice(0, 40) + '…' : r.notes}</span>}
                   </td>
                   <td className="px-3 py-2.5 text-xs font-medium text-indigo-600">{r.currency || 'SGD'}</td>
-                  <td className="px-3 py-2.5 text-right font-medium text-slate-800">{formatCurrency(r.amount, r.currency || 'SGD')}</td>
-                  <td className="px-3 py-2.5 text-right text-slate-700">{formatCurrency(r.netTakeHome ?? r.amount, r.currency || 'SGD')}</td>
-                  <td className="px-3 py-2.5 text-right text-slate-600 text-xs">{(r.cpfEmployee || r.cpfEmployer) ? `${formatCurrency(r.cpfEmployee || 0, r.currency || 'SGD')} / ${formatCurrency(r.cpfEmployer || 0, r.currency || 'SGD')}` : '-'}</td>
-                  <td className="px-3 py-2.5 text-right text-slate-600 text-xs">{(r.epfEmployee || r.epfEmployer) ? `${formatCurrency(r.epfEmployee || 0, r.currency || 'SGD')} / ${formatCurrency(r.epfEmployer || 0, r.currency || 'SGD')}` : '-'}</td>
-                  <td className="px-3 py-2.5 text-right text-slate-600 text-xs">{r.etfEmployer ? formatCurrency(r.etfEmployer, r.currency || 'SGD') : '-'}</td>
+                  <td className="px-3 py-2.5 text-right font-medium text-slate-800">{formatCurrency(r.amount, r.currency || 'SGD', { exact: true })}</td>
+                  <td className="px-3 py-2.5 text-right text-slate-700">{formatCurrency(r.netTakeHome ?? r.amount, r.currency || 'SGD', { exact: true })}</td>
+                  <td className="px-3 py-2.5 text-right text-slate-600 text-xs">{(r.cpfEmployee || r.cpfEmployer) ? `${formatCurrency(r.cpfEmployee || 0, r.currency || 'SGD', { exact: true })} / ${formatCurrency(r.cpfEmployer || 0, r.currency || 'SGD', { exact: true })}` : '-'}</td>
+                  <td className="px-3 py-2.5 text-right text-slate-600 text-xs">{(r.epfEmployee || r.epfEmployer) ? `${formatCurrency(r.epfEmployee || 0, r.currency || 'SGD', { exact: true })} / ${formatCurrency(r.epfEmployer || 0, r.currency || 'SGD', { exact: true })}` : '-'}</td>
+                  <td className="px-3 py-2.5 text-right text-slate-600 text-xs">{r.etfEmployer ? formatCurrency(r.etfEmployer, r.currency || 'SGD', { exact: true }) : '-'}</td>
                   <td className="px-3 py-2.5 text-center">
                     {(r.cpfEmployee || r.cpfEmployer || r.epfEmployee || r.epfEmployer || r.etfEmployer)
                       ? (r.contributionRemitted
