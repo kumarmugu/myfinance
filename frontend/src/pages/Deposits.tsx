@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Plus, ArrowDownCircle, ArrowUpCircle, Trash2 } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell } from 'recharts';
 import { getAccountDeposits, createAccountDeposit, deleteAccountDeposit, getAccounts } from '../api';
 import SearchableSelect from '../components/SearchableSelect';
 import { formatCurrency, formatDate } from '../utils/formatters';
@@ -71,6 +71,12 @@ export default function Deposits() {
     .map(([name, data]) => ({ name, deposits: data.deposits, withdrawals: data.withdrawals, net: data.net }))
     .sort((a, b) => b.net - a.net);
 
+  // Pie: distribution of net deposits per account. Pie slices can't represent
+  // negatives, so only accounts with a positive net balance are shown.
+  const PIE_COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#14b8a6'];
+  const pieData = chartData.filter(d => d.net > 0).map(d => ({ name: d.name, value: d.net }));
+  const pieTotal = pieData.reduce((s, d) => s + d.value, 0);
+
   // Summary grouped by OWNER.
   const ownerSummary: Record<string, { deposits: number; withdrawals: number; net: number }> = {};
   summaryScope.forEach(d => {
@@ -91,6 +97,15 @@ export default function Deposits() {
       <div className="flex items-center justify-between">
         <div><h1 className="text-2xl font-bold text-slate-800">Deposits & Withdrawals</h1><p className="text-slate-500 text-sm mt-0.5">Track cash flows to and from broker accounts</p></div>
         <div className="flex items-center gap-3">
+          {/* Owner Selector (top, same as Dashboard) */}
+          <div className="w-44">
+            <SearchableSelect
+              options={[{ value: '', label: 'All Owners' }, ...owners.map(o => ({ value: o.id.toString(), label: o.name, icon: o.name[0] }))]}
+              value={filterOwner}
+              onChange={v => { setFilterOwner(v.toString()); setFilterAccount(''); }}
+              placeholder="All Owners"
+            />
+          </div>
           <div className="flex bg-white border border-slate-200 rounded-lg overflow-hidden">
             <button onClick={() => setDisplayCurrency('SGD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'SGD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>SGD</button>
             <button onClick={() => setDisplayCurrency('USD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'USD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>USD</button>
@@ -121,21 +136,41 @@ export default function Deposits() {
         </div>
       </div>
 
-      {/* Chart */}
+      {/* Charts */}
       {chartData.length > 0 && (
-        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
-          <h3 className="text-sm font-semibold text-slate-800 mb-3">Net Deposits by Account</h3>
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-              <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
-              <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={v => `S$${(v/1000).toFixed(0)}K`} />
-              <Tooltip formatter={(v) => formatCurrency(v as number)} />
-              <Legend />
-              <Bar dataKey="deposits" fill="#10b981" name="Deposits" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="withdrawals" fill="#ef4444" name="Withdrawals" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+            <h3 className="text-sm font-semibold text-slate-800 mb-3">Deposits & Withdrawals by Account</h3>
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
+                <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={v => `S$${(v/1000).toFixed(0)}K`} />
+                <Tooltip formatter={(v) => formatCurrency(v as number)} />
+                <Legend />
+                <Bar dataKey="deposits" fill="#10b981" name="Deposits" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="withdrawals" fill="#ef4444" name="Withdrawals" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+            <h3 className="text-sm font-semibold text-slate-800 mb-3">Net Deposit Distribution</h3>
+            {pieData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={280}>
+                <PieChart>
+                  <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100}
+                    label={({ name, value }) => `${name} ${pieTotal ? ((value / pieTotal) * 100).toFixed(0) : 0}%`}
+                    labelLine={false} fontSize={11}>
+                    {pieData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+                  </Pie>
+                  <Tooltip formatter={(v) => formatCurrency(v as number)} />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-[280px] flex items-center justify-center text-sm text-slate-400">No positive net balances to chart</div>
+            )}
+          </div>
         </div>
       )}
 
@@ -173,7 +208,6 @@ export default function Deposits() {
 
       {/* Filter + Table */}
       <div className="flex items-center gap-3 flex-wrap">
-        <div className="w-48"><SearchableSelect options={[{ value: '', label: 'All Owners' }, ...owners.map(o => ({ value: o.id.toString(), label: o.name }))]} value={filterOwner} onChange={v => setFilterOwner(v.toString())} placeholder="All Owners" /></div>
         <div className="w-48"><SearchableSelect options={[{ value: '', label: 'All Accounts' }, ...accounts.filter(a => (a.accountType === 'BROKER' || a.accountType === 'CRYPTO_EXCHANGE') && (!filterOwner || a.owner?.id?.toString() === filterOwner)).map(a => ({ value: a.id.toString(), label: a.name }))]} value={filterAccount} onChange={v => setFilterAccount(v.toString())} placeholder="All Accounts" /></div>
         <span className="text-xs text-slate-500">{filtered.length} records</span>
       </div>
@@ -247,7 +281,7 @@ export default function Deposits() {
 
       {Object.keys(accountSummary).length > 0 && (
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-          <div className="p-4 border-b border-slate-200"><h3 className="font-semibold text-slate-800 text-sm">Summary by Account</h3></div>
+          <div className="p-4 border-b border-slate-200"><h3 className="font-semibold text-slate-800 text-sm">Net Balances by Account</h3></div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-slate-50 border-b border-slate-200">
