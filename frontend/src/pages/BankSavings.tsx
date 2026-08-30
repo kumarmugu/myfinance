@@ -20,6 +20,7 @@ interface BankSavingsAccount {
 
 export default function BankSavings() {
   const [accounts, setAccounts] = useState<BankSavingsAccount[]>([]);
+  const [summary, setSummary] = useState<{ totalBalance: number; inNetWorth: number; baseCurrency?: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [unmasked, setUnmasked] = useState<Set<number>>(new Set());
   const { showToast } = useToast();
@@ -33,7 +34,14 @@ export default function BankSavings() {
   useEffect(() => { loadData(); }, []);
 
   const loadData = async () => {
-    try { setAccounts((await api.get('/bank-savings')).data); }
+    try {
+      const [listRes, sumRes] = await Promise.all([
+        api.get('/bank-savings'),
+        api.get('/bank-savings/summary'),
+      ]);
+      setAccounts(listRes.data);
+      setSummary(sumRes.data);
+    }
     catch (err) { console.error(err); }
     finally { setLoading(false); }
   };
@@ -76,8 +84,11 @@ export default function BankSavings() {
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
-  const totalBalance = accounts.reduce((s, a) => s + a.balance, 0);
-  const inNetWorth = accounts.filter(a => a.includeInNetWorth).reduce((s, a) => s + a.balance, 0);
+  // Consolidated totals come from the backend summary (FX-converted to the user's base
+  // currency). Row values below still show each account's original currency.
+  const baseCurrency = summary?.baseCurrency || 'SGD';
+  const totalBalance = summary?.totalBalance ?? 0;
+  const inNetWorth = summary?.inNetWorth ?? 0;
   const sgAccounts = accounts.filter(a => a.country === 'Singapore');
   const slAccounts = accounts.filter(a => a.country === 'Sri Lanka');
 
@@ -91,8 +102,8 @@ export default function BankSavings() {
       {/* Summary */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Total Accounts</p><p className="text-lg font-bold text-slate-800 mt-1">{accounts.length}</p></div>
-        <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Total Balance</p><p className="text-lg font-bold text-indigo-600 mt-1">{formatCurrency(totalBalance)}</p></div>
-        <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">In Net Worth</p><p className="text-lg font-bold text-green-600 mt-1">{formatCurrency(inNetWorth)}</p></div>
+        <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Total Balance <span className="text-slate-400 normal-case">({baseCurrency})</span></p><p className="text-lg font-bold text-indigo-600 mt-1">{formatCurrency(totalBalance, baseCurrency)}</p></div>
+        <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">In Net Worth <span className="text-slate-400 normal-case">({baseCurrency})</span></p><p className="text-lg font-bold text-green-600 mt-1">{formatCurrency(inNetWorth, baseCurrency)}</p></div>
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">SG / SL</p><p className="text-lg font-bold text-slate-800 mt-1">{sgAccounts.length} / {slAccounts.length}</p></div>
       </div>
 

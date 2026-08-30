@@ -60,6 +60,8 @@ public class UserManagementController {
                 .displayName(displayName)
                 .role(role)
                 .enabledFeatures(request.getOrDefault("enabledFeatures", ""))
+                .baseCurrency(normCurrency(request.get("baseCurrency")))
+                .displayCurrencies(normCsv(request.get("displayCurrencies")))
                 .build();
 
         userRepository.save(user);
@@ -123,5 +125,42 @@ public class UserManagementController {
         userRepository.save(user);
         user.setPassword(null);
         return ResponseEntity.ok(user);
+    }
+
+    /**
+     * Set a user's base/reporting currency and the display-currency options shown in the UI toggle.
+     * Both are reporting/display concepts; changing them never mutates any stored original values.
+     */
+    @PutMapping("/{id}/currency-settings")
+    public ResponseEntity<?> updateCurrencySettings(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        if (!tenantContext.isAdmin()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Admin access required"));
+        }
+        AppUser user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        if (request.containsKey("baseCurrency")) {
+            user.setBaseCurrency(normCurrency(request.get("baseCurrency")));
+        }
+        if (request.containsKey("displayCurrencies")) {
+            user.setDisplayCurrencies(normCsv(request.get("displayCurrencies")));
+        }
+        log.info("Updated currency settings for user id={}: base={}, display={}",
+                id, user.getBaseCurrency(), user.getDisplayCurrencies());
+        userRepository.save(user);
+        user.setPassword(null);
+        return ResponseEntity.ok(user);
+    }
+
+    private String normCurrency(String c) {
+        if (c == null || c.isBlank()) return null;
+        return c.trim().toUpperCase();
+    }
+
+    private String normCsv(String csv) {
+        if (csv == null || csv.isBlank()) return null;
+        return java.util.Arrays.stream(csv.split(","))
+                .map(s -> s.trim().toUpperCase())
+                .filter(s -> !s.isEmpty())
+                .distinct()
+                .collect(java.util.stream.Collectors.joining(","));
     }
 }

@@ -43,6 +43,14 @@ public class SalaryRecord {
 
     private String country; // Singapore, Sri Lanka
 
+    /**
+     * Original currency of this salary record (e.g. SGD, LKR). Nullable for
+     * backward compatibility — existing rows are treated as the user's base
+     * currency. The original amount is never overwritten by conversion.
+     */
+    @Column(length = 10)
+    private String currency;
+
     private String notes;
 
     @ManyToOne(fetch = FetchType.EAGER)

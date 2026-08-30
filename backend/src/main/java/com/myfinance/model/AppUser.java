@@ -42,6 +42,22 @@ public class AppUser {
     @Column(length = 500)
     private String enabledFeatures;
 
+    /**
+     * The user's base/reporting currency for consolidated calculations (e.g. Net Worth).
+     * Null is treated as SGD for backward compatibility. This is a reporting concept only;
+     * original per-record currencies and amounts are always preserved.
+     */
+    @Column(length = 10)
+    private String baseCurrency;
+
+    /**
+     * Comma-separated list of currencies offered in the UI display-currency toggle,
+     * e.g. "SGD,USD". Null/empty is treated as "SGD,USD" for backward compatibility.
+     * Changing the display currency never mutates stored original values.
+     */
+    @Column(length = 200)
+    private String displayCurrencies;
+
     private String resetToken;
     private LocalDateTime resetTokenExpiry;
 

@@ -40,6 +40,13 @@ public class RetirementFundEntry {
 
     private String employer; // company name for employer contributions
 
+    /**
+     * Original currency (e.g. SGD for CPF/SRS, LKR for EPF). Nullable for backward
+     * compatibility — existing rows are treated as the user's base currency.
+     */
+    @Column(length = 10)
+    private String currency;
+
     private String notes;
 
     @ManyToOne(fetch = FetchType.EAGER)

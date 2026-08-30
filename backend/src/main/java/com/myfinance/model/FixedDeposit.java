@@ -65,10 +65,21 @@ public class FixedDeposit {
     @Builder.Default
     private Boolean requiresUpdate = false;
 
+    /**
+     * Original currency of the principal (typically LKR for Sri Lanka FDs). Nullable
+     * for backward compatibility — existing rows are treated as the user's base currency.
+     * The principalAmount is the source of truth and is never overwritten by conversion.
+     */
+    @Column(length = 10)
+    private String currency;
+
     @Builder.Default
     private Boolean includeInNetWorth = false;
 
-    private BigDecimal netWorthAmount; // manual SGD amount to include in net worth
+    // Optional manual override of the net-worth contribution, expressed in the user's
+    // base currency. This is a DERIVED/cached convenience value, not the source of truth;
+    // the authoritative amount is principalAmount in `currency`.
+    private BigDecimal netWorthAmount;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;

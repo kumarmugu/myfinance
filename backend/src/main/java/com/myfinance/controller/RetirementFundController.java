@@ -70,6 +70,7 @@ public class RetirementFundController {
         existing.setFundType(updated.getFundType());
         existing.setEntryType(updated.getEntryType());
         existing.setAmount(updated.getAmount());
+        existing.setCurrency(updated.getCurrency());
         existing.setEntryDate(updated.getEntryDate());
         existing.setYear(updated.getYear());
         existing.setMonth(updated.getMonth());

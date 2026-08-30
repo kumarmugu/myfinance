@@ -163,6 +163,31 @@ class TransactionServiceTest {
 
     @Test
     @WithMockUser(username = "user")
+    void holdingPreservesInvestmentCurrencyNotBrokerCurrency() {
+        // Broker account is USD (see setup); the instrument is an EUR-denominated fund.
+        Asset eurFund = assetRepository.save(Asset.builder()
+                .name("Euro Stoxx Fund").symbol("ESX-EUR")
+                .assetType(AssetType.INDEX_FUND).currency(Currency.EUR)
+                .userId(testUser.getId()).build());
+
+        // Buy the EUR fund through the USD broker account. The purchase settles in USD.
+        Transaction tx = transactionService.create(
+                eurFund.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("50.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 15), "Buy EUR fund via USD broker");
+
+        // Transaction (settlement) currency stays USD — the broker account's currency.
+        assertEquals(Currency.USD, tx.getCurrency());
+
+        // Holding (the underlying instrument) must preserve EUR, NOT the broker's USD.
+        Optional<Holding> holding = holdingService.getHolding(eurFund.getId(), account.getId(), owner.getId());
+        assertTrue(holding.isPresent());
+        assertEquals(Currency.EUR, holding.get().getCurrency(),
+                "Holding must carry the investment's original currency, not the broker account currency");
+    }
+
+    @Test
+    @WithMockUser(username = "user")
     void shouldCalculateFeesInTotalAmount() {
         Transaction tx = transactionService.create(
                 asset.getId(), account.getId(), owner.getId(),

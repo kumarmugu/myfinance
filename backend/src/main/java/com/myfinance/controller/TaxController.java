@@ -21,6 +21,7 @@ import java.util.Map;
 public class TaxController {
     private final TaxRecordRepository repository;
     private final TenantContext tenantContext;
+    private final com.myfinance.service.CurrencyConversionService fx;
 
     @GetMapping
     public List<TaxRecord> getAll(@RequestParam(required = false) Long ownerId, @RequestParam(required = false) String country) {
@@ -32,18 +33,21 @@ public class TaxController {
 
     @GetMapping("/summary")
     public Map<String, Object> getSummary() {
-        List<TaxRecord> all = repository.findByUserIdOrderByAssessmentYearDesc(tenantContext.getCurrentUserId());
+        Long uid = tenantContext.getCurrentUserId();
+        List<TaxRecord> all = repository.findByUserIdOrderByAssessmentYearDesc(uid);
+        // Consolidated in the user's base currency, converting each record's original currency.
         BigDecimal totalPaid = all.stream()
-                .map(t -> t.getTaxPayable() != null ? t.getTaxPayable() : BigDecimal.ZERO)
+                .map(t -> fx.toBase(t.getTaxPayable(), t.getCurrency(), uid))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal totalIncome = all.stream()
-                .map(TaxRecord::getEmployment)
+                .map(t -> fx.toBase(t.getEmployment(), t.getCurrency(), uid))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         Map<String, Object> result = new HashMap<>();
         result.put("totalTaxPaid", totalPaid);
         result.put("totalIncome", totalIncome);
         result.put("years", all.size());
+        result.put("baseCurrency", fx.getBaseCurrency(uid));
         return result;
     }
 
@@ -66,6 +70,7 @@ public class TaxController {
         log.info("Updating tax record id={}", id);
         TaxRecord existing = getById(id);
         existing.setAssessmentYear(updated.getAssessmentYear());
+        existing.setCurrency(updated.getCurrency());
         existing.setEmployment(updated.getEmployment());
         existing.setDonations(updated.getDonations());
         existing.setReliefs(updated.getReliefs());

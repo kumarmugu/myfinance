@@ -1,7 +1,10 @@
 package com.myfinance.service;
 
+import com.myfinance.model.AppUser;
 import com.myfinance.model.CurrencyRate;
+import com.myfinance.repository.AppUserRepository;
 import com.myfinance.repository.CurrencyRateRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,15 +14,25 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CurrencyConversionServiceTest {
 
     @Mock private CurrencyRateRepository currencyRateRepository;
+    @Mock private AppUserRepository appUserRepository;
     @InjectMocks private CurrencyConversionService service;
+
+    @BeforeEach
+    void setUp() {
+        // User 1 has no configured base currency, so the service defaults to SGD.
+        lenient().when(appUserRepository.findById(1L))
+                .thenReturn(Optional.of(AppUser.builder().id(1L).baseCurrency(null).build()));
+    }
 
     private CurrencyRate rate(String from, String to, String value, LocalDate date) {
         return CurrencyRate.builder()

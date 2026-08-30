@@ -30,9 +30,18 @@ Feature access is stored on `AppUser.enabledFeatures` as a **CSV string** (NOT a
 - All monetary and rate values are **`BigDecimal`** — never `double`/`float`. FX rates need enough scale to store values like `0.0039`.
 - JSON quirk to know when writing tests: entity-return endpoints serialize whole-number `BigDecimal`s as JSON **integers** (`3200`, not `3200.0`) — assert with `is(3200)`. Summary endpoints load fresh from the DB with column scale preserved — assert with `is(3200.00)` or `closeTo(...)`.
 
-## Currency
+## Currency (original value is the source of truth)
 
-- Some entities use the **`Currency` enum** (Account, BankSavings, Dividend, ...); newer asset modules (Property, PreciousMetal, GenericFixedDeposit) use a **`String` currency**. Match whatever the entity you're touching already uses.
+**NON-NEGOTIABLE: never overwrite a record's original currency/amount just because the app has a base currency.** Every money record stores its *original* currency + amount; base and display values are always *derived* via FX, never persisted over the original.
+
+- **Original currency + amount** = the source of truth (what the user entered). Preserve it on create/update; conversion must never mutate it.
+- **Base currency** = per-user, configurable in User Management (`AppUser.baseCurrency`, null → default `SGD`). Used only for consolidation (Net Worth, summary totals).
+- **Display currency** = per-user list (`AppUser.displayCurrencies` CSV, null → `SGD,USD`), shown as a UI toggle. Changing it re-derives displayed values; it never writes back.
+- Conversion goes through **`CurrencyConversionService`** only. It uses the user's own `CurrencyRate` entries (latest by `effectiveDate`, direct → inverse → identity fallback). **No hardcoded FX anywhere** (frontend or backend).
+- Entity currency type: older entities use the **`Currency` enum** (Account, BankSavings, Dividend, Holding, ...); newer/String-based ones (Property, PreciousMetal, GenericFixedDeposit, and the added `currency` on SalaryRecord/TaxRecord/RetirementFundEntry/FixedDeposit) use a **`String`**. Match the entity you're touching. `CurrencyConversionService.toBase(amount, code, userId)` takes a String code (call `.name()` on enums).
+- **Summary/aggregation endpoints MUST FX-convert each record to the user's base before summing** — never `reduce` raw amounts across mixed currencies. Include `baseCurrency` in the response.
+- **Broker vs investment currency (do not confuse):** a `Holding` carries the **asset's** currency (the instrument, e.g. an EUR fund), NOT the broker `Account`'s currency. The `Transaction` carries the settlement currency (the account's). Buying an EUR fund via a USD broker → Holding=EUR, Transaction=USD.
+- **Base-only domains** (deliberately no currency field): CPF/SRS and Budget are SGD/base-only by design — don't add currency noise there.
 - Currencies are **user-created in the DB**, not seeded. No external FX feed — rates are user-maintained.
 
 ## Error Handling

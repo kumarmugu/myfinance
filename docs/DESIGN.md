@@ -14,10 +14,16 @@
 | display_name | VARCHAR(100) | | Display name |
 | role | VARCHAR(10) | DEFAULT 'USER' | USER or ADMIN |
 | is_active | BOOLEAN | DEFAULT true | Account active |
+| sl_fd_enabled | BOOLEAN | DEFAULT false | Sri Lanka FD module toggle |
+| enabled_features | VARCHAR(500) | | CSV of enabled feature keys; null/empty = all |
+| base_currency | VARCHAR(10) | | Per-user base/reporting currency; null = SGD |
+| display_currencies | VARCHAR(200) | | CSV of UI display-currency options; null = SGD,USD |
 | reset_token | VARCHAR(255) | | Password reset token |
 | reset_token_expiry | TIMESTAMP | | Token expiry time |
 | created_at | TIMESTAMP | NOT NULL | |
 | updated_at | TIMESTAMP | | |
+
+> **Currency model.** `base_currency` and `display_currencies` are *reporting/display* concepts only. Every financial record keeps its own **original currency + amount** as the source of truth; SGD/base and other display currencies are derived on the fly via the user's FX rates (see §Currency Handling). Both columns are nullable and backward compatible (null → SGD / `SGD,USD`).
 
 #### `audit_logs`
 | Column | Type | Constraints | Description |
@@ -1243,3 +1249,36 @@ Replaced all `alert()` calls with an inline toast system:
 - Stacked (multiple toasts visible)
 - Slide-in animation from right
 - Positioned fixed top-right (z-9999)
+
+
+## Currency Handling
+
+MyFinance preserves the **original currency and amount** of every financial record. Base and display currencies are derived views, never a replacement for the stored value.
+
+### Three concepts
+1. **Original currency + amount** — what the user entered/received/purchased. The source of truth. Stored on the record; never overwritten by conversion.
+2. **Base currency** — per-user (`app_users.base_currency`, null → SGD). Used for consolidated figures (Net Worth, module summary totals).
+3. **Display currency** — per-user list (`app_users.display_currencies`, null → `SGD,USD`), selectable via a UI toggle. Purely presentational.
+
+### Conversion (`CurrencyConversionService`)
+- Converts any amount to the user's base (or a display currency) using the user's own `currency_rates` rows — latest by `effective_date`. Resolution: direct rate → inverse rate → identity (1.0) with a warning. **No hardcoded FX** on client or server.
+- `toBase(amount, currencyCode, userId)`, `factorToBase(...)`, `factorFromBase(...)`, `getBaseCurrency(userId)`, `getDisplayCurrencies(userId)`.
+
+### Where conversion happens
+- **Net Worth / Dashboard** (`DashboardService`, `NetWorthService`): every holding and standalone module (Bank Savings, Property equity, Precious Metals, Generic FD) is converted to base before summing. `DashboardSummary` returns `baseCurrency` and `displayRates` (base→display factors from the user's rates) so the frontend converts display values without constants.
+- **Module summary endpoints** (`/bank-savings/summary`, `/precious-metals/summary`, `/properties/summary`, `/tax/summary`, ...): convert each record to base before summing; response includes `baseCurrency`. Row/list endpoints return the untouched original currency + amount.
+
+### Broker account vs investment currency
+These are distinct and both preserved:
+- `Account.currency` — the broker/settlement currency.
+- `Asset.currency` / `Holding.currency` — the instrument's currency. A `Holding` carries the **asset's** currency, not the broker account's.
+- `Transaction.currency` — the settlement currency (defaults to the account's).
+- Example: buying an **EUR** fund through a **USD** broker → `Holding.currency = EUR`, `Transaction.currency = USD`. Neither is overwritten by the other.
+
+### Per-entity currency source
+- **Currency enum:** Account, BankSavings, Dividend, Holding, Asset, Transaction, SoldPosition, AccountDeposit, HomeLoan, InsurancePolicy.
+- **String currency:** Property, PreciousMetal, GenericFixedDeposit, and (added) SalaryRecord, TaxRecord, RetirementFundEntry, FixedDeposit (SL). All nullable → treated as the user's base when null.
+- **Base-only by design (no currency field):** CPF/SRS and Budget modules.
+
+### Migration / backward compatibility
+All currency columns are **additive and nullable**; existing rows read as the user's base currency. No historical value was rewritten. Where a record historically stored only a base-currency figure (e.g. SL FixedDeposit `net_worth_amount`), the original currency is not fabricated — it defaults to base and `net_worth_amount` is treated as a derived/cached override of `principal_amount` (+ `currency`).

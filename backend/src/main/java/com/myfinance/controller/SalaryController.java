@@ -83,6 +83,7 @@ public class SalaryController {
         existing.setMonth(updated.getMonth());
         existing.setCompany(updated.getCompany());
         existing.setAmount(updated.getAmount());
+        existing.setCurrency(updated.getCurrency());
         existing.setBasic(updated.getBasic());
         existing.setAllowance(updated.getAllowance());
         existing.setMobile(updated.getMobile());

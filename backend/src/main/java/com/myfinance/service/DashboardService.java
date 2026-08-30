@@ -61,11 +61,14 @@ public class DashboardService {
         Map<String, BigDecimal> allocation = netWorthService.getCurrentAllocationForUser(userId);
         BigDecimal totalNetWorth = allocation.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        // Display-currency factors derived from the user's own rates (no hardcoded FX).
+        // Display-currency factors derived from the user's own rates + configured display list.
+        // No hardcoded FX. Base currency factor is always 1; others omitted when no rate exists.
+        String baseCurrency = fx.getBaseCurrency(userId);
         Map<String, BigDecimal> displayRates = new LinkedHashMap<>();
-        displayRates.put(CurrencyConversionService.BASE_CURRENCY, BigDecimal.ONE);
-        BigDecimal usdFactor = fx.factorFromBase("USD", userId);
-        if (usdFactor != null) displayRates.put("USD", usdFactor);
+        for (String code : fx.getDisplayCurrencies(userId)) {
+            BigDecimal factor = fx.factorFromBase(code, userId);
+            if (factor != null) displayRates.put(code, factor);
+        }
 
         return DashboardSummary.builder()
                 .totalNetWorth(totalNetWorth)
@@ -75,7 +78,7 @@ public class DashboardService {
                 .allocationByType(allocation)
                 .totalHoldings(holdings.size())
                 .totalAccounts((int) accountRepository.count())
-                .baseCurrency(CurrencyConversionService.BASE_CURRENCY)
+                .baseCurrency(baseCurrency)
                 .displayRates(displayRates)
                 .build();
     }

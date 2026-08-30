@@ -42,6 +42,13 @@ public class TaxRecord {
 
     private String country; // Singapore, Sri Lanka, etc.
 
+    /**
+     * Original currency of this tax record (e.g. SGD, LKR). Nullable for backward
+     * compatibility — existing rows are treated as the user's base currency.
+     */
+    @Column(length = 10)
+    private String currency;
+
     private String notes;
 
     @ManyToOne(fetch = FetchType.EAGER)

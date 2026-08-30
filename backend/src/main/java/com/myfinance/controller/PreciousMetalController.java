@@ -21,6 +21,7 @@ import java.util.Map;
 public class PreciousMetalController {
     private final PreciousMetalRepository repository;
     private final TenantContext tenantContext;
+    private final com.myfinance.service.CurrencyConversionService fx;
 
     @GetMapping
     public List<PreciousMetal> getAll(@RequestParam(required = false) String metalType) {
@@ -34,11 +35,12 @@ public class PreciousMetalController {
         Long uid = tenantContext.getCurrentUserId();
         List<PreciousMetal> all = repository.findByUserIdAndStatus(uid, "HELD");
 
+        // Value totals consolidated in the user's base currency (weights stay in grams).
         BigDecimal totalPurchase = all.stream()
-                .map(m -> m.getPurchasePrice() != null ? m.getPurchasePrice() : BigDecimal.ZERO)
+                .map(m -> fx.toBase(m.getPurchasePrice(), m.getCurrency(), uid))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal totalCurrent = all.stream()
-                .map(m -> m.getCurrentPrice() != null ? m.getCurrentPrice() : BigDecimal.ZERO)
+                .map(m -> fx.toBase(m.getCurrentPrice(), m.getCurrency(), uid))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal totalWeightGold = all.stream()
                 .filter(m -> "GOLD".equals(m.getMetalType()))
@@ -56,6 +58,7 @@ public class PreciousMetalController {
         result.put("totalGoldGrams", totalWeightGold);
         result.put("totalSilverGrams", totalWeightSilver);
         result.put("gainLoss", totalCurrent.subtract(totalPurchase));
+        result.put("baseCurrency", fx.getBaseCurrency(uid));
         return result;
     }
 

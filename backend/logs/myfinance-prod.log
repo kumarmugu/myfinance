@@ -247,3 +247,73 @@
 2026-08-30 12:44:19 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/plans/2026/8 → 204 (2ms)
 2026-08-30 12:44:19 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/categories → 200 (4ms)
 2026-08-30 12:46:36 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m4s588ms).
+2026-08-30 13:10:46 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/bank-savings/3 → 200 (53ms)
+2026-08-30 13:10:46 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (15ms)
+2026-08-30 13:12:54 [http-nio-8080-exec-10] INFO  c.m.controller.BankSavingsController - Created bank savings id=4 for userId=2
+2026-08-30 13:12:54 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/bank-savings → 201 (5ms)
+2026-08-30 13:12:54 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (3ms)
+2026-08-30 13:14:05 [http-nio-8080-exec-9] INFO  c.m.controller.BankSavingsController - Created bank savings id=5 for userId=2
+2026-08-30 13:14:05 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/bank-savings → 201 (3ms)
+2026-08-30 13:14:05 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (5ms)
+2026-08-30 13:14:22 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/bank-savings/5 → 200 (5ms)
+2026-08-30 13:14:22 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (3ms)
+2026-08-30 13:21:56 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (3ms)
+2026-08-30 13:21:57 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/plans/2026/8 → 204 (6ms)
+2026-08-30 13:21:57 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/categories → 200 (6ms)
+2026-08-30 13:22:28 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (4ms)
+2026-08-30 13:22:28 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (41ms)
+2026-08-30 13:22:48 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (4ms)
+2026-08-30 13:22:48 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (4ms)
+2026-08-30 13:22:48 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (3ms)
+2026-08-30 13:22:48 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (6ms)
+2026-08-30 13:23:12 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (3ms)
+2026-08-30 13:23:12 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (3ms)
+2026-08-30 13:23:37 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (2ms)
+2026-08-30 13:23:37 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (3ms)
+2026-08-30 13:35:20 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-08-30 13:35:20 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-08-30 13:35:21 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (3ms)
+2026-08-30 13:35:21 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (4ms)
+2026-08-30 13:35:21 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (2ms)
+2026-08-30 13:35:21 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (4ms)
+2026-08-30 13:35:21 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
+2026-08-30 13:35:21 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
+2026-08-30 13:35:21 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/plans/2026/8 → 204 (4ms)
+2026-08-30 13:35:21 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/categories → 200 (5ms)
+2026-08-30 13:35:21 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/categories → 200 (2ms)
+2026-08-30 13:35:21 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/plans/2026/8 → 204 (3ms)
+2026-08-30 13:37:00 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m23s380ms).
+2026-08-30 13:38:52 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (98ms)
+2026-08-30 13:38:52 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (4ms)
+2026-08-30 13:43:48 [http-nio-8080-exec-9] INFO  c.m.controller.PropertyController - Creating property: name=Colombo Apartment , type=HDB
+2026-08-30 13:43:48 [http-nio-8080-exec-9] INFO  c.m.controller.PropertyController - Created property id=1
+2026-08-30 13:43:48 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/properties → 201 (252ms)
+2026-08-30 13:43:48 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (5ms)
+2026-08-30 13:46:02 [http-nio-8080-exec-6] INFO  c.m.controller.PropertyController - Creating property: name=Innasi, type=HDB
+2026-08-30 13:46:02 [http-nio-8080-exec-6] INFO  c.m.controller.PropertyController - Created property id=2
+2026-08-30 13:46:02 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/properties → 201 (13ms)
+2026-08-30 13:46:02 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (3ms)
+2026-08-30 13:46:29 [http-nio-8080-exec-5] INFO  c.m.controller.PropertyController - Updating property id=2
+2026-08-30 13:46:29 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/properties/2 → 200 (71ms)
+2026-08-30 13:46:29 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (3ms)
+2026-08-30 13:47:14 [http-nio-8080-exec-10] INFO  c.m.controller.PropertyController - Creating property: name=kothaiyadu, type=HDB
+2026-08-30 13:47:14 [http-nio-8080-exec-10] INFO  c.m.controller.PropertyController - Created property id=3
+2026-08-30 13:47:14 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/properties → 201 (7ms)
+2026-08-30 13:47:14 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (3ms)
+2026-08-30 13:47:27 [http-nio-8080-exec-8] INFO  c.m.controller.PropertyController - Updating property id=3
+2026-08-30 13:47:27 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/properties/3 → 200 (8ms)
+2026-08-30 13:47:27 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (14ms)
+2026-08-30 13:47:57 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-08-30 13:47:57 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (3ms)
+2026-08-30 13:47:57 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (7ms)
+2026-08-30 13:47:57 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (4ms)
+2026-08-30 13:47:57 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-08-30 13:47:57 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
+2026-08-30 13:47:57 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/plans/2026/8 → 204 (3ms)
+2026-08-30 13:47:57 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/categories → 200 (4ms)
+2026-08-30 13:47:57 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/plans/2026/8 → 204 (3ms)
+2026-08-30 13:47:57 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/categories → 200 (3ms)
+2026-08-30 13:48:36 [http-nio-8080-exec-9] INFO  c.m.controller.PropertyController - Creating property: name=thanankilappu, type=LAND
+2026-08-30 13:48:36 [http-nio-8080-exec-9] INFO  c.m.controller.PropertyController - Created property id=4
+2026-08-30 13:48:36 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/properties → 201 (4ms)
+2026-08-30 13:48:36 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (1ms)

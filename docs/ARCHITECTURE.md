@@ -90,7 +90,7 @@ Base entities and services shared across all modules.
 
 - **Owner/Profile Management** - Support multiple users (primary user and spouse)
 - **Account Management** - Brokers (Tiger, Saxo, IBKR, Poems, Moomoo) and Banks (DBS, OCBC, CIMB)
-- **Currency Management** - Multi-currency support with exchange rate tracking
+- **Currency Management** - Multi-currency support with user-maintained exchange rates. Every record preserves its **original currency + amount** (source of truth); a per-user **base currency** (default SGD) drives Net Worth consolidation and a per-user **display-currency** toggle re-derives shown values via FX — conversions never overwrite stored originals. No hardcoded FX. See docs/DESIGN.md § Currency Handling.
 
 ### 4.2 Investment Portfolio Module
 Manages stock/ETF/fund investments across multiple brokers.

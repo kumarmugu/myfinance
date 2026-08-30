@@ -86,11 +86,15 @@ public class TransactionService {
                 if (purpose != null) h.setPurpose(purpose);
                 holdingService.save(h);
             } else {
+                // The holding represents the underlying instrument, so it carries the ASSET's
+                // currency (e.g. an EUR fund), NOT the broker account's currency. The purchase
+                // settled in the account/transaction currency, which is preserved on the Transaction.
                 holdingService.save(Holding.builder()
                         .asset(asset).account(account).owner(owner)
                         .quantity(quantity).averageBuyPrice(pricePerUnit)
                         .investedAmount(quantity.multiply(pricePerUnit))
-                        .currency(account.getCurrency()).purpose(purpose)
+                        .currency(asset.getCurrency() != null ? asset.getCurrency() : account.getCurrency())
+                        .purpose(purpose)
                         .userId(tenantContext.getCurrentUserId()).build());
             }
         } else if (type == TransactionType.SELL) {

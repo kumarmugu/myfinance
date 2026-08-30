@@ -21,6 +21,7 @@ import java.util.Map;
 public class PropertyController {
     private final PropertyRepository repository;
     private final TenantContext tenantContext;
+    private final com.myfinance.service.CurrencyConversionService fx;
 
     @GetMapping
     public List<Property> getAll() {
@@ -34,16 +35,18 @@ public class PropertyController {
         List<Property> all = repository.findByUserIdOrderByPropertyNameAsc(uid);
         List<Property> owned = all.stream().filter(p -> "OWNED".equals(p.getStatus())).toList();
 
+        // Totals consolidated in the user's base currency, converting each property's
+        // original-currency values. Original per-property values are never modified.
+        Long uid2 = tenantContext.getCurrentUserId();
         BigDecimal totalValue = owned.stream()
-                .map(p -> p.getCurrentValue() != null ? p.getCurrentValue() : BigDecimal.ZERO)
+                .map(p -> fx.toBase(p.getCurrentValue(), p.getCurrency(), uid2))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal totalLoan = owned.stream()
-                .map(p -> p.getOutstandingLoan() != null ? p.getOutstandingLoan() : BigDecimal.ZERO)
+                .map(p -> fx.toBase(p.getOutstandingLoan(), p.getCurrency(), uid2))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal totalEquity = totalValue.subtract(totalLoan);
         BigDecimal monthlyRental = all.stream()
-                .filter(p -> p.getMonthlyRental() != null)
-                .map(Property::getMonthlyRental)
+                .map(p -> fx.toBase(p.getMonthlyRental(), p.getCurrency(), uid2))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         Map<String, Object> result = new HashMap<>();
@@ -52,6 +55,7 @@ public class PropertyController {
         result.put("totalLoan", totalLoan);
         result.put("totalEquity", totalEquity);
         result.put("monthlyRental", monthlyRental);
+        result.put("baseCurrency", fx.getBaseCurrency(uid2));
         return result;
     }
 

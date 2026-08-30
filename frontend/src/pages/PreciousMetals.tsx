@@ -31,6 +31,7 @@ const METAL_COLORS: Record<string, string> = { GOLD: 'bg-amber-100 text-amber-70
 
 export default function PreciousMetals() {
   const [items, setItems] = useState<PreciousMetal[]>([]);
+  const [summary, setSummary] = useState<{ totalPurchaseValue: number; totalCurrentValue: number; baseCurrency?: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<PreciousMetal | null>(null);
@@ -48,7 +49,12 @@ export default function PreciousMetals() {
   const loadData = async () => {
     try {
       const params = filterType ? `?metalType=${filterType}` : '';
-      setItems((await api.get(`/precious-metals${params}`)).data);
+      const [listRes, sumRes] = await Promise.all([
+        api.get(`/precious-metals${params}`),
+        api.get('/precious-metals/summary'),
+      ]);
+      setItems(listRes.data);
+      setSummary(sumRes.data);
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
   };
@@ -76,8 +82,10 @@ export default function PreciousMetals() {
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
   const held = items.filter(i => i.status === 'HELD');
-  const totalPurchase = held.reduce((s, i) => s + (i.purchasePrice || 0), 0);
-  const totalCurrent = held.reduce((s, i) => s + (i.currentPrice || 0), 0);
+  // Money totals from the backend summary (FX-converted to base currency); rows keep original currency.
+  const baseCurrency = summary?.baseCurrency || 'SGD';
+  const totalPurchase = summary?.totalPurchaseValue ?? 0;
+  const totalCurrent = summary?.totalCurrentValue ?? 0;
   const totalGoldG = held.filter(i => i.metalType === 'GOLD').reduce((s, i) => s + i.weight, 0);
   const totalSilverG = held.filter(i => i.metalType === 'SILVER').reduce((s, i) => s + i.weight, 0);
 
@@ -91,8 +99,8 @@ export default function PreciousMetals() {
       {/* Summary */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Items</p><p className="text-lg font-bold text-slate-800 mt-1">{held.length}</p></div>
-        <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Invested</p><p className="text-lg font-bold text-slate-800 mt-1">{formatCurrency(totalPurchase)}</p></div>
-        <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Current Value</p><p className="text-lg font-bold text-amber-600 mt-1">{formatCurrency(totalCurrent)}</p></div>
+        <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Invested <span className="text-slate-400 normal-case">({baseCurrency})</span></p><p className="text-lg font-bold text-slate-800 mt-1">{formatCurrency(totalPurchase, baseCurrency)}</p></div>
+        <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Current Value <span className="text-slate-400 normal-case">({baseCurrency})</span></p><p className="text-lg font-bold text-amber-600 mt-1">{formatCurrency(totalCurrent, baseCurrency)}</p></div>
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Gold</p><p className="text-lg font-bold text-amber-600 mt-1">{totalGoldG.toFixed(1)}g</p></div>
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Silver</p><p className="text-lg font-bold text-slate-600 mt-1">{totalSilverG.toFixed(1)}g</p></div>
       </div>

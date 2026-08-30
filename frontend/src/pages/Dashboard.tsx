@@ -42,13 +42,15 @@ export default function Dashboard() {
     loadData();
   };
 
-  // Currency conversion driven by the user's own FX rates (from the backend). No hardcoded factors.
-  // displayRates maps a currency code -> factor to multiply a base-currency (SGD) amount by.
+  // Currency conversion driven entirely by the backend: base currency + display options
+  // are per-user configurable (User Management). displayRates maps a currency code -> factor
+  // to multiply a base-currency amount by. No hardcoded currencies or FX factors here.
   const baseCurrency = (summary?.baseCurrency as Currency) || 'SGD';
   const displayRates = summary?.displayRates || {};
-  const usdAvailable = displayRates['USD'] != null;
-  // If USD is selected but the user has no SGD<->USD rate, fall back to the base currency.
-  const effectiveCurrency: Currency = displayCurrency === 'USD' && !usdAvailable ? baseCurrency : displayCurrency;
+  // The currencies offered in the toggle are exactly those the backend returned a rate for.
+  const displayOptions = Object.keys(displayRates).length > 0 ? Object.keys(displayRates) : [baseCurrency];
+  // Selected currency falls back to base when it isn't an available option.
+  const effectiveCurrency = (displayRates[displayCurrency] != null ? displayCurrency : baseCurrency) as Currency;
   const cFactor = displayRates[effectiveCurrency] ?? 1;
   const fmt = (v: number) => formatCurrency(v * cFactor, effectiveCurrency);
 
@@ -108,12 +110,13 @@ export default function Dashboard() {
           </div>
           {/* Currency Toggle */}
           <div className="flex bg-white border border-slate-200 rounded-lg overflow-hidden">
-            <button onClick={() => setDisplayCurrency('SGD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${effectiveCurrency === 'SGD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>SGD</button>
-            <button
-              onClick={() => usdAvailable && setDisplayCurrency('USD')}
-              disabled={!usdAvailable}
-              title={usdAvailable ? 'Show values in USD' : 'Add an SGD/USD rate in Currency Rates to enable USD'}
-              className={`px-3 py-1.5 text-xs font-medium transition-colors ${effectiveCurrency === 'USD' ? 'bg-indigo-600 text-white' : usdAvailable ? 'text-slate-600 hover:bg-slate-50' : 'text-slate-300 cursor-not-allowed'}`}>USD</button>
+            {displayOptions.map(code => (
+              <button
+                key={code}
+                onClick={() => setDisplayCurrency(code as Currency)}
+                title={`Show values in ${code}`}
+                className={`px-3 py-1.5 text-xs font-medium transition-colors ${effectiveCurrency === code ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>{code}</button>
+            ))}
           </div>
           {/* Snapshot */}
           <button onClick={handleSnapshot} className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-medium hover:bg-indigo-700 transition-colors" title="Take a point-in-time snapshot of current net worth for historical tracking">

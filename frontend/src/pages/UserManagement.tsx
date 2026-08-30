@@ -11,8 +11,15 @@ interface AppUser {
   isActive: boolean;
   slFdEnabled: boolean;
   enabledFeatures: string;
+  baseCurrency?: string;
+  displayCurrencies?: string;
   createdAt: string;
 }
+
+// Currencies offered for base + display selection (mirrors the backend Currency enum).
+const CURRENCY_OPTIONS = ['SGD', 'USD', 'EUR', 'LKR', 'INR', 'GBP', 'AUD', 'JPY', 'CNY', 'MYR', 'THB', 'HKD', 'NZD', 'CHF', 'CAD'];
+const DEFAULT_BASE_CURRENCY = 'SGD';
+const DEFAULT_DISPLAY_CURRENCIES = ['SGD', 'USD'];
 
 const ALL_FEATURES = [
   { key: 'PORTFOLIO', label: 'Portfolio & Transactions' },
@@ -39,7 +46,8 @@ export default function UserManagement() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingFeatures, setEditingFeatures] = useState<AppUser | null>(null);
-  const [form, setForm] = useState({ username: '', email: '', password: '', displayName: '', role: 'USER', enabledFeatures: ALL_FEATURES.map(f => f.key) });
+  const [editingCurrency, setEditingCurrency] = useState<AppUser | null>(null);
+  const [form, setForm] = useState({ username: '', email: '', password: '', displayName: '', role: 'USER', enabledFeatures: ALL_FEATURES.map(f => f.key), baseCurrency: DEFAULT_BASE_CURRENCY, displayCurrencies: [...DEFAULT_DISPLAY_CURRENCIES] });
   const [error, setError] = useState('');
 
   useEffect(() => { loadUsers(); }, []);
@@ -54,13 +62,25 @@ export default function UserManagement() {
     e.preventDefault();
     setError('');
     try {
-      await api.post('/admin/users', { ...form, enabledFeatures: form.enabledFeatures.join(',') });
+      await api.post('/admin/users', {
+        ...form,
+        enabledFeatures: form.enabledFeatures.join(','),
+        displayCurrencies: form.displayCurrencies.join(','),
+      });
       setShowForm(false);
-      setForm({ username: '', email: '', password: '', displayName: '', role: 'USER', enabledFeatures: ALL_FEATURES.map(f => f.key) });
+      setForm({ username: '', email: '', password: '', displayName: '', role: 'USER', enabledFeatures: ALL_FEATURES.map(f => f.key), baseCurrency: DEFAULT_BASE_CURRENCY, displayCurrencies: [...DEFAULT_DISPLAY_CURRENCIES] });
       loadUsers();
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to create user');
     }
+  };
+
+  const saveCurrencySettings = async (user: AppUser, baseCurrency: string, displayCurrencies: string[]) => {
+    await api.put(`/admin/users/${user.id}/currency-settings`, {
+      baseCurrency,
+      displayCurrencies: displayCurrencies.join(','),
+    });
+    loadUsers();
   };
 
   const toggleActive = async (id: number) => {
@@ -144,6 +164,25 @@ export default function UserManagement() {
               </div>
             </div>
             )}
+            <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-medium text-slate-600 mb-1">Base Currency</label>
+                <select value={form.baseCurrency} onChange={e => setForm({...form, baseCurrency: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                  {CURRENCY_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+                <p className="text-[10px] text-slate-400 mt-1">Used for Net Worth consolidation. Original values are always preserved.</p>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-600 mb-1">Display Currencies (UI toggle)</label>
+                <div className="flex flex-wrap gap-1.5">
+                  {CURRENCY_OPTIONS.map(c => (
+                    <button type="button" key={c}
+                      onClick={() => setForm({...form, displayCurrencies: form.displayCurrencies.includes(c) ? form.displayCurrencies.filter(x => x !== c) : [...form.displayCurrencies, c]})}
+                      className={`text-[11px] px-2 py-1 rounded border transition-colors ${form.displayCurrencies.includes(c) ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50'}`}>{c}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
             <div className="flex items-end gap-2">
               <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">Create</button>
               <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
@@ -161,6 +200,7 @@ export default function UserManagement() {
               <th className="text-left px-5 py-3 font-medium text-slate-600">Email</th>
               <th className="text-left px-5 py-3 font-medium text-slate-600">Role</th>
               <th className="text-center px-5 py-3 font-medium text-slate-600">Features</th>
+              <th className="text-center px-5 py-3 font-medium text-slate-600">Currency</th>
               <th className="text-left px-5 py-3 font-medium text-slate-600">Status</th>
               <th className="px-5 py-3 w-32"></th>
             </tr>
@@ -188,6 +228,11 @@ export default function UserManagement() {
                 <td className="px-5 py-3.5 text-center">
                   <button onClick={() => setEditingFeatures(u)} className="text-[11px] font-medium px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors">
                     {u.enabledFeatures ? u.enabledFeatures.split(',').filter(Boolean).length + ' modules' : 'All'}
+                  </button>
+                </td>
+                <td className="px-5 py-3.5 text-center">
+                  <button onClick={() => setEditingCurrency(u)} className="text-[11px] font-medium px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors">
+                    {u.baseCurrency || DEFAULT_BASE_CURRENCY}
                   </button>
                 </td>
                 <td className="px-5 py-3.5">
@@ -254,6 +299,51 @@ export default function UserManagement() {
           </div>
         </div>
       )}
+
+      {/* Currency Settings Modal */}
+      {editingCurrency && (
+        <CurrencyModal
+          user={editingCurrency}
+          onClose={() => setEditingCurrency(null)}
+          onSave={async (base, display) => { await saveCurrencySettings(editingCurrency, base, display); setEditingCurrency(null); }}
+        />
+      )}
+    </div>
+  );
+}
+
+function CurrencyModal({ user, onClose, onSave }: { user: AppUser; onClose: () => void; onSave: (base: string, display: string[]) => void }) {
+  const [base, setBase] = useState(user.baseCurrency || DEFAULT_BASE_CURRENCY);
+  const [display, setDisplay] = useState<string[]>(
+    user.displayCurrencies ? user.displayCurrencies.split(',').map(s => s.trim()).filter(Boolean) : [...DEFAULT_DISPLAY_CURRENCIES]
+  );
+
+  const toggle = (c: string) => setDisplay(prev => prev.includes(c) ? prev.filter(x => x !== c) : [...prev, c]);
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-xl" onClick={e => e.stopPropagation()}>
+        <h3 className="text-lg font-semibold text-slate-800 mb-1">Currency Settings</h3>
+        <p className="text-xs text-slate-500 mb-4">Configure the base and display currencies for <b>{user.displayName || user.username}</b>. Changing these never alters stored original values.</p>
+
+        <label className="block text-xs font-medium text-slate-600 mb-1">Base Currency (for Net Worth)</label>
+        <select value={base} onChange={e => setBase(e.target.value)} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm mb-4">
+          {CURRENCY_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
+        </select>
+
+        <label className="block text-xs font-medium text-slate-600 mb-2">Display Currencies (UI toggle)</label>
+        <div className="flex flex-wrap gap-1.5">
+          {CURRENCY_OPTIONS.map(c => (
+            <button type="button" key={c} onClick={() => toggle(c)}
+              className={`text-[11px] px-2 py-1 rounded border transition-colors ${display.includes(c) ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-50'}`}>{c}</button>
+          ))}
+        </div>
+
+        <div className="mt-5 flex gap-2">
+          <button onClick={() => onSave(base, display)} className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">Save</button>
+          <button onClick={onClose} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">Cancel</button>
+        </div>
+      </div>
     </div>
   );
 }

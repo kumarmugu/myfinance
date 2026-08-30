@@ -21,6 +21,7 @@ import java.util.Map;
 public class BankSavingsController {
     private final BankSavingsRepository repository;
     private final TenantContext tenantContext;
+    private final com.myfinance.service.CurrencyConversionService fx;
 
     @GetMapping
     public List<BankSavings> getAll(@RequestParam(required = false) String country) {
@@ -33,8 +34,15 @@ public class BankSavingsController {
     public Map<String, Object> getSummary() {
         Long uid = tenantContext.getCurrentUserId();
         List<BankSavings> all = repository.findByUserIdOrderByAccountNameAsc(uid);
-        BigDecimal totalBalance = all.stream().map(BankSavings::getBalance).reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal inNetWorth = all.stream().filter(s -> Boolean.TRUE.equals(s.getIncludeInNetWorth())).map(BankSavings::getBalance).reduce(BigDecimal.ZERO, BigDecimal::add);
+        // Totals are consolidated in the user's base currency: convert each account's
+        // original balance via its own currency. Original values remain untouched.
+        BigDecimal totalBalance = all.stream()
+                .map(s -> fx.toBase(s.getBalance(), currencyCode(s), uid))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal inNetWorth = all.stream()
+                .filter(s -> Boolean.TRUE.equals(s.getIncludeInNetWorth()))
+                .map(s -> fx.toBase(s.getBalance(), currencyCode(s), uid))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         long sgCount = all.stream().filter(s -> "Singapore".equals(s.getCountry())).count();
         long slCount = all.stream().filter(s -> "Sri Lanka".equals(s.getCountry())).count();
 
@@ -44,6 +52,7 @@ public class BankSavingsController {
         result.put("inNetWorth", inNetWorth);
         result.put("sgAccounts", sgCount);
         result.put("slAccounts", slCount);
+        result.put("baseCurrency", fx.getBaseCurrency(uid));
         return result;
     }
 
@@ -80,6 +89,10 @@ public class BankSavingsController {
         existing.setBalance(new BigDecimal(body.get("balance").toString()));
         existing.setLastUpdated(java.time.LocalDate.now());
         return repository.save(existing);
+    }
+
+    private String currencyCode(BankSavings s) {
+        return s.getCurrency() != null ? s.getCurrency().name() : null;
     }
 
     @PatchMapping("/{id}/net-worth")

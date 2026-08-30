@@ -1,14 +1,27 @@
-import type { Currency } from '../types';
-
-const CURRENCY_SYMBOLS: Record<Currency, string> = {
+// Symbols for the common currencies; any other currency falls back to its code
+// (e.g. "INR 1,000") so we never show a misleading wrong symbol.
+const CURRENCY_SYMBOLS: Record<string, string> = {
   SGD: 'S$',
-  USD: '$',
+  USD: 'US$',
   EUR: '€',
   LKR: '₨',
+  GBP: '£',
+  INR: '₹',
+  JPY: '¥',
+  CNY: '¥',
+  AUD: 'A$',
+  HKD: 'HK$',
+  NZD: 'NZ$',
+  CAD: 'C$',
+  CHF: 'CHF ',
+  MYR: 'RM',
+  THB: '฿',
 };
 
-export function formatCurrency(amount: number, currency: Currency = 'SGD'): string {
-  const symbol = CURRENCY_SYMBOLS[currency] || '$';
+export function formatCurrency(amount: number, currency: string = 'SGD'): string {
+  const code = (currency || 'SGD').toUpperCase();
+  // Known symbol, else prefix with the ISO code so the currency is never ambiguous.
+  const symbol = CURRENCY_SYMBOLS[code] || `${code} `;
   const absAmount = Math.abs(amount);
   let formatted: string;
 
