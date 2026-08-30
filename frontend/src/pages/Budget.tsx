@@ -269,9 +269,9 @@ export default function Budget() {
               </button>
             </div>
             <div className="flex items-center gap-4">
-              <input type="range" min={0} max={80} value={savingsPct} onChange={e => setSavingsPct(parseInt(e.target.value))}
+              <input type="range" min={0} max={100} value={savingsPct} onChange={e => setSavingsPct(parseInt(e.target.value))}
                 className="flex-1 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" />
-              <input type="number" min={0} max={80} value={savingsPct} onChange={e => setSavingsPct(parseInt(e.target.value) || 0)}
+              <input type="number" min={0} max={100} value={savingsPct} onChange={e => setSavingsPct(parseInt(e.target.value) || 0)}
                 className="w-20 border border-slate-300 rounded-lg px-3 py-2 text-sm text-right focus:ring-2 focus:ring-indigo-500" />
               <span className="text-sm text-slate-500">%</span>
             </div>

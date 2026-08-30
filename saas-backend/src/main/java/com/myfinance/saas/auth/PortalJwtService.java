@@ -24,6 +24,7 @@ import java.util.function.Function;
 public class PortalJwtService {
 
     private static final String AUDIENCE = "saas-portal";
+    private static final String ADMIN_AUDIENCE = "saas-admin";
     private final AppProperties appProperties;
 
     public String generateToken(Long customerId, String email) {
@@ -36,6 +37,37 @@ public class PortalJwtService {
                 .expiration(new Date(now + appProperties.getJwt().getExpiration()))
                 .signWith(signKey())
                 .compact();
+    }
+
+    /**
+     * Issue an ADMIN token (aud=saas-admin). Distinct audience means an admin token cannot be
+     * used on customer portal routes and vice versa, even though both share the signing key.
+     */
+    public String generateAdminToken(Long adminId, String email) {
+        long now = System.currentTimeMillis();
+        return Jwts.builder()
+                .subject(email)
+                .audience().add(ADMIN_AUDIENCE).and()
+                .claim("adminId", adminId)
+                .issuedAt(new Date(now))
+                .expiration(new Date(now + appProperties.getJwt().getExpiration()))
+                .signWith(signKey())
+                .compact();
+    }
+
+    public Long extractAdminId(String token) {
+        return extractClaim(token, c -> c.get("adminId", Long.class));
+    }
+
+    /** Validate an admin token: correct audience, not expired, valid signature. */
+    public boolean isValidAdmin(String token) {
+        try {
+            Claims claims = parse(token);
+            boolean audienceOk = claims.getAudience() != null && claims.getAudience().contains(ADMIN_AUDIENCE);
+            return audienceOk && claims.getExpiration().after(new Date());
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public String extractEmail(String token) {

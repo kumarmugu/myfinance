@@ -20,6 +20,7 @@ public class AppProperties {
     private Payment payment = new Payment();
     private Stripe stripe = new Stripe();
     private Email email = new Email();
+    private Admin admin = new Admin();
     private String publicWebUrl = "http://localhost:5174";
     private String financeAppLoginUrl = "http://localhost:5173";
 
@@ -66,5 +67,13 @@ public class AppProperties {
         private String provider = "noop";
         private String from = "no-reply@myfinance.local";
         private String fromName = "MyFinance";
+    }
+
+    @Data
+    public static class Admin {
+        /** Bootstrap admin email (seeded on first run if no admin exists). */
+        private String email = "admin@myfinance.local";
+        /** Bootstrap admin password. Override via env in real environments. */
+        private String password = "admin123";
     }
 }
