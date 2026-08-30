@@ -5338,3 +5338,319 @@ org.springframework.http.converter.HttpMessageNotReadableException: Required req
 2026-08-30 23:26:48 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (9ms)
 2026-08-30 23:26:55 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (10ms)
 2026-08-30 23:26:55 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (5ms)
+2026-08-30 23:28:03 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (6ms)
+2026-08-30 23:28:03 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (4ms)
+2026-08-30 23:28:03 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (17ms)
+2026-08-30 23:28:03 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (14ms)
+2026-08-30 23:28:03 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (8ms)
+2026-08-30 23:28:03 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (11ms)
+2026-08-30 23:28:28 [http-nio-8080-exec-2] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-30 23:28:28 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (7ms)
+2026-08-30 23:28:28 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (8ms)
+2026-08-30 23:28:28 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (20ms)
+2026-08-30 23:28:28 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-08-30 23:28:28 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (8ms)
+2026-08-30 23:28:28 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (7ms)
+2026-08-30 23:28:28 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (87ms)
+2026-08-30 23:28:28 [http-nio-8080-exec-6] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-30 23:28:28 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (63ms)
+2026-08-30 23:28:35 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (5ms)
+2026-08-30 23:28:35 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (10ms)
+2026-08-30 23:28:35 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (5ms)
+2026-08-30 23:28:35 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (6ms)
+2026-08-30 23:28:35 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (31ms)
+2026-08-30 23:28:35 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (17ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-5] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-08-30 23:28:53 [http-nio-8080-exec-5] INFO  c.m.controller.AuthController - Login successful for user=mugu
+2026-08-30 23:28:53 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (111ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Creating deposit: amount=2000
+2026-08-30 23:28:53 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Created deposit id=5
+2026-08-30 23:28:53 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (9ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Creating deposit: amount=1000
+2026-08-30 23:28:53 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Created deposit id=6
+2026-08-30 23:28:53 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (11ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Creating deposit: amount=6000
+2026-08-30 23:28:53 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Created deposit id=7
+2026-08-30 23:28:53 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Creating deposit: amount=1500
+2026-08-30 23:28:53 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Created deposit id=8
+2026-08-30 23:28:53 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (9ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Creating deposit: amount=7500
+2026-08-30 23:28:53 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Created deposit id=9
+2026-08-30 23:28:53 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (8ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Creating deposit: amount=7500
+2026-08-30 23:28:53 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Created deposit id=10
+2026-08-30 23:28:53 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (8ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Creating deposit: amount=7500
+2026-08-30 23:28:53 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Created deposit id=11
+2026-08-30 23:28:53 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (7ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:53 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Created deposit id=12
+2026-08-30 23:28:53 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (8ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Creating deposit: amount=7000
+2026-08-30 23:28:53 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Created deposit id=13
+2026-08-30 23:28:53 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (8ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:53 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Created deposit id=14
+2026-08-30 23:28:53 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (8ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:53 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Created deposit id=15
+2026-08-30 23:28:53 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (9ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:53 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Created deposit id=16
+2026-08-30 23:28:53 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (12ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Creating deposit: amount=6000
+2026-08-30 23:28:53 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Created deposit id=17
+2026-08-30 23:28:53 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (14ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Creating deposit: amount=8000
+2026-08-30 23:28:53 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Created deposit id=18
+2026-08-30 23:28:53 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (16ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Creating deposit: amount=4000
+2026-08-30 23:28:53 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Created deposit id=19
+2026-08-30 23:28:53 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (9ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Creating deposit: amount=4000
+2026-08-30 23:28:53 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Created deposit id=20
+2026-08-30 23:28:53 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (8ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:53 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Created deposit id=21
+2026-08-30 23:28:53 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (12ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Creating deposit: amount=3000
+2026-08-30 23:28:53 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Created deposit id=22
+2026-08-30 23:28:53 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (72ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Creating deposit: amount=15000
+2026-08-30 23:28:53 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Created deposit id=23
+2026-08-30 23:28:53 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (25ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Creating deposit: amount=1600
+2026-08-30 23:28:53 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Created deposit id=24
+2026-08-30 23:28:53 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (7ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:53 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Created deposit id=25
+2026-08-30 23:28:53 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (8ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Creating deposit: amount=4000
+2026-08-30 23:28:53 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Created deposit id=26
+2026-08-30 23:28:53 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (9ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:53 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Created deposit id=27
+2026-08-30 23:28:53 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:53 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:53 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Created deposit id=28
+2026-08-30 23:28:53 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (8ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Creating deposit: amount=6000
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Created deposit id=29
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (8ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Created deposit id=30
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Creating deposit: amount=13700.69
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Created deposit id=31
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (8ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Created deposit id=32
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (9ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Creating deposit: amount=15300
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Created deposit id=33
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (15ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Creating deposit: amount=20400
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Created deposit id=34
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (12ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Created deposit id=35
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (10ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Created deposit id=36
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (10ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Created deposit id=37
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (7ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Creating deposit: amount=7000
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Created deposit id=38
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (8ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Created deposit id=39
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (7ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Created deposit id=40
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (8ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Created deposit id=41
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (9ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Created deposit id=42
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Created deposit id=43
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Created deposit id=44
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Created deposit id=45
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (7ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Creating deposit: amount=9000
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Created deposit id=46
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Creating deposit: amount=7000
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Created deposit id=47
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (7ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Created deposit id=48
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (7ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Creating deposit: amount=40000
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Created deposit id=49
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Creating deposit: amount=1000
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Created deposit id=50
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Creating deposit: amount=30000
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Created deposit id=51
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Creating deposit: amount=20000
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Created deposit id=52
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Created deposit id=53
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Creating deposit: amount=50000
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Created deposit id=54
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Creating deposit: amount=25000
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Created deposit id=55
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Creating deposit: amount=25000
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Created deposit id=56
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Creating deposit: amount=30000
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Created deposit id=57
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Created deposit id=58
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Created deposit id=59
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Created deposit id=60
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Created deposit id=61
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Created deposit id=62
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Creating deposit: amount=15000
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Created deposit id=63
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Creating deposit: amount=20000
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Created deposit id=64
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (8ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Creating deposit: amount=20000
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Created deposit id=65
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Creating deposit: amount=20000
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Created deposit id=66
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Creating deposit: amount=50000
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Created deposit id=67
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Creating deposit: amount=20000
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Created deposit id=68
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Creating deposit: amount=30000
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Created deposit id=69
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Created deposit id=70
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Creating deposit: amount=33742.53
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Created deposit id=71
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Creating deposit: amount=1000
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Created deposit id=72
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Creating deposit: amount=1000
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Created deposit id=73
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Creating deposit: amount=4000
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Created deposit id=74
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Creating deposit: amount=2000
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Created deposit id=75
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Created deposit id=76
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Created deposit id=77
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Created deposit id=78
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Created deposit id=79
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (40ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Created deposit id=80
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Created deposit id=81
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Creating deposit: amount=20000
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Created deposit id=82
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Creating deposit: amount=20000
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Created deposit id=83
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Created deposit id=84
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Created deposit id=85
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Created deposit id=86
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Created deposit id=87
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Created deposit id=88
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.controller.PlanningController - Created deposit id=89
+2026-08-30 23:28:54 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.controller.PlanningController - Created deposit id=90
+2026-08-30 23:28:54 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (72ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.controller.PlanningController - Created deposit id=91
+2026-08-30 23:28:54 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (17ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.controller.PlanningController - Created deposit id=92
+2026-08-30 23:28:54 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.controller.PlanningController - Created deposit id=93
+2026-08-30 23:28:54 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.controller.PlanningController - Created deposit id=94
+2026-08-30 23:28:54 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (6ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.controller.PlanningController - Created deposit id=95
+2026-08-30 23:28:54 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Creating deposit: amount=15000
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.controller.PlanningController - Created deposit id=96
+2026-08-30 23:28:54 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (5ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Creating deposit: amount=10000
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.controller.PlanningController - Created deposit id=97
+2026-08-30 23:28:54 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (4ms)
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Creating deposit: amount=5000
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.controller.PlanningController - Created deposit id=98
+2026-08-30 23:28:54 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/planning/deposits → 201 (3ms)
+2026-08-30 23:29:07 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (7ms)
+2026-08-30 23:29:07 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (6ms)
+2026-08-30 23:29:07 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (6ms)
+2026-08-30 23:29:07 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (6ms)
+2026-08-30 23:29:07 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (3ms)
+2026-08-30 23:29:17 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-08-30 23:29:17 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (13ms)
+2026-08-30 23:29:17 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (5ms)
+2026-08-30 23:29:17 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (12ms)
