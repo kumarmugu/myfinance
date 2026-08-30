@@ -27,6 +27,9 @@ export default function BankSavings() {
   const [summary, setSummary] = useState<{ totalBalance: number; inNetWorth: number; baseCurrency?: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [unmasked, setUnmasked] = useState<Set<number>>(new Set());
+  // Currency shown in the "Balance by Bank" pie. Currencies are never mixed in one pie
+  // (you can't compare LKR vs SGD directly), so the chart always shows a single currency.
+  const [chartCurrency, setChartCurrency] = useState<string | null>(null);
   const { showToast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<BankSavingsAccount | null>(null);
@@ -96,19 +99,34 @@ export default function BankSavings() {
   const sgAccounts = accounts.filter(a => a.country === 'Singapore');
   const slAccounts = accounts.filter(a => a.country === 'Sri Lanka');
 
-  // Distribution BY ACCOUNT. Each slice is one account, sized by its balance. Accounts may
-  // be in different currencies (no per-account FX conversion is available client-side), so the
-  // account's own currency is shown in the label/tooltip; slice sizes are approximate when
-  // currencies are mixed. Only positive balances are charted.
-  const hasMixedCurrencies = new Set(accounts.map(a => (a.currency || 'SGD').toUpperCase())).size > 1;
-  const accountPieData = accounts
-    .filter(a => (a.balance || 0) > 0)
-    .map((a, i) => ({
-      name: a.accountName,
-      value: a.balance || 0,
-      currency: (a.currency || 'SGD').toUpperCase(),
-      color: PIE_COLORS[i % PIE_COLORS.length],
-    }))
+  // Distribution BY BANK, always for a SINGLE currency (LKR and SGD can't be compared
+  // directly). A currency toggle at the top of the chart picks which currency to show;
+  // within it, balances are summed per bank. Only positive balances are charted.
+  const availableCurrencies = Array.from(
+    new Set(accounts.filter(a => (a.balance || 0) > 0).map(a => (a.currency || 'SGD').toUpperCase()))
+  ).sort();
+
+  // Effective selection: the chosen currency if still available, else the currency holding
+  // the largest total balance (most useful default).
+  const currencyTotals = accounts.reduce<Record<string, number>>((acc, a) => {
+    const cur = (a.currency || 'SGD').toUpperCase();
+    if ((a.balance || 0) > 0) acc[cur] = (acc[cur] || 0) + (a.balance || 0);
+    return acc;
+  }, {});
+  const defaultCurrency = Object.entries(currencyTotals).sort((x, y) => y[1] - x[1])[0]?.[0]
+    ?? availableCurrencies[0];
+  const selectedCurrency = (chartCurrency && availableCurrencies.includes(chartCurrency))
+    ? chartCurrency : defaultCurrency;
+
+  const bankTotals = accounts
+    .filter(a => (a.balance || 0) > 0 && (a.currency || 'SGD').toUpperCase() === selectedCurrency)
+    .reduce<Record<string, number>>((acc, a) => {
+      const bank = a.bankName?.trim() || a.accountName || 'Unknown';
+      acc[bank] = (acc[bank] || 0) + (a.balance || 0);
+      return acc;
+    }, {});
+  const bankPieData = Object.entries(bankTotals)
+    .map(([bank, value], i) => ({ name: bank, value, color: PIE_COLORS[i % PIE_COLORS.length] }))
     .sort((a, b) => b.value - a.value);
 
   return (
@@ -126,33 +144,40 @@ export default function BankSavings() {
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">SG / SL</p><p className="text-lg font-bold text-slate-800 mt-1">{sgAccounts.length} / {slAccounts.length}</p></div>
       </div>
 
-      {/* Distribution by account */}
-      {accountPieData.length > 0 && (
+      {/* Distribution by bank (single currency) */}
+      {availableCurrencies.length > 0 && (
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-          <h3 className="font-semibold text-slate-800 mb-1">Balance by Account</h3>
-          <p className="text-xs text-slate-400 mb-4">
-            {hasMixedCurrencies
-              ? 'Slices are sized by each account\u2019s balance. Amounts are in each account\u2019s own currency, so relative sizes are approximate across currencies.'
-              : 'Share of total savings held in each account.'}
-          </p>
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-1">
+            <h3 className="font-semibold text-slate-800">Balance by Bank</h3>
+            {/* Currency toggle — one currency at a time (no cross-currency mixing). */}
+            <div className="flex rounded-lg overflow-hidden border border-slate-300">
+              {availableCurrencies.map(cur => (
+                <button key={cur} type="button" onClick={() => setChartCurrency(cur)}
+                  className={`px-3 py-1 text-xs font-medium ${selectedCurrency === cur ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`}>
+                  {cur}
+                </button>
+              ))}
+            </div>
+          </div>
+          <p className="text-xs text-slate-400 mb-4">Share of {selectedCurrency} savings held at each bank.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
             <ResponsiveContainer width="100%" height={240}>
               <PieChart>
-                <Pie data={accountPieData} cx="50%" cy="50%" innerRadius={50} outerRadius={85} dataKey="value"
+                <Pie data={bankPieData} cx="50%" cy="50%" innerRadius={50} outerRadius={85} dataKey="value"
                      label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`} labelLine={false}>
-                  {accountPieData.map((e, i) => <Cell key={i} fill={e.color} />)}
+                  {bankPieData.map((e, i) => <Cell key={i} fill={e.color} />)}
                 </Pie>
-                <Tooltip formatter={(v, _n, p) => formatCurrency(v as number, (p?.payload?.currency as string) || 'SGD')} />
+                <Tooltip formatter={(v) => formatCurrency(v as number, selectedCurrency)} />
               </PieChart>
             </ResponsiveContainer>
             <div className="space-y-2 max-h-60 overflow-y-auto">
-              {accountPieData.map(a => (
-                <div key={a.name} className="flex items-center justify-between text-sm gap-3">
+              {bankPieData.map(b => (
+                <div key={b.name} className="flex items-center justify-between text-sm gap-3">
                   <span className="flex items-center gap-2 min-w-0">
-                    <span className="w-3 h-3 rounded-sm shrink-0" style={{ backgroundColor: a.color }} />
-                    <span className="font-medium text-slate-700 truncate">{a.name}</span>
+                    <span className="w-3 h-3 rounded-sm shrink-0" style={{ backgroundColor: b.color }} />
+                    <span className="font-medium text-slate-700 truncate">{b.name}</span>
                   </span>
-                  <span className="text-slate-800 font-semibold whitespace-nowrap">{formatNumber(a.value)} {a.currency}</span>
+                  <span className="text-slate-800 font-semibold whitespace-nowrap">{formatNumber(b.value)} {selectedCurrency}</span>
                 </div>
               ))}
             </div>
