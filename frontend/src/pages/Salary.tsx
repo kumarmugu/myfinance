@@ -60,7 +60,7 @@ export default function Salary() {
   };
   const [bonusForm, setBonusForm] = useState({ ...emptyBonus });
 
-  useEffect(() => { loadData(); loadCompanies(); }, [filterYear]);
+  useEffect(() => { loadData(); loadCompanies(); }, []);
 
   // When any form opens, scroll it into view so the user doesn't have to hunt for it below the summary.
   useEffect(() => {
@@ -72,7 +72,8 @@ export default function Salary() {
 
   const loadData = async () => {
     try {
-      const [recRes, sumRes] = await Promise.all([getSalaryRecords(filterYear), getSalarySummary()]);
+      // Always load ALL records; the year filter only highlights rows, it never hides other years.
+      const [recRes, sumRes] = await Promise.all([getSalaryRecords(), getSalarySummary()]);
       setRecords(recRes.data); setSummary(sumRes.data);
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
@@ -461,7 +462,7 @@ export default function Salary() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {records.map(r => (
-                <tr key={r.id} className={`hover:bg-slate-50 group ${r.isBonus ? 'bg-green-50/50' : ''}`}>
+                <tr key={r.id} className={`hover:bg-slate-50 group ${filterYear && r.year === filterYear ? 'bg-indigo-50 ring-1 ring-inset ring-indigo-200' : r.isBonus ? 'bg-green-50/50' : ''}`}>
                   <td className="px-3 py-2.5 text-slate-800 font-medium text-xs">{MONTHS[r.month]} {r.year}</td>
                   <td className="px-3 py-2.5 text-slate-600 text-xs">
                     {r.company}

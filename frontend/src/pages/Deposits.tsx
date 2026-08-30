@@ -7,6 +7,8 @@ import { formatCurrency, formatDate } from '../utils/formatters';
 import type { AccountDeposit, Account, Currency } from '../types';
 import { useToast } from '../contexts/ToastContext';
 
+const CURRENCY_OPTIONS = ['SGD', 'USD', 'EUR', 'LKR', 'INR', 'GBP', 'AUD', 'JPY', 'CNY', 'MYR', 'THB', 'HKD', 'NZD', 'CHF', 'CAD'];
+
 export default function Deposits() {
   const [deposits, setDeposits] = useState<AccountDeposit[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -120,7 +122,8 @@ export default function Deposits() {
           <h3 className="text-base font-semibold text-slate-800 mb-4">Record Deposit/Withdrawal</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Account *</label>
-              <SearchableSelect options={accounts.filter(a => a.accountType === 'BROKER' || a.accountType === 'CRYPTO_EXCHANGE').map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))} value={form.accountId} onChange={v => setForm({...form, accountId: Number(v)})} placeholder="Select account..." /></div>
+              <SearchableSelect options={accounts.filter(a => a.accountType === 'BROKER' || a.accountType === 'CRYPTO_EXCHANGE').map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))} value={form.accountId}
+                onChange={v => { const id = Number(v); const acc = accounts.find(a => a.id === id); setForm({...form, accountId: id, currency: (acc?.currency as Currency) || form.currency}); }} placeholder="Select account..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Type</label>
               <div className="flex rounded-lg overflow-hidden border border-slate-300">
                 <button type="button" onClick={() => setForm({...form, depositType: 'DEPOSIT'})} className={`flex-1 py-2 text-sm font-medium ${form.depositType === 'DEPOSIT' ? 'bg-green-600 text-white' : 'bg-white text-slate-600'}`}>Deposit</button>
@@ -128,6 +131,8 @@ export default function Deposits() {
               </div></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Amount *</label>
               <input type="number" step="any" value={form.amount || ''} onChange={e => setForm({...form, amount: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Currency</label>
+              <SearchableSelect options={CURRENCY_OPTIONS.map(c => ({ value: c, label: c }))} value={form.currency} onChange={v => setForm({...form, currency: String(v) as Currency})} placeholder="Currency" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Date *</label>
               <input type="date" value={form.depositDate} onChange={e => setForm({...form, depositDate: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Notes</label>
@@ -154,6 +159,7 @@ export default function Deposits() {
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Date</th>
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Account</th>
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Type</th>
+                <th className="text-left px-4 py-2.5 font-medium text-slate-600">Ccy</th>
                 <th className="text-right px-4 py-2.5 font-medium text-slate-600">Amount</th>
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Notes</th>
                 <th className="px-4 py-2.5 w-8"></th>
@@ -169,6 +175,7 @@ export default function Deposits() {
                       {d.depositType === 'DEPOSIT' ? <ArrowDownCircle size={11} /> : <ArrowUpCircle size={11} />}{d.depositType}
                     </span>
                   </td>
+                  <td className="px-4 py-2.5 text-xs font-medium text-indigo-600">{d.currency || 'SGD'}</td>
                   <td className={`px-4 py-2.5 text-right font-medium ${d.depositType === 'DEPOSIT' ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(d.amount, d.currency)}</td>
                   <td className="px-4 py-2.5 text-slate-500 text-xs">{d.notes || '-'}</td>
                   <td className="px-4 py-2.5"><button onClick={() => handleDelete(d.id)} className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500"><Trash2 size={14} /></button></td>
