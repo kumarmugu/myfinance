@@ -117,7 +117,12 @@ public class SalaryRecord {
     public BigDecimal getNetTakeHome() {
         BigDecimal components = nz(basic).add(nz(allowance)).add(nz(mobile))
                 .add(nz(support)).add(nz(weekend)).add(nz(mealAllowance));
-        BigDecimal gross = components.compareTo(BigDecimal.ZERO) > 0 ? components : nz(amount);
-        return gross.subtract(nz(deductions)).subtract(getEmployeeContributionTotal());
+        if (components.compareTo(BigDecimal.ZERO) <= 0) {
+            // No component breakdown (e.g. legacy records): `amount` is already the take-home
+            // the user entered — return it as-is, never re-subtract deductions/contributions.
+            return nz(amount);
+        }
+        // Full breakdown present: net = gross components − deductions − employee contributions.
+        return components.subtract(nz(deductions)).subtract(getEmployeeContributionTotal());
     }
 }

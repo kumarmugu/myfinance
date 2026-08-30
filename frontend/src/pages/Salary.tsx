@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Plus, Pencil, Trash2, Copy } from 'lucide-react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { getSalaryRecords, getSalarySummary, createSalaryRecord, updateSalaryRecord, deleteSalaryRecord, getWorkExperiences } from '../api';
@@ -39,6 +39,7 @@ export default function Salary() {
   const [filterYear, setFilterYear] = useState<number | undefined>();
   const [companies, setCompanies] = useState<string[]>([]);
   const [displayCurrency, setDisplayCurrency] = useState<string>('SGD');
+  const formRef = useRef<HTMLDivElement>(null);
   const emptyForm = {
     year: new Date().getFullYear(), month: new Date().getMonth() + 1, company: '', amount: 0,
     basic: 0, allowance: 0, mobile: 0, support: 0, weekend: 0, mealAllowance: 0, deductions: 0,
@@ -60,6 +61,14 @@ export default function Salary() {
   const [bonusForm, setBonusForm] = useState({ ...emptyBonus });
 
   useEffect(() => { loadData(); loadCompanies(); }, [filterYear]);
+
+  // When any form opens, scroll it into view so the user doesn't have to hunt for it below the summary.
+  useEffect(() => {
+    if (showForm || showBulkForm || showBonusForm) {
+      // Defer to next paint so the conditional form is mounted before we scroll to it.
+      requestAnimationFrame(() => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    }
+  }, [showForm, showBulkForm, showBonusForm]);
 
   const loadData = async () => {
     try {
@@ -260,7 +269,7 @@ export default function Salary() {
 
       {/* Bulk Add Form */}
       {showBulkForm && (
-        <div className="bg-white rounded-xl p-6 border border-indigo-200 shadow-sm">
+        <div ref={formRef} className="bg-white rounded-xl p-6 border border-indigo-200 shadow-sm scroll-mt-4">
           <h3 className="text-base font-semibold text-slate-800 mb-1">Bulk Add Salary</h3>
           <p className="text-xs text-slate-500 mb-4">Add the same salary for multiple months in one go (useful when salary is fixed for the year).</p>
           <form onSubmit={handleBulkSubmit} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -329,7 +338,7 @@ export default function Salary() {
 
       {/* Add Bonus Form */}
       {showBonusForm && (
-        <div className="bg-white rounded-xl p-6 border border-green-200 shadow-sm">
+        <div ref={formRef} className="bg-white rounded-xl p-6 border border-green-200 shadow-sm scroll-mt-4">
           <h3 className="text-base font-semibold text-slate-800 mb-1">Add Bonus</h3>
           <p className="text-xs text-slate-500 mb-4">Record a bonus for a specific year, month and company.</p>
           <form onSubmit={handleBonusSubmit} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -367,7 +376,7 @@ export default function Salary() {
 
       {/* Form */}
       {showForm && (
-        <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+        <div ref={formRef} className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm scroll-mt-4">
           <h3 className="text-base font-semibold text-slate-800 mb-4">{editing ? 'Edit Entry' : 'Add Salary Entry'}</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Year *</label>

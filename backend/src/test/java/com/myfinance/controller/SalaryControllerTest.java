@@ -141,6 +141,21 @@ class SalaryControllerTest extends BaseControllerTest {
 
     @Test
     @WithMockUser
+    void legacyRecordWithoutBreakdownUsesAmountAsTakeHome() throws Exception {
+        // A legacy 2019 record: only `amount` (already the take-home) is set. Even if a stray
+        // deductions value exists, `amount` must NOT be re-reduced — it is the take-home as entered.
+        repository.save(SalaryRecord.builder().year(2019).month(6).company("Old Co")
+                .amount(new BigDecimal("8000")).deductions(new BigDecimal("300"))
+                .userId(testUser.getId()).build());
+
+        mockMvc.perform(get("/api/salary/summary"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.grandTotal", closeTo(8000.0, 0.01)))
+                .andExpect(jsonPath("$.yearly[0].salaryTotal", closeTo(8000.0, 0.01)));
+    }
+
+    @Test
+    @WithMockUser
     void shouldUpdateSalary() throws Exception {
         SalaryRecord rec = repository.save(SalaryRecord.builder().year(2026).month(1).company("X").amount(new BigDecimal("10000")).userId(testUser.getId()).build());
         SalaryRecord update = SalaryRecord.builder().year(2026).month(1).company("Y").amount(new BigDecimal("12000")).build();
