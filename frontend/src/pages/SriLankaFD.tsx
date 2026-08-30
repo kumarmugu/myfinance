@@ -4,6 +4,8 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { getFixedDeposits, getFDSummary, getMaturingFDs, getBanks, getFDHolders, createFixedDeposit, updateFixedDeposit, deleteFixedDeposit, toggleFDNetWorth } from '../api';
 import { formatDate, daysBetween, formatCurrency } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
+import ExportMenu from '../components/ExportMenu';
+import { sriLankaFdExportConfig } from '../utils/export/configs';
 import type { FixedDeposit, FDSummary, Bank, FDHolder } from '../types';
 import { useToast } from '../contexts/ToastContext';
 
@@ -125,9 +127,12 @@ export default function SriLankaFD() {
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <p className="text-sm text-slate-500">Sri Lanka family fixed deposits — managed separately from investment net worth</p>
-        <button onClick={() => { setShowForm(!showForm); setEditing(null); resetFdForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
-          <Plus size={16} /> New FD
-        </button>
+        <div className="flex items-center gap-3">
+          <ExportMenu rows={fds} config={sriLankaFdExportConfig} />
+          <button onClick={() => { setShowForm(!showForm); setEditing(null); resetFdForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
+            <Plus size={16} /> New FD
+          </button>
+        </div>
       </div>
 
       {/* Info Banner */}

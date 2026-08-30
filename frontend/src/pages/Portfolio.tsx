@@ -3,7 +3,7 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis
 import { getActiveHoldings, getSoldPositions, getShortTermTrades } from '../api';
 import { formatCurrency, formatPercent } from '../utils/formatters';
 import ExportMenu from '../components/ExportMenu';
-import { holdingsExportConfig } from '../utils/export/configs';
+import { holdingsExportConfig, soldPositionsExportConfig } from '../utils/export/configs';
 import type { Holding, SoldPosition, Currency } from '../types';
 import { ASSET_TYPE_LABELS, ASSET_TYPE_COLORS } from '../types';
 
@@ -159,9 +159,15 @@ function SoldTable({ data, title }: { data: SoldPosition[]; title: string }) {
   const totalProfit = data.reduce((s, p) => s + p.profit, 0);
   return (
     <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-      <div className="p-4 border-b border-slate-200">
-        <h3 className="font-semibold text-slate-800">{title} ({data.length})</h3>
-        <p className={`text-sm ${totalProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>Total Profit: {formatCurrency(totalProfit, 'USD')}</p>
+      <div className="p-4 border-b border-slate-200 flex justify-between items-center">
+        <div>
+          <h3 className="font-semibold text-slate-800">{title} ({data.length})</h3>
+          <p className={`text-sm ${totalProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>Total Profit: {formatCurrency(totalProfit, 'USD')}</p>
+        </div>
+        <ExportMenu
+          rows={data}
+          config={{ ...soldPositionsExportConfig, entity: title.toLowerCase().replace(/\s+/g, '-'), title }}
+        />
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">

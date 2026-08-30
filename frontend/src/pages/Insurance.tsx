@@ -3,6 +3,8 @@ import { Plus, Pencil, Trash2, AlertCircle, Calendar, ChevronDown, ChevronUp } f
 import { getInsurancePolicies, createInsurancePolicy, updateInsurancePolicy, deleteInsurancePolicy, getInsuranceBonusEntries, createInsuranceBonusEntry, deleteInsuranceBonusEntry, getOwners } from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
+import ExportMenu from '../components/ExportMenu';
+import { insuranceExportConfig } from '../utils/export/configs';
 import type { InsurancePolicy, Currency, Owner } from '../types';
 import { useToast } from '../contexts/ToastContext';
 
@@ -102,6 +104,7 @@ export default function Insurance() {
               placeholder="All Owners"
             />
           </div>
+          <ExportMenu rows={policies} config={insuranceExportConfig} />
           <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Policy</button>
         </div>
       </div>

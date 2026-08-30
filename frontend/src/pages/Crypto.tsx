@@ -3,6 +3,8 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { Plus, TrendingUp, TrendingDown, Bitcoin, Wallet } from 'lucide-react';
 import { getActiveHoldings, getTransactions, getAssets, getAccounts, getOwners, createTransaction, getDashboardSummary, getCurrencyRates } from '../api';
 import SearchableSelect from '../components/SearchableSelect';
+import ExportMenu from '../components/ExportMenu';
+import { holdingsExportConfig } from '../utils/export/configs';
 import { formatCurrency, formatPercent } from '../utils/formatters';
 import type { Holding, Transaction, Asset, Account, Owner, TransactionRequest, CurrencyRate } from '../types';
 import { useToast } from '../contexts/ToastContext';
@@ -126,6 +128,10 @@ export default function Crypto() {
                 className={`px-3 py-1.5 text-xs font-medium transition-colors ${effectiveCurrency === code ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>{code}</button>
             ))}
           </div>
+          <ExportMenu
+            rows={holdings}
+            config={{ ...holdingsExportConfig, entity: 'crypto-holdings', title: 'Crypto Holdings' }}
+          />
           <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700">
             <Plus size={16} /> Add Crypto
           </button>

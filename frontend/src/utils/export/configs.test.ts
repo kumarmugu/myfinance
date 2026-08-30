@@ -4,6 +4,17 @@ import {
   accountsExportConfig,
   dividendsExportConfig,
   holdingsExportConfig,
+  salaryExportConfig,
+  workExperienceExportConfig,
+  bankSavingsExportConfig,
+  propertiesExportConfig,
+  preciousMetalsExportConfig,
+  genericFdExportConfig,
+  homeLoansExportConfig,
+  taxExportConfig,
+  soldPositionsExportConfig,
+  sriLankaFdExportConfig,
+  insuranceExportConfig,
 } from './configs';
 import { buildCsv } from './csv';
 import type { Transaction, Account } from '../../types';
@@ -56,6 +67,34 @@ describe('export/configs — all user-relevant columns, sensitive fields exclude
 
   it('every column has a header and accessor', () => {
     for (const cfg of [transactionsExportConfig, accountsExportConfig, dividendsExportConfig, holdingsExportConfig]) {
+      for (const col of cfg.columns) {
+        expect(col.header).toBeTruthy();
+        expect(typeof col.accessor).toBe('function');
+      }
+    }
+  });
+});
+
+describe('export/configs — additional table configs exclude sensitive fields', () => {
+  it('bank savings, generic FD, SL FD exclude account numbers; insurance excludes policy number', () => {
+    expect(bankSavingsExportConfig.columns.map(c => c.key)).not.toContain('accountNumber');
+    expect(genericFdExportConfig.columns.map(c => c.key)).not.toContain('accountNumber');
+    expect(sriLankaFdExportConfig.columns.map(c => c.key)).not.toContain('accountNumber');
+    expect(insuranceExportConfig.columns.map(c => c.key)).not.toContain('policyNumber');
+  });
+
+  it('salary/work-experience/property/metals/tax configs include hidden columns (id, notes)', () => {
+    for (const cfg of [salaryExportConfig, workExperienceExportConfig, propertiesExportConfig, preciousMetalsExportConfig, taxExportConfig, homeLoansExportConfig, soldPositionsExportConfig]) {
+      const keys = cfg.columns.map(c => c.key);
+      expect(keys).toContain('id');
+      expect(keys).toContain('notes');
+    }
+  });
+
+  it('every additional config column has a header and accessor', () => {
+    for (const cfg of [salaryExportConfig, workExperienceExportConfig, bankSavingsExportConfig, propertiesExportConfig, preciousMetalsExportConfig, genericFdExportConfig, homeLoansExportConfig, taxExportConfig, soldPositionsExportConfig, sriLankaFdExportConfig, insuranceExportConfig]) {
+      expect(cfg.entity).toBeTruthy();
+      expect(cfg.title).toBeTruthy();
       for (const col of cfg.columns) {
         expect(col.header).toBeTruthy();
         expect(typeof col.accessor).toBe('function');

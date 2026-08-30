@@ -4,6 +4,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { getTaxRecords, getTaxSummary, createTaxRecord, updateTaxRecord, deleteTaxRecord, getOwners } from '../api';
 import { formatCurrency } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
+import ExportMenu from '../components/ExportMenu';
+import { taxExportConfig } from '../utils/export/configs';
 import { useToast } from '../contexts/ToastContext';
 import type { Owner } from '../types';
 
@@ -107,6 +109,7 @@ export default function Tax() {
               placeholder="All Owners"
             />
           </div>
+          <ExportMenu rows={records} config={taxExportConfig} />
           <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Year</button>
         </div>
       </div>

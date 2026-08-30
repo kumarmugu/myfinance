@@ -4,6 +4,8 @@ import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, R
 import { getSalaryRecords, getSalarySummary, createSalaryRecord, updateSalaryRecord, deleteSalaryRecord, getWorkExperiences } from '../api';
 import { formatCurrency } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
+import ExportMenu from '../components/ExportMenu';
+import { salaryExportConfig } from '../utils/export/configs';
 import { useToast } from '../contexts/ToastContext';
 
 interface SalaryRecord {
@@ -190,6 +192,11 @@ export default function Salary() {
                 className={`px-3 py-1.5 text-xs font-medium transition-colors ${effectiveCurrency === code ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>{code}</button>
             ))}
           </div>
+          <ExportMenu
+            rows={records.filter(r => !filterYear || r.year === filterYear)}
+            config={salaryExportConfig}
+            subtitle={filterYear ? `Year: ${filterYear}` : undefined}
+          />
           <button onClick={() => { setShowBulkForm(!showBulkForm); setShowForm(false); setShowBonusForm(false); }} className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200"><Copy size={16} /> Bulk Add</button>
           <button onClick={() => { setShowBonusForm(!showBonusForm); setShowForm(false); setShowBulkForm(false); setBonusForm({ ...emptyBonus }); }} className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700"><Plus size={16} /> Add Bonus</button>
           <button onClick={() => { setShowForm(!showForm); setShowBulkForm(false); setShowBonusForm(false); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Entry</button>

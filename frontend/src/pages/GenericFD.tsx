@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import api from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
+import ExportMenu from '../components/ExportMenu';
+import { genericFdExportConfig } from '../utils/export/configs';
 import { useToast } from '../contexts/ToastContext';
 
 interface GenericFixedDeposit {
@@ -87,9 +89,12 @@ export default function GenericFD() {
           <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Total Principal</p><p className="text-lg font-bold text-indigo-600 mt-0.5">{formatCurrency(totalPrincipal)}</p></div>
           <div className="bg-white rounded-lg p-3 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Expected Interest</p><p className="text-lg font-bold text-green-600 mt-0.5">{formatCurrency(totalInterest)}</p></div>
         </div>
-        <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="ml-4 flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
-          <Plus size={16} /> New FD
-        </button>
+        <div className="ml-4 flex items-center gap-3">
+          <ExportMenu rows={fds} config={genericFdExportConfig} />
+          <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
+            <Plus size={16} /> New FD
+          </button>
+        </div>
       </div>
 
       {showForm && (

@@ -5,6 +5,8 @@ import api, { getOwners } from '../api';
 import type { Owner } from '../types';
 import { formatCurrency, formatNumber, formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
+import ExportMenu from '../components/ExportMenu';
+import { bankSavingsExportConfig } from '../utils/export/configs';
 import { useToast } from '../contexts/ToastContext';
 
 // Palette for the currency-distribution pie (reused across slices if more currencies).
@@ -160,6 +162,7 @@ export default function BankSavings() {
             <option value={0}>All owners</option>
             {owners.map(o => <option key={o.id} value={o.id}>{o.name} ({o.relationship})</option>)}
           </select>
+          <ExportMenu rows={accounts} config={bankSavingsExportConfig} />
           <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Account</button>
         </div>
       </div>

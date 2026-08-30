@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, Home, ChevronDown, ChevronUp } from 'lucide-react';
 import { getHomeLoans, createHomeLoan, updateHomeLoan, deleteHomeLoan, getLoanPayments, createLoanPayment, deleteLoanPayment } from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
+import ExportMenu from '../components/ExportMenu';
+import { homeLoansExportConfig } from '../utils/export/configs';
 import { useToast } from '../contexts/ToastContext';
 
 export default function HomeLoans() {
@@ -81,7 +83,10 @@ export default function HomeLoans() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-2xl font-bold text-slate-800">Home Loans & Mortgage</h1><p className="text-slate-500 text-sm mt-0.5">Track properties, loans, and payment history</p></div>
-        <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Property</button>
+        <div className="flex items-center gap-3">
+          <ExportMenu rows={loans} config={homeLoansExportConfig} />
+          <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Property</button>
+        </div>
       </div>
 
       {/* Summary */}

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, Briefcase } from 'lucide-react';
 import { getWorkExperiences, createWorkExperience, updateWorkExperience, deleteWorkExperience } from '../api';
+import ExportMenu from '../components/ExportMenu';
+import { workExperienceExportConfig } from '../utils/export/configs';
 
 interface WorkExp {
   id: number;
@@ -83,7 +85,10 @@ export default function WorkExperience() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-2xl font-bold text-slate-800">Work Experience</h1><p className="text-slate-500 text-sm mt-0.5">Track your career history</p></div>
-        <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Company</button>
+        <div className="flex items-center gap-3">
+          <ExportMenu rows={experiences} config={workExperienceExportConfig} />
+          <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Company</button>
+        </div>
       </div>
 
       {/* Summary */}

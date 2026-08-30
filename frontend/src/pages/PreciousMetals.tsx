@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import api, { getOwners } from '../api';
 import SearchableSelect from '../components/SearchableSelect';
+import ExportMenu from '../components/ExportMenu';
+import { preciousMetalsExportConfig } from '../utils/export/configs';
 import { formatCurrency } from '../utils/formatters';
 import { useToast } from '../contexts/ToastContext';
 import type { Owner } from '../types';
@@ -109,6 +111,7 @@ export default function PreciousMetals() {
               placeholder="All Owners"
             />
           </div>
+          <ExportMenu rows={items} config={preciousMetalsExportConfig} />
           <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700"><Plus size={16} /> Add Metal</button>
         </div>
       </div>
