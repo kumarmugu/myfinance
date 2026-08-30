@@ -66,6 +66,13 @@ public class NetWorthConfigController {
             existing = repository.findByUserIdOrderByAssetTypeAsc(uid);
         }
 
+        // Refresh the stale legacy "Savings" label for existing config rows so it no longer
+        // reads the same as the Bank Savings module. Idempotent; only writes when needed.
+        existing.stream()
+                .filter(c -> "SAVINGS".equals(c.getAssetType()) && !"Cash / Savings (holding)".equals(c.getLabel()))
+                .findFirst()
+                .ifPresent(c -> { c.setLabel("Cash / Savings (holding)"); repository.save(c); });
+
         return existing;
     }
 
@@ -92,6 +99,9 @@ public class NetWorthConfigController {
     }
 
     private String formatLabel(String enumName) {
+        // SAVINGS (an investment holding type) is easily confused with the standalone Bank Savings
+        // module; disambiguate its label. Bank Savings uses its own BANK_SAVINGS config key.
+        if ("SAVINGS".equals(enumName)) return "Cash / Savings (holding)";
         return Arrays.stream(enumName.split("_"))
                 .map(w -> w.charAt(0) + w.substring(1).toLowerCase())
                 .collect(Collectors.joining(" "));

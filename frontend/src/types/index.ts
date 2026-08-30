@@ -243,7 +243,7 @@ export const ASSET_TYPE_LABELS: Record<string, string> = {
   LEVERAGED_ETF: 'Leveraged ETF (3x)',
   MONEY_MARKET: 'Money Market',
   FIXED_DEPOSIT: 'Fixed Deposit',
-  SAVINGS: 'Savings',
+  SAVINGS: 'Cash / Savings (holding)',
   CRYPTO: 'Crypto',
   GOLD: 'Gold',
   BOND: 'Bond',
