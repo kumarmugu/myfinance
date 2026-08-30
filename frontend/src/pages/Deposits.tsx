@@ -19,7 +19,7 @@ export default function Deposits() {
   const [filterAccount, setFilterAccount] = useState<string>('');
   const [displayCurrency, setDisplayCurrency] = useState<Currency>('SGD');
 
-  const [form, setForm] = useState({ accountId: 0, amount: 0, depositType: 'DEPOSIT', currency: 'SGD' as Currency, depositDate: new Date().toISOString().split('T')[0], notes: '' });
+  const [form, setForm] = useState({ ownerId: 0, accountId: 0, amount: 0, depositType: 'DEPOSIT', currency: 'SGD' as Currency, depositDate: new Date().toISOString().split('T')[0], notes: '' });
 
   useEffect(() => { loadData(); }, []);
 
@@ -36,7 +36,7 @@ export default function Deposits() {
     try {
       await createAccountDeposit({ account: { id: form.accountId } as Account, amount: form.amount, depositType: form.depositType, currency: form.currency, depositDate: form.depositDate, notes: form.notes });
       setShowForm(false);
-      setForm({ accountId: 0, amount: 0, depositType: 'DEPOSIT', currency: 'SGD', depositDate: new Date().toISOString().split('T')[0], notes: '' });
+      setForm({ ownerId: 0, accountId: 0, amount: 0, depositType: 'DEPOSIT', currency: 'SGD', depositDate: new Date().toISOString().split('T')[0], notes: '' });
       loadData();
     } catch (err) { console.error(err); showToast('Failed'); }
   };
@@ -144,8 +144,11 @@ export default function Deposits() {
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
           <h3 className="text-base font-semibold text-slate-800 mb-4">Record Deposit/Withdrawal</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner *</label>
+              <SearchableSelect options={owners.map(o => ({ value: o.id, label: o.name }))} value={form.ownerId}
+                onChange={v => setForm({...form, ownerId: Number(v), accountId: 0})} placeholder="Select owner..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Account *</label>
-              <SearchableSelect options={accounts.filter(a => a.accountType === 'BROKER' || a.accountType === 'CRYPTO_EXCHANGE').map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))} value={form.accountId}
+              <SearchableSelect options={accounts.filter(a => (a.accountType === 'BROKER' || a.accountType === 'CRYPTO_EXCHANGE') && (!form.ownerId || a.owner?.id === form.ownerId)).map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))} value={form.accountId}
                 onChange={v => { const id = Number(v); const acc = accounts.find(a => a.id === id); setForm({...form, accountId: id, currency: (acc?.currency as Currency) || form.currency}); }} placeholder="Select account..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Type</label>
               <div className="flex rounded-lg overflow-hidden border border-slate-300">
