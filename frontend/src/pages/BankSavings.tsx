@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Plus, Pencil, Trash2, Check } from 'lucide-react';
+import { Plus, Pencil, Trash2, Check, Eye, EyeOff } from 'lucide-react';
 import api from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
@@ -21,6 +21,7 @@ interface BankSavingsAccount {
 export default function BankSavings() {
   const [accounts, setAccounts] = useState<BankSavingsAccount[]>([]);
   const [loading, setLoading] = useState(true);
+  const [unmasked, setUnmasked] = useState<Set<number>>(new Set());
   const { showToast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<BankSavingsAccount | null>(null);
@@ -38,6 +39,17 @@ export default function BankSavings() {
   };
 
   const resetForm = () => setForm({ accountName: '', bankName: '', accountNumber: '', balance: 0, currency: 'SGD', country: 'Singapore', includeInNetWorth: true, notes: '' });
+
+  const toggleMask = (id: number) => {
+    setUnmasked(prev => { const n = new Set(prev); if (n.has(id)) n.delete(id); else n.add(id); return n; });
+  };
+
+  const maskNumber = (num: string | null, id: number) => {
+    if (!num) return '-';
+    if (unmasked.has(id)) return num;
+    if (num.length <= 4) return '****';
+    return '****' + num.slice(-4);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -124,6 +136,7 @@ export default function BankSavings() {
             <tr>
               <th className="text-left px-4 py-3 font-medium text-slate-600">Account</th>
               <th className="text-left px-4 py-3 font-medium text-slate-600">Bank</th>
+              <th className="text-left px-4 py-3 font-medium text-slate-600">Account No.</th>
               <th className="text-left px-4 py-3 font-medium text-slate-600">Country</th>
               <th className="text-right px-4 py-3 font-medium text-slate-600">Balance</th>
               <th className="text-center px-4 py-3 font-medium text-slate-600">Net Worth</th>
@@ -136,6 +149,16 @@ export default function BankSavings() {
               <tr key={acc.id} className="hover:bg-slate-50 group">
                 <td className="px-4 py-3 font-medium text-slate-800">{acc.accountName}</td>
                 <td className="px-4 py-3 text-slate-600">{acc.bankName || '-'}</td>
+                <td className="px-4 py-3">
+                  {acc.accountNumber ? (
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-mono text-slate-600">{maskNumber(acc.accountNumber, acc.id)}</span>
+                      <button onClick={() => toggleMask(acc.id)} className="text-slate-400 hover:text-slate-700">
+                        {unmasked.has(acc.id) ? <EyeOff size={12} /> : <Eye size={12} />}
+                      </button>
+                    </div>
+                  ) : <span className="text-xs text-slate-400">-</span>}
+                </td>
                 <td className="px-4 py-3"><span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${acc.country === 'Singapore' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{acc.country}</span></td>
                 <td className="px-4 py-3 text-right font-medium text-slate-800">{formatCurrency(acc.balance, acc.currency)}</td>
                 <td className="px-4 py-3 text-center">
@@ -152,7 +175,7 @@ export default function BankSavings() {
                 </td>
               </tr>
             ))}
-            {accounts.length === 0 && <tr><td colSpan={7} className="px-4 py-12 text-center text-slate-400">No savings accounts tracked</td></tr>}
+            {accounts.length === 0 && <tr><td colSpan={8} className="px-4 py-12 text-center text-slate-400">No savings accounts tracked</td></tr>}
           </tbody>
         </table>
       </div>

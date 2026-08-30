@@ -214,6 +214,10 @@ export interface DashboardSummary {
   allocationByType: Record<string, number>;
   totalHoldings: number;
   totalAccounts: number;
+  /** Currency the monetary values above are expressed in (net-worth base, e.g. "SGD"). */
+  baseCurrency?: string;
+  /** Factors to convert a base-currency amount into other display currencies (from the user's own FX rates). */
+  displayRates?: Record<string, number>;
 }
 
 export interface TransactionRequest {
@@ -267,6 +271,22 @@ export const ASSET_TYPE_COLORS: Record<string, string> = {
   INSURANCE: '#059669',
   PENSION: '#4f46e5',
   OTHER: '#6b7280',
+};
+
+// Labels/colors for standalone net-worth modules (keys from NetWorthConfig MODULE_KEYS).
+// Kept separate from ASSET_TYPE_* which describe brokerage holding types.
+export const NET_WORTH_MODULE_LABELS: Record<string, string> = {
+  BANK_SAVINGS: 'Bank Savings',
+  PROPERTY: 'Real Estate',
+  PRECIOUS_METAL: 'Precious Metals',
+  GENERIC_FD: 'Fixed Deposits',
+};
+
+export const NET_WORTH_MODULE_COLORS: Record<string, string> = {
+  BANK_SAVINGS: '#0ea5e9',
+  PROPERTY: '#22c55e',
+  PRECIOUS_METAL: '#eab308',
+  GENERIC_FD: '#94a3b8',
 };
 
 // ─── Insurance ───

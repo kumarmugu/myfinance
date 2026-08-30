@@ -19,12 +19,25 @@ public class NetWorthConfigController {
     private final NetWorthConfigRepository repository;
     private final TenantContext tenantContext;
 
+    /**
+     * Config keys for the standalone asset modules that live in their own tables
+     * (not brokerage Holdings). These are toggled in the same Net Worth Config
+     * screen alongside the {@link AssetType} keys. Kept in sync with
+     * {@code NetWorthService} which reads these to decide module inclusion.
+     */
+    public static final Map<String, String> MODULE_KEYS = new LinkedHashMap<>() {{
+        put("BANK_SAVINGS", "Bank Savings");
+        put("PROPERTY", "Real Estate");
+        put("PRECIOUS_METAL", "Precious Metals");
+        put("GENERIC_FD", "Fixed Deposits");
+    }};
+
     @GetMapping
     public List<NetWorthConfig> getAll() {
         Long uid = tenantContext.getCurrentUserId();
         List<NetWorthConfig> existing = repository.findByUserIdOrderByAssetTypeAsc(uid);
 
-        // Ensure all asset types have a config entry (auto-create missing ones)
+        // Ensure all asset types AND standalone modules have a config entry (auto-create missing ones)
         Set<String> existingTypes = existing.stream().map(NetWorthConfig::getAssetType).collect(Collectors.toSet());
         List<NetWorthConfig> toCreate = new ArrayList<>();
 
@@ -37,6 +50,16 @@ public class NetWorthConfigController {
                         .build());
             }
         }
+
+        MODULE_KEYS.forEach((key, label) -> {
+            if (!existingTypes.contains(key)) {
+                toCreate.add(NetWorthConfig.builder()
+                        .assetType(key)
+                        .includeInNetWorth(true)
+                        .label(label).userId(uid)
+                        .build());
+            }
+        });
 
         if (!toCreate.isEmpty()) {
             repository.saveAll(toCreate);

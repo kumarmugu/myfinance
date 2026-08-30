@@ -5,7 +5,7 @@ import { getDashboardSummary, getNetWorthHistory, getActiveHoldings, takeSnapsho
 import { formatCurrency, formatPercent } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import type { DashboardSummary, NetWorthSnapshot, Holding, Owner, Currency } from '../types';
-import { ASSET_TYPE_LABELS, ASSET_TYPE_COLORS } from '../types';
+import { ASSET_TYPE_LABELS, ASSET_TYPE_COLORS, NET_WORTH_MODULE_LABELS, NET_WORTH_MODULE_COLORS } from '../types';
 
 export default function Dashboard() {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
@@ -42,10 +42,15 @@ export default function Dashboard() {
     loadData();
   };
 
-  // Currency conversion factor (simple: if USD, divide SGD by 1.35)
-  const cFactor = displayCurrency === 'USD' ? 1 / 1.35 : 1;
-  const cSymbol = displayCurrency === 'USD' ? 'USD' : 'SGD';
-  const fmt = (v: number) => formatCurrency(v * cFactor, displayCurrency);
+  // Currency conversion driven by the user's own FX rates (from the backend). No hardcoded factors.
+  // displayRates maps a currency code -> factor to multiply a base-currency (SGD) amount by.
+  const baseCurrency = (summary?.baseCurrency as Currency) || 'SGD';
+  const displayRates = summary?.displayRates || {};
+  const usdAvailable = displayRates['USD'] != null;
+  // If USD is selected but the user has no SGD<->USD rate, fall back to the base currency.
+  const effectiveCurrency: Currency = displayCurrency === 'USD' && !usdAvailable ? baseCurrency : displayCurrency;
+  const cFactor = displayRates[effectiveCurrency] ?? 1;
+  const fmt = (v: number) => formatCurrency(v * cFactor, effectiveCurrency);
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
@@ -53,7 +58,11 @@ export default function Dashboard() {
   const allocationData = summary?.allocationByType
     ? Object.entries(summary.allocationByType)
         .filter(([, v]) => v > 0)
-        .map(([key, value]) => ({ name: ASSET_TYPE_LABELS[key as keyof typeof ASSET_TYPE_LABELS] || key, value: value * cFactor, color: ASSET_TYPE_COLORS[key as keyof typeof ASSET_TYPE_COLORS] || '#94a3b8' }))
+        .map(([key, value]) => ({
+          name: ASSET_TYPE_LABELS[key as keyof typeof ASSET_TYPE_LABELS] || NET_WORTH_MODULE_LABELS[key] || key,
+          value: value * cFactor,
+          color: ASSET_TYPE_COLORS[key as keyof typeof ASSET_TYPE_COLORS] || NET_WORTH_MODULE_COLORS[key] || '#94a3b8'
+        }))
         .sort((a, b) => b.value - a.value)
     : [];
 
@@ -99,8 +108,12 @@ export default function Dashboard() {
           </div>
           {/* Currency Toggle */}
           <div className="flex bg-white border border-slate-200 rounded-lg overflow-hidden">
-            <button onClick={() => setDisplayCurrency('SGD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'SGD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>SGD</button>
-            <button onClick={() => setDisplayCurrency('USD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'USD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>USD</button>
+            <button onClick={() => setDisplayCurrency('SGD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${effectiveCurrency === 'SGD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>SGD</button>
+            <button
+              onClick={() => usdAvailable && setDisplayCurrency('USD')}
+              disabled={!usdAvailable}
+              title={usdAvailable ? 'Show values in USD' : 'Add an SGD/USD rate in Currency Rates to enable USD'}
+              className={`px-3 py-1.5 text-xs font-medium transition-colors ${effectiveCurrency === 'USD' ? 'bg-indigo-600 text-white' : usdAvailable ? 'text-slate-600 hover:bg-slate-50' : 'text-slate-300 cursor-not-allowed'}`}>USD</button>
           </div>
           {/* Snapshot */}
           <button onClick={handleSnapshot} className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-medium hover:bg-indigo-700 transition-colors" title="Take a point-in-time snapshot of current net worth for historical tracking">
@@ -128,7 +141,7 @@ export default function Dashboard() {
         {/* Net Worth Chart */}
         <div className="lg:col-span-2 bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
           <h3 className="text-sm font-semibold text-slate-800 mb-3 flex items-center gap-2">
-            <Target size={16} className="text-indigo-600" /> Net Worth History ({cSymbol})
+            <Target size={16} className="text-indigo-600" /> Net Worth History ({effectiveCurrency})
           </h3>
           {chartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={260}>
@@ -163,7 +176,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* By Account */}
         <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
-          <h3 className="text-sm font-semibold text-slate-800 mb-3">By Account ({cSymbol})</h3>
+          <h3 className="text-sm font-semibold text-slate-800 mb-3">By Account ({effectiveCurrency})</h3>
           {accountData.length > 0 ? (
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={accountData.slice(0, 8)} layout="vertical">

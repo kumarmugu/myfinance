@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ public class DashboardService {
     private final HoldingService holdingService;
     private final NetWorthService netWorthService;
     private final AccountRepository accountRepository;
+    private final CurrencyConversionService fx;
 
     public DashboardSummary getSummary(Long ownerId) {
         return getSummary(ownerId, null);
@@ -35,35 +37,50 @@ public class DashboardService {
             holdings = holdingService.getActiveHoldings();
         }
 
+        // Investment performance figures (holdings only), converted to base currency (SGD).
         BigDecimal totalInvested = holdings.stream()
-                .map(Holding::getInvestedAmount)
+                .map(h -> fx.toBase(h.getInvestedAmount(), currencyCode(h), userId))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal totalCurrentValue = holdings.stream()
+        BigDecimal investedCurrentValue = holdings.stream()
                 .map(h -> {
                     BigDecimal price = h.getAsset().getCurrentPrice();
                     if (price == null) price = h.getAverageBuyPrice();
-                    return h.getQuantity().multiply(price);
+                    return fx.toBase(h.getQuantity().multiply(price), currencyCode(h), userId);
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal totalGainLoss = totalCurrentValue.subtract(totalInvested);
+        BigDecimal totalGainLoss = investedCurrentValue.subtract(totalInvested);
         BigDecimal gainLossPercentage = BigDecimal.ZERO;
         if (totalInvested.compareTo(BigDecimal.ZERO) > 0) {
             gainLossPercentage = totalGainLoss.multiply(BigDecimal.valueOf(100))
                     .divide(totalInvested, 2, RoundingMode.HALF_UP);
         }
 
-        Map<String, BigDecimal> allocation = netWorthService.getCurrentAllocation();
+        // Net worth = holdings + standalone modules, FX-converted, respecting config + per-record flags.
+        Map<String, BigDecimal> allocation = netWorthService.getCurrentAllocationForUser(userId);
+        BigDecimal totalNetWorth = allocation.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        // Display-currency factors derived from the user's own rates (no hardcoded FX).
+        Map<String, BigDecimal> displayRates = new LinkedHashMap<>();
+        displayRates.put(CurrencyConversionService.BASE_CURRENCY, BigDecimal.ONE);
+        BigDecimal usdFactor = fx.factorFromBase("USD", userId);
+        if (usdFactor != null) displayRates.put("USD", usdFactor);
 
         return DashboardSummary.builder()
-                .totalNetWorth(totalCurrentValue)
+                .totalNetWorth(totalNetWorth)
                 .totalInvested(totalInvested)
                 .totalGainLoss(totalGainLoss)
                 .gainLossPercentage(gainLossPercentage)
                 .allocationByType(allocation)
                 .totalHoldings(holdings.size())
                 .totalAccounts((int) accountRepository.count())
+                .baseCurrency(CurrencyConversionService.BASE_CURRENCY)
+                .displayRates(displayRates)
                 .build();
+    }
+
+    private String currencyCode(Holding h) {
+        return h.getCurrency() != null ? h.getCurrency().name() : null;
     }
 }
