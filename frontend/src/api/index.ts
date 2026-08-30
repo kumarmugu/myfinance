@@ -120,6 +120,7 @@ export const getAllocationPlan = (ownerId?: number) => api.get<{ targets: Alloca
 export const updateAllocationTargets = (targets: AllocationTarget[]) => api.put<AllocationTarget[]>('/planning/allocation', targets);
 export const getAccountDeposits = (accountId?: number) => api.get<AccountDeposit[]>('/planning/deposits', { params: { accountId } });
 export const createAccountDeposit = (deposit: Partial<AccountDeposit>) => api.post<AccountDeposit>('/planning/deposits', deposit);
+export const updateAccountDeposit = (id: number, deposit: Partial<AccountDeposit>) => api.put<AccountDeposit>(`/planning/deposits/${id}`, deposit);
 export const deleteAccountDeposit = (id: number) => api.delete(`/planning/deposits/${id}`);
 
 // ─── Currency Rates ───

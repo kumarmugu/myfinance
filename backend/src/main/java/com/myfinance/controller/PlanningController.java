@@ -62,6 +62,13 @@ public class PlanningController {
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
+    @PutMapping("/deposits/{id}")
+    public ResponseEntity<AccountDeposit> updateDeposit(@PathVariable Long id, @RequestBody AccountDeposit deposit) {
+        log.info("Updating deposit id={}", id);
+        AccountDeposit saved = accountDepositService.update(id, tenantContext.getCurrentUserId(), deposit);
+        return ResponseEntity.ok(saved);
+    }
+
     @DeleteMapping("/deposits/{id}")
     public ResponseEntity<Void> deleteDeposit(@PathVariable Long id) {
         log.info("Deleting deposit id={}", id);
