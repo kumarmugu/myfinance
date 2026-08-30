@@ -1,5 +1,5 @@
 import type { ExportConfig } from './types';
-import type { Transaction, Account, Dividend, Holding, FixedDeposit } from '../../types';
+import type { Transaction, Account, Dividend, Holding } from '../../types';
 
 // ─── Central registry of table export configurations ───
 //
@@ -87,30 +87,4 @@ export const holdingsExportConfig: ExportConfig<Holding> = {
   ],
 };
 
-export const fixedDepositsExportConfig: ExportConfig<FixedDeposit> = {
-  entity: 'fixed-deposits',
-  title: 'Fixed Deposits',
-  columns: [
-    { key: 'id', header: 'ID', accessor: f => f.id, type: 'number' },
-    { key: 'bank', header: 'Bank', accessor: f => f.bank?.name },
-    { key: 'holder', header: 'Holder', accessor: f => f.holder?.name },
-    { key: 'jointHolder', header: 'Joint Holder', accessor: f => f.jointHolder?.name },
-    { key: 'accountNumber', header: 'Account Number', accessor: f => f.accountNumber },
-    { key: 'principalAmount', header: 'Principal', accessor: f => f.principalAmount, type: 'currency' },
-    { key: 'interestRate', header: 'Interest Rate (%)', accessor: f => f.interestRate, type: 'number' },
-    { key: 'expectedInterest', header: 'Expected Interest', accessor: f => f.expectedInterest, type: 'currency' },
-    { key: 'startDate', header: 'Start Date', accessor: f => f.startDate, type: 'date' },
-    { key: 'maturityDate', header: 'Maturity Date', accessor: f => f.maturityDate, type: 'date' },
-    { key: 'period', header: 'Period', accessor: f => f.period },
-    { key: 'status', header: 'Status', accessor: f => f.status },
-    { key: 'branch', header: 'Branch', accessor: f => f.branch },
-    { key: 'category', header: 'Category', accessor: f => f.category },
-    { key: 'beneficiary', header: 'Beneficiary', accessor: f => f.beneficiary },
-    { key: 'purpose', header: 'Purpose', accessor: f => f.purpose },
-    { key: 'includeInNetWorth', header: 'In Net Worth', accessor: f => f.includeInNetWorth, type: 'boolean' },
-    { key: 'netWorthAmount', header: 'Net Worth Amount', accessor: f => f.netWorthAmount, type: 'currency' },
-    { key: 'notes', header: 'Notes', accessor: f => f.notes },
-    { key: 'createdAt', header: 'Created Date', accessor: f => f.createdAt, type: 'datetime' },
-    { key: 'updatedAt', header: 'Updated Date', accessor: f => f.updatedAt, type: 'datetime' },
-  ],
-};
+
