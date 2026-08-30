@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, Check, Eye, EyeOff } from 'lucide-react';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import api from '../api';
-import { formatCurrency, formatDate } from '../utils/formatters';
+import { formatCurrency, formatNumber, formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import { useToast } from '../contexts/ToastContext';
+
+// Palette for the currency-distribution pie (reused across slices if more currencies).
+const PIE_COLORS = ['#4f46e5', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6'];
 
 interface BankSavingsAccount {
   id: number;
@@ -92,6 +96,21 @@ export default function BankSavings() {
   const sgAccounts = accounts.filter(a => a.country === 'Singapore');
   const slAccounts = accounts.filter(a => a.country === 'Sri Lanka');
 
+  // Distribution BY ACCOUNT. Each slice is one account, sized by its balance. Accounts may
+  // be in different currencies (no per-account FX conversion is available client-side), so the
+  // account's own currency is shown in the label/tooltip; slice sizes are approximate when
+  // currencies are mixed. Only positive balances are charted.
+  const hasMixedCurrencies = new Set(accounts.map(a => (a.currency || 'SGD').toUpperCase())).size > 1;
+  const accountPieData = accounts
+    .filter(a => (a.balance || 0) > 0)
+    .map((a, i) => ({
+      name: a.accountName,
+      value: a.balance || 0,
+      currency: (a.currency || 'SGD').toUpperCase(),
+      color: PIE_COLORS[i % PIE_COLORS.length],
+    }))
+    .sort((a, b) => b.value - a.value);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -106,6 +125,40 @@ export default function BankSavings() {
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">In Net Worth <span className="text-slate-400 normal-case">({baseCurrency})</span></p><p className="text-lg font-bold text-green-600 mt-1">{formatCurrency(inNetWorth, baseCurrency)}</p></div>
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">SG / SL</p><p className="text-lg font-bold text-slate-800 mt-1">{sgAccounts.length} / {slAccounts.length}</p></div>
       </div>
+
+      {/* Distribution by account */}
+      {accountPieData.length > 0 && (
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+          <h3 className="font-semibold text-slate-800 mb-1">Balance by Account</h3>
+          <p className="text-xs text-slate-400 mb-4">
+            {hasMixedCurrencies
+              ? 'Slices are sized by each account\u2019s balance. Amounts are in each account\u2019s own currency, so relative sizes are approximate across currencies.'
+              : 'Share of total savings held in each account.'}
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <ResponsiveContainer width="100%" height={240}>
+              <PieChart>
+                <Pie data={accountPieData} cx="50%" cy="50%" innerRadius={50} outerRadius={85} dataKey="value"
+                     label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`} labelLine={false}>
+                  {accountPieData.map((e, i) => <Cell key={i} fill={e.color} />)}
+                </Pie>
+                <Tooltip formatter={(v, _n, p) => formatCurrency(v as number, (p?.payload?.currency as string) || 'SGD')} />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="space-y-2 max-h-60 overflow-y-auto">
+              {accountPieData.map(a => (
+                <div key={a.name} className="flex items-center justify-between text-sm gap-3">
+                  <span className="flex items-center gap-2 min-w-0">
+                    <span className="w-3 h-3 rounded-sm shrink-0" style={{ backgroundColor: a.color }} />
+                    <span className="font-medium text-slate-700 truncate">{a.name}</span>
+                  </span>
+                  <span className="text-slate-800 font-semibold whitespace-nowrap">{formatNumber(a.value)} {a.currency}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Form */}
       {showForm && (
@@ -149,7 +202,8 @@ export default function BankSavings() {
               <th className="text-left px-4 py-3 font-medium text-slate-600">Bank</th>
               <th className="text-left px-4 py-3 font-medium text-slate-600">Account No.</th>
               <th className="text-left px-4 py-3 font-medium text-slate-600">Country</th>
-              <th className="text-right px-4 py-3 font-medium text-slate-600">Balance</th>
+              <th className="text-right px-4 py-3 font-medium text-slate-600">Amount</th>
+              <th className="text-left px-4 py-3 font-medium text-slate-600">Currency</th>
               <th className="text-center px-4 py-3 font-medium text-slate-600">Net Worth</th>
               <th className="text-left px-4 py-3 font-medium text-slate-600">Last Updated</th>
               <th className="px-4 py-3 w-20"></th>
@@ -171,7 +225,8 @@ export default function BankSavings() {
                   ) : <span className="text-xs text-slate-400">-</span>}
                 </td>
                 <td className="px-4 py-3"><span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${acc.country === 'Singapore' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{acc.country}</span></td>
-                <td className="px-4 py-3 text-right font-medium text-slate-800">{formatCurrency(acc.balance, acc.currency)}</td>
+                <td className="px-4 py-3 text-right font-medium text-slate-800 tabular-nums">{formatNumber(acc.balance)}</td>
+                <td className="px-4 py-3 text-slate-500 text-xs font-medium">{acc.currency}</td>
                 <td className="px-4 py-3 text-center">
                   <button onClick={() => toggleNetWorth(acc.id)} className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${acc.includeInNetWorth ? 'bg-green-600 border-green-600' : 'border-slate-300 hover:border-green-400'}`}>
                     {acc.includeInNetWorth && <Check size={12} className="text-white" />}
@@ -186,7 +241,7 @@ export default function BankSavings() {
                 </td>
               </tr>
             ))}
-            {accounts.length === 0 && <tr><td colSpan={8} className="px-4 py-12 text-center text-slate-400">No savings accounts tracked</td></tr>}
+            {accounts.length === 0 && <tr><td colSpan={9} className="px-4 py-12 text-center text-slate-400">No savings accounts tracked</td></tr>}
           </tbody>
         </table>
       </div>
