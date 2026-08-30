@@ -317,3 +317,72 @@
 2026-08-30 13:48:36 [http-nio-8080-exec-9] INFO  c.m.controller.PropertyController - Created property id=4
 2026-08-30 13:48:36 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/properties → 201 (4ms)
 2026-08-30 13:48:36 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (1ms)
+2026-08-30 13:51:54 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-30 13:51:54 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-08-30 13:51:54 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-08-30 13:52:09 [main] INFO  com.myfinance.MyFinanceApplication - Starting MyFinanceApplication using Java 17.0.20 with PID 85966 (/Users/mugu/Documents/Projects/myfinance/backend/target/classes started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-08-30 13:52:09 [main] INFO  com.myfinance.MyFinanceApplication - The following 1 profile is active: "prod"
+2026-08-30 13:52:10 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-30 13:52:10 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 125 ms. Found 35 JPA repository interfaces.
+2026-08-30 13:52:11 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-08-30 13:52:11 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-08-30 13:52:11 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-08-30 13:52:11 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-08-30 13:52:11 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1711 ms
+2026-08-30 13:52:11 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-30 13:52:11 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-08-30 13:52:11 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-08-30 13:52:11 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-30 13:52:11 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-08-30 13:52:11 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data-prod/myfinance user=SA
+2026-08-30 13:52:11 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-08-30 13:52:12 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-30 13:52:13 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-30 13:52:13 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-30 13:52:13 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-30 13:52:17 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@688ff23e, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5af75e60, org.springframework.security.web.context.SecurityContextHolderFilter@52ccf81e, org.springframework.security.web.header.HeaderWriterFilter@2a73e9d7, org.springframework.web.filter.CorsFilter@52a7893a, org.springframework.security.web.authentication.logout.LogoutFilter@4bd2a8b0, com.myfinance.provisioning.ProvisioningTokenFilter@7d484fcd, com.myfinance.security.JwtAuthFilter@107ac2b6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4e6fa97c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@b6eea98, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@42b09d68, org.springframework.security.web.session.SessionManagementFilter@6f3679a7, org.springframework.security.web.access.ExceptionTranslationFilter@206c8094, org.springframework.security.web.access.intercept.AuthorizationFilter@6c7c8480]
+2026-08-30 13:52:18 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2026-08-30 13:52:18 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 9.14 seconds (process running for 9.455)
+2026-08-30 13:52:18 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-08-30 13:52:18 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-08-30 13:52:18 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (6ms)
+2026-08-30 13:52:25 [http-nio-8080-exec-2] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-08-30 13:52:25 [http-nio-8080-exec-2] INFO  c.m.controller.AuthController - Login successful for user=mugu
+2026-08-30 13:52:25 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (435ms)
+2026-08-30 13:52:25 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (20ms)
+2026-08-30 13:52:25 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (7ms)
+2026-08-30 13:52:29 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (5ms)
+2026-08-30 13:53:11 [http-nio-8080-exec-6] INFO  c.m.controller.PropertyController - Updating property id=3
+2026-08-30 13:53:11 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/properties/3 → 200 (58ms)
+2026-08-30 13:53:11 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (8ms)
+2026-08-30 13:53:28 [http-nio-8080-exec-8] INFO  c.m.controller.PropertyController - Updating property id=3
+2026-08-30 13:53:28 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/properties/3 → 200 (7ms)
+2026-08-30 13:53:28 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (6ms)
+2026-08-30 13:53:49 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (4ms)
+2026-08-30 13:53:49 [http-nio-8080-exec-1] INFO  c.m.controller.PropertyController - Updating property id=2
+2026-08-30 13:53:49 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/properties/2 → 200 (6ms)
+2026-08-30 13:53:49 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (6ms)
+2026-08-30 13:54:10 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (6ms)
+2026-08-30 13:54:15 [http-nio-8080-exec-4] INFO  c.m.controller.PropertyController - Updating property id=4
+2026-08-30 13:54:15 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/properties/4 → 200 (7ms)
+2026-08-30 13:54:15 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (4ms)
+2026-08-30 13:54:33 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (5ms)
+2026-08-30 13:54:35 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (17ms)
+2026-08-30 13:54:35 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (5ms)
+2026-08-30 13:54:35 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (43ms)
+2026-08-30 13:54:35 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (21ms)
+2026-08-30 13:54:52 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/bank-savings/3 → 200 (11ms)
+2026-08-30 13:54:52 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (8ms)
+2026-08-30 13:54:52 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (21ms)
+2026-08-30 13:55:11 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/bank-savings/5 → 200 (6ms)
+2026-08-30 13:55:11 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (5ms)
+2026-08-30 13:55:11 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (20ms)
+2026-08-30 13:55:15 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/bank-savings/4 → 200 (6ms)
+2026-08-30 13:55:15 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (7ms)
+2026-08-30 13:55:15 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (27ms)
+2026-08-30 13:55:20 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/bank-savings/1 → 200 (6ms)
+2026-08-30 13:55:20 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (3ms)
+2026-08-30 13:55:20 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (18ms)
+2026-08-30 13:55:26 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/bank-savings/2 → 200 (8ms)
+2026-08-30 13:55:26 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (3ms)
+2026-08-30 13:55:26 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (15ms)

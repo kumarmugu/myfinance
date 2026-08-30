@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Plus, Pencil, Trash2, Home, MapPin } from 'lucide-react';
+import { Plus, Pencil, Trash2, Home, MapPin, Building2, Store, LandPlot, Tractor, Wheat, type LucideIcon } from 'lucide-react';
 import api from '../api';
 import { formatCurrency } from '../utils/formatters';
 import { useToast } from '../contexts/ToastContext';
@@ -25,7 +25,24 @@ interface Property {
   notes: string;
 }
 
-const PROPERTY_TYPES = ['HDB', 'CONDO', 'LANDED', 'COMMERCIAL', 'LAND'];
+const PROPERTY_TYPES = ['HDB', 'CONDO', 'LANDED', 'COMMERCIAL', 'LAND', 'AGRICULTURE', 'PADDY_FIELD'];
+
+// Map each property type to a fitting icon + accent colors.
+const PROPERTY_TYPE_STYLES: Record<string, { icon: LucideIcon; label: string; bg: string; fg: string }> = {
+  HDB:         { icon: Building2, label: 'HDB',          bg: 'bg-indigo-100', fg: 'text-indigo-600' },
+  CONDO:       { icon: Building2, label: 'Condo',        bg: 'bg-indigo-100', fg: 'text-indigo-600' },
+  LANDED:      { icon: Home,      label: 'Landed',       bg: 'bg-indigo-100', fg: 'text-indigo-600' },
+  COMMERCIAL:  { icon: Store,     label: 'Commercial',   bg: 'bg-purple-100', fg: 'text-purple-600' },
+  LAND:        { icon: LandPlot,  label: 'Land',         bg: 'bg-amber-100',  fg: 'text-amber-600' },
+  AGRICULTURE: { icon: Tractor,   label: 'Agriculture',  bg: 'bg-green-100',  fg: 'text-green-600' },
+  PADDY_FIELD: { icon: Wheat,     label: 'Paddy Field',  bg: 'bg-lime-100',   fg: 'text-lime-600' },
+};
+
+const DEFAULT_TYPE_STYLE = { icon: Home, label: 'Property', bg: 'bg-slate-100', fg: 'text-slate-600' };
+
+function typeStyle(propertyType?: string) {
+  return (propertyType && PROPERTY_TYPE_STYLES[propertyType]) || DEFAULT_TYPE_STYLE;
+}
 
 export default function Properties() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -116,7 +133,7 @@ export default function Properties() {
               <div className="flex flex-wrap gap-1">
                 {PROPERTY_TYPES.map(t => (
                   <button key={t} type="button" onClick={() => setForm({...form, propertyType: t})}
-                    className={`px-2.5 py-1 rounded-lg text-[11px] font-medium border ${form.propertyType === t ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-300'}`}>{t}</button>
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-medium border ${form.propertyType === t ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-300'}`}>{typeStyle(t).label}</button>
                 ))}
               </div></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Address</label>
@@ -179,9 +196,15 @@ export default function Properties() {
           <div key={p.id} className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center">
-                  <Home size={20} className="text-indigo-600" />
-                </div>
+                {(() => {
+                  const ts = typeStyle(p.propertyType);
+                  const Icon = ts.icon;
+                  return (
+                    <div className={`w-10 h-10 rounded-lg ${ts.bg} flex items-center justify-center`}>
+                      <Icon size={20} className={ts.fg} />
+                    </div>
+                  );
+                })()}
                 <div>
                   <h4 className="font-semibold text-slate-800 text-sm">{p.propertyName}</h4>
                   <div className="flex items-center gap-1 text-xs text-slate-500 mt-0.5">
@@ -200,7 +223,7 @@ export default function Properties() {
               <div><p className="text-[10px] text-slate-400 uppercase">Equity</p><p className="text-sm font-bold text-indigo-600">{formatCurrency((p.currentValue || 0) - (p.outstandingLoan || 0), p.currency)}</p></div>
             </div>
             <div className="flex items-center gap-2 mt-3 flex-wrap">
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">{p.propertyType || 'Property'}</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">{typeStyle(p.propertyType).label}</span>
               <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${p.status === 'OWNED' ? 'bg-green-100 text-green-700' : p.status === 'SOLD' ? 'bg-slate-100 text-slate-500' : 'bg-blue-100 text-blue-700'}`}>{p.status}</span>
               {p.tenure && <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-medium">{p.tenure}</span>}
               {p.ownership && <span className="text-[10px] text-slate-400">{p.ownership}</span>}
