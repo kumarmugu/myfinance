@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home, Settings, FlaskConical, Users, KeyRound, ClipboardList, Building } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home, Settings, FlaskConical, Users, KeyRound, ClipboardList, Building, PiggyBank } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import ToastContainer from './components/ToastContainer';
@@ -87,16 +87,30 @@ function AppContent() {
         { to: '/transactions', icon: ArrowLeftRight, label: 'Transactions', feature: 'PORTFOLIO' },
         { to: '/dividends', icon: DollarSign, label: 'Dividends', feature: 'DIVIDENDS' },
         { to: '/crypto', icon: Bitcoin, label: 'Crypto', feature: 'CRYPTO' },
-        { to: '/deposits', icon: Banknote, label: 'Cash Flows', feature: 'CASH_FLOWS' },
+        { to: '/deposits', icon: ArrowLeftRight, label: 'Cash Flows', feature: 'CASH_FLOWS' },
       ],
     },
     {
-      label: 'Savings & Loans',
+      label: 'Assets',
       items: [
-        { to: '/bank-savings', icon: Building2, label: 'Bank Savings', feature: 'BANK_SAVINGS' },
+        { to: '/bank-savings', icon: Banknote, label: 'Bank Savings', feature: 'BANK_SAVINGS' },
         { to: '/fixed-deposits', icon: Landmark, label: 'Fixed Deposits', feature: 'FIXED_DEPOSITS' },
         { to: '/properties', icon: Building, label: 'Real Estate', feature: 'REAL_ESTATE' },
         { to: '/precious-metals', icon: Coins, label: 'Gold & Silver', feature: 'PRECIOUS_METALS' },
+      ],
+    },
+    {
+      label: 'Income & Career',
+      items: [
+        { to: '/salary', icon: Wallet, label: 'Salary', feature: 'SALARY' },
+        { to: '/work-experience', icon: Briefcase, label: 'Work Experience', feature: 'WORK_EXPERIENCE' },
+        { to: '/srs-cpf', icon: Calculator, label: 'SRS & CPF', feature: 'SRS_CPF' },
+        { to: '/tax', icon: Receipt, label: 'Tax Records', feature: 'TAX' },
+      ],
+    },
+    {
+      label: 'Protection & Liabilities',
+      items: [
         { to: '/insurance', icon: Shield, label: 'Life Insurance', feature: 'INSURANCE' },
         { to: '/home-loans', icon: Home, label: 'Home Loans', feature: 'HOME_LOANS' },
       ],
@@ -105,26 +119,22 @@ function AppContent() {
       label: 'Planning',
       items: [
         { to: '/planning', icon: Target, label: 'Allocation & Net Worth' },
-        { to: '/budget', icon: Receipt, label: 'Budget & Expenses', feature: 'BUDGET' },
-        { to: '/srs-cpf', icon: Calculator, label: 'SRS & CPF', feature: 'SRS_CPF' },
-        { to: '/tax', icon: Receipt, label: 'Tax Records', feature: 'TAX' },
-        { to: '/work-experience', icon: Briefcase, label: 'Work Experience', feature: 'WORK_EXPERIENCE' },
-        { to: '/salary', icon: Wallet, label: 'Salary', feature: 'SALARY' },
-      ],
-    },
-    {
-      label: 'Reports',
-      items: [
+        { to: '/budget', icon: PiggyBank, label: 'Budget & Expenses', feature: 'BUDGET' },
         { to: '/reports', icon: FileBarChart, label: 'Reports', feature: 'REPORTS' },
       ],
     },
     {
-      label: 'Settings',
+      label: 'Configuration',
       items: [
         { to: '/accounts', icon: Building2, label: 'Brokers & Owners' },
-        { to: '/assets', icon: Coins, label: 'Assets' },
+        { to: '/assets', icon: Coins, label: 'Asset Catalog' },
         { to: '/fx-rates', icon: RefreshCw, label: 'FX Rates' },
         { to: '/net-worth-config', icon: Settings, label: 'Net Worth Config' },
+      ],
+    },
+    {
+      label: 'Help',
+      items: [
         { to: '/guide', icon: HelpCircle, label: 'User Guide' },
       ],
     },
