@@ -2115,3 +2115,336 @@ Caused by: com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unr
 2026-08-30 15:12:18 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/plans/2026/8 → 204 (3ms)
 2026-08-30 15:12:18 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/categories → 200 (3ms)
 2026-08-30 15:12:18 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/plans/2026/8 → 204 (3ms)
+2026-08-30 15:14:18 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-08-30 15:14:18 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-08-30 15:14:18 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-08-30 15:14:32 [main] INFO  com.myfinance.MyFinanceApplication - Starting MyFinanceApplication using Java 17.0.20 with PID 1923 (/Users/mugu/Documents/Projects/myfinance/backend/target/classes started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-08-30 15:14:32 [main] INFO  com.myfinance.MyFinanceApplication - The following 1 profile is active: "prod"
+2026-08-30 15:14:33 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-30 15:14:33 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 103 ms. Found 35 JPA repository interfaces.
+2026-08-30 15:14:34 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-08-30 15:14:34 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-08-30 15:14:34 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-08-30 15:14:34 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-08-30 15:14:34 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1525 ms
+2026-08-30 15:14:34 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-30 15:14:34 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-08-30 15:14:34 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-08-30 15:14:35 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-30 15:14:35 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-08-30 15:14:35 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data-prod/myfinance user=SA
+2026-08-30 15:14:35 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-08-30 15:14:35 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-30 15:14:36 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-30 15:14:36 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-30 15:14:37 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-30 15:14:41 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@673b5922, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5bda90af, org.springframework.security.web.context.SecurityContextHolderFilter@6707fc3e, org.springframework.security.web.header.HeaderWriterFilter@53061382, org.springframework.web.filter.CorsFilter@3962064d, org.springframework.security.web.authentication.logout.LogoutFilter@1d45746, com.myfinance.provisioning.ProvisioningTokenFilter@7d484fcd, com.myfinance.security.JwtAuthFilter@68769265, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@15878bb8, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@36f7672d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@53d95e8a, org.springframework.security.web.session.SessionManagementFilter@621f3d, org.springframework.security.web.access.ExceptionTranslationFilter@e2a0e91, org.springframework.security.web.access.intercept.AuthorizationFilter@6760a74e]
+2026-08-30 15:14:41 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2026-08-30 15:14:41 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 9.048 seconds (process running for 9.353)
+2026-08-30 15:14:42 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-08-30 15:14:42 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-08-30 15:14:42 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (6ms)
+2026-08-30 15:14:53 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (30ms)
+2026-08-30 15:14:53 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (8ms)
+2026-08-30 15:14:53 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (56ms)
+2026-08-30 15:14:53 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (64ms)
+2026-08-30 15:14:53 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (69ms)
+2026-08-30 15:14:53 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (6ms)
+2026-08-30 15:14:53 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (8ms)
+2026-08-30 15:14:53 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (25ms)
+2026-08-30 15:15:04 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/bank-savings/3 → 200 (75ms)
+2026-08-30 15:15:04 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (10ms)
+2026-08-30 15:15:04 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (25ms)
+2026-08-30 15:15:12 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/bank-savings/5 → 200 (6ms)
+2026-08-30 15:15:12 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (5ms)
+2026-08-30 15:15:12 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (23ms)
+2026-08-30 15:15:14 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (6ms)
+2026-08-30 15:15:15 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (22ms)
+2026-08-30 15:15:24 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (2ms)
+2026-08-30 15:15:24 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (20ms)
+2026-08-30 15:15:26 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (5ms)
+2026-08-30 15:15:26 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (17ms)
+2026-08-30 15:15:29 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (5ms)
+2026-08-30 15:15:29 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (19ms)
+2026-08-30 15:15:37 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/bank-savings/4 → 200 (7ms)
+2026-08-30 15:15:37 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (8ms)
+2026-08-30 15:15:37 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (42ms)
+2026-08-30 15:15:44 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/bank-savings/1 → 200 (6ms)
+2026-08-30 15:15:44 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (5ms)
+2026-08-30 15:15:44 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (19ms)
+2026-08-30 15:15:51 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/bank-savings/2 → 200 (5ms)
+2026-08-30 15:15:51 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (5ms)
+2026-08-30 15:15:51 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (18ms)
+2026-08-30 15:15:58 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/generic-fd → 200 (8ms)
+2026-08-30 15:15:58 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/generic-fd → 200 (4ms)
+2026-08-30 15:16:04 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (5ms)
+2026-08-30 15:16:04 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (7ms)
+2026-08-30 15:16:04 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (19ms)
+2026-08-30 15:16:04 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (5ms)
+2026-08-30 15:16:04 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (7ms)
+2026-08-30 15:16:04 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (7ms)
+2026-08-30 15:16:05 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (7ms)
+2026-08-30 15:16:05 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (4ms)
+2026-08-30 15:16:07 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (3ms)
+2026-08-30 15:16:07 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (3ms)
+2026-08-30 15:16:07 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-08-30 15:16:07 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (3ms)
+2026-08-30 15:16:07 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (4ms)
+2026-08-30 15:16:07 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (4ms)
+2026-08-30 15:16:56 [http-nio-8080-exec-8] INFO  c.m.controller.SalaryController - Creating salary record: year=2010, month=10, company=Syntech Solutions Pvt Ltd
+2026-08-30 15:16:56 [http-nio-8080-exec-8] INFO  c.m.controller.SalaryController - Created salary record id=1
+2026-08-30 15:16:56 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (15ms)
+2026-08-30 15:16:56 [http-nio-8080-exec-10] INFO  c.m.controller.SalaryController - Creating salary record: year=2010, month=11, company=Syntech Solutions Pvt Ltd
+2026-08-30 15:16:56 [http-nio-8080-exec-10] INFO  c.m.controller.SalaryController - Created salary record id=2
+2026-08-30 15:16:56 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (8ms)
+2026-08-30 15:16:56 [http-nio-8080-exec-2] INFO  c.m.controller.SalaryController - Creating salary record: year=2010, month=12, company=Syntech Solutions Pvt Ltd
+2026-08-30 15:16:56 [http-nio-8080-exec-2] INFO  c.m.controller.SalaryController - Created salary record id=3
+2026-08-30 15:16:56 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (6ms)
+2026-08-30 15:16:56 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (4ms)
+2026-08-30 15:16:56 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (7ms)
+2026-08-30 15:18:40 [http-nio-8080-exec-3] INFO  c.m.controller.SalaryController - Creating salary record: year=2011, month=1, company=Syntech Solutions Pvt Ltd
+2026-08-30 15:18:40 [http-nio-8080-exec-3] INFO  c.m.controller.SalaryController - Created salary record id=4
+2026-08-30 15:18:40 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (6ms)
+2026-08-30 15:18:40 [http-nio-8080-exec-4] INFO  c.m.controller.SalaryController - Creating salary record: year=2011, month=2, company=Syntech Solutions Pvt Ltd
+2026-08-30 15:18:40 [http-nio-8080-exec-4] INFO  c.m.controller.SalaryController - Created salary record id=5
+2026-08-30 15:18:40 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:18:40 [http-nio-8080-exec-6] INFO  c.m.controller.SalaryController - Creating salary record: year=2011, month=3, company=Syntech Solutions Pvt Ltd
+2026-08-30 15:18:40 [http-nio-8080-exec-6] INFO  c.m.controller.SalaryController - Created salary record id=6
+2026-08-30 15:18:40 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (9ms)
+2026-08-30 15:18:40 [http-nio-8080-exec-9] INFO  c.m.controller.SalaryController - Creating salary record: year=2011, month=4, company=Syntech Solutions Pvt Ltd
+2026-08-30 15:18:40 [http-nio-8080-exec-9] INFO  c.m.controller.SalaryController - Created salary record id=7
+2026-08-30 15:18:40 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (9ms)
+2026-08-30 15:18:40 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (7ms)
+2026-08-30 15:18:40 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (25ms)
+2026-08-30 15:19:35 [http-nio-8080-exec-10] INFO  c.m.controller.SalaryController - Creating salary record: year=2011, month=5, company=Syntech Solutions Pvt Ltd
+2026-08-30 15:19:35 [http-nio-8080-exec-10] INFO  c.m.controller.SalaryController - Created salary record id=8
+2026-08-30 15:19:35 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (7ms)
+2026-08-30 15:19:35 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (2ms)
+2026-08-30 15:19:35 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (3ms)
+2026-08-30 15:22:48 [http-nio-8080-exec-5] INFO  c.m.controller.SalaryController - Creating salary record: year=2026, month=5, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:22:48 [http-nio-8080-exec-5] INFO  c.m.controller.SalaryController - Created salary record id=9
+2026-08-30 15:22:48 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (7ms)
+2026-08-30 15:22:48 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (9ms)
+2026-08-30 15:22:48 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (9ms)
+2026-08-30 15:24:13 [http-nio-8080-exec-6] INFO  c.m.controller.SalaryController - Creating salary record: year=2011, month=6, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:24:13 [http-nio-8080-exec-6] INFO  c.m.controller.SalaryController - Created salary record id=10
+2026-08-30 15:24:13 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:24:13 [http-nio-8080-exec-9] INFO  c.m.controller.SalaryController - Creating salary record: year=2011, month=7, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:24:13 [http-nio-8080-exec-9] INFO  c.m.controller.SalaryController - Created salary record id=11
+2026-08-30 15:24:13 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (6ms)
+2026-08-30 15:24:13 [http-nio-8080-exec-8] INFO  c.m.controller.SalaryController - Creating salary record: year=2011, month=8, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:24:13 [http-nio-8080-exec-8] INFO  c.m.controller.SalaryController - Created salary record id=12
+2026-08-30 15:24:13 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (7ms)
+2026-08-30 15:24:13 [http-nio-8080-exec-7] INFO  c.m.controller.SalaryController - Creating salary record: year=2011, month=9, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:24:13 [http-nio-8080-exec-7] INFO  c.m.controller.SalaryController - Created salary record id=13
+2026-08-30 15:24:13 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (6ms)
+2026-08-30 15:24:13 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (4ms)
+2026-08-30 15:24:13 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (5ms)
+2026-08-30 15:24:30 [http-nio-8080-exec-2] INFO  c.m.controller.SalaryController - Updating salary record id=9
+2026-08-30 15:24:30 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/salary/9 → 200 (12ms)
+2026-08-30 15:24:30 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (4ms)
+2026-08-30 15:24:30 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (4ms)
+2026-08-30 15:25:36 [http-nio-8080-exec-4] INFO  c.m.controller.SalaryController - Creating salary record: year=2011, month=10, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:25:36 [http-nio-8080-exec-4] INFO  c.m.controller.SalaryController - Created salary record id=14
+2026-08-30 15:25:36 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (4ms)
+2026-08-30 15:25:36 [http-nio-8080-exec-6] INFO  c.m.controller.SalaryController - Creating salary record: year=2011, month=11, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:25:36 [http-nio-8080-exec-6] INFO  c.m.controller.SalaryController - Created salary record id=15
+2026-08-30 15:25:36 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (8ms)
+2026-08-30 15:25:36 [http-nio-8080-exec-9] INFO  c.m.controller.SalaryController - Creating salary record: year=2011, month=12, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:25:36 [http-nio-8080-exec-9] INFO  c.m.controller.SalaryController - Created salary record id=16
+2026-08-30 15:25:36 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (6ms)
+2026-08-30 15:25:36 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (4ms)
+2026-08-30 15:25:36 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (5ms)
+2026-08-30 15:26:40 [http-nio-8080-exec-1] INFO  c.m.controller.SalaryController - Creating salary record: year=2012, month=1, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:26:40 [http-nio-8080-exec-1] INFO  c.m.controller.SalaryController - Created salary record id=17
+2026-08-30 15:26:40 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (6ms)
+2026-08-30 15:26:40 [http-nio-8080-exec-10] INFO  c.m.controller.SalaryController - Creating salary record: year=2012, month=2, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:26:40 [http-nio-8080-exec-10] INFO  c.m.controller.SalaryController - Created salary record id=18
+2026-08-30 15:26:40 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:26:40 [http-nio-8080-exec-2] INFO  c.m.controller.SalaryController - Creating salary record: year=2012, month=3, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:26:40 [http-nio-8080-exec-2] INFO  c.m.controller.SalaryController - Created salary record id=19
+2026-08-30 15:26:40 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:26:40 [http-nio-8080-exec-3] INFO  c.m.controller.SalaryController - Creating salary record: year=2012, month=4, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:26:40 [http-nio-8080-exec-3] INFO  c.m.controller.SalaryController - Created salary record id=20
+2026-08-30 15:26:40 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (6ms)
+2026-08-30 15:26:40 [http-nio-8080-exec-5] INFO  c.m.controller.SalaryController - Creating salary record: year=2012, month=5, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:26:40 [http-nio-8080-exec-5] INFO  c.m.controller.SalaryController - Created salary record id=21
+2026-08-30 15:26:40 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (10ms)
+2026-08-30 15:26:40 [http-nio-8080-exec-4] INFO  c.m.controller.SalaryController - Creating salary record: year=2012, month=6, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:26:40 [http-nio-8080-exec-4] INFO  c.m.controller.SalaryController - Created salary record id=22
+2026-08-30 15:26:40 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (7ms)
+2026-08-30 15:26:40 [http-nio-8080-exec-6] INFO  c.m.controller.SalaryController - Creating salary record: year=2012, month=7, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:26:40 [http-nio-8080-exec-6] INFO  c.m.controller.SalaryController - Created salary record id=23
+2026-08-30 15:26:40 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:26:40 [http-nio-8080-exec-9] INFO  c.m.controller.SalaryController - Creating salary record: year=2012, month=8, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:26:40 [http-nio-8080-exec-9] INFO  c.m.controller.SalaryController - Created salary record id=24
+2026-08-30 15:26:40 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:26:40 [http-nio-8080-exec-7] INFO  c.m.controller.SalaryController - Creating salary record: year=2012, month=9, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:26:40 [http-nio-8080-exec-7] INFO  c.m.controller.SalaryController - Created salary record id=25
+2026-08-30 15:26:40 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (6ms)
+2026-08-30 15:26:40 [http-nio-8080-exec-8] INFO  c.m.controller.SalaryController - Creating salary record: year=2012, month=10, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:26:40 [http-nio-8080-exec-8] INFO  c.m.controller.SalaryController - Created salary record id=26
+2026-08-30 15:26:40 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (6ms)
+2026-08-30 15:26:40 [http-nio-8080-exec-1] INFO  c.m.controller.SalaryController - Creating salary record: year=2012, month=11, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:26:40 [http-nio-8080-exec-1] INFO  c.m.controller.SalaryController - Created salary record id=27
+2026-08-30 15:26:40 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (4ms)
+2026-08-30 15:26:40 [http-nio-8080-exec-10] INFO  c.m.controller.SalaryController - Creating salary record: year=2012, month=12, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:26:40 [http-nio-8080-exec-10] INFO  c.m.controller.SalaryController - Created salary record id=28
+2026-08-30 15:26:40 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:26:40 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (5ms)
+2026-08-30 15:26:40 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (6ms)
+2026-08-30 15:27:24 [http-nio-8080-exec-5] INFO  c.m.controller.SalaryController - Creating salary record: year=2013, month=1, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:27:24 [http-nio-8080-exec-5] INFO  c.m.controller.SalaryController - Created salary record id=29
+2026-08-30 15:27:24 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:27:24 [http-nio-8080-exec-4] INFO  c.m.controller.SalaryController - Creating salary record: year=2013, month=2, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:27:24 [http-nio-8080-exec-4] INFO  c.m.controller.SalaryController - Created salary record id=30
+2026-08-30 15:27:24 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:27:24 [http-nio-8080-exec-6] INFO  c.m.controller.SalaryController - Creating salary record: year=2013, month=3, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:27:24 [http-nio-8080-exec-6] INFO  c.m.controller.SalaryController - Created salary record id=31
+2026-08-30 15:27:24 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:27:24 [http-nio-8080-exec-9] INFO  c.m.controller.SalaryController - Creating salary record: year=2013, month=4, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:27:24 [http-nio-8080-exec-9] INFO  c.m.controller.SalaryController - Created salary record id=32
+2026-08-30 15:27:24 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:27:24 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (3ms)
+2026-08-30 15:27:24 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (4ms)
+2026-08-30 15:28:36 [http-nio-8080-exec-1] INFO  c.m.controller.SalaryController - Creating salary record: year=2013, month=5, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:28:36 [http-nio-8080-exec-1] INFO  c.m.controller.SalaryController - Created salary record id=33
+2026-08-30 15:28:36 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (6ms)
+2026-08-30 15:28:36 [http-nio-8080-exec-10] INFO  c.m.controller.SalaryController - Creating salary record: year=2013, month=6, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:28:36 [http-nio-8080-exec-10] INFO  c.m.controller.SalaryController - Created salary record id=34
+2026-08-30 15:28:36 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (6ms)
+2026-08-30 15:28:36 [http-nio-8080-exec-3] INFO  c.m.controller.SalaryController - Creating salary record: year=2013, month=7, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:28:36 [http-nio-8080-exec-3] INFO  c.m.controller.SalaryController - Created salary record id=35
+2026-08-30 15:28:36 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (6ms)
+2026-08-30 15:28:36 [http-nio-8080-exec-2] INFO  c.m.controller.SalaryController - Creating salary record: year=2013, month=8, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:28:36 [http-nio-8080-exec-2] INFO  c.m.controller.SalaryController - Created salary record id=36
+2026-08-30 15:28:36 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:28:36 [http-nio-8080-exec-5] INFO  c.m.controller.SalaryController - Creating salary record: year=2013, month=9, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:28:36 [http-nio-8080-exec-5] INFO  c.m.controller.SalaryController - Created salary record id=37
+2026-08-30 15:28:36 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:28:36 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (2ms)
+2026-08-30 15:28:36 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (4ms)
+2026-08-30 15:29:40 [http-nio-8080-exec-9] INFO  c.m.controller.SalaryController - Creating salary record: year=2013, month=10, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:29:40 [http-nio-8080-exec-9] INFO  c.m.controller.SalaryController - Created salary record id=38
+2026-08-30 15:29:40 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:29:40 [http-nio-8080-exec-8] INFO  c.m.controller.SalaryController - Creating salary record: year=2013, month=11, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:29:40 [http-nio-8080-exec-8] INFO  c.m.controller.SalaryController - Created salary record id=39
+2026-08-30 15:29:40 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (4ms)
+2026-08-30 15:29:40 [http-nio-8080-exec-7] INFO  c.m.controller.SalaryController - Creating salary record: year=2013, month=12, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:29:40 [http-nio-8080-exec-7] INFO  c.m.controller.SalaryController - Created salary record id=40
+2026-08-30 15:29:40 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:29:40 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (3ms)
+2026-08-30 15:29:40 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (5ms)
+2026-08-30 15:30:11 [http-nio-8080-exec-3] INFO  c.m.controller.SalaryController - Creating salary record: year=2014, month=1, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:30:11 [http-nio-8080-exec-3] INFO  c.m.controller.SalaryController - Created salary record id=41
+2026-08-30 15:30:11 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (7ms)
+2026-08-30 15:30:11 [http-nio-8080-exec-2] INFO  c.m.controller.SalaryController - Creating salary record: year=2014, month=2, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:30:11 [http-nio-8080-exec-2] INFO  c.m.controller.SalaryController - Created salary record id=42
+2026-08-30 15:30:11 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (10ms)
+2026-08-30 15:30:11 [http-nio-8080-exec-5] INFO  c.m.controller.SalaryController - Creating salary record: year=2014, month=3, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:30:11 [http-nio-8080-exec-5] INFO  c.m.controller.SalaryController - Created salary record id=43
+2026-08-30 15:30:11 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (7ms)
+2026-08-30 15:30:11 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (6ms)
+2026-08-30 15:30:11 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (7ms)
+2026-08-30 15:30:25 [http-nio-8080-exec-9] INFO  c.m.controller.SalaryController - Creating salary record: year=2014, month=4, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:30:25 [http-nio-8080-exec-9] INFO  c.m.controller.SalaryController - Created salary record id=44
+2026-08-30 15:30:25 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (4ms)
+2026-08-30 15:30:25 [http-nio-8080-exec-8] INFO  c.m.controller.SalaryController - Creating salary record: year=2014, month=5, company=Advanced Data Technologies Pte Ltd
+2026-08-30 15:30:25 [http-nio-8080-exec-8] INFO  c.m.controller.SalaryController - Created salary record id=45
+2026-08-30 15:30:25 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (4ms)
+2026-08-30 15:30:25 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (2ms)
+2026-08-30 15:30:25 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (3ms)
+2026-08-30 15:31:45 [http-nio-8080-exec-1] INFO  c.m.controller.SalaryController - Creating salary record: year=2014, month=8, company=Fortuna Global pvt Ltd
+2026-08-30 15:31:45 [http-nio-8080-exec-1] INFO  c.m.controller.SalaryController - Created salary record id=46
+2026-08-30 15:31:45 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (5ms)
+2026-08-30 15:31:45 [http-nio-8080-exec-3] INFO  c.m.controller.SalaryController - Creating salary record: year=2014, month=9, company=Fortuna Global pvt Ltd
+2026-08-30 15:31:45 [http-nio-8080-exec-3] INFO  c.m.controller.SalaryController - Created salary record id=47
+2026-08-30 15:31:45 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (4ms)
+2026-08-30 15:31:45 [http-nio-8080-exec-2] INFO  c.m.controller.SalaryController - Creating salary record: year=2014, month=10, company=Fortuna Global pvt Ltd
+2026-08-30 15:31:45 [http-nio-8080-exec-2] INFO  c.m.controller.SalaryController - Created salary record id=48
+2026-08-30 15:31:45 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (4ms)
+2026-08-30 15:31:45 [http-nio-8080-exec-5] INFO  c.m.controller.SalaryController - Creating salary record: year=2014, month=11, company=Fortuna Global pvt Ltd
+2026-08-30 15:31:45 [http-nio-8080-exec-5] INFO  c.m.controller.SalaryController - Created salary record id=49
+2026-08-30 15:31:45 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/salary → 201 (4ms)
+2026-08-30 15:31:45 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (4ms)
+2026-08-30 15:31:45 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (6ms)
+2026-08-30 15:40:14 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (4ms)
+2026-08-30 15:40:14 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (5ms)
+2026-08-30 15:40:14 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (8ms)
+2026-08-30 15:40:29 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (6ms)
+2026-08-30 15:40:29 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (6ms)
+2026-08-30 15:40:29 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (9ms)
+2026-08-30 15:40:30 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (4ms)
+2026-08-30 15:40:30 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-08-30 15:40:30 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (7ms)
+2026-08-30 15:40:42 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (4ms)
+2026-08-30 15:40:42 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (5ms)
+2026-08-30 15:40:42 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (7ms)
+2026-08-30 15:40:59 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (4ms)
+2026-08-30 15:40:59 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (4ms)
+2026-08-30 15:40:59 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (5ms)
+2026-08-30 15:41:12 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (4ms)
+2026-08-30 15:41:12 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (5ms)
+2026-08-30 15:41:12 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (6ms)
+2026-08-30 15:41:12 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (4ms)
+2026-08-30 15:41:12 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (5ms)
+2026-08-30 15:41:12 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (18ms)
+2026-08-30 15:41:26 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (3ms)
+2026-08-30 15:41:26 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-08-30 15:41:26 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (4ms)
+2026-08-30 15:42:00 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (7ms)
+2026-08-30 15:42:00 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (7ms)
+2026-08-30 15:42:00 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (8ms)
+2026-08-30 15:42:24 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (4ms)
+2026-08-30 15:42:24 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (4ms)
+2026-08-30 15:42:24 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (5ms)
+2026-08-30 15:42:46 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (7ms)
+2026-08-30 15:42:46 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (5ms)
+2026-08-30 15:42:46 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (7ms)
+2026-08-30 15:42:46 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (5ms)
+2026-08-30 15:42:46 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (5ms)
+2026-08-30 15:42:46 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (9ms)
+2026-08-30 15:43:40 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (4ms)
+2026-08-30 15:43:40 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (5ms)
+2026-08-30 15:43:40 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (6ms)
+2026-08-30 15:43:52 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (5ms)
+2026-08-30 15:43:52 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (6ms)
+2026-08-30 15:43:52 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (9ms)
+2026-08-30 15:43:52 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (7ms)
+2026-08-30 15:43:52 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (10ms)
+2026-08-30 15:43:52 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (5ms)
+2026-08-30 15:44:15 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (4ms)
+2026-08-30 15:44:15 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (5ms)
+2026-08-30 15:44:15 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (6ms)
+2026-08-30 15:45:12 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (7ms)
+2026-08-30 15:45:12 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (5ms)
+2026-08-30 15:45:12 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (9ms)
+2026-08-30 15:45:33 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (6ms)
+2026-08-30 15:45:33 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (7ms)
+2026-08-30 15:45:33 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (13ms)
+2026-08-30 15:45:45 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (4ms)
+2026-08-30 15:45:45 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (5ms)
+2026-08-30 15:45:45 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (7ms)
+2026-08-30 15:45:46 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (5ms)
+2026-08-30 15:45:46 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (5ms)
+2026-08-30 15:45:46 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (16ms)
+2026-08-30 15:52:24 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-08-30 15:52:24 [http-nio-8080-exec-4] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-30 15:52:24 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-08-30 15:52:24 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (9ms)
+2026-08-30 15:52:24 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (26ms)
+2026-08-30 15:52:24 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (57ms)
+2026-08-30 15:52:25 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
+2026-08-30 15:52:25 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-08-30 15:52:25 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-08-30 15:52:25 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-08-30 15:52:25 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/plans/2026/8 → 204 (6ms)
+2026-08-30 15:52:25 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/categories → 200 (8ms)
+2026-08-30 15:52:25 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/categories → 200 (2ms)
+2026-08-30 15:52:25 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/plans/2026/8 → 204 (3ms)
+2026-08-30 15:52:25 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (6ms)
+2026-08-30 15:52:25 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-08-30 15:52:25 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (3ms)
+2026-08-30 15:52:25 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (2ms)
+2026-08-30 15:52:25 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (5ms)
+2026-08-30 15:52:25 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (3ms)

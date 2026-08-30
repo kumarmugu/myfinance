@@ -36,12 +36,20 @@ public class SalaryRecord {
     private BigDecimal mealAllowance;
     private BigDecimal deductions; // SINDA, etc.
 
-    /**
-     * Retirement-fund contributions on this salary, in the record's currency. Generic across
-     * schemes: CPF (Singapore), EPF/ETF (Sri Lanka), etc. Nullable when not applicable.
-     */
-    private BigDecimal employeeContribution;   // employee's share (e.g. CPF employee, EPF employee)
-    private BigDecimal employerContribution;   // employer's share (e.g. CPF employer, EPF employer + ETF)
+    // ── Retirement-fund contributions (in this record's currency; all nullable/optional). ──
+    // A company may deduct in some months and not others, so any of these can be left blank.
+    // Legacy generic fields (kept for backward compatibility; superseded by the scheme columns).
+    private BigDecimal employeeContribution;
+    private BigDecimal employerContribution;
+
+    // CPF (Singapore)
+    private BigDecimal cpfEmployee;
+    private BigDecimal cpfEmployer;
+    // EPF (Sri Lanka) — employee ~8%, employer ~12%
+    private BigDecimal epfEmployee;
+    private BigDecimal epfEmployer;
+    // ETF (Sri Lanka) — employer only ~3%
+    private BigDecimal etfEmployer;
 
     /** Optional label for the contribution scheme shown in the UI: CPF, EPF_ETF, EPF, ETF, NONE. */
     private String contributionScheme;
@@ -75,4 +83,33 @@ public class SalaryRecord {
     protected void onCreate() { createdAt = LocalDateTime.now(); updatedAt = LocalDateTime.now(); }
     @PreUpdate
     protected void onUpdate() { updatedAt = LocalDateTime.now(); }
+
+    private static BigDecimal nz(BigDecimal v) { return v != null ? v : BigDecimal.ZERO; }
+
+    /** Total employee-side contribution deducted from pay (CPF + EPF employee, plus any legacy generic). */
+    @Transient
+    @com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY)
+    public BigDecimal getEmployeeContributionTotal() {
+        return nz(cpfEmployee).add(nz(epfEmployee)).add(nz(employeeContribution));
+    }
+
+    /** Total employer-side contribution (not deducted from pay): CPF + EPF + ETF employer, plus legacy generic. */
+    @Transient
+    @com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY)
+    public BigDecimal getEmployerContributionTotal() {
+        return nz(cpfEmployer).add(nz(epfEmployer)).add(nz(etfEmployer)).add(nz(employerContribution));
+    }
+
+    /**
+     * Net take-home = gross components (basic + allowances) − deductions − employee contributions.
+     * Falls back to {@code amount} for gross when the component breakdown isn't provided.
+     */
+    @Transient
+    @com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY)
+    public BigDecimal getNetTakeHome() {
+        BigDecimal components = nz(basic).add(nz(allowance)).add(nz(mobile))
+                .add(nz(support)).add(nz(weekend)).add(nz(mealAllowance));
+        BigDecimal gross = components.compareTo(BigDecimal.ZERO) > 0 ? components : nz(amount);
+        return gross.subtract(nz(deductions)).subtract(getEmployeeContributionTotal());
+    }
 }

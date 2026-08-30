@@ -47,14 +47,18 @@ class SalaryControllerTest extends BaseControllerTest {
 
     @Test
     @WithMockUser
-    void shouldPersistCurrencyAndContributions() throws Exception {
-        // LKR salary in Sri Lanka with EPF/ETF employee + employer contributions.
+    void shouldPersistCurrencyAndSchemeContributions() throws Exception {
+        // LKR salary in Sri Lanka with EPF (employee 8% + employer 12%) and ETF (employer 3%).
+        // basic 300000, deductions 5000, EPF employee 24000 -> net = 300000 - 5000 - 24000 = 271000.
         SalaryRecord record = SalaryRecord.builder()
                 .year(2026).month(2).company("Lanka Corp")
-                .amount(new BigDecimal("300000")).currency("LKR").country("Sri Lanka")
+                .amount(new BigDecimal("300000")).basic(new BigDecimal("300000"))
+                .deductions(new BigDecimal("5000"))
+                .currency("LKR").country("Sri Lanka")
                 .contributionScheme("EPF_ETF")
-                .employeeContribution(new BigDecimal("24000"))
-                .employerContribution(new BigDecimal("45000"))
+                .epfEmployee(new BigDecimal("24000"))
+                .epfEmployer(new BigDecimal("36000"))
+                .etfEmployer(new BigDecimal("9000"))
                 .build();
 
         mockMvc.perform(post("/api/salary")
@@ -63,8 +67,12 @@ class SalaryControllerTest extends BaseControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.currency", is("LKR")))
                 .andExpect(jsonPath("$.contributionScheme", is("EPF_ETF")))
-                .andExpect(jsonPath("$.employeeContribution", is(24000)))
-                .andExpect(jsonPath("$.employerContribution", is(45000)));
+                .andExpect(jsonPath("$.epfEmployee", is(24000)))
+                .andExpect(jsonPath("$.epfEmployer", is(36000)))
+                .andExpect(jsonPath("$.etfEmployer", is(9000)))
+                .andExpect(jsonPath("$.employeeContributionTotal", is(24000)))
+                .andExpect(jsonPath("$.employerContributionTotal", is(45000)))
+                .andExpect(jsonPath("$.netTakeHome", is(271000)));
     }
 
     @Test
