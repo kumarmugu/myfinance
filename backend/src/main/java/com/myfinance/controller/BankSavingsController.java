@@ -53,6 +53,7 @@ public class BankSavingsController {
                 savings.getAccountName(), savings.getBankName(), savings.getBalance(),
                 savings.getCurrency(), savings.getCountry());
         savings.setUserId(tenantContext.getCurrentUserId());
+        savings.setLastUpdated(java.time.LocalDate.now());
         BankSavings saved = repository.save(savings);
         log.info("Created bank savings id={} for userId={}", saved.getId(), saved.getUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
@@ -68,7 +69,7 @@ public class BankSavingsController {
         existing.setCurrency(updated.getCurrency());
         existing.setCountry(updated.getCountry());
         existing.setIncludeInNetWorth(updated.getIncludeInNetWorth());
-        existing.setLastUpdated(updated.getLastUpdated());
+        existing.setLastUpdated(java.time.LocalDate.now());
         existing.setNotes(updated.getNotes());
         return repository.save(existing);
     }

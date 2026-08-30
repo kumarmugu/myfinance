@@ -69,4 +69,44 @@ class BankSavingsExtraTest extends BaseControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.balance", is(7777.50)));
     }
+
+    @Test
+    @WithMockUser
+    void shouldSetLastUpdatedOnCreate() throws Exception {
+        // Client sends no lastUpdated; the server must stamp it with today's date.
+        BankSavings newAccount = BankSavings.builder()
+                .accountName("Fresh Account").bankName("DBS").balance(new BigDecimal("500"))
+                .currency(Currency.SGD).country("Singapore").includeInNetWorth(true).build();
+
+        String today = java.time.LocalDate.now().toString();
+
+        mockMvc.perform(post("/api/bank-savings")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(newAccount)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.lastUpdated", is(today)));
+    }
+
+    @Test
+    @WithMockUser
+    void shouldRefreshLastUpdatedOnUpdate() throws Exception {
+        // Existing record has a stale lastUpdated; the client sends none on update.
+        BankSavings saved = repository.save(BankSavings.builder()
+                .accountName("Acct").bankName("DBS").balance(new BigDecimal("1000"))
+                .currency(Currency.SGD).country("Singapore").includeInNetWorth(true)
+                .lastUpdated(java.time.LocalDate.of(2000, 1, 1))
+                .userId(testUser.getId()).build());
+
+        BankSavings update = BankSavings.builder()
+                .accountName("Acct").bankName("DBS").balance(new BigDecimal("1200"))
+                .currency(Currency.SGD).country("Singapore").includeInNetWorth(true).build();
+
+        String today = java.time.LocalDate.now().toString();
+
+        mockMvc.perform(put("/api/bank-savings/" + saved.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(update)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lastUpdated", is(today)));
+    }
 }
