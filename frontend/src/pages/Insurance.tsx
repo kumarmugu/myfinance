@@ -1,28 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, AlertCircle, Calendar, ChevronDown, ChevronUp } from 'lucide-react';
-import { getInsurancePolicies, createInsurancePolicy, updateInsurancePolicy, deleteInsurancePolicy, getInsuranceBonusEntries, createInsuranceBonusEntry, deleteInsuranceBonusEntry } from '../api';
+import { getInsurancePolicies, createInsurancePolicy, updateInsurancePolicy, deleteInsurancePolicy, getInsuranceBonusEntries, createInsuranceBonusEntry, deleteInsuranceBonusEntry, getOwners } from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
-import type { InsurancePolicy, Currency } from '../types';
+import SearchableSelect from '../components/SearchableSelect';
+import type { InsurancePolicy, Currency, Owner } from '../types';
 import { useToast } from '../contexts/ToastContext';
 
 const POLICY_TYPES = ['TERM_LIFE', 'WHOLE_LIFE', 'ENDOWMENT', 'ILP', 'HEALTH', 'CRITICAL_ILLNESS', 'OTHER'];
 
 export default function Insurance() {
   const [policies, setPolicies] = useState<InsurancePolicy[]>([]);
+  const [owners, setOwners] = useState<Owner[]>([]);
+  const [filterOwner, setFilterOwner] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const { showToast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<InsurancePolicy | null>(null);
-  const [form, setForm] = useState({ policyName: '', provider: '', policyNumber: '', policyType: 'TERM_LIFE', annualPremium: 0, currency: 'SGD' as Currency, coverageAmount: 0, cashValue: 0, startDate: '', maturityDate: '', includeInNetWorth: false, beneficiary: '', notes: '' });
+  const [form, setForm] = useState({ policyName: '', provider: '', policyNumber: '', policyType: 'TERM_LIFE', annualPremium: 0, currency: 'SGD' as Currency, coverageAmount: 0, cashValue: 0, startDate: '', maturityDate: '', includeInNetWorth: false, beneficiary: '', notes: '', ownerId: 0 });
   const [expandedPolicy, setExpandedPolicy] = useState<number | null>(null);
   const [bonusEntries, setBonusEntries] = useState<any[]>([]);
   const [showBonusForm, setShowBonusForm] = useState(false);
   const [bonusForm, setBonusForm] = useState({ yearNumber: 1, yearDate: '', age: 0, premiumAmount: 0, expectedBonus: 0, expectedBonusTotal: 0, expectedTotal: 0, actualBonus: 0, actualBonusTotal: 0 });
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => { getOwners().then(r => setOwners(r.data)).catch(console.error); }, []);
+  useEffect(() => { loadData(); }, [filterOwner]);
 
   const loadData = async () => {
-    try { setPolicies((await getInsurancePolicies()).data); }
+    try {
+      const ownerId = filterOwner ? Number(filterOwner) : undefined;
+      setPolicies((await getInsurancePolicies(ownerId)).data);
+    }
     catch (err) { console.error(err); }
     finally { setLoading(false); }
   };
@@ -30,20 +37,21 @@ export default function Insurance() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (editing) { await updateInsurancePolicy(editing.id, form); }
-      else { await createInsurancePolicy(form); }
+      const payload = { ...form, owner: form.ownerId ? { id: form.ownerId } : null };
+      if (editing) { await updateInsurancePolicy(editing.id, payload); }
+      else { await createInsurancePolicy(payload); }
       setShowForm(false); setEditing(null); resetForm(); loadData();
     } catch (err) { console.error(err); showToast('Failed'); }
   };
 
   const startEdit = (p: InsurancePolicy) => {
     setEditing(p);
-    setForm({ policyName: p.policyName, provider: p.provider || '', policyNumber: p.policyNumber || '', policyType: p.policyType || 'TERM_LIFE', annualPremium: p.annualPremium, currency: p.currency, coverageAmount: p.coverageAmount || 0, cashValue: p.cashValue || 0, startDate: p.startDate || '', maturityDate: p.maturityDate || '', includeInNetWorth: p.includeInNetWorth, beneficiary: p.beneficiary || '', notes: p.notes || '' });
+    setForm({ policyName: p.policyName, provider: p.provider || '', policyNumber: p.policyNumber || '', policyType: p.policyType || 'TERM_LIFE', annualPremium: p.annualPremium, currency: p.currency, coverageAmount: p.coverageAmount || 0, cashValue: p.cashValue || 0, startDate: p.startDate || '', maturityDate: p.maturityDate || '', includeInNetWorth: p.includeInNetWorth, beneficiary: p.beneficiary || '', notes: p.notes || '', ownerId: p.owner?.id || 0 });
     setShowForm(true);
   };
 
   const handleDelete = async (id: number) => { if (confirm('Remove this policy?')) { await deleteInsurancePolicy(id); loadData(); } };
-  const resetForm = () => setForm({ policyName: '', provider: '', policyNumber: '', policyType: 'TERM_LIFE', annualPremium: 0, currency: 'SGD', coverageAmount: 0, cashValue: 0, startDate: '', maturityDate: '', includeInNetWorth: false, beneficiary: '', notes: '' });
+  const resetForm = () => setForm({ policyName: '', provider: '', policyNumber: '', policyType: 'TERM_LIFE', annualPremium: 0, currency: 'SGD', coverageAmount: 0, cashValue: 0, startDate: '', maturityDate: '', includeInNetWorth: false, beneficiary: '', notes: '', ownerId: 0 });
 
   const toggleBonusSchedule = async (policyId: number) => {
     if (expandedPolicy === policyId) { setExpandedPolicy(null); return; }
@@ -85,7 +93,17 @@ export default function Insurance() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-2xl font-bold text-slate-800">Life Insurance</h1><p className="text-slate-500 text-sm mt-0.5">Track policies (not included in net worth by default)</p></div>
-        <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Policy</button>
+        <div className="flex items-center gap-3">
+          <div className="w-44">
+            <SearchableSelect
+              options={[{ value: '', label: 'All Owners' }, ...owners.map(o => ({ value: o.id.toString(), label: o.name, icon: o.name[0] }))]}
+              value={filterOwner}
+              onChange={v => setFilterOwner(v.toString())}
+              placeholder="All Owners"
+            />
+          </div>
+          <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Policy</button>
+        </div>
       </div>
 
       {/* Info */}
@@ -107,6 +125,8 @@ export default function Insurance() {
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
           <h3 className="text-base font-semibold text-slate-800 mb-4">{editing ? 'Edit Policy' : 'Add Policy'}</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner</label>
+              <SearchableSelect options={[{ value: 0, label: 'Unassigned' }, ...owners.map(o => ({ value: o.id, label: o.name }))]} value={form.ownerId} onChange={v => setForm({...form, ownerId: Number(v)})} placeholder="Select owner..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Policy Name *</label><input type="text" value={form.policyName} onChange={e => setForm({...form, policyName: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Provider</label><input type="text" value={form.provider} onChange={e => setForm({...form, provider: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="e.g. AIA, Prudential" /></div>
             <div className="lg:col-span-2"><label className="block text-xs font-medium text-slate-600 mb-1">Type</label>
@@ -137,6 +157,7 @@ export default function Insurance() {
               <tr>
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Policy</th>
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Provider</th>
+                <th className="text-left px-4 py-2.5 font-medium text-slate-600">Owner</th>
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Type</th>
                 <th className="text-right px-4 py-2.5 font-medium text-slate-600">Premium/yr</th>
                 <th className="text-right px-4 py-2.5 font-medium text-slate-600">Coverage</th>
@@ -151,6 +172,7 @@ export default function Insurance() {
                 <tr className="hover:bg-slate-50 group">
                   <td className="px-4 py-2.5"><span className="font-medium text-slate-800">{p.policyName}</span>{p.includeInNetWorth && <span className="ml-1 text-[9px] bg-indigo-100 text-indigo-700 px-1 py-0.5 rounded">NW</span>}</td>
                   <td className="px-4 py-2.5 text-slate-600">{p.provider || '-'}</td>
+                  <td className="px-4 py-2.5 text-slate-500 text-xs">{p.owner?.name || '-'}</td>
                   <td className="px-4 py-2.5"><span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{p.policyType?.replace(/_/g, ' ')}</span></td>
                   <td className="px-4 py-2.5 text-right text-red-600 font-medium">{formatCurrency(p.annualPremium, p.currency)}</td>
                   <td className="px-4 py-2.5 text-right text-slate-700">{p.coverageAmount ? formatCurrency(p.coverageAmount, p.currency) : '-'}</td>
@@ -160,7 +182,7 @@ export default function Insurance() {
                 </tr>
                 {/* Bonus Schedule Row */}
                 <tr>
-                  <td colSpan={8} className="p-0">
+                  <td colSpan={9} className="p-0">
                     <div className="flex items-center px-4 py-1.5 bg-slate-50 border-t border-slate-100">
                       <button onClick={() => toggleBonusSchedule(p.id)} className="flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-800 font-medium">
                         {expandedPolicy === p.id ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
@@ -224,7 +246,7 @@ export default function Insurance() {
                 </tr>
                 </React.Fragment>
               ))}
-              {policies.length === 0 && <tr><td colSpan={8} className="px-4 py-12 text-center text-slate-400">No insurance policies tracked</td></tr>}
+              {policies.length === 0 && <tr><td colSpan={9} className="px-4 py-12 text-center text-slate-400">No insurance policies tracked</td></tr>}
             </tbody>
           </table>
         </div>

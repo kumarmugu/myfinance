@@ -24,8 +24,9 @@ public class PropertyController {
     private final com.myfinance.service.CurrencyConversionService fx;
 
     @GetMapping
-    public List<Property> getAll() {
+    public List<Property> getAll(@RequestParam(required = false) Long ownerId) {
         Long uid = tenantContext.getCurrentUserId();
+        if (ownerId != null) return repository.findByOwnerIdOrderByPropertyNameAsc(ownerId);
         return repository.findByUserIdOrderByPropertyNameAsc(uid);
     }
 

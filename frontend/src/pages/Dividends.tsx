@@ -4,6 +4,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { getDividends, getDividendSummary, createDividend, deleteDividend, getAccounts, getOwners } from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
+import ExportMenu from '../components/ExportMenu';
+import { dividendsExportConfig } from '../utils/export/configs';
 import type { Dividend, Account, Owner, Currency } from '../types';
 import { useToast } from '../contexts/ToastContext';
 
@@ -13,7 +15,7 @@ export default function Dividends() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const { showToast } = useToast();
   const [owners, setOwners] = useState<Owner[]>([]);
-  void owners; // used for form ownerId default
+  const [filterOwner, setFilterOwner] = useState<string>('');
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [filterBroker, setFilterBroker] = useState<string>('');
@@ -22,11 +24,13 @@ export default function Dividends() {
 
   const [form, setForm] = useState({ accountId: 0, ownerId: 0, instrument: '', amount: 0, currency: 'SGD' as Currency, receivedDate: new Date().toISOString().split('T')[0], year: new Date().getFullYear(), quarter: 'Q1', notes: '' });
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => { getOwners().then(r => setOwners(r.data)).catch(console.error); }, []);
+  useEffect(() => { loadData(); }, [filterOwner]);
 
   const loadData = async () => {
     try {
-      const [divRes, sumRes, accRes, ownRes] = await Promise.all([getDividends(), getDividendSummary(), getAccounts(), getOwners()]);
+      const ownerId = filterOwner ? Number(filterOwner) : undefined;
+      const [divRes, sumRes, accRes, ownRes] = await Promise.all([getDividends({ ownerId }), getDividendSummary(), getAccounts(), getOwners()]);
       setDividends(divRes.data);
       setSummary(sumRes.data.map(([year, total]: [number, number]) => ({ year, total })));
       setAccounts(accRes.data.filter(a => a.accountType === 'BROKER'));
@@ -39,7 +43,7 @@ export default function Dividends() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await createDividend({ account: { id: form.accountId } as Account, owner: { id: form.ownerId } as Owner, instrument: form.instrument, amount: form.amount, currency: form.currency, receivedDate: form.receivedDate, year: form.year, quarter: form.quarter, notes: form.notes });
+      await createDividend({ account: { id: form.accountId } as Account, owner: form.ownerId ? { id: form.ownerId } as Owner : undefined, instrument: form.instrument, amount: form.amount, currency: form.currency, receivedDate: form.receivedDate, year: form.year, quarter: form.quarter, notes: form.notes });
       setShowForm(false);
       setForm({ accountId: 0, ownerId: 0, instrument: '', amount: 0, currency: 'SGD', receivedDate: new Date().toISOString().split('T')[0], year: new Date().getFullYear(), quarter: 'Q1', notes: '' });
       loadData();
@@ -76,6 +80,14 @@ export default function Dividends() {
       <div className="flex items-center justify-between">
         <div><h1 className="text-2xl font-bold text-slate-800">Dividends</h1><p className="text-slate-500 text-sm mt-0.5">Track and manage dividend income</p></div>
         <div className="flex items-center gap-3">
+          <div className="w-44">
+            <SearchableSelect
+              options={[{ value: '', label: 'All Owners' }, ...owners.map(o => ({ value: o.id.toString(), label: o.name, icon: o.name[0] }))]}
+              value={filterOwner}
+              onChange={v => setFilterOwner(v.toString())}
+              placeholder="All Owners"
+            />
+          </div>
           <div className="flex bg-white border border-slate-200 rounded-lg overflow-hidden">
             <button onClick={() => setDisplayCurrency('SGD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'SGD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>SGD</button>
             <button onClick={() => setDisplayCurrency('USD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'USD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>USD</button>
@@ -135,6 +147,8 @@ export default function Dividends() {
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
           <h3 className="text-base font-semibold text-slate-800 mb-4">Record Dividend</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner</label>
+              <SearchableSelect options={[{ value: 0, label: 'Unassigned' }, ...owners.map(o => ({ value: o.id, label: o.name }))]} value={form.ownerId} onChange={v => setForm({...form, ownerId: Number(v)})} placeholder="Select owner..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Broker *</label>
               <SearchableSelect options={accounts.map(a => ({ value: a.id, label: a.name }))} value={form.accountId} onChange={v => setForm({...form, accountId: Number(v)})} placeholder="Select broker..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Instrument *</label>
@@ -173,6 +187,7 @@ export default function Dividends() {
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Date</th>
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Instrument</th>
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Broker</th>
+                <th className="text-left px-4 py-2.5 font-medium text-slate-600">Owner</th>
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Quarter</th>
                 <th className="text-right px-4 py-2.5 font-medium text-slate-600">Amount</th>
                 <th className="px-4 py-2.5 w-8"></th>
@@ -184,12 +199,13 @@ export default function Dividends() {
                   <td className="px-4 py-2 text-slate-700 text-xs">{formatDate(d.receivedDate)}</td>
                   <td className="px-4 py-2 font-medium text-slate-800">{d.instrument || d.asset?.symbol || '-'}</td>
                   <td className="px-4 py-2 text-slate-600">{d.account.name}</td>
+                  <td className="px-4 py-2 text-slate-500 text-xs">{d.owner?.name || '-'}</td>
                   <td className="px-4 py-2 text-slate-500 text-xs">{d.year}-{d.quarter}</td>
                   <td className="px-4 py-2 text-right font-medium text-green-600">{formatCurrency(d.amount, d.currency)}</td>
                   <td className="px-4 py-2"><button onClick={() => handleDelete(d.id)} className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500"><Trash2 size={14} /></button></td>
                 </tr>
               ))}
-              {filtered.length === 0 && <tr><td colSpan={6} className="px-4 py-12 text-center text-slate-400">No dividends recorded</td></tr>}
+              {filtered.length === 0 && <tr><td colSpan={7} className="px-4 py-12 text-center text-slate-400">No dividends recorded</td></tr>}
             </tbody>
           </table>
         </div>

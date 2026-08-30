@@ -915,56 +915,56 @@ Track cash flows per broker account:
 
 ---
 
-## 6. Multi-Owner Design
+## 6. Multi-Tenancy & Multi-Owner Design
 
-### 6.1 Owner Profiles
+### 6.1 Tenant isolation (security boundary)
 
-| Owner | Label | Accounts |
-|-------|-------|----------|
-| Primary | Self | Tiger, Saxo, IBKR, Poems, Moomoo, DBS, OCBC, CIMB, Coinhako, Crypto.com |
-| Spouse | Wife | Saxo (separate sub-account), Tiger (separate) |
+Every user-owned table carries a `user_id`. Reads go through `findByUserId...` finders; writes stamp the authenticated user from `TenantContext`. Cross-tenant access is impossible and is guarded by `MultiTenantIsolationTest`. This is a security boundary, not just a data-modelling choice.
 
-### 6.2 Consolidated vs Individual Views
+### 6.2 Owners (within a tenant)
 
-- **Dashboard**: Shows consolidated by default, toggle to individual
-- **Portfolio**: Filter by owner
-- **Reports**: Generate per-owner or combined
-- **Fixed Deposits**: Separate entity (family FDs), not tied to personal owners
+Inside one user's data, `Owner` records attribute finances to people (relationships: SELF, SPOUSE, SON, DAUGHTER, FATHER, MOTHER, BROTHER, SISTER). A user typically creates at least themselves, and optionally a spouse or family members. Owners are user-created — there is **no seed data**.
 
-### 6.3 Data Separation
+### 6.3 Consolidated vs Individual Views
 
-All investment tables include `owner_id` field for filtering:
-- Holdings are unique per (asset, account, owner)
-- Transactions tagged with owner
-- Snapshots calculated per owner and consolidated
-- Dividends recorded per owner
+- **Dashboard**: consolidated by default; filter by owner.
+- **Portfolio / most modules**: filter by owner.
+- **Reports**: per-owner or combined.
+
+### 6.4 Data Separation
+
+Investment tables include both `user_id` (tenant) and `owner_id` (person):
+- Holdings are unique per (asset, account, owner).
+- Transactions, dividends and snapshots are tagged with the owner.
+- An owner cannot be deleted while records still reference it (409 with references).
 
 ---
 
 ## 7. Currency Handling Design
 
+> The authoritative, current description of the currency model is in the **§ Currency Handling** section at the end of this document. The summary below is kept for orientation and has been reconciled with the implementation.
+
 ### 7.1 Storage Rules
 
-1. Investment amounts stored in their **native currency** (USD for US stocks, SGD for SG stocks)
-2. Fixed deposits stored in **LKR**
-3. Exchange rates stored separately
-4. Conversion done at **display time** for reporting
+1. Every record stores its **original currency + amount** — the source of truth. Conversion never overwrites it.
+2. Amounts are stored in whatever currency the user entered (e.g. USD for a US ETF, LKR for a Sri Lanka fixed deposit); there is no assumed per-module currency.
+3. Exchange rates are stored per user (`currency_rates`) with an effective date.
+4. Conversion to the user's base or a display currency is done at **read time** by `CurrencyConversionService`.
 
 ### 7.2 Display Modes
 
-| Context | Display |
-|---------|---------|
-| Individual holding | Native currency |
-| Portfolio total | SGD (converted) |
-| Dashboard net worth | SGD |
-| Fixed deposit | LKR |
-| FD in net worth | SGD (converted) |
+| Context | Value shown |
+|---------|-------------|
+| Individual record / list row | Original currency + amount (unchanged) |
+| Net Worth / Dashboard totals | User's **base currency** (converted) |
+| Module summary endpoints | User's base currency (converted; response includes `baseCurrency`) |
+| Display-currency toggle | The chosen display currency (re-derived; never persisted) |
 
 ### 7.3 Exchange Rate Management
 
-- Manual update via settings page
-- Rates stored with effective date for historical accuracy
-- Default rates: USD/SGD = 1.27, EUR/SGD = 1.49, LKR/SGD = 0.0042
+- User-maintained via the FX Rates screen. **No external feed.**
+- Rates stored with an effective date; the latest by date is used, with direct → inverse → identity resolution.
+- **No hardcoded default rates** exist anywhere in the codebase; a fresh install has no rates until the user adds them.
 
 ---
 

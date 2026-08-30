@@ -247,10 +247,13 @@ function ArchitectureDoc() {
       {/* Overview */}
       <DocSection icon={<FileText size={20} className="text-indigo-600" />} title="1. Overview">
         <p>
-          MyFinance is a personal finance management application designed to track, analyze, and plan
-          investments across multiple brokerage accounts, fixed deposits, cryptocurrencies, and
-          retirement plans. The application supports multi-currency portfolios (SGD, USD, EUR, LKR),
-          multi-owner profiles, and comprehensive reporting with historical tracking.
+          MyFinance is a self-hosted, multi-tenant personal finance and net-worth management application.
+          A single deployment serves many users, each seeing only their own data (isolated by user).
+          It tracks investments, bank savings, fixed deposits, real estate, precious metals, retirement
+          funds (CPF/SRS), insurance, home loans, salary, tax and budgets, and consolidates them into a
+          configurable net worth. Currencies are user-created with user-maintained FX rates (no external
+          feed); every record keeps its original currency and amount while totals are derived in each
+          user's chosen base currency. Most modules can be enabled or disabled per user.
         </p>
       </DocSection>
 
@@ -353,56 +356,48 @@ function ArchitectureDoc() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <EnumCard title="AssetType" values={[
             'INDEX_FUND', 'MUTUAL_FUND', 'GROWTH_EQUITY', 'DIVIDEND_EQUITY',
-            'LEVERAGED_ETF', 'MONEY_MARKET', 'FIXED_DEPOSIT', 'SAVINGS', 'CRYPTO'
+            'LEVERAGED_ETF', 'MONEY_MARKET', 'FIXED_DEPOSIT', 'SAVINGS', 'CRYPTO',
+            'GOLD', 'BOND', 'REIT', 'COMMODITY', 'INSURANCE', 'PENSION', 'OTHER'
           ]} />
-          <EnumCard title="AccountType" values={['BROKER', 'BANK', 'CRYPTO_EXCHANGE', 'FIXED_DEPOSIT']} />
-          <EnumCard title="TransactionType" values={['BUY', 'SELL', 'DIVIDEND', 'DEPOSIT', 'WITHDRAWAL', 'TRANSFER', 'INTEREST']} />
-          <EnumCard title="Currency" values={['SGD', 'USD', 'EUR', 'LKR']} />
+          <EnumCard title="AccountType" values={['BROKER', 'BANK', 'CRYPTO_EXCHANGE']} />
+          <EnumCard title="TransactionType" values={['BUY', 'SELL', 'DIVIDEND', 'DEPOSIT', 'WITHDRAWAL']} />
+          <EnumCard title="Currency (user-created, not fixed)" values={['SGD', 'USD', 'EUR', 'LKR', 'INR', 'GBP', 'AUD', 'JPY', 'CNY', '…']} />
           <EnumCard title="FDStatus" values={['ACTIVE', 'MATURED', 'RENEWED', 'CLOSED', 'REQUIRES_UPDATE']} />
-          <EnumCard title="OwnerRelationship" values={['SELF', 'SPOUSE', 'PARENT_FATHER', 'PARENT_MOTHER', 'SIBLING']} />
+          <EnumCard title="OwnerRelationship" values={['SELF', 'SPOUSE', 'SON', 'DAUGHTER', 'FATHER', 'MOTHER', 'BROTHER', 'SISTER']} />
+          <EnumCard title="InvestmentPurpose" values={['LONG_TERM', 'TRADING', 'DIVIDEND_REINVESTMENT', 'SRS', 'RETIREMENT', 'SHORT_TERM']} />
         </div>
       </DocSection>
 
       {/* Multi-Currency */}
       <DocSection icon={<Globe size={20} className="text-indigo-600" />} title="6. Multi-Currency Strategy">
-        <div className="space-y-3">
-          <p className="text-sm text-slate-600">All monetary values are stored with their original currency. Conversion to SGD is applied at display time for reporting.</p>
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50">
-              <tr>
-                <th className="text-left px-3 py-2 font-medium text-slate-600">From</th>
-                <th className="text-left px-3 py-2 font-medium text-slate-600">To</th>
-                <th className="text-left px-3 py-2 font-medium text-slate-600">Rate</th>
-                <th className="text-left px-3 py-2 font-medium text-slate-600">Usage</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              <tr><td className="px-3 py-2">USD</td><td className="px-3 py-2">SGD</td><td className="px-3 py-2">1.27</td><td className="px-3 py-2">US stocks (Tiger, Saxo, IBKR)</td></tr>
-              <tr><td className="px-3 py-2">EUR</td><td className="px-3 py-2">SGD</td><td className="px-3 py-2">1.49</td><td className="px-3 py-2">Euro-denominated funds</td></tr>
-              <tr><td className="px-3 py-2">LKR</td><td className="px-3 py-2">SGD</td><td className="px-3 py-2">0.0042</td><td className="px-3 py-2">Sri Lanka fixed deposits</td></tr>
-            </tbody>
-          </table>
+        <div className="space-y-3 text-sm text-slate-600">
+          <p>Three distinct concepts, all derived from user-entered data — <b>no hardcoded FX and no external rate feed</b>:</p>
+          <ul className="list-disc list-inside space-y-1">
+            <li><b>Original currency + amount</b> — stored on every record; the source of truth. Never overwritten by conversion.</li>
+            <li><b>Base currency</b> — per user (<code className="bg-slate-100 px-1 rounded">app_users.base_currency</code>, null → SGD). Used for Net Worth and summary totals.</li>
+            <li><b>Display currency</b> — per user (<code className="bg-slate-100 px-1 rounded">app_users.display_currencies</code>, null → SGD,USD). A UI toggle that re-derives shown values; never persisted.</li>
+          </ul>
+          <p>
+            <code className="bg-slate-100 px-1 rounded">CurrencyConversionService</code> converts using each user's own
+            <code className="bg-slate-100 px-1 rounded">currency_rates</code> rows (latest by effective date; direct → inverse → identity fallback).
+            A broker account currency, an asset/holding currency, and a transaction currency can all differ within one investment and are each preserved.
+          </p>
         </div>
       </DocSection>
 
       {/* Multi-Owner */}
       <DocSection icon={<Users size={20} className="text-indigo-600" />} title="7. Multi-Owner Strategy">
-        <div className="space-y-3">
-          <p className="text-sm text-slate-600">The application supports tracking finances for multiple family members with data isolation per owner.</p>
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50">
-              <tr>
-                <th className="text-left px-3 py-2 font-medium text-slate-600">Owner</th>
-                <th className="text-left px-3 py-2 font-medium text-slate-600">Role</th>
-                <th className="text-left px-3 py-2 font-medium text-slate-600">Accounts</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              <tr><td className="px-3 py-2">Primary User</td><td className="px-3 py-2">Self</td><td className="px-3 py-2">Tiger, Saxo, IBKR, Poems, Moomoo, DBS, OCBC, CIMB, Coinhako, Crypto.com</td></tr>
-              <tr><td className="px-3 py-2">Spouse</td><td className="px-3 py-2">Wife</td><td className="px-3 py-2">Saxo (separate), Tiger (separate)</td></tr>
-              <tr><td className="px-3 py-2">Parents</td><td className="px-3 py-2">Family</td><td className="px-3 py-2">Fixed Deposits (Sri Lanka)</td></tr>
-            </tbody>
-          </table>
+        <div className="space-y-3 text-sm text-slate-600">
+          <p>
+            <b>Tenant isolation</b> is the security boundary: every user-owned row carries a <code className="bg-slate-100 px-1 rounded">user_id</code>,
+            all reads use <code className="bg-slate-100 px-1 rounded">findByUserId…</code> finders, and cross-tenant access is impossible
+            (guarded by <code className="bg-slate-100 px-1 rounded">MultiTenantIsolationTest</code>).
+          </p>
+          <p>
+            <b>Owners</b> live inside a single user's data and let that user attribute finances to people
+            (relationships: SELF, SPOUSE, SON, DAUGHTER, FATHER, MOTHER, BROTHER, SISTER). Most pages can filter by owner.
+            Owners are user-created — there is no seed data. An owner cannot be deleted while records still reference it.
+          </p>
         </div>
       </DocSection>
 
@@ -444,11 +439,10 @@ function ArchitectureDoc() {
       {/* Roadmap */}
       <DocSection icon={<Rocket size={20} className="text-indigo-600" />} title="9. Version Roadmap">
         <div className="space-y-3">
-          <RoadmapItem version="v1.0" status="current" title="Basic portfolio tracking" desc="Current implementation with sample Indian market data" />
-          <RoadmapItem version="v2.0" status="next" title="Multi-currency & multi-owner" desc="SGD/USD support, owner profiles, Singapore/US market" />
-          <RoadmapItem version="v2.1" status="planned" title="Fixed Deposits module" desc="Sri Lanka FD management with maturity tracking" />
-          <RoadmapItem version="v2.2" status="planned" title="Financial Planning & SRS" desc="Target allocation, SRS projections, retirement planning" />
-          <RoadmapItem version="v2.3" status="planned" title="Advanced reporting" desc="YoY comparison, historical charts, dividend reports" />
+          <RoadmapItem version="v2.4" status="current" title="Auth, multi-tenancy, user management" desc="JWT auth, per-user data isolation, admin user management, audit trail" />
+          <RoadmapItem version="v2.5" status="current" title="Full asset coverage" desc="Bank savings, real estate, precious metals, insurance, home loans, salary, tax, budgets" />
+          <RoadmapItem version="v2.7" status="current" title="Per-user currency model" desc="User-created currencies, per-user base/display currency, no hardcoded FX" />
+          <RoadmapItem version="v2.8" status="current" title="Interactive User Guide" desc="Searchable in-app guide, contextual help, docs realigned to implementation" />
           <RoadmapItem version="v3.0" status="future" title="Data import & automation" desc="CSV/Excel import, automated price updates" />
         </div>
       </DocSection>
@@ -654,10 +648,11 @@ ACTIVE → REQUIRES_UPDATE (needs verification)`}</pre>
           <div>
             <h4 className="font-medium text-slate-700 mb-2">Security (Current)</h4>
             <ul className="list-disc list-inside text-sm text-slate-600 space-y-1">
-              <li>No authentication (single-user, local)</li>
-              <li>CORS configured for localhost</li>
-              <li>Input validation via Bean Validation</li>
-              <li>H2 console in dev mode only</li>
+              <li>Stateless JWT auth (Bearer token); BCrypt password hashing</li>
+              <li>Roles USER / ADMIN; admin-only user management and audit</li>
+              <li>Multi-tenant isolation by user; self-registration disabled</li>
+              <li>1-hour inactivity auto-logout; CORS restricted to configured origins</li>
+              <li>Input validation via Bean Validation; H2 console dev only</li>
             </ul>
           </div>
           <div>

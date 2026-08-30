@@ -123,6 +123,13 @@ export const createAccountDeposit = (deposit: Partial<AccountDeposit>) => api.po
 export const updateAccountDeposit = (id: number, deposit: Partial<AccountDeposit>) => api.put<AccountDeposit>(`/planning/deposits/${id}`, deposit);
 export const deleteAccountDeposit = (id: number) => api.delete(`/planning/deposits/${id}`);
 
+// ─── Bonds ───
+export const getBonds = (ownerId?: number) => api.get<any[]>('/bonds', { params: { ownerId } });
+export const getBondSummary = () => api.get<any>('/bonds/summary');
+export const createBond = (bond: any) => api.post<any>('/bonds', bond);
+export const updateBond = (id: number, bond: any) => api.put<any>(`/bonds/${id}`, bond);
+export const deleteBond = (id: number) => api.delete(`/bonds/${id}`);
+
 // ─── Currency Rates ───
 export const getCurrencyRates = () => api.get<CurrencyRate[]>('/currency-rates');
 export const getAvailableCurrencies = () => api.get<string[]>('/currency-rates/currencies');

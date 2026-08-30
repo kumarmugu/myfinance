@@ -11,4 +11,5 @@ public interface PreciousMetalRepository extends JpaRepository<PreciousMetal, Lo
     List<PreciousMetal> findByUserIdOrderByPurchaseDateDesc(Long userId);
     List<PreciousMetal> findByUserIdAndMetalType(Long userId, String metalType);
     List<PreciousMetal> findByUserIdAndStatus(Long userId, String status);
+    List<PreciousMetal> findByOwnerIdOrderByPurchaseDateDesc(Long ownerId);
 }

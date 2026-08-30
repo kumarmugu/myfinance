@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
-import api from '../api';
+import api, { getOwners } from '../api';
+import SearchableSelect from '../components/SearchableSelect';
 import { formatCurrency } from '../utils/formatters';
 import { useToast } from '../contexts/ToastContext';
+import type { Owner } from '../types';
 
 interface PreciousMetal {
   id: number;
@@ -23,6 +25,7 @@ interface PreciousMetal {
   soldPrice: number;
   soldDate: string;
   notes: string;
+  owner?: Owner | null;
 }
 
 const METAL_TYPES = ['GOLD', 'SILVER', 'PLATINUM'];
@@ -31,6 +34,8 @@ const METAL_COLORS: Record<string, string> = { GOLD: 'bg-amber-100 text-amber-70
 
 export default function PreciousMetals() {
   const [items, setItems] = useState<PreciousMetal[]>([]);
+  const [owners, setOwners] = useState<Owner[]>([]);
+  const [filterOwner, setFilterOwner] = useState<string>('');
   const [summary, setSummary] = useState<{ totalPurchaseValue: number; totalCurrentValue: number; baseCurrency?: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -41,16 +46,17 @@ export default function PreciousMetals() {
     metalType: 'GOLD', form: 'COIN', description: '', weight: 0, weightUnit: 'g',
     purity: '999', purchasePrice: 0, currentPrice: 0, currency: 'SGD',
     purchaseDate: '', purchasedFrom: '', storageLocation: '',
-    includeInNetWorth: true, status: 'HELD', soldPrice: 0, soldDate: '', notes: ''
+    includeInNetWorth: true, status: 'HELD', soldPrice: 0, soldDate: '', notes: '', ownerId: 0
   });
 
-  useEffect(() => { loadData(); }, [filterType]);
+  useEffect(() => { getOwners().then(r => setOwners(r.data)).catch(console.error); }, []);
+  useEffect(() => { loadData(); }, [filterType, filterOwner]);
 
   const loadData = async () => {
     try {
-      const params = filterType ? `?metalType=${filterType}` : '';
+      const ownerId = filterOwner ? Number(filterOwner) : undefined;
       const [listRes, sumRes] = await Promise.all([
-        api.get(`/precious-metals${params}`),
+        api.get('/precious-metals', { params: { metalType: filterType || undefined, ownerId } }),
         api.get('/precious-metals/summary'),
       ]);
       setItems(listRes.data);
@@ -59,13 +65,14 @@ export default function PreciousMetals() {
     finally { setLoading(false); }
   };
 
-  const resetForm = () => setForm({ metalType: 'GOLD', form: 'COIN', description: '', weight: 0, weightUnit: 'g', purity: '999', purchasePrice: 0, currentPrice: 0, currency: 'SGD', purchaseDate: '', purchasedFrom: '', storageLocation: '', includeInNetWorth: true, status: 'HELD', soldPrice: 0, soldDate: '', notes: '' });
+  const resetForm = () => setForm({ metalType: 'GOLD', form: 'COIN', description: '', weight: 0, weightUnit: 'g', purity: '999', purchasePrice: 0, currentPrice: 0, currency: 'SGD', purchaseDate: '', purchasedFrom: '', storageLocation: '', includeInNetWorth: true, status: 'HELD', soldPrice: 0, soldDate: '', notes: '', ownerId: 0 });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (editing) { await api.put(`/precious-metals/${editing.id}`, form); }
-      else { await api.post('/precious-metals', form); }
+      const payload = { ...form, owner: form.ownerId ? { id: form.ownerId } : null };
+      if (editing) { await api.put(`/precious-metals/${editing.id}`, payload); }
+      else { await api.post('/precious-metals', payload); }
       setShowForm(false); setEditing(null); resetForm(); loadData();
       showToast(editing ? 'Updated' : 'Added', 'success');
     } catch (err: any) { showToast(err.response?.data?.message || 'Failed'); }
@@ -73,7 +80,7 @@ export default function PreciousMetals() {
 
   const startEdit = (item: PreciousMetal) => {
     setEditing(item);
-    setForm({ metalType: item.metalType, form: item.form || 'COIN', description: item.description || '', weight: item.weight, weightUnit: item.weightUnit || 'g', purity: item.purity || '', purchasePrice: item.purchasePrice || 0, currentPrice: item.currentPrice || 0, currency: item.currency || 'SGD', purchaseDate: item.purchaseDate || '', purchasedFrom: item.purchasedFrom || '', storageLocation: item.storageLocation || '', includeInNetWorth: item.includeInNetWorth, status: item.status || 'HELD', soldPrice: item.soldPrice || 0, soldDate: item.soldDate || '', notes: item.notes || '' });
+    setForm({ metalType: item.metalType, form: item.form || 'COIN', description: item.description || '', weight: item.weight, weightUnit: item.weightUnit || 'g', purity: item.purity || '', purchasePrice: item.purchasePrice || 0, currentPrice: item.currentPrice || 0, currency: item.currency || 'SGD', purchaseDate: item.purchaseDate || '', purchasedFrom: item.purchasedFrom || '', storageLocation: item.storageLocation || '', includeInNetWorth: item.includeInNetWorth, status: item.status || 'HELD', soldPrice: item.soldPrice || 0, soldDate: item.soldDate || '', notes: item.notes || '', ownerId: item.owner?.id || 0 });
     setShowForm(true);
   };
 
@@ -93,7 +100,17 @@ export default function PreciousMetals() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-2xl font-bold text-slate-800">Gold & Silver</h1><p className="text-slate-500 text-sm mt-0.5">Track precious metal holdings</p></div>
-        <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700"><Plus size={16} /> Add Metal</button>
+        <div className="flex items-center gap-3">
+          <div className="w-44">
+            <SearchableSelect
+              options={[{ value: '', label: 'All Owners' }, ...owners.map(o => ({ value: o.id.toString(), label: o.name, icon: o.name[0] }))]}
+              value={filterOwner}
+              onChange={v => setFilterOwner(v.toString())}
+              placeholder="All Owners"
+            />
+          </div>
+          <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700"><Plus size={16} /> Add Metal</button>
+        </div>
       </div>
 
       {/* Summary */}
@@ -118,6 +135,8 @@ export default function PreciousMetals() {
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
           <h3 className="text-base font-semibold text-slate-800 mb-4">{editing ? 'Edit Item' : 'Add Precious Metal'}</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner</label>
+              <SearchableSelect options={[{ value: 0, label: 'Unassigned' }, ...owners.map(o => ({ value: o.id, label: o.name }))]} value={form.ownerId} onChange={v => setForm({...form, ownerId: Number(v)})} placeholder="Select owner..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Metal *</label>
               <div className="flex gap-1">
                 {METAL_TYPES.map(t => (<button key={t} type="button" onClick={() => setForm({...form, metalType: t})} className={`flex-1 py-2 text-xs font-medium rounded-lg border ${form.metalType === t ? 'bg-amber-600 text-white border-amber-600' : 'bg-white text-slate-600 border-slate-300'}`}>{t}</button>))}
@@ -167,6 +186,7 @@ export default function PreciousMetals() {
           <thead className="bg-slate-50 border-b border-slate-200">
             <tr>
               <th className="text-left px-4 py-3 font-medium text-slate-600">Item</th>
+              <th className="text-left px-4 py-3 font-medium text-slate-600">Owner</th>
               <th className="text-left px-4 py-3 font-medium text-slate-600">Metal</th>
               <th className="text-right px-4 py-3 font-medium text-slate-600">Weight</th>
               <th className="text-left px-4 py-3 font-medium text-slate-600">Purity</th>
@@ -183,6 +203,7 @@ export default function PreciousMetals() {
                   <p className="font-medium text-slate-800">{item.description || `${item.metalType} ${item.form}`}</p>
                   <p className="text-[10px] text-slate-400">{item.form}{item.purchasedFrom ? ` • ${item.purchasedFrom}` : ''}</p>
                 </td>
+                <td className="px-4 py-3 text-xs text-slate-600">{item.owner?.name || '-'}</td>
                 <td className="px-4 py-3"><span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${METAL_COLORS[item.metalType] || 'bg-slate-100 text-slate-600'}`}>{item.metalType}</span></td>
                 <td className="px-4 py-3 text-right font-mono text-slate-700">{item.weight}{item.weightUnit || 'g'}</td>
                 <td className="px-4 py-3 text-slate-600">{item.purity || '-'}</td>
@@ -197,7 +218,7 @@ export default function PreciousMetals() {
                 </td>
               </tr>
             ))}
-            {items.length === 0 && <tr><td colSpan={8} className="px-4 py-12 text-center text-slate-400">No precious metals. Click "Add Metal" to start tracking.</td></tr>}
+            {items.length === 0 && <tr><td colSpan={9} className="px-4 py-12 text-center text-slate-400">No precious metals. Click "Add Metal" to start tracking.</td></tr>}
           </tbody>
         </table>
       </div>

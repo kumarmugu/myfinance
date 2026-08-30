@@ -10,4 +10,5 @@ import java.util.List;
 public interface PropertyRepository extends JpaRepository<Property, Long> {
     List<Property> findByUserIdOrderByPropertyNameAsc(Long userId);
     List<Property> findByUserIdAndStatus(Long userId, String status);
+    List<Property> findByOwnerIdOrderByPropertyNameAsc(Long ownerId);
 }

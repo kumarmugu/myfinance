@@ -31,6 +31,7 @@ const ALL_FEATURES = [
   { key: 'SL_FD', label: 'Sri Lanka FDs' },
   { key: 'REAL_ESTATE', label: 'Real Estate' },
   { key: 'PRECIOUS_METALS', label: 'Gold & Silver' },
+  { key: 'BONDS', label: 'Bonds' },
   { key: 'INSURANCE', label: 'Life Insurance' },
   { key: 'HOME_LOANS', label: 'Home Loans' },
   { key: 'SALARY', label: 'Salary' },

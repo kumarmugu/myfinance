@@ -4,10 +4,14 @@ import { getTransactions, createTransaction, deleteTransaction, getAssets, getAc
 import { useAuth } from '../contexts/AuthContext';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
+import ExportMenu from '../components/ExportMenu';
+import { transactionsExportConfig } from '../utils/export/configs';
+import { useToast } from '../contexts/ToastContext';
 import type { Transaction, Asset, Account, Owner, TransactionRequest } from '../types';
 
 export default function Transactions() {
   const { verifyPassword } = useAuth();
+  const { showToast } = useToast();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [assets, setAssets] = useState<Asset[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -37,8 +41,8 @@ export default function Transactions() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try { await createTransaction(form); setShowForm(false); loadData(); }
-    catch (err) { console.error(err); alert('Failed to create transaction'); }
+    try { await createTransaction(form); setShowForm(false); loadData(); showToast('Transaction saved', 'success'); }
+    catch (err) { console.error(err); showToast('Failed to create transaction'); }
   };
 
   const confirmDelete = async () => {
@@ -67,6 +71,11 @@ export default function Transactions() {
               placeholder="All Owners"
             />
           </div>
+          <ExportMenu
+            rows={transactions}
+            config={transactionsExportConfig}
+            subtitle={filterOwner ? `Filtered by owner: ${owners.find(o => o.id === filterOwner)?.name ?? filterOwner}` : undefined}
+          />
           <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
             <Plus size={16} /> New Transaction
           </button>

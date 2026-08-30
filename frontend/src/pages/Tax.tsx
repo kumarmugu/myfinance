@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { getTaxRecords, getTaxSummary, createTaxRecord, updateTaxRecord, deleteTaxRecord } from '../api';
+import { getTaxRecords, getTaxSummary, createTaxRecord, updateTaxRecord, deleteTaxRecord, getOwners } from '../api';
 import { formatCurrency } from '../utils/formatters';
+import SearchableSelect from '../components/SearchableSelect';
+import { useToast } from '../contexts/ToastContext';
+import type { Owner } from '../types';
 
 interface TaxRecord {
   id: number;
@@ -17,25 +20,31 @@ interface TaxRecord {
   taxPayable: number;
   country: string;
   notes: string;
+  owner?: Owner | null;
 }
 
 export default function Tax() {
   const [records, setRecords] = useState<TaxRecord[]>([]);
+  const [owners, setOwners] = useState<Owner[]>([]);
+  const [filterOwner, setFilterOwner] = useState<string>('');
   const [summary, setSummary] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<TaxRecord | null>(null);
+  const { showToast } = useToast();
   const [form, setForm] = useState({
     assessmentYear: new Date().getFullYear(), employment: 0, donations: 0, reliefs: 0,
     srsDeduction: 0, chargeableIncome: 0, tax: 0, taxRebate: 0, taxPayable: 0,
-    country: 'Singapore', notes: ''
+    country: 'Singapore', notes: '', ownerId: 0
   });
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => { getOwners().then(r => setOwners(r.data)).catch(console.error); }, []);
+  useEffect(() => { loadData(); }, [filterOwner]);
 
   const loadData = async () => {
     try {
-      const [recRes, sumRes] = await Promise.all([getTaxRecords(), getTaxSummary()]);
+      const ownerId = filterOwner ? Number(filterOwner) : undefined;
+      const [recRes, sumRes] = await Promise.all([getTaxRecords(ownerId), getTaxSummary()]);
       setRecords(recRes.data); setSummary(sumRes.data);
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
@@ -44,16 +53,17 @@ export default function Tax() {
   const resetForm = () => setForm({
     assessmentYear: new Date().getFullYear(), employment: 0, donations: 0, reliefs: 0,
     srsDeduction: 0, chargeableIncome: 0, tax: 0, taxRebate: 0, taxPayable: 0,
-    country: 'Singapore', notes: ''
+    country: 'Singapore', notes: '', ownerId: 0
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (editing) { await updateTaxRecord(editing.id, form); }
-      else { await createTaxRecord(form); }
+      const payload = { ...form, owner: form.ownerId ? { id: form.ownerId } : null };
+      if (editing) { await updateTaxRecord(editing.id, payload); }
+      else { await createTaxRecord(payload); }
       setShowForm(false); setEditing(null); resetForm(); loadData();
-    } catch (err) { console.error(err); alert('Failed'); }
+    } catch (err) { console.error(err); showToast('Failed'); }
   };
 
   const startEdit = (r: TaxRecord) => {
@@ -62,7 +72,7 @@ export default function Tax() {
       assessmentYear: r.assessmentYear, employment: r.employment, donations: r.donations,
       reliefs: r.reliefs, srsDeduction: r.srsDeduction, chargeableIncome: r.chargeableIncome,
       tax: r.tax, taxRebate: r.taxRebate, taxPayable: r.taxPayable,
-      country: r.country || 'Singapore', notes: r.notes || ''
+      country: r.country || 'Singapore', notes: r.notes || '', ownerId: r.owner?.id || 0
     });
     setShowForm(true);
   };
@@ -88,7 +98,17 @@ export default function Tax() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-2xl font-bold text-slate-800">Tax Records</h1><p className="text-slate-500 text-sm mt-0.5">Track tax paid by assessment year</p></div>
-        <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Year</button>
+        <div className="flex items-center gap-3">
+          <div className="w-44">
+            <SearchableSelect
+              options={[{ value: '', label: 'All Owners' }, ...owners.map(o => ({ value: o.id.toString(), label: o.name, icon: o.name[0] }))]}
+              value={filterOwner}
+              onChange={v => setFilterOwner(v.toString())}
+              placeholder="All Owners"
+            />
+          </div>
+          <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Year</button>
+        </div>
       </div>
 
       {/* Summary */}
@@ -122,6 +142,8 @@ export default function Tax() {
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
           <h3 className="text-base font-semibold text-slate-800 mb-4">{editing ? 'Edit Tax Record' : 'Add Tax Record'}</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner</label>
+              <SearchableSelect options={[{ value: 0, label: 'Unassigned' }, ...owners.map(o => ({ value: o.id, label: o.name }))]} value={form.ownerId} onChange={v => setForm({...form, ownerId: Number(v)})} placeholder="Select owner..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Assessment Year *</label>
               <input type="number" value={form.assessmentYear} onChange={e => setForm({...form, assessmentYear: parseInt(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Employment Income *</label>
@@ -160,6 +182,7 @@ export default function Tax() {
             <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
                 <th className="text-left px-3 py-2.5 font-medium text-slate-600">Year</th>
+                <th className="text-left px-3 py-2.5 font-medium text-slate-600">Owner</th>
                 <th className="text-right px-3 py-2.5 font-medium text-slate-600">Employment</th>
                 <th className="text-right px-3 py-2.5 font-medium text-slate-600">Donations</th>
                 <th className="text-right px-3 py-2.5 font-medium text-slate-600">Reliefs</th>
@@ -175,6 +198,7 @@ export default function Tax() {
               {records.map(r => (
                 <tr key={r.id} className="hover:bg-slate-50 group">
                   <td className="px-3 py-2.5 font-medium text-slate-800">YA {r.assessmentYear}</td>
+                  <td className="px-3 py-2.5 text-slate-500 text-xs">{r.owner?.name || '-'}</td>
                   <td className="px-3 py-2.5 text-right text-slate-700">{formatCurrency(r.employment)}</td>
                   <td className="px-3 py-2.5 text-right text-slate-500">{r.donations > 0 ? formatCurrency(r.donations) : '-'}</td>
                   <td className="px-3 py-2.5 text-right text-slate-500">{r.reliefs > 0 ? formatCurrency(r.reliefs) : '-'}</td>
@@ -191,7 +215,7 @@ export default function Tax() {
                   </td>
                 </tr>
               ))}
-              {records.length === 0 && <tr><td colSpan={10} className="px-4 py-12 text-center text-slate-400">No tax records</td></tr>}
+              {records.length === 0 && <tr><td colSpan={11} className="px-4 py-12 text-center text-slate-400">No tax records</td></tr>}
             </tbody>
           </table>
         </div>

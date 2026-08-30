@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home, Settings, FlaskConical, Users, KeyRound, ClipboardList, Building, PiggyBank } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home, Settings, FlaskConical, Users, KeyRound, ClipboardList, Building, PiggyBank, ScrollText } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import ToastContainer from './components/ToastContainer';
@@ -32,6 +32,7 @@ import Docs from './pages/Docs';
 import AuditTrail from './pages/AuditTrail';
 import Properties from './pages/Properties';
 import PreciousMetals from './pages/PreciousMetals';
+import Bonds from './pages/Bonds';
 import Budget from './pages/Budget';
 
 function App() {
@@ -97,6 +98,7 @@ function AppContent() {
         { to: '/fixed-deposits', icon: Landmark, label: 'Fixed Deposits', feature: 'FIXED_DEPOSITS' },
         { to: '/properties', icon: Building, label: 'Real Estate', feature: 'REAL_ESTATE' },
         { to: '/precious-metals', icon: Coins, label: 'Gold & Silver', feature: 'PRECIOUS_METALS' },
+        { to: '/bonds', icon: ScrollText, label: 'Bonds', feature: 'BONDS' },
       ],
     },
     {
@@ -215,6 +217,7 @@ function AppContent() {
               <Route path="/home-loans" element={!isAdmin ? <HomeLoans /> : <UserManagement />} />
               <Route path="/properties" element={!isAdmin ? <Properties /> : <UserManagement />} />
               <Route path="/precious-metals" element={!isAdmin ? <PreciousMetals /> : <UserManagement />} />
+              <Route path="/bonds" element={!isAdmin ? <Bonds /> : <UserManagement />} />
               <Route path="/tax" element={!isAdmin ? <Tax /> : <UserManagement />} />
               <Route path="/work-experience" element={!isAdmin ? <WorkExperience /> : <UserManagement />} />
               <Route path="/salary" element={!isAdmin ? <Salary /> : <UserManagement />} />

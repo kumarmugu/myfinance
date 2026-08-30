@@ -2,7 +2,11 @@
 
 ## 1. Overview
 
-MyFinance is a personal finance management application designed to track, analyze, and plan investments across multiple brokerage accounts, fixed deposits, cryptocurrencies, and retirement plans. The application supports multi-currency portfolios (SGD, USD, EUR, LKR), multi-owner profiles, and comprehensive reporting with historical tracking.
+MyFinance is a self-hosted, **multi-tenant** personal finance and net-worth management application. A single deployment serves many users; each user sees only their own data (isolated by `userId`). It tracks investments, bank savings, fixed deposits, real estate, precious metals, retirement funds (CPF/SRS), insurance, home loans, salary/work history, tax, and budgets/expenses, and consolidates everything into a configurable net worth.
+
+**Currencies are user-created** (no fixed enum list, no external FX feed). Every record preserves its **original currency + amount** as the source of truth; a per-user **base currency** (default SGD) drives consolidation and a per-user **display-currency** toggle re-derives shown values via the user's own FX rates. Almost every module can be enabled or disabled **per user** via feature flags.
+
+> **Roles.** `USER` accounts own financial data. `ADMIN` accounts manage users, per-user feature flags and the audit trail — admins do **not** own financial data and the dashboard/asset pages are user-facing only.
 
 ---
 
@@ -257,26 +261,22 @@ FIXED_DEPOSIT   - Fixed deposit account
 
 ### AssetType
 ```
-INDEX_FUND       - Index tracking ETFs (VOO, VGT, QQQ, SPYL, QQQM)
-MUTUAL_FUND      - Actively managed funds (Fidelity, Amundi, ARK)
-GROWTH_EQUITY    - Growth stocks (TSLA, AAPL, NVDA, META, GOOGL)
-DIVIDEND_EQUITY  - Dividend stocks (DBS, OCBC, Singtel, REITs)
-LEVERAGED_ETF    - 3x leveraged ETFs (TQQQ, SPXL)
-MONEY_MARKET     - Money market funds
-FIXED_DEPOSIT    - Fixed deposits
-SAVINGS          - Bank savings/cash
-CRYPTO           - Cryptocurrencies
+INDEX_FUND, MUTUAL_FUND, GROWTH_EQUITY, DIVIDEND_EQUITY, LEVERAGED_ETF,
+MONEY_MARKET, FIXED_DEPOSIT, SAVINGS, CRYPTO, GOLD, BOND, REIT, COMMODITY,
+INSURANCE, PENSION, OTHER
 ```
+(Source of truth: `frontend/src/types/index.ts` `ASSET_TYPE_LABELS`.)
 
 ### TransactionType
 ```
-BUY, SELL, DIVIDEND, DEPOSIT, WITHDRAWAL, TRANSFER, INTEREST
+BUY, SELL, DIVIDEND, DEPOSIT, WITHDRAWAL
 ```
 
 ### Currency
-```
-SGD, USD, EUR, LKR
-```
+**Not a fixed enum.** Currencies are user-created and stored per record.
+- Older entities use a `Currency` enum with a broad code set (SGD, USD, EUR, LKR, INR, GBP, AUD, JPY, CNY, MYR, THB, HKD, NZD, CHF, CAD): Account, BankSavings, Dividend, Holding, Asset, Transaction, SoldPosition, AccountDeposit, HomeLoan, InsurancePolicy.
+- Newer/String-based entities store the currency as a free-text ISO code: Property, PreciousMetal, GenericFixedDeposit, SalaryRecord, TaxRecord, RetirementFundEntry, FixedDeposit (SL).
+- Base-only by design (no currency field): CPF/SRS and Budget.
 
 ### FDStatus
 ```
@@ -285,7 +285,12 @@ ACTIVE, MATURED, RENEWED, CLOSED, REQUIRES_UPDATE
 
 ### OwnerRelationship
 ```
-SELF, SPOUSE, PARENT_FATHER, PARENT_MOTHER, SIBLING
+SELF, SPOUSE, SON, DAUGHTER, FATHER, MOTHER, BROTHER, SISTER
+```
+
+### InvestmentPurpose
+```
+LONG_TERM, TRADING, DIVIDEND_REINVESTMENT, SRS, RETIREMENT, SHORT_TERM
 ```
 
 ---
@@ -357,28 +362,32 @@ SELF, SPOUSE, PARENT_FATHER, PARENT_MOTHER, SIBLING
 
 ### 8.1 Page Structure
 
+Routes are defined in `frontend/src/App.tsx`. User routes render for non-admins; admin routes render for admins (each guarded inline).
+
 ```
-/                           → Dashboard (overall financial health)
-/portfolio                  → Investment portfolio (holdings, P&L)
-/portfolio/sold             → Sold positions history
-/portfolio/short-term       → Short-term trading log
-/transactions               → Transaction management
-/dividends                  → Dividend tracking
-/fixed-deposits             → Fixed deposit management
-/fixed-deposits/reports     → FD reports and analytics
-/planning                   → Financial planning hub
-/planning/allocation        → Target vs actual allocation
-/planning/srs               → SRS retirement planning
-/planning/projections       → Growth projections
-/reports                    → Comprehensive reports
-/reports/net-worth          → Net worth history
-/reports/performance        → Performance analysis
-/reports/yoy               → Year-over-year comparison
-/accounts                   → Account/broker management
-/assets                     → Asset/stock management
-/settings                   → App settings, currency rates
-/docs                       → Architecture & design docs
+User (non-admin):
+/                 → Dashboard              /planning     → Allocation & Net Worth
+/portfolio        → Portfolio              /budget       → Budget & Expenses
+/transactions     → Transactions           /reports      → Reports
+/dividends        → Dividends              /accounts     → Brokers & Owners
+/crypto           → Crypto                 /assets       → Asset Catalog
+/deposits         → Cash Flows             /fx-rates     → FX Rates & Currencies
+/fixed-deposits   → Fixed Deposits         /net-worth-config → Net Worth Config
+/bank-savings     → Bank Savings           /guide        → User Guide (interactive)
+/insurance        → Life Insurance
+/home-loans       → Home Loans             Admin:
+/properties       → Real Estate            /admin/users  → User Management
+/precious-metals  → Gold & Silver          /admin/audit  → Audit Trail
+/salary           → Salary                 /test-results → Test Results
+/work-experience  → Work Experience        /docs         → Documentation (Swagger)
+/tax              → Tax Records            /guide        → User Guide
+/srs-cpf          → SRS & CPF
 ```
+
+Feature-gated user routes (hidden when the feature flag is off): PORTFOLIO, DIVIDENDS, CRYPTO, CASH_FLOWS, BANK_SAVINGS, FIXED_DEPOSITS, REAL_ESTATE, PRECIOUS_METALS, SALARY, WORK_EXPERIENCE, SRS_CPF, TAX, INSURANCE, HOME_LOANS, BUDGET, REPORTS. Dashboard, Planning, and the Configuration screens (Brokers & Owners, Asset Catalog, FX Rates, Net Worth Config) are always available.
+
+### User Guide
+`/guide` is an interactive, searchable, content-driven guide (`frontend/src/pages/UserGuide.tsx` + `userGuideContent.ts`). It is organised by the real setup order (currencies/FX → owners & accounts → asset catalog → modules → net worth config → dashboard/reports), filters its pages by the same feature flags as the nav, tracks a local "Getting Started" progress checklist, and supports screenshots/videos plus per-page contextual help.
 
 ### 8.2 Component Architecture
 
@@ -420,40 +429,32 @@ App
 
 ## 9. Multi-Currency Strategy
 
-The application handles multiple currencies with the following approach:
+The application handles multiple currencies with the following approach (full detail in `docs/DESIGN.md` § Currency Handling):
 
-1. **Storage**: All monetary values stored with their original currency
-2. **Display**: User can toggle between original currency and SGD equivalent
-3. **Exchange Rates**: Stored rates table with manual/automatic updates
-4. **Conversion**: Applied at read-time for reporting, not stored as converted values
+1. **Original currency + amount** — the source of truth. Stored on every record and never overwritten by conversion.
+2. **Base currency** — per user (`app_users.base_currency`, null → SGD). Used only for consolidation (Net Worth, summary totals).
+3. **Display currency** — per user (`app_users.display_currencies`, null → `SGD,USD`), a presentational UI toggle that re-derives shown values via FX.
+4. **Conversion** — done at read-time by `CurrencyConversionService` using the user's own `currency_rates` rows (latest by `effective_date`; direct → inverse → identity fallback). **No hardcoded FX** anywhere, on client or server. **No external rate feed** — rates are user-maintained.
 
-### Currency Fields
-- `amount` - The monetary value
-- `currency` - ISO 4217 code (SGD, USD, EUR, LKR)
+### Currency source per entity
+- **`Currency` enum:** Account, BankSavings, Dividend, Holding, Asset, Transaction, SoldPosition, AccountDeposit, HomeLoan, InsurancePolicy.
+- **String ISO code:** Property, PreciousMetal, GenericFixedDeposit, SalaryRecord, TaxRecord, RetirementFundEntry, FixedDeposit (SL). Nullable → treated as the user's base currency.
+- **Base-only (no currency field):** CPF/SRS, Budget.
 
-### Exchange Rate Table
-| From | To | Rate | Updated |
-|------|----|------|---------|
-| USD | SGD | 1.27 | Manual update |
-| EUR | SGD | 1.49 | Manual update |
-| LKR | SGD | 0.0042 | Manual update |
+### Broker account vs investment currency
+`Account.currency` (settlement/broker currency), `Asset.currency`/`Holding.currency` (the instrument's own currency), and `Transaction.currency` (the settlement currency) are distinct and all preserved. Example: buying a EUR fund through a USD broker → `Holding.currency = EUR`, `Transaction.currency = USD`.
 
 ---
 
-## 10. Multi-Owner Strategy
+## 10. Multi-Tenancy & Multi-Owner Strategy
 
-The application supports tracking finances for multiple family members:
+Two independent layers of separation exist:
 
-| Owner | Role | Portfolios |
-|-------|------|------------|
-| Primary User | Self | Tiger, Saxo, IBKR, Poems, Moomoo, Coinhako, Crypto.com, DBS, OCBC, CIMB |
-| Spouse | Spouse | Saxo (separate), Tiger (separate) |
-| Parents | Family | Fixed Deposits (Sri Lanka) |
+**Tenant isolation (security boundary).** Every user-owned entity carries a `Long userId`. All reads use `findByUserId...` finders and all writes stamp `tenantContext.getCurrentUserId()`. A user can never see or mutate another user's data. This is guarded by `MultiTenantIsolationTest` and is treated as a top-priority security concern.
 
-### Data Isolation
-- Each holding, transaction, and snapshot is tagged with `owner_id`
-- Reports can filter by owner or show consolidated view
-- Fixed deposits have separate `holder` entities for family members
+**Owners (within a tenant).** Inside a single user's data, `Owner` records (relationship SELF, SPOUSE, SON, DAUGHTER, FATHER, MOTHER, BROTHER, SISTER) let that user attribute finances to different people (e.g. self and spouse). Holdings, transactions, dividends, snapshots and most modules reference an owner, and pages can filter by owner or show a consolidated view. Owners are a data-modelling convenience; they are **not** a security boundary — tenant isolation is.
+
+An owner or account cannot be deleted while records still reference it (`ReferenceConstraintException` → HTTP 409 with a `references` list).
 
 ---
 
@@ -666,4 +667,6 @@ myfinance/
 | **v2.4** | JWT Authentication, Multi-tenant isolation, User Management | Done |
 | **v2.5** | Audit Trail, Toast Notifications, Production Logging | Done |
 | **v2.6** | 80%+ Test Coverage (228 tests), Integration Tests | Done |
+| **v2.7** | Per-user base/display currency, user-created currencies, no hardcoded FX | Done |
+| **v2.8** | Interactive in-app User Guide + contextual help; docs realigned to implementation | Done |
 | **v3.0** | Data import from CSV/Excel, automated price updates | Planned |

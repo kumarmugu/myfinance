@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Plus, Pencil, Trash2, RefreshCw } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Plus, Pencil, Trash2, RefreshCw, HelpCircle } from 'lucide-react';
 import api, { getCurrencyRates, getAvailableCurrencies, createCurrencyRate, updateCurrencyRate, deleteCurrencyRate } from '../api';
 import { formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
+import HelpTip from '../components/HelpTip';
 import type { CurrencyRate } from '../types';
 import { useToast } from '../contexts/ToastContext';
 
@@ -99,7 +101,21 @@ export default function FxRates() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div><h1 className="text-2xl font-bold text-slate-800">FX Rates</h1><p className="text-slate-500 text-sm mt-0.5">Manage exchange rates for currency conversion</p></div>
+        <div>
+          <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-1.5">
+            FX Rates
+            <HelpTip
+              label="What are FX rates?"
+              text="FX rates convert amounts held in different currencies into your base currency for reporting and Net Worth. Your original values are never changed — the app only derives converted views. There is no live feed; it uses the rates you enter here."
+            />
+          </h1>
+          <p className="text-slate-500 text-sm mt-0.5">
+            Manage exchange rates for currency conversion.{' '}
+            <Link to="/guide" className="text-indigo-600 hover:underline inline-flex items-center gap-0.5">
+              <HelpCircle size={12} /> Learn more in the guide
+            </Link>
+          </p>
+        </div>
         <button onClick={() => { setShowForm(!showForm); setEditing(null); setError(''); setForm({ fromCurrency: 'USD', toCurrency: 'SGD', rate: '', effectiveDate: new Date().toISOString().split('T')[0] }); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
           <Plus size={16} /> Add FX Rate
         </button>
@@ -192,7 +208,13 @@ export default function FxRates() {
 
       {/* Add New Currency */}
       <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
-        <h3 className="text-sm font-semibold text-slate-800 mb-3">Add New Currency</h3>
+        <h3 className="text-sm font-semibold text-slate-800 mb-3 flex items-center gap-1.5">
+          Add New Currency
+          <HelpTip
+            label="What is a currency here?"
+            text="Currencies are the money types you hold (e.g. SGD, USD, LKR). Add one here, then add an exchange rate for it so the app can convert it into your base currency for totals."
+          />
+        </h3>
         <p className="text-xs text-slate-500 mb-3">Add a currency code that's not in the list. Once you add a rate for it, it becomes available across the app.</p>
         <div className="flex items-center gap-3 mb-4">
           <input type="text" value={newCurrency} onChange={e => setNewCurrency(e.target.value.toUpperCase())} placeholder="e.g. INR, BTC, KRW" maxLength={5} className="border border-slate-300 rounded-lg px-3 py-2 text-sm w-32 uppercase" onKeyDown={e => e.key === 'Enter' && handleAddCurrency()} />

@@ -24,8 +24,10 @@ public class PreciousMetalController {
     private final com.myfinance.service.CurrencyConversionService fx;
 
     @GetMapping
-    public List<PreciousMetal> getAll(@RequestParam(required = false) String metalType) {
+    public List<PreciousMetal> getAll(@RequestParam(required = false) String metalType,
+                                      @RequestParam(required = false) Long ownerId) {
         Long uid = tenantContext.getCurrentUserId();
+        if (ownerId != null) return repository.findByOwnerIdOrderByPurchaseDateDesc(ownerId);
         if (metalType != null) return repository.findByUserIdAndMetalType(uid, metalType.toUpperCase());
         return repository.findByUserIdOrderByPurchaseDateDesc(uid);
     }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Check, X, Save } from 'lucide-react';
 import api from '../api';
+import HelpTip from '../components/HelpTip';
 import { useToast } from '../contexts/ToastContext';
 
 interface NetWorthConfigItem {
@@ -48,7 +49,13 @@ export default function NetWorthConfig() {
     <div className="space-y-6 max-w-3xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Net Worth Configuration</h1>
+          <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-1.5">
+            Net Worth Configuration
+            <HelpTip
+              label="What does this control?"
+              text="Net worth is everything you own minus what you owe. Turn an asset type on to count it in your Net Worth total on the Dashboard, Reports and snapshots; turn it off to leave it out (for example CPF or Insurance)."
+            />
+          </h1>
           <p className="text-slate-500 text-sm mt-0.5">Choose which asset types are included in your net worth calculation</p>
         </div>
         <button onClick={saveAll} disabled={saving} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50">

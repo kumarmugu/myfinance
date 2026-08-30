@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, Home, MapPin, Building2, Store, LandPlot, Tractor, Wheat, type LucideIcon } from 'lucide-react';
-import api from '../api';
+import api, { getOwners } from '../api';
+import SearchableSelect from '../components/SearchableSelect';
 import { formatCurrency } from '../utils/formatters';
 import { useToast } from '../contexts/ToastContext';
+import type { Owner } from '../types';
 
 interface Property {
   id: number;
@@ -23,6 +25,7 @@ interface Property {
   status: string;
   monthlyRental: number;
   notes: string;
+  owner?: Owner | null;
 }
 
 const PROPERTY_TYPES = ['HDB', 'CONDO', 'LANDED', 'COMMERCIAL', 'LAND', 'AGRICULTURE', 'PADDY_FIELD'];
@@ -46,6 +49,8 @@ function typeStyle(propertyType?: string) {
 
 export default function Properties() {
   const [properties, setProperties] = useState<Property[]>([]);
+  const [owners, setOwners] = useState<Owner[]>([]);
+  const [filterOwner, setFilterOwner] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Property | null>(null);
@@ -55,24 +60,29 @@ export default function Properties() {
     purchasePrice: 0, currentValue: 0, outstandingLoan: 0, currency: 'SGD',
     purchaseDate: '', tenure: '', areaSize: 0, areaUnit: 'sqft',
     ownership: 'SOLE', includeInNetWorth: true, status: 'OWNED',
-    monthlyRental: 0, notes: ''
+    monthlyRental: 0, notes: '', ownerId: 0
   });
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => { getOwners().then(r => setOwners(r.data)).catch(console.error); }, []);
+  useEffect(() => { loadData(); }, [filterOwner]);
 
   const loadData = async () => {
-    try { setProperties((await api.get('/properties')).data); }
+    try {
+      const ownerId = filterOwner ? Number(filterOwner) : undefined;
+      setProperties((await api.get('/properties', { params: { ownerId } })).data);
+    }
     catch (err) { console.error(err); }
     finally { setLoading(false); }
   };
 
-  const resetForm = () => setForm({ propertyName: '', propertyType: 'HDB', address: '', country: 'Singapore', purchasePrice: 0, currentValue: 0, outstandingLoan: 0, currency: 'SGD', purchaseDate: '', tenure: '', areaSize: 0, areaUnit: 'sqft', ownership: 'SOLE', includeInNetWorth: true, status: 'OWNED', monthlyRental: 0, notes: '' });
+  const resetForm = () => setForm({ propertyName: '', propertyType: 'HDB', address: '', country: 'Singapore', purchasePrice: 0, currentValue: 0, outstandingLoan: 0, currency: 'SGD', purchaseDate: '', tenure: '', areaSize: 0, areaUnit: 'sqft', ownership: 'SOLE', includeInNetWorth: true, status: 'OWNED', monthlyRental: 0, notes: '', ownerId: 0 });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (editing) { await api.put(`/properties/${editing.id}`, form); }
-      else { await api.post('/properties', form); }
+      const payload = { ...form, owner: form.ownerId ? { id: form.ownerId } : null };
+      if (editing) { await api.put(`/properties/${editing.id}`, payload); }
+      else { await api.post('/properties', payload); }
       setShowForm(false); setEditing(null); resetForm(); loadData();
       showToast(editing ? 'Property updated' : 'Property added', 'success');
     } catch (err: any) {
@@ -91,7 +101,7 @@ export default function Properties() {
       areaSize: p.areaSize || 0, areaUnit: p.areaUnit || 'sqft',
       ownership: p.ownership || 'SOLE', includeInNetWorth: p.includeInNetWorth,
       status: p.status || 'OWNED', monthlyRental: p.monthlyRental || 0,
-      notes: p.notes || ''
+      notes: p.notes || '', ownerId: p.owner?.id || 0
     });
     setShowForm(true);
   };
@@ -111,7 +121,17 @@ export default function Properties() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-2xl font-bold text-slate-800">Real Estate</h1><p className="text-slate-500 text-sm mt-0.5">Manage your property portfolio</p></div>
-        <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Property</button>
+        <div className="flex items-center gap-3">
+          <div className="w-44">
+            <SearchableSelect
+              options={[{ value: '', label: 'All Owners' }, ...owners.map(o => ({ value: o.id.toString(), label: o.name, icon: o.name[0] }))]}
+              value={filterOwner}
+              onChange={v => setFilterOwner(v.toString())}
+              placeholder="All Owners"
+            />
+          </div>
+          <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Property</button>
+        </div>
       </div>
 
       {/* Summary */}
@@ -127,6 +147,8 @@ export default function Properties() {
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
           <h3 className="text-base font-semibold text-slate-800 mb-4">{editing ? 'Edit Property' : 'Add Property'}</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner</label>
+              <SearchableSelect options={[{ value: 0, label: 'Unassigned' }, ...owners.map(o => ({ value: o.id, label: o.name }))]} value={form.ownerId} onChange={v => setForm({...form, ownerId: Number(v)})} placeholder="Select owner..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Property Name *</label>
               <input type="text" value={form.propertyName} onChange={e => setForm({...form, propertyName: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required placeholder="e.g. HDB Woodlands" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Type</label>
@@ -227,6 +249,7 @@ export default function Properties() {
               <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${p.status === 'OWNED' ? 'bg-green-100 text-green-700' : p.status === 'SOLD' ? 'bg-slate-100 text-slate-500' : 'bg-blue-100 text-blue-700'}`}>{p.status}</span>
               {p.tenure && <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-medium">{p.tenure}</span>}
               {p.ownership && <span className="text-[10px] text-slate-400">{p.ownership}</span>}
+              {p.owner?.name && <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">{p.owner.name}</span>}
               {p.monthlyRental > 0 && <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium">Rent: {formatCurrency(p.monthlyRental, p.currency)}/mo</span>}
             </div>
           </div>
