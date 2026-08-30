@@ -14087,3 +14087,15 @@ Identify and stop the process that's listening on port 8080 or configure this ap
 2026-08-30 15:06:59 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
 2026-08-30 15:06:59 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
 2026-08-30 15:06:59 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-08-30 15:07:00 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-30 15:07:00 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-08-30 15:07:00 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-08-30 15:07:00 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-08-30 15:07:01 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-30 15:07:05 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-30 15:07:05 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-30 15:07:07 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-30 15:07:16 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@ec21911, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4f0d2ec3, org.springframework.security.web.context.SecurityContextHolderFilter@7e62bded, org.springframework.security.web.header.HeaderWriterFilter@641ca31, org.springframework.web.filter.CorsFilter@1eab4637, org.springframework.security.web.authentication.logout.LogoutFilter@63d3a8ed, com.myfinance.provisioning.ProvisioningTokenFilter@1135abda, com.myfinance.security.JwtAuthFilter@70c2b845, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@40e4f183, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@73c65fd1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@25c7639a, org.springframework.security.web.session.SessionManagementFilter@7ed680d2, org.springframework.security.web.access.ExceptionTranslationFilter@457e7c5, org.springframework.security.web.access.intercept.AuthorizationFilter@69070e03]
+2026-08-30 15:07:17 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-08-30 15:07:17 [main] INFO  c.myfinance.security.JwtServiceTest - Started JwtServiceTest in 23.891 seconds (process running for 32.334)
+2026-08-30 15:07:18 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
