@@ -1282,3 +1282,78 @@ These are distinct and both preserved:
 
 ### Migration / backward compatibility
 All currency columns are **additive and nullable**; existing rows read as the user's base currency. No historical value was rewritten. Where a record historically stored only a base-currency figure (e.g. SL FixedDeposit `net_worth_amount`), the original currency is not fabricated — it defaults to base and `net_worth_amount` is treated as a derived/cached override of `principal_amount` (+ `currency`).
+
+## 16. Table Export (CSV / Excel / PDF)
+
+Data tables that contain row-level financial records let the user download the table in three formats: **CSV**, **Excel (.xlsx)** and **PDF**.
+
+### 16.1 Scope — which tables
+
+Export is added only to tables where downloading a dataset makes business sense (row-level records the user owns):
+
+- **Transactions** (`/transactions`)
+- **Accounts** (`/accounts`, Accounts tab)
+- **Dividends** (`/dividends`)
+- **Portfolio → Holdings** (`/portfolio`, Holdings tab)
+
+Aggregate/summary and configuration screens (Dashboard, Reports charts, Net Worth Config, etc.) deliberately do not get an export button.
+
+### 16.2 Architecture — client-side, reusable
+
+Exports are generated **on the frontend** from the data already loaded on the page. This is appropriate here because the list APIs return the **complete per-user dataset** (filtered by `userId`; the app has **no server-side pagination**), so the browser already holds the full authorized dataset — there is no separate export endpoint to build and no risk of exporting only "the current page".
+
+The mechanism is reusable and config-driven:
+
+```
+Table page
+   └── <ExportMenu rows={data} config={ExportConfig} />
+          └── exportTable(rows, config, format)
+                 ├── CSV   (utils/export/csv.ts)
+                 ├── Excel (utils/export/excel.ts, ExcelJS)
+                 └── PDF   (utils/export/pdf.ts, jsPDF + autotable)
+```
+
+- `ExportConfig` (`frontend/src/utils/export/configs.ts`) declares `entity`, `title`, and an ordered `columns[]` list. Each column has a `key`, `header`, `accessor(row)` and a logical `type` (`string | number | currency | date | datetime | boolean`).
+- Adding export to a new table = add a config + drop `<ExportMenu>` on the page. No new backend code.
+- Libraries: `exceljs` (Excel), `jspdf` + `jspdf-autotable` (PDF), hand-rolled RFC-4180 writer (CSV). `xlsx`/SheetJS was intentionally **not** used because its npm build carries unfixable high-severity advisories.
+
+### 16.3 Export scope, filters and sorting
+
+- **All columns:** the export contains **every user-relevant column** of the underlying data model, including columns the on-screen table hides (record IDs, fees, original currency, notes, created/updated timestamps). It is **not** limited to the rendered UI columns.
+- **Complete dataset:** the export contains the full dataset the page holds, **not** just the visible page.
+- **Filters & sorting:** the export reflects the table's **current filters and sort order** — it serialises exactly the array the page currently holds (e.g. Dividends respects the owner/broker/year filters; Transactions respects the owner filter, noted as a subtitle in the PDF).
+
+### 16.4 Currency and financial values
+
+Following the app's currency model, the **original amount and original currency code are preserved verbatim**. Values are **never** converted to the base currency during export. Monetary columns are exported as raw numbers (Excel keeps them numeric); the currency code is a separate column.
+
+### 16.5 Date/time
+
+Dates are emitted in ISO form (`YYYY-MM-DD`), datetimes as `YYYY-MM-DD HH:mm:ss`. Excel keeps dates as native date cells. The underlying value is never mutated for presentation.
+
+### 16.6 Format specifics
+
+- **CSV** — UTF-8 with BOM (so Excel detects encoding), CRLF line endings, RFC-4180 quoting/escaping (commas, quotes, newlines), and a formula-injection guard (leading `= + - @` prefixed with `'`). Nulls become empty fields.
+- **Excel** — one worksheet named after the table title, bold header row, **frozen header**, auto-sized columns (bounded), numeric/currency cells stay numeric, dates stay dates.
+- **PDF** — report title, generated timestamp, optional subtitle (active filters), repeated header on every page, page numbers, and **landscape orientation for wide tables** (> 6 columns) with line-wrapped long text.
+
+### 16.7 Authorization, tenant isolation & security
+
+- Authorization and tenant isolation are enforced **server-side** by the same list endpoints that feed the tables (`findByUserId…` + `TenantContext.getCurrentUserId()`). A user can only ever export rows the API already returned for them; there is no way to request another tenant's data.
+- `ExportDataSourceSecurityTest` pins this guarantee: the export data-source endpoints (transactions, accounts, dividends, holdings) require authentication and return only the caller's records.
+- **Sensitive fields are excluded** from configs (e.g. broker account numbers, which are masked in the UI, are not in the Accounts export). "All columns" means all user-relevant business columns, never secrets/internal metadata.
+- Exports are generated in the browser from already-authorized data — nothing is written to disk on the server, no dataset is put in a URL, and no full dataset is logged.
+
+### 16.8 File naming
+
+`<entity>_<YYYY-MM-DD>.<ext>` — e.g. `transactions_2026-08-31.csv`, `accounts_2026-08-31.xlsx`, `holdings_2026-08-31.pdf`.
+
+### 16.9 UX & accessibility
+
+- A single **Export ▼** dropdown offers CSV / Excel / PDF. It shows an **Exporting…** state, a success toast ("Your export is ready.") and a generic error toast ("Unable to export the data. Please try again.") — never a stack trace.
+- Duplicate concurrent exports are prevented (the control disables while an export is in flight); the control is disabled when the dataset is empty.
+- The menu uses proper `role="menu"`/`menuitem` semantics with `aria-haspopup`/`aria-expanded`, full keyboard navigation (Arrow keys, Home/End, Enter/Space, Esc) and focus management.
+
+### 16.10 Large datasets
+
+Because the app has no server-side pagination and datasets are per-user (not multi-tenant aggregates), client-side generation is sufficient and avoids extra server round-trips. If a future module introduces server-side pagination or genuinely large datasets, a backend streaming export endpoint can be added behind the same `ExportConfig` contract without changing callers.

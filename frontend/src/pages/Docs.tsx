@@ -689,6 +689,34 @@ ACTIVE → REQUIRES_UPDATE (needs verification)`}</pre>
           </div>
         </div>
       </DocSection>
+
+      {/* Table Export */}
+      <DocSection icon={<Layers size={20} className="text-indigo-600" />} title="8. Table Export (CSV / Excel / PDF)">
+        <div className="space-y-3 text-sm text-slate-600">
+          <p>
+            Tables with row-level financial data (Transactions, Accounts, Dividends, Portfolio holdings)
+            expose an <span className="font-medium text-slate-800">Export</span> menu offering CSV,
+            Excel (.xlsx) and PDF. Exports are generated <span className="font-medium">client-side</span> from
+            the data already loaded on the page — the list APIs return the complete, per-user dataset
+            (filtered by <code className="text-xs bg-slate-100 px-1 rounded">userId</code>; no server-side
+            pagination), so an export represents the full authorized dataset, not just the current view.
+          </p>
+          <ul className="list-disc list-inside space-y-1.5">
+            <li><span className="font-medium text-slate-800">Complete columns:</span> exports include every user-relevant column of the underlying data model, even ones the on-screen table hides (IDs, fees, original currency, notes, created/updated timestamps).</li>
+            <li><span className="font-medium text-slate-800">Filters &amp; sorting:</span> the export reflects the table's current filters and sort order (it exports exactly the rows the page holds).</li>
+            <li><span className="font-medium text-slate-800">Currency:</span> the original amount and currency code are preserved verbatim — values are never converted to a base currency during export.</li>
+            <li><span className="font-medium text-slate-800">Dates:</span> emitted in ISO form (<code className="text-xs bg-slate-100 px-1 rounded">YYYY-MM-DD</code>); Excel keeps them as native dates and numbers as numbers.</li>
+            <li><span className="font-medium text-slate-800">Security:</span> authorization and tenant isolation are enforced server-side by the same list endpoints; sensitive fields (e.g. account numbers) are excluded from configs.</li>
+            <li><span className="font-medium text-slate-800">CSV:</span> UTF-8 with BOM, RFC-4180 escaping, and formula-injection guarding. <span className="font-medium text-slate-800">PDF:</span> landscape for wide tables, repeated headers, page numbers, title and generated timestamp.</li>
+          </ul>
+          <p>
+            The mechanism is reusable: a table opts in by defining an <code className="text-xs bg-slate-100 px-1 rounded">ExportConfig</code>
+            (entity name, title, column list) in <code className="text-xs bg-slate-100 px-1 rounded">utils/export/configs.ts</code> and
+            rendering <code className="text-xs bg-slate-100 px-1 rounded">&lt;ExportMenu rows=&#123;...&#125; config=&#123;...&#125; /&gt;</code>.
+            Files are named <code className="text-xs bg-slate-100 px-1 rounded">&lt;entity&gt;_YYYY-MM-DD.&lt;ext&gt;</code>.
+          </p>
+        </div>
+      </DocSection>
     </div>
   );
 }

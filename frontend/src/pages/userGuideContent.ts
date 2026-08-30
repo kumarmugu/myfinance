@@ -775,6 +775,39 @@ export const GUIDE_SECTIONS: GuideSection[] = [
           { label: 'Dashboard', pageId: 'dashboard' },
         ],
       },
+      {
+        id: 'export-tables',
+        title: 'Exporting a Table',
+        summary: 'Download any data table as CSV, Excel or PDF.',
+        what:
+          'Data tables such as Transactions, Accounts, Dividends and Portfolio holdings have an Export button. It lets you download the table as a CSV file, an Excel (.xlsx) workbook, or a PDF document.',
+        why:
+          'Exports let you keep an offline copy, share figures with an accountant, or do your own analysis in a spreadsheet — while keeping the original data in the app.',
+        steps: [
+          'Open a page that has a data table (for example Transactions).',
+          'Apply any filters or sorting you want (for example filter by owner or year) — the export matches what you have set.',
+          'Click the "Export" button (top-right of the table, marked with a down-arrow).',
+          'Choose CSV, Excel or PDF from the menu. You can also open the menu with the keyboard (Enter/Space) and move with the arrow keys.',
+          'The file downloads automatically; a green message confirms when it is ready.',
+        ],
+        afterSave:
+          'The download contains the full set of records for your current filters — not just the rows visible on screen — and includes every relevant column, even ones the table hides on screen (such as record IDs, fees, the original currency, notes and created/updated dates). Amounts keep their original currency and are never converted.',
+        commonMistakes: [
+          'Expecting only the visible columns — the export deliberately includes all relevant columns.',
+          'Thinking a filter is ignored — the export always respects the filters and sort currently applied to the table.',
+        ],
+        tips: [
+          'Choose Excel when you want to sort or sum the numbers yourself — amounts stay numeric and dates stay real dates.',
+          'Choose PDF for a printable report; wide tables are laid out in landscape with repeated headers and page numbers.',
+          'Choose CSV for a plain, universal file that opens anywhere. It is saved as UTF-8 so accented and non-Latin characters are preserved.',
+          'Files are named like "transactions_2026-08-31.csv" so they are easy to find later.',
+        ],
+        related: [
+          { label: 'Open Transactions', route: '/transactions' },
+          { label: 'Dashboard', pageId: 'dashboard' },
+        ],
+        screenshots: [{ alt: 'Export dropdown showing CSV, Excel and PDF options on a table', caption: 'The Export menu appears on tables that contain row-level data.' }],
+      },
     ],
   },
 

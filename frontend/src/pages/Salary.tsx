@@ -164,7 +164,8 @@ export default function Salary() {
   const displayOptions = Object.keys(displayRates).length > 0 ? Object.keys(displayRates) : [baseCurrency];
   const effectiveCurrency = displayRates[displayCurrency] != null ? displayCurrency : baseCurrency;
   const cFactor = displayRates[effectiveCurrency] ?? 1;
-  const disp = (baseAmount: number) => formatCurrency((baseAmount || 0) * cFactor, effectiveCurrency, { exact: true });
+  // Summary/total figures show the compact abbreviation for high values (e.g. "(1.2M)").
+  const disp = (baseAmount: number) => formatCurrency((baseAmount || 0) * cFactor, effectiveCurrency);
 
   const yearlyRows: any[] = summary?.yearly || [];
   const grandTotal = summary?.grandTotal || 0;

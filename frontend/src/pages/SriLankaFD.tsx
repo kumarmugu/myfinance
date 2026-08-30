@@ -2,21 +2,21 @@ import { useEffect, useState } from 'react';
 import { Plus, Calendar, Globe, Pencil, Trash2 } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { getFixedDeposits, getFDSummary, getMaturingFDs, getBanks, getFDHolders, createFixedDeposit, updateFixedDeposit, deleteFixedDeposit, toggleFDNetWorth } from '../api';
-import { formatDate, daysBetween } from '../utils/formatters';
+import { formatDate, daysBetween, formatCurrency } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import type { FixedDeposit, FDSummary, Bank, FDHolder } from '../types';
 import { useToast } from '../contexts/ToastContext';
 
 const BANK_COLORS = ['#6366f1', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#14b8a6'];
 
+// Use the shared formatter so amounts match the rest of the app: full number with
+// commas + a compact "(1.2M)" abbreviation appended for high values.
 function formatLKR(amount: number): string {
-  if (amount >= 1000000) return `₨${(amount / 1000000).toFixed(2)}M`;
-  if (amount >= 1000) return `₨${(amount / 1000).toFixed(0)}K`;
-  return `₨${amount.toFixed(0)}`;
+  return formatCurrency(amount, 'LKR');
 }
 
 function formatSGD(amount: number): string {
-  return `S$${amount.toLocaleString('en-SG', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+  return formatCurrency(amount, 'SGD');
 }
 
 export default function SriLankaFD() {

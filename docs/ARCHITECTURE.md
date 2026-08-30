@@ -389,6 +389,10 @@ Feature-gated user routes (hidden when the feature flag is off): PORTFOLIO, DIVI
 ### User Guide
 `/guide` is an interactive, searchable, content-driven guide (`frontend/src/pages/UserGuide.tsx` + `userGuideContent.ts`). It is organised by the real setup order (currencies/FX → owners & accounts → asset catalog → modules → net worth config → dashboard/reports), filters its pages by the same feature flags as the nav, tracks a local "Getting Started" progress checklist, and supports screenshots/videos plus per-page contextual help.
 
+### Table Export
+
+A reusable, client-side export system (`frontend/src/utils/export/*` + `frontend/src/components/ExportMenu.tsx`) lets row-level data tables (Transactions, Accounts, Dividends, Portfolio holdings) be downloaded as CSV, Excel or PDF. A table opts in with an `ExportConfig` (in `utils/export/configs.ts`) and an `<ExportMenu>`. Exports include all user-relevant columns (not just visible ones), preserve original currency/amount, respect current filters/sort, and rely on the list endpoints' existing `userId` tenant isolation for authorization. See `docs/DESIGN.md` § 16 for full detail.
+
 ### 8.2 Component Architecture
 
 ```
