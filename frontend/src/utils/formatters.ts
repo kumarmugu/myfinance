@@ -19,31 +19,21 @@ const CURRENCY_SYMBOLS: Record<string, string> = {
 };
 
 /**
- * Format a monetary amount.
- * By default large values are abbreviated (K/M) for compact cards/charts.
- * Pass { exact: true } to render the full value with thousands separators and no
- * abbreviation — use this for tables where precision matters (e.g. salary records).
+ * Format a monetary amount, standardised across the whole app as a full number with
+ * comma thousands separators and exactly two decimals, e.g. "S$1,000,000.00".
+ * No K/M abbreviation. The (now legacy) `opts` argument is accepted but ignored so
+ * existing callers keep working.
  */
-export function formatCurrency(amount: number, currency: string = 'SGD', opts?: { exact?: boolean }): string {
+export function formatCurrency(amount: number, currency: string = 'SGD', _opts?: { exact?: boolean }): string {
   const code = (currency || 'SGD').toUpperCase();
   // Known symbol, else prefix with the ISO code so the currency is never ambiguous.
   const symbol = CURRENCY_SYMBOLS[code] || `${code} `;
-  const absAmount = Math.abs(amount);
-  let formatted: string;
-
-  if (!opts?.exact && absAmount >= 1000000) {
-    formatted = `${symbol}${(absAmount / 1000000).toFixed(2)}M`;
-  } else if (!opts?.exact && absAmount >= 100000) {
-    formatted = `${symbol}${(absAmount / 1000).toFixed(0)}K`;
-  } else {
-    formatted = new Intl.NumberFormat('en-SG', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    }).format(absAmount);
-    formatted = `${symbol}${formatted}`;
-  }
-
-  return amount < 0 ? `-${formatted}` : formatted;
+  const value = Number.isFinite(amount) ? amount : 0;
+  const formatted = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(Math.abs(value));
+  return `${value < 0 ? '-' : ''}${symbol}${formatted}`;
 }
 
 export function formatNumber(amount: number, decimals = 2): string {
