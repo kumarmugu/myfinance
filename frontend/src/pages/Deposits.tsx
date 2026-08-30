@@ -15,6 +15,7 @@ export default function Deposits() {
   const [loading, setLoading] = useState(true);
   const { showToast } = useToast();
   const [showForm, setShowForm] = useState(false);
+  const [filterOwner, setFilterOwner] = useState<string>('');
   const [filterAccount, setFilterAccount] = useState<string>('');
   const [displayCurrency, setDisplayCurrency] = useState<Currency>('SGD');
 
@@ -44,12 +45,22 @@ export default function Deposits() {
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
-  // Filter
-  const filtered = filterAccount ? deposits.filter(d => d.account.id.toString() === filterAccount) : deposits;
+  const ownerName = (d: AccountDeposit) => d.account?.owner?.name || '—';
 
-  // Summary per account
+  // Owners present in the loaded accounts (for the filter dropdown).
+  const owners = [...new Map(accounts.filter(a => a.owner).map(a => [a.owner.id, a.owner])).values()];
+
+  // Filters: by owner and/or by account.
+  const filtered = deposits.filter(d =>
+    (!filterOwner || (d.account?.owner?.id?.toString() === filterOwner)) &&
+    (!filterAccount || d.account.id.toString() === filterAccount)
+  );
+
+  // Summary per account (respects the owner filter so it stays per-owner when one is selected).
+  const summaryScope = filterOwner ? deposits.filter(d => d.account?.owner?.id?.toString() === filterOwner) : deposits;
+
   const accountSummary: Record<string, { deposits: number; withdrawals: number; net: number }> = {};
-  deposits.forEach(d => {
+  summaryScope.forEach(d => {
     const name = d.account.name;
     if (!accountSummary[name]) accountSummary[name] = { deposits: 0, withdrawals: 0, net: 0 };
     if (d.depositType === 'DEPOSIT') { accountSummary[name].deposits += d.amount; accountSummary[name].net += d.amount; }
@@ -58,6 +69,18 @@ export default function Deposits() {
 
   const chartData = Object.entries(accountSummary)
     .map(([name, data]) => ({ name, deposits: data.deposits, withdrawals: data.withdrawals, net: data.net }))
+    .sort((a, b) => b.net - a.net);
+
+  // Summary grouped by OWNER.
+  const ownerSummary: Record<string, { deposits: number; withdrawals: number; net: number }> = {};
+  summaryScope.forEach(d => {
+    const name = ownerName(d);
+    if (!ownerSummary[name]) ownerSummary[name] = { deposits: 0, withdrawals: 0, net: 0 };
+    if (d.depositType === 'DEPOSIT') { ownerSummary[name].deposits += d.amount; ownerSummary[name].net += d.amount; }
+    else { ownerSummary[name].withdrawals += d.amount; ownerSummary[name].net -= d.amount; }
+  });
+  const ownerRows = Object.entries(ownerSummary)
+    .map(([name, data]) => ({ name, ...data }))
     .sort((a, b) => b.net - a.net);
 
   const totalDeposits = Object.values(accountSummary).reduce((s, v) => s + v.deposits, 0);
@@ -146,8 +169,9 @@ export default function Deposits() {
       )}
 
       {/* Filter + Table */}
-      <div className="flex items-center gap-3">
-        <div className="w-48"><SearchableSelect options={[{ value: '', label: 'All Accounts' }, ...accounts.filter(a => a.accountType === 'BROKER' || a.accountType === 'CRYPTO_EXCHANGE').map(a => ({ value: a.id.toString(), label: a.name }))]} value={filterAccount} onChange={v => setFilterAccount(v.toString())} placeholder="All Accounts" /></div>
+      <div className="flex items-center gap-3 flex-wrap">
+        <div className="w-48"><SearchableSelect options={[{ value: '', label: 'All Owners' }, ...owners.map(o => ({ value: o.id.toString(), label: o.name }))]} value={filterOwner} onChange={v => setFilterOwner(v.toString())} placeholder="All Owners" /></div>
+        <div className="w-48"><SearchableSelect options={[{ value: '', label: 'All Accounts' }, ...accounts.filter(a => (a.accountType === 'BROKER' || a.accountType === 'CRYPTO_EXCHANGE') && (!filterOwner || a.owner?.id?.toString() === filterOwner)).map(a => ({ value: a.id.toString(), label: a.name }))]} value={filterAccount} onChange={v => setFilterAccount(v.toString())} placeholder="All Accounts" /></div>
         <span className="text-xs text-slate-500">{filtered.length} records</span>
       </div>
 
@@ -157,6 +181,7 @@ export default function Deposits() {
             <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Date</th>
+                <th className="text-left px-4 py-2.5 font-medium text-slate-600">Owner</th>
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Account</th>
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Type</th>
                 <th className="text-left px-4 py-2.5 font-medium text-slate-600">Ccy</th>
@@ -169,6 +194,7 @@ export default function Deposits() {
               {filtered.map(d => (
                 <tr key={d.id} className="hover:bg-slate-50 group">
                   <td className="px-4 py-2.5 text-slate-700 text-xs">{formatDate(d.depositDate)}</td>
+                  <td className="px-4 py-2.5 text-slate-700 text-xs">{ownerName(d)}</td>
                   <td className="px-4 py-2.5 text-slate-700">{d.account.name}</td>
                   <td className="px-4 py-2.5">
                     <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${d.depositType === 'DEPOSIT' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
@@ -181,13 +207,41 @@ export default function Deposits() {
                   <td className="px-4 py-2.5"><button onClick={() => handleDelete(d.id)} className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500"><Trash2 size={14} /></button></td>
                 </tr>
               ))}
-              {filtered.length === 0 && <tr><td colSpan={6} className="px-4 py-12 text-center text-slate-400">No records</td></tr>}
+              {filtered.length === 0 && <tr><td colSpan={8} className="px-4 py-12 text-center text-slate-400">No records</td></tr>}
             </tbody>
           </table>
         </div>
       </div>
 
       {/* Per-Account Summary */}
+      {ownerRows.length > 0 && (
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="p-4 border-b border-slate-200"><h3 className="font-semibold text-slate-800 text-sm">Summary by Owner</h3></div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-slate-50 border-b border-slate-200">
+                <tr>
+                  <th className="text-left px-4 py-2.5 font-medium text-slate-600">Owner</th>
+                  <th className="text-right px-4 py-2.5 font-medium text-slate-600">Total Deposited</th>
+                  <th className="text-right px-4 py-2.5 font-medium text-slate-600">Total Withdrawn</th>
+                  <th className="text-right px-4 py-2.5 font-medium text-slate-600">Net</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {ownerRows.map(row => (
+                  <tr key={row.name} className="hover:bg-slate-50">
+                    <td className="px-4 py-2.5 font-medium text-slate-800">{row.name}</td>
+                    <td className="px-4 py-2.5 text-right text-green-600">{formatCurrency(row.deposits)}</td>
+                    <td className="px-4 py-2.5 text-right text-red-600">{formatCurrency(row.withdrawals)}</td>
+                    <td className="px-4 py-2.5 text-right font-medium text-slate-800">{formatCurrency(row.net)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
       {Object.keys(accountSummary).length > 0 && (
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="p-4 border-b border-slate-200"><h3 className="font-semibold text-slate-800 text-sm">Summary by Account</h3></div>
