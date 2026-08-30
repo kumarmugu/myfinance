@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { getActiveHoldings, getSoldPositions, getShortTermTrades } from '../api';
 import { formatCurrency, formatPercent } from '../utils/formatters';
+import ExportMenu from '../components/ExportMenu';
+import { holdingsExportConfig } from '../utils/export/configs';
 import type { Holding, SoldPosition, Currency } from '../types';
 import { ASSET_TYPE_LABELS, ASSET_TYPE_COLORS } from '../types';
 
@@ -104,6 +106,7 @@ export default function Portfolio() {
                 <h3 className="font-semibold text-slate-800">All Holdings ({holdings.length})</h3>
                 <p className="text-sm text-slate-500">Total: {formatCurrency(totalValue)} | Invested: {formatCurrency(totalInvested)} | P&L: {formatCurrency(totalValue - totalInvested)}</p>
               </div>
+              <ExportMenu rows={holdings} config={holdingsExportConfig} />
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">

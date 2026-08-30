@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Plus, Trash2, Building2, TrendingUp, Bitcoin, Pencil, Eye, EyeOff, Users, UserPlus } from 'lucide-react';
 import { getAccounts, createAccount, updateAccount, deleteAccount, getOwners, createOwner, updateOwner, deleteOwner } from '../api';
 import SearchableSelect from '../components/SearchableSelect';
+import ExportMenu from '../components/ExportMenu';
+import { accountsExportConfig } from '../utils/export/configs';
 import type { Account, AccountType, Currency, Owner, OwnerRelationship } from '../types';
 import { useToast } from '../contexts/ToastContext';
 
@@ -120,7 +122,8 @@ export default function Accounts() {
       {/* ═══════ ACCOUNTS TAB ═══════ */}
       {tab === 'accounts' && (
         <>
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-3">
+            <ExportMenu rows={accounts} config={accountsExportConfig} />
             <button onClick={() => { setShowAccountForm(!showAccountForm); setEditingAccount(null); setAccForm({ name: '', accountType: 'BROKER', currency: 'SGD', accountNumber: '', description: '', ownerId: 0 }); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
               <Plus size={16} /> New Account
             </button>
