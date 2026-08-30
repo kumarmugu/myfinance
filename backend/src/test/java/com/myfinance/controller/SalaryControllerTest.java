@@ -83,14 +83,20 @@ class SalaryControllerTest extends BaseControllerTest {
         SalaryRecord bonus = SalaryRecord.builder()
                 .year(2026).month(3).company("BCS")
                 .amount(new BigDecimal("56000")).isBonus(true)
-                .bonusMonths(new BigDecimal("4.04")).country("Singapore").build();
+                .bonusMonths(new BigDecimal("4.04")).country("Singapore")
+                .notes("Annual performance bonus").build();
 
         mockMvc.perform(post("/api/salary")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(bonus)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.isBonus", is(true)))
-                .andExpect(jsonPath("$.bonusMonths", is(4.04)));
+                .andExpect(jsonPath("$.year", is(2026)))
+                .andExpect(jsonPath("$.month", is(3)))
+                .andExpect(jsonPath("$.company", is("BCS")))
+                .andExpect(jsonPath("$.amount", is(56000)))
+                .andExpect(jsonPath("$.bonusMonths", is(4.04)))
+                .andExpect(jsonPath("$.notes", is("Annual performance bonus")));
     }
 
     @Test

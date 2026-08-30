@@ -318,7 +318,7 @@ export default function Salary() {
               <SearchableSelect options={MONTHS.slice(1).map((m, i) => ({ value: i+1, label: m }))} value={form.month} onChange={v => setForm({...form, month: Number(v)})} placeholder="Month" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Company *</label>
               <SearchableSelect options={companies.map(c => ({ value: c, label: c }))} value={form.company} onChange={v => setForm({...form, company: v})} placeholder="Select company..." /></div>
-            <div><label className="block text-xs font-medium text-slate-600 mb-1">Amount *</label>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">{form.isBonus ? 'Bonus Amount *' : 'Amount *'}</label>
               <input type="number" step="any" value={form.amount || ''} onChange={e => setForm({...form, amount: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Basic</label>
               <input type="number" step="any" value={form.basic || ''} onChange={e => setForm({...form, basic: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
@@ -369,7 +369,9 @@ export default function Salary() {
                 <span className="text-sm text-slate-700">Bonus</span>
               </label></div>
             {form.isBonus && <div><label className="block text-xs font-medium text-slate-600 mb-1">Bonus Months</label>
-              <input type="number" step="0.1" value={form.bonusMonths || ''} onChange={e => setForm({...form, bonusMonths: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>}
+              <input type="number" step="0.1" value={form.bonusMonths || ''} onChange={e => setForm({...form, bonusMonths: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="e.g. 2.5" /></div>}
+            <div className="col-span-2 md:col-span-3 lg:col-span-6"><label className="block text-xs font-medium text-slate-600 mb-1">Notes</label>
+              <input type="text" value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder={form.isBonus ? 'e.g. Annual performance bonus, 13th month' : 'Optional notes'} /></div>
             <div className="flex items-end gap-2 col-span-2">
               <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">{editing ? 'Update' : 'Save'}</button>
               <button type="button" onClick={() => { setShowForm(false); setEditing(null); }} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
@@ -401,7 +403,10 @@ export default function Salary() {
               {records.map(r => (
                 <tr key={r.id} className={`hover:bg-slate-50 group ${r.isBonus ? 'bg-green-50/50' : ''}`}>
                   <td className="px-3 py-2.5 text-slate-800 font-medium text-xs">{MONTHS[r.month]} {r.year}</td>
-                  <td className="px-3 py-2.5 text-slate-600 text-xs">{r.company}</td>
+                  <td className="px-3 py-2.5 text-slate-600 text-xs">
+                    {r.company}
+                    {r.notes && <span className="block text-[10px] text-slate-400" title={r.notes}>{r.notes.length > 40 ? r.notes.slice(0, 40) + '…' : r.notes}</span>}
+                  </td>
                   <td className="px-3 py-2.5 text-xs font-medium text-indigo-600">{r.currency || 'SGD'}</td>
                   <td className="px-3 py-2.5 text-right font-medium text-slate-800">{formatCurrency(r.amount, r.currency || 'SGD')}</td>
                   <td className="px-3 py-2.5 text-right text-slate-700">{formatCurrency(r.netTakeHome ?? r.amount, r.currency || 'SGD')}</td>
