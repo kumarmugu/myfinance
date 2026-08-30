@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -36,6 +37,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+// Reset the context/DB after this class so its seeded rows (dividends/holdings that
+// reference accounts) never leak into other controller tests' delete-based setup.
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class ExportDataSourceSecurityTest {
 
     @Autowired private MockMvc mockMvc;
