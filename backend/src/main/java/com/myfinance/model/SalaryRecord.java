@@ -54,6 +54,14 @@ public class SalaryRecord {
     /** Optional label for the contribution scheme shown in the UI: CPF, EPF_ETF, EPF, ETF, NONE. */
     private String contributionScheme;
 
+    /**
+     * Whether the employer actually remitted the contribution to the fund. Defaults to false
+     * because deduction from pay does not guarantee remittance — some employers deduct but fail
+     * to pay in. The user confirms remittance explicitly (e.g. after checking the EPF/CPF statement).
+     */
+    @Builder.Default
+    private Boolean contributionRemitted = false;
+
     @Builder.Default
     private Boolean isBonus = false;
 

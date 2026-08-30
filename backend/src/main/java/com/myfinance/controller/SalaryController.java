@@ -145,6 +145,7 @@ public class SalaryController {
         existing.setEpfEmployer(updated.getEpfEmployer());
         existing.setEtfEmployer(updated.getEtfEmployer());
         existing.setContributionScheme(updated.getContributionScheme());
+        existing.setContributionRemitted(updated.getContributionRemitted());
         existing.setIsBonus(updated.getIsBonus());
         existing.setBonusMonths(updated.getBonusMonths());
         existing.setCountry(updated.getCountry());

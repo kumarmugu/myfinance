@@ -59,6 +59,7 @@ class SalaryControllerTest extends BaseControllerTest {
                 .epfEmployee(new BigDecimal("24000"))
                 .epfEmployer(new BigDecimal("36000"))
                 .etfEmployer(new BigDecimal("9000"))
+                .contributionRemitted(true)
                 .build();
 
         mockMvc.perform(post("/api/salary")
@@ -72,6 +73,7 @@ class SalaryControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("$.etfEmployer", is(9000)))
                 .andExpect(jsonPath("$.employeeContributionTotal", is(24000)))
                 .andExpect(jsonPath("$.employerContributionTotal", is(45000)))
+                .andExpect(jsonPath("$.contributionRemitted", is(true)))
                 .andExpect(jsonPath("$.netTakeHome", is(271000)));
     }
 

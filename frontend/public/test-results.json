@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-08-30T15:52:23.800458",
+  "timestamp": "2026-08-30T17:40:23.491015",
   "summary": {
     "total": 326,
     "passed": 326,
@@ -18,17 +18,17 @@
         {
           "name": "shouldHandleValidationException",
           "status": "pass",
-          "duration": "115ms"
+          "duration": "95ms"
         },
         {
           "name": "shouldHandleReferenceConstraintException",
           "status": "pass",
-          "duration": "7ms"
+          "duration": "6ms"
         },
         {
           "name": "shouldHandleRuntimeException",
           "status": "pass",
-          "duration": "6ms"
+          "duration": "8ms"
         }
       ]
     },
@@ -264,32 +264,32 @@
         {
           "name": "shouldFilterByOwner",
           "status": "pass",
-          "duration": "132ms"
+          "duration": "100ms"
         },
         {
           "name": "shouldListByUser",
           "status": "pass",
-          "duration": "30ms"
+          "duration": "19ms"
         },
         {
           "name": "shouldRejectCreateWithoutOwner",
           "status": "pass",
-          "duration": "34ms"
+          "duration": "22ms"
         },
         {
           "name": "shouldToggleNetWorth",
           "status": "pass",
-          "duration": "33ms"
+          "duration": "25ms"
         },
         {
           "name": "shouldGetSummary",
           "status": "pass",
-          "duration": "35ms"
+          "duration": "22ms"
         },
         {
           "name": "shouldCreateBankSavings",
           "status": "pass",
-          "duration": "27ms"
+          "duration": "21ms"
         }
       ]
     },
@@ -300,22 +300,22 @@
         {
           "name": "shouldRefreshLastUpdatedOnUpdate",
           "status": "pass",
-          "duration": "129ms"
+          "duration": "110ms"
         },
         {
           "name": "shouldUpdateBankSavings",
           "status": "pass",
-          "duration": "31ms"
+          "duration": "21ms"
         },
         {
           "name": "shouldUpdateBalance",
           "status": "pass",
-          "duration": "30ms"
+          "duration": "29ms"
         },
         {
           "name": "shouldSetLastUpdatedOnCreate",
           "status": "pass",
-          "duration": "23ms"
+          "duration": "19ms"
         }
       ]
     },
@@ -525,17 +525,17 @@
         {
           "name": "shouldCreateDividend",
           "status": "pass",
-          "duration": "131ms"
+          "duration": "107ms"
         },
         {
           "name": "shouldDeleteDividend",
           "status": "pass",
-          "duration": "40ms"
+          "duration": "33ms"
         },
         {
           "name": "shouldGetDividendSummary",
           "status": "pass",
-          "duration": "47ms"
+          "duration": "36ms"
         }
       ]
     },
@@ -715,22 +715,22 @@
         {
           "name": "shouldSoftDelete",
           "status": "pass",
-          "duration": "200ms"
+          "duration": "142ms"
         },
         {
           "name": "shouldUpdateHomeLoan",
           "status": "pass",
-          "duration": "76ms"
+          "duration": "49ms"
         },
         {
           "name": "shouldCreateHomeLoan",
           "status": "pass",
-          "duration": "35ms"
+          "duration": "25ms"
         },
         {
           "name": "shouldListActiveLoans",
           "status": "pass",
-          "duration": "25ms"
+          "duration": "16ms"
         }
       ]
     },
@@ -1125,37 +1125,37 @@
         {
           "name": "shouldReturnSummary",
           "status": "pass",
-          "duration": "79ms"
+          "duration": "1185ms"
         },
         {
           "name": "shouldFilterByYear",
           "status": "pass",
-          "duration": "10ms"
+          "duration": "104ms"
         },
         {
           "name": "shouldPersistCurrencyAndSchemeContributions",
           "status": "pass",
-          "duration": "15ms"
+          "duration": "126ms"
         },
         {
           "name": "shouldUpdateSalary",
           "status": "pass",
-          "duration": "11ms"
+          "duration": "59ms"
         },
         {
           "name": "shouldDeleteSalary",
           "status": "pass",
-          "duration": "10ms"
+          "duration": "30ms"
         },
         {
           "name": "shouldCreateSalaryRecord",
           "status": "pass",
-          "duration": "9ms"
+          "duration": "27ms"
         },
         {
           "name": "shouldCreateBonusRecord",
           "status": "pass",
-          "duration": "10ms"
+          "duration": "29ms"
         }
       ]
     },
@@ -1331,37 +1331,37 @@
         {
           "name": "shouldRejectWhenTokenInvalid",
           "status": "pass",
-          "duration": "305ms"
+          "duration": "195ms"
         },
         {
           "name": "shouldBeIdempotentOnRepeatProvisioning",
           "status": "pass",
-          "duration": "669ms"
+          "duration": "394ms"
         },
         {
           "name": "shouldReturn404ForStatusOfUnknownEmail",
           "status": "pass",
-          "duration": "86ms"
+          "duration": "53ms"
         },
         {
           "name": "shouldValidateEmailFormat",
           "status": "pass",
-          "duration": "43ms"
+          "duration": "25ms"
         },
         {
           "name": "shouldUpdateAccessStatus",
           "status": "pass",
-          "duration": "148ms"
+          "duration": "117ms"
         },
         {
           "name": "shouldProvisionUserWithValidToken",
           "status": "pass",
-          "duration": "112ms"
+          "duration": "88ms"
         },
         {
           "name": "shouldRejectWhenTokenMissing",
           "status": "pass",
-          "duration": "12ms"
+          "duration": "14ms"
         }
       ]
     },
@@ -1372,27 +1372,27 @@
         {
           "name": "shouldSwallowExceptionFromMalformedToken",
           "status": "pass",
-          "duration": "956ms"
+          "duration": "844ms"
         },
         {
           "name": "shouldNotAuthenticateWithInvalidToken",
           "status": "pass",
-          "duration": "10ms"
+          "duration": "8ms"
         },
         {
           "name": "shouldAuthenticateWithValidToken",
           "status": "pass",
-          "duration": "11ms"
+          "duration": "7ms"
         },
         {
           "name": "shouldSkipWhenHeaderDoesNotStartWithBearer",
           "status": "pass",
-          "duration": "7ms"
+          "duration": "8ms"
         },
         {
           "name": "shouldSkipWhenNoAuthorizationHeader",
           "status": "pass",
-          "duration": "6ms"
+          "duration": "4ms"
         }
       ]
     },
@@ -1403,27 +1403,27 @@
         {
           "name": "shouldExtractRole",
           "status": "pass",
-          "duration": "855ms"
+          "duration": "734ms"
         },
         {
           "name": "shouldExtractUserId",
           "status": "pass",
-          "duration": "8ms"
+          "duration": "5ms"
         },
         {
           "name": "shouldExtractUsername",
           "status": "pass",
-          "duration": "7ms"
+          "duration": "5ms"
         },
         {
           "name": "shouldGenerateUniqueTokensForSameUser",
           "status": "pass",
-          "duration": "9ms"
+          "duration": "6ms"
         },
         {
           "name": "shouldRejectExpiredToken",
           "status": "pass",
-          "duration": "7ms"
+          "duration": "8ms"
         },
         {
           "name": "shouldExtractMultipleClaims",
@@ -1433,12 +1433,12 @@
         {
           "name": "shouldGenerateToken",
           "status": "pass",
-          "duration": "5ms"
+          "duration": "4ms"
         },
         {
           "name": "shouldRejectTokenForDifferentUser",
           "status": "pass",
-          "duration": "6ms"
+          "duration": "5ms"
         },
         {
           "name": "shouldValidateToken",
@@ -1448,7 +1448,7 @@
         {
           "name": "shouldRejectMalformedToken",
           "status": "pass",
-          "duration": "3ms"
+          "duration": "4ms"
         }
       ]
     },

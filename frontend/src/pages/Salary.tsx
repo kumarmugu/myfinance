@@ -12,7 +12,7 @@ interface SalaryRecord {
   weekend: number; mealAllowance: number; deductions: number;
   cpfEmployee: number; cpfEmployer: number;
   epfEmployee: number; epfEmployer: number; etfEmployer: number;
-  contributionScheme: string;
+  contributionScheme: string; contributionRemitted: boolean;
   netTakeHome: number; employeeContributionTotal: number; employerContributionTotal: number;
   currency: string;
   isBonus: boolean; bonusMonths: number; country: string; notes: string;
@@ -42,14 +42,14 @@ export default function Salary() {
     year: new Date().getFullYear(), month: new Date().getMonth() + 1, company: '', amount: 0,
     basic: 0, allowance: 0, mobile: 0, support: 0, weekend: 0, mealAllowance: 0, deductions: 0,
     cpfEmployee: 0, cpfEmployer: 0, epfEmployee: 0, epfEmployer: 0, etfEmployer: 0,
-    contributionScheme: 'CPF', currency: 'SGD',
+    contributionScheme: 'CPF', contributionRemitted: false, currency: 'SGD',
     isBonus: false, bonusMonths: 0, country: 'Singapore', notes: ''
   };
   const [form, setForm] = useState({ ...emptyForm });
   const [bulkForm, setBulkForm] = useState({
     year: new Date().getFullYear(), company: '', fromMonth: 1, toMonth: 12,
     amount: 0, basic: 0, allowance: 0, mobile: 0, deductions: 0, country: 'Singapore',
-    currency: 'SGD', contributionScheme: 'CPF',
+    currency: 'SGD', contributionScheme: 'CPF', contributionRemitted: false,
     cpfEmployee: 0, cpfEmployer: 0, epfEmployee: 0, epfEmployer: 0, etfEmployer: 0
   });
 
@@ -92,6 +92,7 @@ export default function Salary() {
       cpfEmployee: r.cpfEmployee || 0, cpfEmployer: r.cpfEmployer || 0,
       epfEmployee: r.epfEmployee || 0, epfEmployer: r.epfEmployer || 0, etfEmployer: r.etfEmployer || 0,
       contributionScheme: r.contributionScheme || SCHEME_BY_COUNTRY[r.country || 'Singapore'] || 'NONE',
+      contributionRemitted: !!r.contributionRemitted,
       currency: r.currency || 'SGD',
       isBonus: r.isBonus, bonusMonths: r.bonusMonths || 0,
       country: r.country || 'Singapore', notes: r.notes || ''
@@ -110,6 +111,7 @@ export default function Salary() {
           amount: bulkForm.amount, basic: bulkForm.basic, allowance: bulkForm.allowance,
           mobile: bulkForm.mobile, deductions: bulkForm.deductions, country: bulkForm.country,
           currency: bulkForm.currency, contributionScheme: bulkForm.contributionScheme,
+          contributionRemitted: bulkForm.contributionRemitted,
           cpfEmployee: bulkForm.cpfEmployee, cpfEmployer: bulkForm.cpfEmployer,
           epfEmployee: bulkForm.epfEmployee, epfEmployer: bulkForm.epfEmployer, etfEmployer: bulkForm.etfEmployer,
           isBonus: false
@@ -281,6 +283,14 @@ export default function Salary() {
               <div><label className="block text-xs font-medium text-slate-600 mb-1">ETF Employer</label>
                 <input type="number" step="any" value={bulkForm.etfEmployer || ''} onChange={e => setBulkForm({...bulkForm, etfEmployer: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Employer ~3%" /></div>
             )}
+            {bulkForm.contributionScheme !== 'NONE' && (
+              <div className="flex items-end">
+                <label className="flex items-center gap-2 cursor-pointer" title="Applies to all months added: employer actually remitted the contribution to the fund.">
+                  <input type="checkbox" checked={bulkForm.contributionRemitted} onChange={e => setBulkForm({...bulkForm, contributionRemitted: e.target.checked})} className="rounded border-slate-300 text-indigo-600" />
+                  <span className="text-sm text-slate-700">Remitted to fund</span>
+                </label>
+              </div>
+            )}
             <div className="flex items-end gap-2 col-span-2 lg:col-span-3">
               <button type="submit" className="px-5 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">Add {bulkForm.toMonth - bulkForm.fromMonth + 1} Months</button>
               <button type="button" onClick={() => setShowBulkForm(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
@@ -345,6 +355,14 @@ export default function Salary() {
               <div><label className="block text-xs font-medium text-slate-600 mb-1">ETF Employer</label>
                 <input type="number" step="any" value={form.etfEmployer || ''} onChange={e => setForm({...form, etfEmployer: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Employer ~3%" /></div>
             )}
+            {form.contributionScheme !== 'NONE' && (
+              <div className="flex items-end">
+                <label className="flex items-center gap-2 cursor-pointer" title="Tick once you've confirmed (e.g. via the EPF/CPF statement) that the employer actually paid the contribution to the fund.">
+                  <input type="checkbox" checked={form.contributionRemitted} onChange={e => setForm({...form, contributionRemitted: e.target.checked})} className="rounded border-slate-300 text-indigo-600" />
+                  <span className="text-sm text-slate-700">Remitted to fund</span>
+                </label>
+              </div>
+            )}
             <div className="flex items-end">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={form.isBonus} onChange={e => setForm({...form, isBonus: e.target.checked})} className="rounded border-slate-300 text-indigo-600" />
@@ -374,6 +392,7 @@ export default function Salary() {
                 <th className="text-right px-3 py-2.5 font-medium text-slate-600">CPF (Emp/Empr)</th>
                 <th className="text-right px-3 py-2.5 font-medium text-slate-600">EPF (Emp/Empr)</th>
                 <th className="text-right px-3 py-2.5 font-medium text-slate-600">ETF</th>
+                <th className="text-center px-3 py-2.5 font-medium text-slate-600">Fund</th>
                 <th className="text-left px-3 py-2.5 font-medium text-slate-600">Type</th>
                 <th className="px-3 py-2.5 w-16"></th>
               </tr>
@@ -389,6 +408,13 @@ export default function Salary() {
                   <td className="px-3 py-2.5 text-right text-slate-600 text-xs">{(r.cpfEmployee || r.cpfEmployer) ? `${formatCurrency(r.cpfEmployee || 0, r.currency || 'SGD')} / ${formatCurrency(r.cpfEmployer || 0, r.currency || 'SGD')}` : '-'}</td>
                   <td className="px-3 py-2.5 text-right text-slate-600 text-xs">{(r.epfEmployee || r.epfEmployer) ? `${formatCurrency(r.epfEmployee || 0, r.currency || 'SGD')} / ${formatCurrency(r.epfEmployer || 0, r.currency || 'SGD')}` : '-'}</td>
                   <td className="px-3 py-2.5 text-right text-slate-600 text-xs">{r.etfEmployer ? formatCurrency(r.etfEmployer, r.currency || 'SGD') : '-'}</td>
+                  <td className="px-3 py-2.5 text-center">
+                    {(r.cpfEmployee || r.cpfEmployer || r.epfEmployee || r.epfEmployer || r.etfEmployer)
+                      ? (r.contributionRemitted
+                          ? <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 font-medium" title="Employer remitted to fund">Remitted</span>
+                          : <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 font-medium" title="Deducted but not confirmed remitted to the fund">Not remitted</span>)
+                      : <span className="text-[10px] text-slate-300">-</span>}
+                  </td>
                   <td className="px-3 py-2.5">{r.isBonus ? <span className="text-[10px] px-1.5 py-0.5 rounded bg-green-100 text-green-700 font-medium">BONUS {r.bonusMonths ? `(${r.bonusMonths}mo)` : ''}</span> : <span className="text-[10px] text-slate-400">Salary</span>}</td>
                   <td className="px-3 py-2.5">
                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -398,7 +424,7 @@ export default function Salary() {
                   </td>
                 </tr>
               ))}
-              {records.length === 0 && <tr><td colSpan={10} className="px-4 py-12 text-center text-slate-400">No salary records</td></tr>}
+              {records.length === 0 && <tr><td colSpan={11} className="px-4 py-12 text-center text-slate-400">No salary records</td></tr>}
             </tbody>
           </table>
         </div>
