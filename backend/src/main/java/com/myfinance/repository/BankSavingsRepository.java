@@ -11,4 +11,6 @@ public interface BankSavingsRepository extends JpaRepository<BankSavings, Long> 
     List<BankSavings> findByUserIdOrderByAccountNameAsc(Long userId);
     List<BankSavings> findByUserIdAndCountry(Long userId, String country);
     List<BankSavings> findByUserIdAndIncludeInNetWorthTrue(Long userId);
+    List<BankSavings> findByUserIdAndOwnerIdOrderByAccountNameAsc(Long userId, Long ownerId);
+    List<BankSavings> findByOwnerId(Long ownerId);
 }

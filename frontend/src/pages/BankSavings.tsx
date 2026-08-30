@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, Check, Eye, EyeOff } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import api from '../api';
+import api, { getOwners } from '../api';
+import type { Owner } from '../types';
 import { formatCurrency, formatNumber, formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import { useToast } from '../contexts/ToastContext';
@@ -20,6 +21,7 @@ interface BankSavingsAccount {
   includeInNetWorth: boolean;
   lastUpdated: string;
   notes: string;
+  owner?: Owner | null;
 }
 
 export default function BankSavings() {
@@ -27,6 +29,9 @@ export default function BankSavings() {
   const [summary, setSummary] = useState<{ totalBalance: number; inNetWorth: number; baseCurrency?: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [unmasked, setUnmasked] = useState<Set<number>>(new Set());
+  // Owners are used both for the mandatory owner picker in the form and the list filter.
+  const [owners, setOwners] = useState<Owner[]>([]);
+  const [filterOwnerId, setFilterOwnerId] = useState<number>(0); // 0 = all owners
   // Currency shown in the "Balance by Bank" pie. Currencies are never mixed in one pie
   // (you can't compare LKR vs SGD directly), so the chart always shows a single currency.
   const [chartCurrency, setChartCurrency] = useState<string | null>(null);
@@ -35,15 +40,21 @@ export default function BankSavings() {
   const [editing, setEditing] = useState<BankSavingsAccount | null>(null);
   const [form, setForm] = useState({
     accountName: '', bankName: '', accountNumber: '', balance: 0,
-    currency: 'SGD', country: 'Singapore', includeInNetWorth: true, notes: ''
+    currency: 'SGD', country: 'Singapore', includeInNetWorth: true, notes: '', ownerId: 0
   });
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => { loadOwners(); }, []);
+  useEffect(() => { loadData(); }, [filterOwnerId]);
+
+  const loadOwners = async () => {
+    try { const res = await getOwners(); setOwners(res.data.filter(o => o.isActive)); }
+    catch (err) { console.error(err); }
+  };
 
   const loadData = async () => {
     try {
       const [listRes, sumRes] = await Promise.all([
-        api.get('/bank-savings'),
+        api.get('/bank-savings', { params: filterOwnerId ? { ownerId: filterOwnerId } : {} }),
         api.get('/bank-savings/summary'),
       ]);
       setAccounts(listRes.data);
@@ -53,7 +64,9 @@ export default function BankSavings() {
     finally { setLoading(false); }
   };
 
-  const resetForm = () => setForm({ accountName: '', bankName: '', accountNumber: '', balance: 0, currency: 'SGD', country: 'Singapore', includeInNetWorth: true, notes: '' });
+  const resetForm = () => setForm({ accountName: '', bankName: '', accountNumber: '', balance: 0, currency: 'SGD', country: 'Singapore', includeInNetWorth: true, notes: '', ownerId: 0 });
+
+  const ownerOptions = owners.map(o => ({ value: String(o.id), label: `${o.name} (${o.relationship})` }));
 
   const toggleMask = (id: number) => {
     setUnmasked(prev => { const n = new Set(prev); if (n.has(id)) n.delete(id); else n.add(id); return n; });
@@ -68,9 +81,13 @@ export default function BankSavings() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Owner is mandatory (matches the backend, which rejects a missing owner with 400).
+    if (!form.ownerId) { showToast('Owner is required'); return; }
+    const { ownerId, ...rest } = form;
+    const payload = { ...rest, owner: { id: ownerId } };
     try {
-      if (editing) { await api.put(`/bank-savings/${editing.id}`, form); }
-      else { await api.post('/bank-savings', form); }
+      if (editing) { await api.put(`/bank-savings/${editing.id}`, payload); }
+      else { await api.post('/bank-savings', payload); }
       setShowForm(false); setEditing(null); resetForm(); loadData();
       showToast(editing ? 'Account updated' : 'Account added', 'success');
     } catch (err: any) {
@@ -81,7 +98,7 @@ export default function BankSavings() {
 
   const startEdit = (acc: BankSavingsAccount) => {
     setEditing(acc);
-    setForm({ accountName: acc.accountName, bankName: acc.bankName || '', accountNumber: acc.accountNumber || '', balance: acc.balance, currency: acc.currency, country: acc.country || 'Singapore', includeInNetWorth: acc.includeInNetWorth, notes: acc.notes || '' });
+    setForm({ accountName: acc.accountName, bankName: acc.bankName || '', accountNumber: acc.accountNumber || '', balance: acc.balance, currency: acc.currency, country: acc.country || 'Singapore', includeInNetWorth: acc.includeInNetWorth, notes: acc.notes || '', ownerId: acc.owner?.id || 0 });
     setShowForm(true);
   };
 
@@ -133,7 +150,18 @@ export default function BankSavings() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-2xl font-bold text-slate-800">Bank Savings</h1><p className="text-slate-500 text-sm mt-0.5">Track your bank account balances</p></div>
-        <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Account</button>
+        <div className="flex items-center gap-2">
+          {/* Owner filter — narrows the list to a single owner (or all). */}
+          <select
+            value={filterOwnerId}
+            onChange={e => setFilterOwnerId(Number(e.target.value))}
+            className="border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-700 bg-white"
+          >
+            <option value={0}>All owners</option>
+            {owners.map(o => <option key={o.id} value={o.id}>{o.name} ({o.relationship})</option>)}
+          </select>
+          <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> Add Account</button>
+        </div>
       </div>
 
       {/* Summary */}
@@ -192,6 +220,8 @@ export default function BankSavings() {
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Account Name *</label>
               <input type="text" value={form.accountName} onChange={e => setForm({...form, accountName: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required placeholder="e.g. DBS Savings" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner *</label>
+              <SearchableSelect options={ownerOptions} value={form.ownerId ? String(form.ownerId) : ''} onChange={v => setForm({...form, ownerId: Number(v)})} placeholder="Select owner" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Bank</label>
               <input type="text" value={form.bankName} onChange={e => setForm({...form, bankName: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="e.g. DBS, OCBC, BOC" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Balance *</label>
@@ -224,6 +254,7 @@ export default function BankSavings() {
           <thead className="bg-slate-50 border-b border-slate-200">
             <tr>
               <th className="text-left px-4 py-3 font-medium text-slate-600">Account</th>
+              <th className="text-left px-4 py-3 font-medium text-slate-600">Owner</th>
               <th className="text-left px-4 py-3 font-medium text-slate-600">Bank</th>
               <th className="text-left px-4 py-3 font-medium text-slate-600">Account No.</th>
               <th className="text-left px-4 py-3 font-medium text-slate-600">Country</th>
@@ -238,6 +269,7 @@ export default function BankSavings() {
             {accounts.map(acc => (
               <tr key={acc.id} className="hover:bg-slate-50 group">
                 <td className="px-4 py-3 font-medium text-slate-800">{acc.accountName}</td>
+                <td className="px-4 py-3 text-slate-600">{acc.owner?.name || '-'}</td>
                 <td className="px-4 py-3 text-slate-600">{acc.bankName || '-'}</td>
                 <td className="px-4 py-3">
                   {acc.accountNumber ? (
@@ -266,7 +298,7 @@ export default function BankSavings() {
                 </td>
               </tr>
             ))}
-            {accounts.length === 0 && <tr><td colSpan={9} className="px-4 py-12 text-center text-slate-400">No savings accounts tracked</td></tr>}
+            {accounts.length === 0 && <tr><td colSpan={10} className="px-4 py-12 text-center text-slate-400">No savings accounts tracked</td></tr>}
           </tbody>
         </table>
       </div>

@@ -2,8 +2,11 @@ package com.myfinance.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myfinance.model.BankSavings;
+import com.myfinance.model.Owner;
 import com.myfinance.model.enums.Currency;
+import com.myfinance.model.enums.OwnerRelationship;
 import com.myfinance.repository.BankSavingsRepository;
+import com.myfinance.repository.OwnerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +33,16 @@ class BankSavingsExtraTest extends BaseControllerTest {
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
     @Autowired private BankSavingsRepository repository;
+    @Autowired private OwnerRepository ownerRepository;
+
+    private Owner owner;
 
     @BeforeEach
-    void setup() { repository.deleteAll(); }
+    void setup() {
+        repository.deleteAll();
+        owner = ownerRepository.save(Owner.builder()
+                .name("Self").relationship(OwnerRelationship.SELF).userId(testUser.getId()).build());
+    }
 
     @Test
     @WithMockUser
@@ -40,11 +50,11 @@ class BankSavingsExtraTest extends BaseControllerTest {
         BankSavings saved = repository.save(BankSavings.builder()
                 .accountName("Old Account").bankName("DBS").balance(new BigDecimal("1000"))
                 .currency(Currency.SGD).country("Singapore").includeInNetWorth(true)
-                .userId(testUser.getId()).build());
+                .owner(owner).userId(testUser.getId()).build());
 
         BankSavings update = BankSavings.builder()
                 .accountName("New Account").bankName("OCBC").balance(new BigDecimal("2500"))
-                .currency(Currency.USD).country("Singapore").includeInNetWorth(true).build();
+                .currency(Currency.USD).country("Singapore").includeInNetWorth(true).owner(owner).build();
 
         mockMvc.perform(put("/api/bank-savings/" + saved.getId())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -76,7 +86,7 @@ class BankSavingsExtraTest extends BaseControllerTest {
         // Client sends no lastUpdated; the server must stamp it with today's date.
         BankSavings newAccount = BankSavings.builder()
                 .accountName("Fresh Account").bankName("DBS").balance(new BigDecimal("500"))
-                .currency(Currency.SGD).country("Singapore").includeInNetWorth(true).build();
+                .currency(Currency.SGD).country("Singapore").includeInNetWorth(true).owner(owner).build();
 
         String today = java.time.LocalDate.now().toString();
 
@@ -95,11 +105,11 @@ class BankSavingsExtraTest extends BaseControllerTest {
                 .accountName("Acct").bankName("DBS").balance(new BigDecimal("1000"))
                 .currency(Currency.SGD).country("Singapore").includeInNetWorth(true)
                 .lastUpdated(java.time.LocalDate.of(2000, 1, 1))
-                .userId(testUser.getId()).build());
+                .owner(owner).userId(testUser.getId()).build());
 
         BankSavings update = BankSavings.builder()
                 .accountName("Acct").bankName("DBS").balance(new BigDecimal("1200"))
-                .currency(Currency.SGD).country("Singapore").includeInNetWorth(true).build();
+                .currency(Currency.SGD).country("Singapore").includeInNetWorth(true).owner(owner).build();
 
         String today = java.time.LocalDate.now().toString();
 

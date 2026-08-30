@@ -91,6 +91,9 @@ public class SalaryController {
         existing.setWeekend(updated.getWeekend());
         existing.setMealAllowance(updated.getMealAllowance());
         existing.setDeductions(updated.getDeductions());
+        existing.setEmployeeContribution(updated.getEmployeeContribution());
+        existing.setEmployerContribution(updated.getEmployerContribution());
+        existing.setContributionScheme(updated.getContributionScheme());
         existing.setIsBonus(updated.getIsBonus());
         existing.setBonusMonths(updated.getBonusMonths());
         existing.setCountry(updated.getCountry());

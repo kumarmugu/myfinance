@@ -19,6 +19,12 @@ public class BankSavings {
 
     private Long userId;
 
+    // Optional profile this account belongs to (Myself/Spouse/Son). Nullable so existing
+    // accounts remain "Unlinked" until assigned. Additive column — safe under ddl-auto=update.
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
+
     @Column(nullable = false)
     private String accountName; // e.g. "DBS Savings", "BOC Savings"
 

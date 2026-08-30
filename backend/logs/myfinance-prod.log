@@ -641,3 +641,50 @@
 2026-08-30 14:18:04 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (4ms)
 2026-08-30 14:19:09 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (26ms)
 2026-08-30 14:19:09 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (2ms)
+2026-08-30 14:22:17 [http-nio-8080-exec-5] INFO  c.m.c.WorkExperienceController - Creating work experience: company=Syntech Solutions Pvt Ltd, position=Software Engineer
+2026-08-30 14:22:17 [http-nio-8080-exec-5] INFO  c.m.c.WorkExperienceController - Created work experience id=1
+2026-08-30 14:22:17 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/work-experience → 201 (86ms)
+2026-08-30 14:22:17 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-08-30 14:22:31 [http-nio-8080-exec-7] INFO  c.m.c.WorkExperienceController - Updating work experience id=1
+2026-08-30 14:22:31 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/work-experience/1 → 200 (9ms)
+2026-08-30 14:22:31 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-08-30 14:24:59 [http-nio-8080-exec-8] INFO  c.m.c.WorkExperienceController - Creating work experience: company=Advanced Data Technologies Pte Ltd, position=Senior Software Engineer
+2026-08-30 14:24:59 [http-nio-8080-exec-8] INFO  c.m.c.WorkExperienceController - Created work experience id=2
+2026-08-30 14:24:59 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/work-experience → 201 (4ms)
+2026-08-30 14:24:59 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (2ms)
+2026-08-30 14:27:42 [http-nio-8080-exec-10] INFO  c.m.c.WorkExperienceController - Creating work experience: company=Fortuna Global pvt Ltd, position=Senior Software Engineer
+2026-08-30 14:27:42 [http-nio-8080-exec-10] INFO  c.m.c.WorkExperienceController - Created work experience id=3
+2026-08-30 14:27:42 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/work-experience → 201 (5ms)
+2026-08-30 14:27:42 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-08-30 14:29:23 [http-nio-8080-exec-6] INFO  c.m.c.WorkExperienceController - Updating work experience id=2
+2026-08-30 14:29:23 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/work-experience/2 → 200 (6ms)
+2026-08-30 14:29:23 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (2ms)
+2026-08-30 14:31:23 [http-nio-8080-exec-5] INFO  c.m.c.WorkExperienceController - Creating work experience: company=Shell Infortech Pte Ltd, position=Software Developer
+2026-08-30 14:31:23 [http-nio-8080-exec-5] INFO  c.m.c.WorkExperienceController - Created work experience id=4
+2026-08-30 14:31:23 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/work-experience → 201 (9ms)
+2026-08-30 14:31:23 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-08-30 14:32:19 [http-nio-8080-exec-7] INFO  c.m.c.WorkExperienceController - Updating work experience id=4
+2026-08-30 14:32:19 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/work-experience/4 → 200 (5ms)
+2026-08-30 14:32:19 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-08-30 14:34:40 [http-nio-8080-exec-8] INFO  c.m.c.WorkExperienceController - Creating work experience: company=Collinsion (ASPAC) Pte Ltd, position=Lead Development Engineer
+2026-08-30 14:34:40 [http-nio-8080-exec-8] INFO  c.m.c.WorkExperienceController - Created work experience id=5
+2026-08-30 14:34:40 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/work-experience → 201 (3ms)
+2026-08-30 14:34:40 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (2ms)
+2026-08-30 14:35:51 [http-nio-8080-exec-10] INFO  c.m.c.WorkExperienceController - Creating work experience: company=Banking Computer Services pte ltd, position=Principal Engineer
+2026-08-30 14:35:51 [http-nio-8080-exec-10] INFO  c.m.c.WorkExperienceController - Created work experience id=6
+2026-08-30 14:35:51 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/work-experience → 201 (3ms)
+2026-08-30 14:35:51 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-08-30 14:42:50 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (5ms)
+2026-08-30 14:42:50 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (4ms)
+2026-08-30 14:42:50 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (13ms)
+2026-08-30 14:42:50 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (2ms)
+2026-08-30 14:42:50 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (2ms)
+2026-08-30 14:42:50 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (3ms)
+2026-08-30 14:51:55 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (4ms)
+2026-08-30 14:51:55 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (2ms)
+2026-08-30 14:51:59 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (4ms)
+2026-08-30 14:51:59 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (4ms)
+2026-08-30 14:51:59 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (4ms)
+2026-08-30 14:51:59 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (2ms)
+2026-08-30 14:51:59 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-08-30 14:51:59 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (4ms)

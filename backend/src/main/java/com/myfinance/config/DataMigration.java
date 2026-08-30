@@ -62,6 +62,37 @@ public class DataMigration implements CommandLineRunner {
         } else {
             log.debug("DataMigration: No orphan records found");
         }
+
+        backfillBankSavingsOwner();
+    }
+
+    /**
+     * Bank Savings now requires an Owner. Backfill any existing account with owner=NULL to its
+     * own user's SELF owner. Per user, so multi-tenant data stays isolated. Idempotent — only
+     * touches NULL-owner rows.
+     */
+    private void backfillBankSavingsOwner() {
+        // Map each userId that has a SELF owner to that owner's id.
+        var selfOwners = em.createQuery(
+                "SELECT o.userId, o.id FROM Owner o WHERE o.relationship = 'SELF' AND o.isActive = true",
+                Object[].class).getResultList();
+
+        int updated = 0;
+        for (Object[] row : selfOwners) {
+            Long ownerUserId = (Long) row[0];
+            Long selfOwnerId = (Long) row[1];
+            if (ownerUserId == null || selfOwnerId == null) {
+                continue;
+            }
+            updated += em.createQuery(
+                    "UPDATE BankSavings b SET b.owner.id = :oid WHERE b.owner IS NULL AND b.userId = :uid")
+                    .setParameter("oid", selfOwnerId)
+                    .setParameter("uid", ownerUserId)
+                    .executeUpdate();
+        }
+        if (updated > 0) {
+            log.info("DataMigration: Backfilled owner (SELF) on {} BankSavings account(s)", updated);
+        }
     }
 
     private int update(String jpql, Long userId) {

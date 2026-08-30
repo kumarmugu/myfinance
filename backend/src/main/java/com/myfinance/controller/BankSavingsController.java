@@ -24,8 +24,10 @@ public class BankSavingsController {
     private final com.myfinance.service.CurrencyConversionService fx;
 
     @GetMapping
-    public List<BankSavings> getAll(@RequestParam(required = false) String country) {
+    public List<BankSavings> getAll(@RequestParam(required = false) String country,
+                                    @RequestParam(required = false) Long ownerId) {
         Long uid = tenantContext.getCurrentUserId();
+        if (ownerId != null) return repository.findByUserIdAndOwnerIdOrderByAccountNameAsc(uid, ownerId);
         if (country != null) return repository.findByUserIdAndCountry(uid, country);
         return repository.findByUserIdOrderByAccountNameAsc(uid);
     }
@@ -61,6 +63,10 @@ public class BankSavingsController {
         log.debug("Creating bank savings: accountName={}, bankName={}, balance={}, currency={}, country={}",
                 savings.getAccountName(), savings.getBankName(), savings.getBalance(),
                 savings.getCurrency(), savings.getCountry());
+        // Owner is mandatory for bank savings.
+        if (savings.getOwner() == null || savings.getOwner().getId() == null) {
+            throw new RuntimeException("Owner is required");
+        }
         savings.setUserId(tenantContext.getCurrentUserId());
         savings.setLastUpdated(java.time.LocalDate.now());
         BankSavings saved = repository.save(savings);
@@ -70,6 +76,9 @@ public class BankSavingsController {
 
     @PutMapping("/{id}")
     public BankSavings update(@PathVariable Long id, @RequestBody BankSavings updated) {
+        if (updated.getOwner() == null || updated.getOwner().getId() == null) {
+            throw new RuntimeException("Owner is required");
+        }
         BankSavings existing = repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
         existing.setAccountName(updated.getAccountName());
         existing.setBankName(updated.getBankName());
@@ -77,6 +86,7 @@ public class BankSavingsController {
         existing.setBalance(updated.getBalance());
         existing.setCurrency(updated.getCurrency());
         existing.setCountry(updated.getCountry());
+        existing.setOwner(updated.getOwner());
         existing.setIncludeInNetWorth(updated.getIncludeInNetWorth());
         existing.setLastUpdated(java.time.LocalDate.now());
         existing.setNotes(updated.getNotes());

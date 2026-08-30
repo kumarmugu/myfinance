@@ -36,6 +36,16 @@ public class SalaryRecord {
     private BigDecimal mealAllowance;
     private BigDecimal deductions; // SINDA, etc.
 
+    /**
+     * Retirement-fund contributions on this salary, in the record's currency. Generic across
+     * schemes: CPF (Singapore), EPF/ETF (Sri Lanka), etc. Nullable when not applicable.
+     */
+    private BigDecimal employeeContribution;   // employee's share (e.g. CPF employee, EPF employee)
+    private BigDecimal employerContribution;   // employer's share (e.g. CPF employer, EPF employer + ETF)
+
+    /** Optional label for the contribution scheme shown in the UI: CPF, EPF_ETF, EPF, ETF, NONE. */
+    private String contributionScheme;
+
     @Builder.Default
     private Boolean isBonus = false;
 
