@@ -5316,3 +5316,8 @@ org.springframework.http.converter.HttpMessageNotReadableException: Required req
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
 	at java.base/java.lang.Thread.run(Thread.java:840)
 2026-08-30 23:23:15 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 400 (8ms)
+2026-08-30 23:24:48 [http-nio-8080-exec-8] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-08-30 23:24:48 [http-nio-8080-exec-8] INFO  c.m.controller.AuthController - Login successful for user=mugu
+2026-08-30 23:24:48 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (110ms)
+2026-08-30 23:24:48 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (14ms)
+2026-08-30 23:24:49 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (9ms)
