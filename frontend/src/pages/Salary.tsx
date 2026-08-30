@@ -10,10 +10,19 @@ interface SalaryRecord {
   id: number; year: number; month: number; company: string; amount: number;
   basic: number; allowance: number; mobile: number; support: number;
   weekend: number; mealAllowance: number; deductions: number;
+  employeeContribution: number; employerContribution: number; contributionScheme: string;
+  currency: string;
   isBonus: boolean; bonusMonths: number; country: string; notes: string;
 }
 
 const MONTHS = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const CURRENCY_OPTIONS = ['SGD', 'USD', 'EUR', 'LKR', 'INR', 'GBP', 'AUD', 'JPY', 'CNY', 'MYR', 'THB', 'HKD', 'NZD', 'CHF', 'CAD'];
+
+// Contribution scheme presets by country (default when the user picks a country).
+const SCHEME_BY_COUNTRY: Record<string, string> = { 'Singapore': 'CPF', 'Sri Lanka': 'EPF_ETF' };
+const SCHEME_LABELS: Record<string, string> = {
+  CPF: 'CPF', EPF_ETF: 'EPF + ETF', EPF: 'EPF', ETF: 'ETF', NONE: 'None', OTHER: 'Other',
+};
 
 export default function Salary() {
   const [records, setRecords] = useState<SalaryRecord[]>([]);
@@ -28,11 +37,14 @@ export default function Salary() {
   const [form, setForm] = useState({
     year: new Date().getFullYear(), month: new Date().getMonth() + 1, company: '', amount: 0,
     basic: 0, allowance: 0, mobile: 0, support: 0, weekend: 0, mealAllowance: 0, deductions: 0,
+    employeeContribution: 0, employerContribution: 0, contributionScheme: 'CPF',
+    currency: 'SGD',
     isBonus: false, bonusMonths: 0, country: 'Singapore', notes: ''
   });
   const [bulkForm, setBulkForm] = useState({
     year: new Date().getFullYear(), company: '', fromMonth: 1, toMonth: 12,
-    amount: 0, basic: 0, allowance: 0, mobile: 0, deductions: 0, country: 'Singapore'
+    amount: 0, basic: 0, allowance: 0, mobile: 0, deductions: 0, country: 'Singapore',
+    currency: 'SGD', contributionScheme: 'CPF', employeeContribution: 0, employerContribution: 0
   });
 
   useEffect(() => { loadData(); loadCompanies(); }, [filterYear]);
@@ -56,6 +68,8 @@ export default function Salary() {
   const resetForm = () => setForm({
     year: new Date().getFullYear(), month: new Date().getMonth() + 1, company: '', amount: 0,
     basic: 0, allowance: 0, mobile: 0, support: 0, weekend: 0, mealAllowance: 0, deductions: 0,
+    employeeContribution: 0, employerContribution: 0, contributionScheme: 'CPF',
+    currency: 'SGD',
     isBonus: false, bonusMonths: 0, country: 'Singapore', notes: ''
   });
 
@@ -74,7 +88,11 @@ export default function Salary() {
       year: r.year, month: r.month, company: r.company, amount: r.amount,
       basic: r.basic || 0, allowance: r.allowance || 0, mobile: r.mobile || 0,
       support: r.support || 0, weekend: r.weekend || 0, mealAllowance: r.mealAllowance || 0,
-      deductions: r.deductions || 0, isBonus: r.isBonus, bonusMonths: r.bonusMonths || 0,
+      deductions: r.deductions || 0,
+      employeeContribution: r.employeeContribution || 0, employerContribution: r.employerContribution || 0,
+      contributionScheme: r.contributionScheme || SCHEME_BY_COUNTRY[r.country || 'Singapore'] || 'NONE',
+      currency: r.currency || 'SGD',
+      isBonus: r.isBonus, bonusMonths: r.bonusMonths || 0,
       country: r.country || 'Singapore', notes: r.notes || ''
     });
     setShowForm(true);
@@ -90,6 +108,8 @@ export default function Salary() {
           year: bulkForm.year, month: m, company: bulkForm.company,
           amount: bulkForm.amount, basic: bulkForm.basic, allowance: bulkForm.allowance,
           mobile: bulkForm.mobile, deductions: bulkForm.deductions, country: bulkForm.country,
+          currency: bulkForm.currency, contributionScheme: bulkForm.contributionScheme,
+          employeeContribution: bulkForm.employeeContribution, employerContribution: bulkForm.employerContribution,
           isBonus: false
         });
       }
@@ -162,6 +182,19 @@ export default function Salary() {
               <input type="number" step="any" value={bulkForm.mobile || ''} onChange={e => setBulkForm({...bulkForm, mobile: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Deductions</label>
               <input type="number" step="any" value={bulkForm.deductions || ''} onChange={e => setBulkForm({...bulkForm, deductions: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Currency</label>
+              <SearchableSelect options={CURRENCY_OPTIONS.map(c => ({ value: c, label: c }))} value={bulkForm.currency} onChange={v => setBulkForm({...bulkForm, currency: String(v)})} placeholder="Currency" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Country</label>
+              <SearchableSelect options={['Singapore','Sri Lanka'].map(c => ({ value: c, label: c }))} value={bulkForm.country}
+                onChange={v => { const c = String(v); setBulkForm({...bulkForm, country: c, contributionScheme: SCHEME_BY_COUNTRY[c] || bulkForm.contributionScheme}); }} placeholder="Country" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Contribution Scheme</label>
+              <SearchableSelect options={Object.keys(SCHEME_LABELS).map(k => ({ value: k, label: SCHEME_LABELS[k] }))} value={bulkForm.contributionScheme} onChange={v => setBulkForm({...bulkForm, contributionScheme: String(v)})} placeholder="Scheme" /></div>
+            {bulkForm.contributionScheme !== 'NONE' && <>
+              <div><label className="block text-xs font-medium text-slate-600 mb-1">Employee {SCHEME_LABELS[bulkForm.contributionScheme] || ''}</label>
+                <input type="number" step="any" value={bulkForm.employeeContribution || ''} onChange={e => setBulkForm({...bulkForm, employeeContribution: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Employee share" /></div>
+              <div><label className="block text-xs font-medium text-slate-600 mb-1">Employer {SCHEME_LABELS[bulkForm.contributionScheme] || ''}</label>
+                <input type="number" step="any" value={bulkForm.employerContribution || ''} onChange={e => setBulkForm({...bulkForm, employerContribution: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Employer share" /></div>
+            </>}
             <div className="flex items-end gap-2 col-span-2 lg:col-span-3">
               <button type="submit" className="px-5 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">Add {bulkForm.toMonth - bulkForm.fromMonth + 1} Months</button>
               <button type="button" onClick={() => setShowBulkForm(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
@@ -203,6 +236,19 @@ export default function Salary() {
               <input type="number" step="any" value={form.weekend || ''} onChange={e => setForm({...form, weekend: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Deductions</label>
               <input type="number" step="any" value={form.deductions || ''} onChange={e => setForm({...form, deductions: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Currency</label>
+              <SearchableSelect options={CURRENCY_OPTIONS.map(c => ({ value: c, label: c }))} value={form.currency} onChange={v => setForm({...form, currency: String(v)})} placeholder="Currency" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Country</label>
+              <SearchableSelect options={['Singapore','Sri Lanka'].map(c => ({ value: c, label: c }))} value={form.country}
+                onChange={v => { const c = String(v); setForm({...form, country: c, contributionScheme: SCHEME_BY_COUNTRY[c] || form.contributionScheme}); }} placeholder="Country" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Contribution Scheme</label>
+              <SearchableSelect options={Object.keys(SCHEME_LABELS).map(k => ({ value: k, label: SCHEME_LABELS[k] }))} value={form.contributionScheme} onChange={v => setForm({...form, contributionScheme: String(v)})} placeholder="Scheme" /></div>
+            {form.contributionScheme !== 'NONE' && <>
+              <div><label className="block text-xs font-medium text-slate-600 mb-1">Employee {SCHEME_LABELS[form.contributionScheme] || ''}</label>
+                <input type="number" step="any" value={form.employeeContribution || ''} onChange={e => setForm({...form, employeeContribution: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Employee share" /></div>
+              <div><label className="block text-xs font-medium text-slate-600 mb-1">Employer {SCHEME_LABELS[form.contributionScheme] || ''}</label>
+                <input type="number" step="any" value={form.employerContribution || ''} onChange={e => setForm({...form, employerContribution: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Employer share" /></div>
+            </>}
             <div className="flex items-end">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" checked={form.isBonus} onChange={e => setForm({...form, isBonus: e.target.checked})} className="rounded border-slate-300 text-indigo-600" />
@@ -228,8 +274,7 @@ export default function Salary() {
                 <th className="text-left px-3 py-2.5 font-medium text-slate-600">Company</th>
                 <th className="text-right px-3 py-2.5 font-medium text-slate-600">Amount</th>
                 <th className="text-right px-3 py-2.5 font-medium text-slate-600">Basic</th>
-                <th className="text-right px-3 py-2.5 font-medium text-slate-600">Allowance</th>
-                <th className="text-right px-3 py-2.5 font-medium text-slate-600">Mobile</th>
+                <th className="text-right px-3 py-2.5 font-medium text-slate-600">Contributions (Emp / Empr)</th>
                 <th className="text-left px-3 py-2.5 font-medium text-slate-600">Type</th>
                 <th className="px-3 py-2.5 w-16"></th>
               </tr>
@@ -239,10 +284,16 @@ export default function Salary() {
                 <tr key={r.id} className={`hover:bg-slate-50 group ${r.isBonus ? 'bg-green-50/50' : ''}`}>
                   <td className="px-3 py-2.5 text-slate-800 font-medium text-xs">{MONTHS[r.month]} {r.year}</td>
                   <td className="px-3 py-2.5 text-slate-600 text-xs">{r.company}</td>
-                  <td className="px-3 py-2.5 text-right font-medium text-slate-800">{formatCurrency(r.amount)}</td>
-                  <td className="px-3 py-2.5 text-right text-slate-600">{r.basic ? formatCurrency(r.basic) : '-'}</td>
-                  <td className="px-3 py-2.5 text-right text-slate-600">{r.allowance ? formatCurrency(r.allowance) : '-'}</td>
-                  <td className="px-3 py-2.5 text-right text-slate-600">{r.mobile ? formatCurrency(r.mobile) : '-'}</td>
+                  <td className="px-3 py-2.5 text-right font-medium text-slate-800">{formatCurrency(r.amount, r.currency || 'SGD')}</td>
+                  <td className="px-3 py-2.5 text-right text-slate-600">{r.basic ? formatCurrency(r.basic, r.currency || 'SGD') : '-'}</td>
+                  <td className="px-3 py-2.5 text-right text-slate-600">
+                    {(r.employeeContribution || r.employerContribution) ? (
+                      <span className="text-xs">
+                        {formatCurrency(r.employeeContribution || 0, r.currency || 'SGD')} / {formatCurrency(r.employerContribution || 0, r.currency || 'SGD')}
+                        {r.contributionScheme && r.contributionScheme !== 'NONE' && <span className="ml-1 text-[10px] text-slate-400">{SCHEME_LABELS[r.contributionScheme] || r.contributionScheme}</span>}
+                      </span>
+                    ) : '-'}
+                  </td>
                   <td className="px-3 py-2.5">{r.isBonus ? <span className="text-[10px] px-1.5 py-0.5 rounded bg-green-100 text-green-700 font-medium">BONUS {r.bonusMonths ? `(${r.bonusMonths}mo)` : ''}</span> : <span className="text-[10px] text-slate-400">Salary</span>}</td>
                   <td className="px-3 py-2.5">
                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -252,7 +303,7 @@ export default function Salary() {
                   </td>
                 </tr>
               ))}
-              {records.length === 0 && <tr><td colSpan={8} className="px-4 py-12 text-center text-slate-400">No salary records</td></tr>}
+              {records.length === 0 && <tr><td colSpan={7} className="px-4 py-12 text-center text-slate-400">No salary records</td></tr>}
             </tbody>
           </table>
         </div>

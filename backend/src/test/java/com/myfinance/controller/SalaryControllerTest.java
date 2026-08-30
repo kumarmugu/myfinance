@@ -47,6 +47,28 @@ class SalaryControllerTest extends BaseControllerTest {
 
     @Test
     @WithMockUser
+    void shouldPersistCurrencyAndContributions() throws Exception {
+        // LKR salary in Sri Lanka with EPF/ETF employee + employer contributions.
+        SalaryRecord record = SalaryRecord.builder()
+                .year(2026).month(2).company("Lanka Corp")
+                .amount(new BigDecimal("300000")).currency("LKR").country("Sri Lanka")
+                .contributionScheme("EPF_ETF")
+                .employeeContribution(new BigDecimal("24000"))
+                .employerContribution(new BigDecimal("45000"))
+                .build();
+
+        mockMvc.perform(post("/api/salary")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(record)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.currency", is("LKR")))
+                .andExpect(jsonPath("$.contributionScheme", is("EPF_ETF")))
+                .andExpect(jsonPath("$.employeeContribution", is(24000)))
+                .andExpect(jsonPath("$.employerContribution", is(45000)));
+    }
+
+    @Test
+    @WithMockUser
     void shouldCreateBonusRecord() throws Exception {
         SalaryRecord bonus = SalaryRecord.builder()
                 .year(2026).month(3).company("BCS")
