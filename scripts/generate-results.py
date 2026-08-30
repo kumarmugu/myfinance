@@ -109,7 +109,7 @@ failed = sum(1 for s in suites for t in s['tests'] if t['status'] == 'fail')
 result = {
     'timestamp': datetime.datetime.now().isoformat(),
     'summary': {'total': total, 'passed': passed, 'failed': failed, 'suites': len(suites)},
-    'coverage': {'backend': 88.8, 'frontend': 69.3},
+    'coverage': {'backend': 88.1, 'frontend': 69.3},
     'suites': suites
 }
 
