@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import api, { getOwners } from '../api';
 import SearchableSelect from '../components/SearchableSelect';
 import ExportMenu from '../components/ExportMenu';
@@ -101,6 +102,44 @@ export default function PreciousMetals() {
   const totalGoldG = held.filter(i => i.metalType === 'GOLD').reduce((s, i) => s + i.weight, 0);
   const totalSilverG = held.filter(i => i.metalType === 'SILVER').reduce((s, i) => s + i.weight, 0);
 
+  // ─── Growth chart data (held items, in their original currency) ───
+  // Cumulative amount invested vs current value, ordered by purchase date. This shows how the
+  // holdings and their worth have grown over time as items were acquired. Note: amounts are as
+  // entered per item; when holdings span multiple currencies the chart mixes them, so we surface
+  // the dominant currency in the axis label and keep the base-currency totals in the cards above.
+  const datedHeld = held
+    .filter(i => i.purchaseDate)
+    .sort((a, b) => a.purchaseDate.localeCompare(b.purchaseDate));
+
+  let cumInvested = 0;
+  let cumValue = 0;
+  const growthSeries = datedHeld.map(i => {
+    cumInvested += i.purchasePrice || 0;
+    cumValue += i.currentPrice || i.purchasePrice || 0;
+    return {
+      date: i.purchaseDate,
+      invested: Number(cumInvested.toFixed(2)),
+      value: Number(cumValue.toFixed(2)),
+    };
+  });
+
+  // Dominant currency among held items (for the chart's axis/tooltip label).
+  const currencyCounts = held.reduce<Record<string, number>>((acc, i) => {
+    const c = (i.currency || 'SGD').toUpperCase();
+    acc[c] = (acc[c] || 0) + 1;
+    return acc;
+  }, {});
+  const chartCurrency = Object.entries(currencyCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || baseCurrency;
+  const mixedCurrencies = Object.keys(currencyCounts).length > 1;
+
+  // Current value grouped by metal type (composition bar).
+  const valueByMetal = METAL_TYPES.map(t => ({
+    metal: t,
+    value: Number(held.filter(i => i.metalType === t).reduce((s, i) => s + (i.currentPrice || 0), 0).toFixed(2)),
+  })).filter(d => d.value > 0);
+
+  const compactAxis = (v: number) => Math.abs(v) >= 1000 ? `${(v / 1000).toFixed(0)}K` : `${v}`;
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -127,6 +166,64 @@ export default function PreciousMetals() {
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Gold</p><p className="text-lg font-bold text-amber-600 mt-1">{totalGoldG.toFixed(1)}g</p></div>
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm"><p className="text-[11px] text-slate-500 uppercase">Silver</p><p className="text-lg font-bold text-slate-600 mt-1">{totalSilverG.toFixed(1)}g</p></div>
       </div>
+
+      {/* Growth charts */}
+      {held.length > 0 && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* Cumulative invested vs current value over time */}
+          <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm lg:col-span-2">
+            <div className="flex items-baseline justify-between mb-3">
+              <h3 className="text-sm font-semibold text-slate-800">Holdings Growth Over Time</h3>
+              <span className="text-[11px] text-slate-400">
+                {mixedCurrencies ? 'Mixed currencies (original values)' : `Values in ${chartCurrency}`}
+              </span>
+            </div>
+            {growthSeries.length > 0 ? (
+              <ResponsiveContainer width="100%" height={240}>
+                <AreaChart data={growthSeries} margin={{ top: 5, right: 8, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="pmValue" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#d97706" stopOpacity={0.35} />
+                      <stop offset="95%" stopColor="#d97706" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="pmInvested" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#64748b" stopOpacity={0.25} />
+                      <stop offset="95%" stopColor="#64748b" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} />
+                  <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={compactAxis} width={44} />
+                  <Tooltip formatter={(v, name) => [formatCurrency(v as number, chartCurrency), name === 'value' ? 'Current Value' : 'Invested']} />
+                  <Legend formatter={(v) => v === 'value' ? 'Current Value' : 'Invested'} />
+                  <Area type="monotone" dataKey="invested" stroke="#64748b" strokeWidth={2} fill="url(#pmInvested)" />
+                  <Area type="monotone" dataKey="value" stroke="#d97706" strokeWidth={2} fill="url(#pmValue)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            ) : (
+              <p className="text-sm text-slate-400 py-16 text-center">Add purchase dates to your holdings to see growth over time.</p>
+            )}
+          </div>
+
+          {/* Current value by metal */}
+          <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+            <h3 className="text-sm font-semibold text-slate-800 mb-3">Value by Metal</h3>
+            {valueByMetal.length > 0 ? (
+              <ResponsiveContainer width="100%" height={240}>
+                <BarChart data={valueByMetal} margin={{ top: 5, right: 8, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="metal" stroke="#94a3b8" fontSize={11} />
+                  <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={compactAxis} width={44} />
+                  <Tooltip formatter={(v) => formatCurrency(v as number, chartCurrency)} />
+                  <Bar dataKey="value" fill="#d97706" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <p className="text-sm text-slate-400 py-16 text-center">Add current values to compare metals.</p>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Filter */}
       <div className="flex gap-1 bg-slate-100 rounded-lg p-1 w-fit">

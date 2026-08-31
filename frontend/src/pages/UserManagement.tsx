@@ -89,7 +89,26 @@ export default function UserManagement() {
     loadUsers();
   };
 
-  const toggleFeature = async (user: AppUser, featureKey: string) => {
+  // Persist a new feature CSV for a user and keep BOTH the table list and the open modal
+  // (editingFeatures) in sync, so the checkboxes reflect the change immediately.
+  const persistFeatures = async (user: AppUser, csv: string) => {
+    // Optimistically update the modal + row so the UI responds instantly.
+    setEditingFeatures(prev => (prev && prev.id === user.id ? { ...prev, enabledFeatures: csv } : prev));
+    setUsers(prev => prev.map(u => (u.id === user.id ? { ...u, enabledFeatures: csv } : u)));
+    try {
+      await api.put(`/admin/users/${user.id}/features`, { enabledFeatures: csv });
+      await loadUsers();
+      // Re-sync the modal from the authoritative server response.
+      setEditingFeatures(prev => (prev && prev.id === user.id ? { ...prev, enabledFeatures: csv } : prev));
+    } catch (err) {
+      console.error('Failed to update features', err);
+      // Roll back the optimistic change on failure.
+      setEditingFeatures(prev => (prev && prev.id === user.id ? { ...prev, enabledFeatures: user.enabledFeatures } : prev));
+      setUsers(prev => prev.map(u => (u.id === user.id ? { ...u, enabledFeatures: user.enabledFeatures } : u)));
+    }
+  };
+
+  const toggleFeature = (user: AppUser, featureKey: string) => {
     // Empty enabledFeatures means "all enabled" (backward-compat). The checkbox UI shows
     // every box ticked in that case, so the toggle baseline must also be the full set —
     // otherwise the first click would collapse "all" down to a single feature and silently
@@ -100,19 +119,12 @@ export default function UserManagement() {
     const updated = current.includes(featureKey)
       ? current.filter(f => f !== featureKey)
       : [...current, featureKey];
-    await api.put(`/admin/users/${user.id}/features`, { enabledFeatures: updated.join(',') });
-    loadUsers();
+    persistFeatures(user, updated.join(','));
   };
 
-  const enableAllFeatures = async (user: AppUser) => {
-    await api.put(`/admin/users/${user.id}/features`, { enabledFeatures: ALL_FEATURES.map(f => f.key).join(',') });
-    loadUsers();
-  };
+  const enableAllFeatures = (user: AppUser) => persistFeatures(user, ALL_FEATURES.map(f => f.key).join(','));
 
-  const disableAllFeatures = async (user: AppUser) => {
-    await api.put(`/admin/users/${user.id}/features`, { enabledFeatures: '' });
-    loadUsers();
-  };
+  const disableAllFeatures = (user: AppUser) => persistFeatures(user, '');
 
   const changeRole = async (id: number, role: string) => {
     await api.put(`/admin/users/${id}/role`, { role });
