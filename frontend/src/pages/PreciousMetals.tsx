@@ -72,7 +72,10 @@ export default function PreciousMetals() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const payload = { ...form, owner: form.ownerId ? { id: form.ownerId } : null };
+      // The backend PreciousMetal entity has a nested `owner`, not a flat `ownerId`.
+      // Strip ownerId out so Jackson (configured to reject unknown fields) doesn't 400.
+      const { ownerId, ...rest } = form;
+      const payload = { ...rest, owner: ownerId ? { id: ownerId } : null };
       if (editing) { await api.put(`/precious-metals/${editing.id}`, payload); }
       else { await api.post('/precious-metals', payload); }
       setShowForm(false); setEditing(null); resetForm(); loadData();

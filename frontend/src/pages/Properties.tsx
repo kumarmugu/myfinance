@@ -82,7 +82,9 @@ export default function Properties() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const payload = { ...form, owner: form.ownerId ? { id: form.ownerId } : null };
+      // Send nested `owner`, not the flat `ownerId` (backend rejects unknown fields).
+      const { ownerId, ...rest } = form;
+      const payload = { ...rest, owner: ownerId ? { id: ownerId } : null };
       if (editing) { await api.put(`/properties/${editing.id}`, payload); }
       else { await api.post('/properties', payload); }
       setShowForm(false); setEditing(null); resetForm(); loadData();

@@ -61,7 +61,9 @@ export default function Tax() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const payload = { ...form, owner: form.ownerId ? { id: form.ownerId } : null };
+      // Send nested `owner`, not the flat `ownerId` (backend rejects unknown fields).
+      const { ownerId, ...rest } = form;
+      const payload = { ...rest, owner: ownerId ? { id: ownerId } : null };
       if (editing) { await updateTaxRecord(editing.id, payload); }
       else { await createTaxRecord(payload); }
       setShowForm(false); setEditing(null); resetForm(); loadData();

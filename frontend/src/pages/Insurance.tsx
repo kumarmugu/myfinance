@@ -39,7 +39,9 @@ export default function Insurance() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const payload = { ...form, owner: form.ownerId ? { id: form.ownerId } : null };
+      // Send nested `owner`, not the flat `ownerId` (backend rejects unknown fields).
+      const { ownerId, ...rest } = form;
+      const payload = { ...rest, owner: ownerId ? { id: ownerId } : null };
       if (editing) { await updateInsurancePolicy(editing.id, payload); }
       else { await createInsurancePolicy(payload); }
       setShowForm(false); setEditing(null); resetForm(); loadData();
