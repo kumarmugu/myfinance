@@ -546,3 +546,7 @@
 2026-08-31 08:01:48 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (269ms)
 2026-08-31 08:01:48 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/generic-fd → 200 (6ms)
 2026-08-31 08:01:48 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/generic-fd → 200 (3ms)
+2026-08-31 08:06:58 [http-nio-8080-exec-10] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 401 (3ms)
+2026-08-31 08:06:58 [http-nio-8080-exec-2] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-08-31 08:06:58 [http-nio-8080-exec-2] WARN  c.m.controller.AuthController - Login failed for user=mugu
+2026-08-31 08:06:58 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 401 (116ms)
