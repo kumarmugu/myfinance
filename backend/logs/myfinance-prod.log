@@ -1338,3 +1338,175 @@ Caused by: java.time.format.DateTimeParseException: Text '20222-05-30' could not
 2026-08-31 22:15:36 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/precious-metals/1 → 200 (7ms)
 2026-08-31 22:15:36 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals → 200 (3ms)
 2026-08-31 22:15:36 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals/summary → 200 (4ms)
+2026-08-31 22:15:54 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (9ms)
+2026-08-31 22:15:54 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (8ms)
+2026-08-31 22:16:04 [http-nio-8080-exec-9] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-31 22:16:04 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-08-31 22:16:04 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (4ms)
+2026-08-31 22:16:04 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (15ms)
+2026-08-31 22:16:04 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-08-31 22:16:04 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (6ms)
+2026-08-31 22:16:04 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (4ms)
+2026-08-31 22:16:04 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (52ms)
+2026-08-31 22:16:04 [http-nio-8080-exec-5] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-31 22:16:04 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (20ms)
+2026-08-31 22:16:14 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-08-31 22:16:14 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals → 200 (4ms)
+2026-08-31 22:16:14 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals/summary → 200 (5ms)
+2026-08-31 22:16:14 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals → 200 (4ms)
+2026-08-31 22:16:14 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-08-31 22:16:14 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals/summary → 200 (6ms)
+2026-08-31 22:16:29 [http-nio-8080-exec-4] INFO  c.m.c.PreciousMetalController - Updating precious metal id=1
+2026-08-31 22:16:29 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/precious-metals/1 → 200 (26ms)
+2026-08-31 22:16:29 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals → 200 (6ms)
+2026-08-31 22:16:29 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals/summary → 200 (6ms)
+2026-08-31 22:16:34 [http-nio-8080-exec-1] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-31 22:16:34 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (3ms)
+2026-08-31 22:16:34 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-08-31 22:16:34 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-08-31 22:16:34 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (2ms)
+2026-08-31 22:16:34 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-08-31 22:16:34 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-08-31 22:16:34 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (23ms)
+2026-08-31 22:16:34 [http-nio-8080-exec-4] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-31 22:16:34 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (22ms)
+2026-08-31 22:16:39 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (4ms)
+2026-08-31 22:16:39 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (4ms)
+2026-08-31 22:16:44 [http-nio-8080-exec-8] INFO  c.m.c.NetWorthConfigController - Batch updating 20 net-worth configs
+2026-08-31 22:16:44 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/net-worth-config/batch → 200 (14ms)
+2026-08-31 22:16:44 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (4ms)
+2026-08-31 22:16:50 [http-nio-8080-exec-5] INFO  c.m.c.NetWorthConfigController - Batch updating 20 net-worth configs
+2026-08-31 22:16:50 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/net-worth-config/batch → 200 (9ms)
+2026-08-31 22:16:50 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (3ms)
+2026-08-31 22:16:53 [http-nio-8080-exec-7] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-31 22:16:53 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (1ms)
+2026-08-31 22:16:53 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (2ms)
+2026-08-31 22:16:53 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-08-31 22:16:53 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (2ms)
+2026-08-31 22:16:53 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-08-31 22:16:53 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (3ms)
+2026-08-31 22:16:53 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (25ms)
+2026-08-31 22:16:53 [http-nio-8080-exec-10] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-31 22:16:53 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (19ms)
+2026-08-31 22:17:01 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals → 200 (3ms)
+2026-08-31 22:17:01 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-08-31 22:17:01 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals/summary → 200 (6ms)
+2026-08-31 22:17:01 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-08-31 22:17:01 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals → 200 (4ms)
+2026-08-31 22:17:01 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals/summary → 200 (4ms)
+2026-08-31 22:17:12 [http-nio-8080-exec-8] INFO  c.m.c.PreciousMetalController - Updating precious metal id=1
+2026-08-31 22:17:12 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/precious-metals/1 → 200 (8ms)
+2026-08-31 22:17:12 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals → 200 (2ms)
+2026-08-31 22:17:12 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals/summary → 200 (3ms)
+2026-08-31 22:17:16 [http-nio-8080-exec-2] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-31 22:17:16 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (3ms)
+2026-08-31 22:17:16 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-08-31 22:17:16 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-08-31 22:17:16 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (2ms)
+2026-08-31 22:17:16 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (2ms)
+2026-08-31 22:17:16 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-08-31 22:17:16 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (19ms)
+2026-08-31 22:17:16 [http-nio-8080-exec-8] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-31 22:17:16 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (14ms)
+2026-08-31 22:17:20 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (3ms)
+2026-08-31 22:17:20 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (4ms)
+2026-08-31 22:17:25 [http-nio-8080-exec-1] INFO  c.m.c.NetWorthConfigController - Batch updating 20 net-worth configs
+2026-08-31 22:17:25 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/net-worth-config/batch → 200 (8ms)
+2026-08-31 22:17:25 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (4ms)
+2026-08-31 22:17:29 [http-nio-8080-exec-4] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-31 22:17:29 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (1ms)
+2026-08-31 22:17:29 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (1ms)
+2026-08-31 22:17:29 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-08-31 22:17:29 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (2ms)
+2026-08-31 22:17:29 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (2ms)
+2026-08-31 22:17:29 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-08-31 22:17:29 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (13ms)
+2026-08-31 22:17:29 [http-nio-8080-exec-7] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-08-31 22:17:29 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (10ms)
+2026-08-31 22:18:09 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-08-31 22:18:09 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-08-31 22:19:42 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Creating asset: name=ARK Innovation ETF, type=MUTUAL_FUND
+2026-08-31 22:19:42 [http-nio-8080-exec-5] INFO  com.myfinance.service.AssetService - Created Asset id=1 symbol=ARKK
+2026-08-31 22:19:42 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Created asset id=1
+2026-08-31 22:19:42 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (10ms)
+2026-08-31 22:19:42 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-08-31 22:20:22 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Creating asset: name=ARK Fintech Innovation ETF, type=MUTUAL_FUND
+2026-08-31 22:20:22 [http-nio-8080-exec-9] INFO  com.myfinance.service.AssetService - Created Asset id=2 symbol=ARKF
+2026-08-31 22:20:22 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Created asset id=2
+2026-08-31 22:20:22 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (4ms)
+2026-08-31 22:20:22 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (1ms)
+2026-08-31 22:21:05 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Creating asset: name=Vanguard S&P 500 ETF, type=GROWTH_EQUITY
+2026-08-31 22:21:05 [http-nio-8080-exec-8] INFO  com.myfinance.service.AssetService - Created Asset id=3 symbol=VOO
+2026-08-31 22:21:05 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Created asset id=3
+2026-08-31 22:21:05 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (3ms)
+2026-08-31 22:21:05 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-08-31 22:21:39 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Creating asset: name=Vanguard Information Technology ETF, type=INDEX_FUND
+2026-08-31 22:21:39 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=4 symbol=VGT
+2026-08-31 22:21:39 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Created asset id=4
+2026-08-31 22:21:39 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (4ms)
+2026-08-31 22:21:39 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-08-31 22:21:51 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Updating asset id=3
+2026-08-31 22:21:51 [http-nio-8080-exec-1] INFO  com.myfinance.service.AssetService - Updated Asset id=3 symbol=VOO
+2026-08-31 22:21:51 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/3 → 200 (4ms)
+2026-08-31 22:21:51 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (5ms)
+2026-08-31 22:22:18 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Creating asset: name=Invesco QQQ Trust, Series 1, type=INDEX_FUND
+2026-08-31 22:22:18 [http-nio-8080-exec-5] INFO  com.myfinance.service.AssetService - Created Asset id=5 symbol=QQQ
+2026-08-31 22:22:18 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Created asset id=5
+2026-08-31 22:22:18 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (3ms)
+2026-08-31 22:22:19 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-08-31 22:22:40 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Creating asset: name=Vanguard Growth ETF, type=INDEX_FUND
+2026-08-31 22:22:40 [http-nio-8080-exec-9] INFO  com.myfinance.service.AssetService - Created Asset id=6 symbol=VUG
+2026-08-31 22:22:40 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Created asset id=6
+2026-08-31 22:22:40 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (3ms)
+2026-08-31 22:22:40 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-08-31 22:23:44 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Creating asset: name=Freshworks, type=GROWTH_EQUITY
+2026-08-31 22:23:44 [http-nio-8080-exec-8] INFO  com.myfinance.service.AssetService - Created Asset id=7 symbol=FRSH
+2026-08-31 22:23:44 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Created asset id=7
+2026-08-31 22:23:44 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (5ms)
+2026-08-31 22:23:44 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-08-31 22:24:26 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Creating asset: name=Tesla, type=GROWTH_EQUITY
+2026-08-31 22:24:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=8 symbol=TSLA
+2026-08-31 22:24:26 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Created asset id=8
+2026-08-31 22:24:26 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (5ms)
+2026-08-31 22:24:26 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-08-31 22:25:05 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Creating asset: name=Microsoft, type=GROWTH_EQUITY
+2026-08-31 22:25:05 [http-nio-8080-exec-1] INFO  com.myfinance.service.AssetService - Created Asset id=9 symbol=MSFT
+2026-08-31 22:25:05 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Created asset id=9
+2026-08-31 22:25:05 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (5ms)
+2026-08-31 22:25:05 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-08-31 22:26:15 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Creating asset: name=Rivian, type=GROWTH_EQUITY
+2026-08-31 22:26:15 [http-nio-8080-exec-5] INFO  com.myfinance.service.AssetService - Created Asset id=10 symbol=RIVN
+2026-08-31 22:26:15 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Created asset id=10
+2026-08-31 22:26:15 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (4ms)
+2026-08-31 22:26:15 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-08-31 22:26:47 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Creating asset: name=ProShares Ultrapro QQQ ETF, type=LEVERAGED_ETF
+2026-08-31 22:26:47 [http-nio-8080-exec-9] INFO  com.myfinance.service.AssetService - Created Asset id=11 symbol=TQQQ
+2026-08-31 22:26:47 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Created asset id=11
+2026-08-31 22:26:47 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (5ms)
+2026-08-31 22:26:48 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-08-31 22:26:57 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Updating asset id=10
+2026-08-31 22:26:57 [http-nio-8080-exec-8] INFO  com.myfinance.service.AssetService - Updated Asset id=10 symbol=RIVN
+2026-08-31 22:26:57 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/10 → 200 (4ms)
+2026-08-31 22:26:57 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-08-31 22:27:43 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Creating asset: name=Meta, type=GROWTH_EQUITY
+2026-08-31 22:27:43 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=12 symbol=META
+2026-08-31 22:27:43 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Created asset id=12
+2026-08-31 22:27:43 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (5ms)
+2026-08-31 22:27:43 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-08-31 22:28:02 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (1ms)
+2026-08-31 22:28:02 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-08-31 22:28:02 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (4ms)
+2026-08-31 22:28:02 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (6ms)
+2026-08-31 22:28:02 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-08-31 22:28:02 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-08-31 22:28:02 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (3ms)
+2026-08-31 22:28:02 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (9ms)
+2026-08-31 22:29:19 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Creating transaction: assetId=1, type=BUY, quantity=17, price=116.09
+2026-08-31 22:29:19 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=1 type=BUY assetId=1 quantity=17
+2026-08-31 22:29:19 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=1 assetId=1 quantity=17
+2026-08-31 22:29:19 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Created transaction id=1
+2026-08-31 22:29:19 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (28ms)
+2026-08-31 22:29:19 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-08-31 22:29:19 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-08-31 22:29:19 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-08-31 22:29:19 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (3ms)
