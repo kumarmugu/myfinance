@@ -90,7 +90,13 @@ export default function UserManagement() {
   };
 
   const toggleFeature = async (user: AppUser, featureKey: string) => {
-    const current = user.enabledFeatures ? user.enabledFeatures.split(',').filter(Boolean) : [];
+    // Empty enabledFeatures means "all enabled" (backward-compat). The checkbox UI shows
+    // every box ticked in that case, so the toggle baseline must also be the full set —
+    // otherwise the first click would collapse "all" down to a single feature and silently
+    // disable everything else.
+    const current = user.enabledFeatures
+      ? user.enabledFeatures.split(',').filter(Boolean)
+      : ALL_FEATURES.map(f => f.key);
     const updated = current.includes(featureKey)
       ? current.filter(f => f !== featureKey)
       : [...current, featureKey];
