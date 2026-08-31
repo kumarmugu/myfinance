@@ -145,13 +145,6 @@ function AppContent() {
     items: section.items.filter((item: any) => !item.feature || hasFeature(item.feature))
   })).filter(section => section.items.length > 0);
 
-  // ── TEMP DIAGNOSTIC (remove after debugging the Fixed Deposits menu) ──
-  // Shows exactly what the app resolved for the current user + which nav items survived filtering.
-  console.log('[NAV DEBUG] user =', user);
-  console.log('[NAV DEBUG] isAdmin =', isAdmin, '| enabledFeatures =', JSON.stringify(user?.enabledFeatures), '| slFdEnabled =', (user as any)?.slFdEnabled);
-  console.log('[NAV DEBUG] FIXED_DEPOSITS visible? ', hasFeature('FIXED_DEPOSITS'));
-  console.log('[NAV DEBUG] sections =', navSections.map(s => ({ label: s.label, items: s.items.map((i: any) => i.label) })));
-
   return (
     <Router>
       <div className="flex h-screen bg-slate-50">
