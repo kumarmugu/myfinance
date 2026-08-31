@@ -197,4 +197,76 @@ class TransactionServiceTest {
         // Total = 10 * 100 + 10 = 1010
         assertEquals(0, new BigDecimal("1010.00").compareTo(tx.getTotalAmount()));
     }
+
+    @Test
+    @WithMockUser(username = "user")
+    void updateBuyRecalculatesHolding() {
+        Transaction tx = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy 10 @100");
+
+        // Correct the buy: 12 shares at $90 (e.g. fixing a typo).
+        transactionService.update(
+                tx.getId(), asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, new BigDecimal("12"), new BigDecimal("90.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Corrected", null);
+
+        Optional<Holding> h = holdingService.getHolding(asset.getId(), account.getId(), owner.getId());
+        assertTrue(h.isPresent());
+        // Old effect (10@100) fully reversed, new effect (12@90) applied.
+        assertEquals(0, new BigDecimal("12").compareTo(h.get().getQuantity()));
+        assertEquals(0, new BigDecimal("1080.00").compareTo(h.get().getInvestedAmount()));
+        assertEquals(0, new BigDecimal("90.000000").compareTo(h.get().getAverageBuyPrice()));
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void updateBuyForStockSplitDoublesQuantityHalvesPrice() {
+        // Original lot: 10 shares at $200 (invested 2000).
+        Transaction tx = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("200.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Pre-split");
+
+        // 2-for-1 split: 20 shares at $100 — invested amount unchanged at 2000.
+        transactionService.update(
+                tx.getId(), asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, new BigDecimal("20"), new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Post 2:1 split", null);
+
+        Optional<Holding> h = holdingService.getHolding(asset.getId(), account.getId(), owner.getId());
+        assertTrue(h.isPresent());
+        assertEquals(0, new BigDecimal("20").compareTo(h.get().getQuantity()));
+        assertEquals(0, new BigDecimal("2000.00").compareTo(h.get().getInvestedAmount()));
+        assertEquals(0, new BigDecimal("100.000000").compareTo(h.get().getAverageBuyPrice()));
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void updateOnlyAffectsTheEditedLotWhenMultipleBuysExist() {
+        // Two separate buys of the same asset in the same holding.
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy A: 10@100");
+        Transaction b = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("200.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 2, 1), "Buy B: 10@200");
+        // Holding now: 20 shares, invested 3000, avg 150.
+
+        // Edit only buy B to 10@300.
+        transactionService.update(
+                b.getId(), asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("300.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 2, 1), "Buy B corrected", null);
+
+        Optional<Holding> h = holdingService.getHolding(asset.getId(), account.getId(), owner.getId());
+        assertTrue(h.isPresent());
+        // Reversed B(10@200) then applied B(10@300): 20 shares, invested 1000+3000=4000, avg 200.
+        assertEquals(0, new BigDecimal("20").compareTo(h.get().getQuantity()));
+        assertEquals(0, new BigDecimal("4000.00").compareTo(h.get().getInvestedAmount()));
+        assertEquals(0, new BigDecimal("200.000000").compareTo(h.get().getAverageBuyPrice()));
+    }
 }

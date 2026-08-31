@@ -10,6 +10,7 @@ vi.mock('../api', () => ({
   getAssets: vi.fn(),
   getAccounts: vi.fn(),
   getOwners: vi.fn(),
+  getSoldPositions: vi.fn(),
 }));
 
 vi.mock('../contexts/AuthContext', () => ({
@@ -24,7 +25,7 @@ vi.mock('../utils/export', async (importOriginal) => {
 });
 
 import Transactions from './Transactions';
-import { getTransactions, getAssets, getAccounts, getOwners } from '../api';
+import { getTransactions, getAssets, getAccounts, getOwners, getSoldPositions } from '../api';
 
 // The UI table shows only: Date, Type, Asset, Account, Owner, Purpose, Qty, Price, Total.
 // The full transaction object also carries id, fees, currency, notes, createdAt — which must be exported.
@@ -56,6 +57,7 @@ describe('Transactions page — export integration', () => {
     (getAssets as any).mockResolvedValue({ data: [] });
     (getAccounts as any).mockResolvedValue({ data: [] });
     (getOwners as any).mockResolvedValue({ data: [{ id: 1, name: 'Self' }] });
+    (getSoldPositions as any).mockResolvedValue({ data: [] });
   });
 
   it('shows the Export button on the transactions table', async () => {

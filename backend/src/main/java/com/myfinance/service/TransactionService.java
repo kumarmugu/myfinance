@@ -71,6 +71,80 @@ public class TransactionService {
         return saved;
     }
 
+    /**
+     * Update an existing transaction. The holding is kept correct by REVERSING the old
+     * transaction's effect and then APPLYING the new values — so editing quantity/price
+     * (e.g. after a stock split) never leaves the holding out of sync. Ownership is enforced
+     * by the caller (controller checks the record belongs to the current user).
+     */
+    @Transactional
+    public Transaction update(Long id, Long assetId, Long accountId, Long ownerId, TransactionType type,
+                              BigDecimal quantity, BigDecimal pricePerUnit, BigDecimal fees,
+                              String currency, LocalDate date, String notes, InvestmentPurpose purpose) {
+        Transaction existing = transactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transaction not found: " + id));
+
+        // 1. Reverse the OLD transaction's effect on the holding.
+        reverseHolding(existing.getAsset(), existing.getAccount(), existing.getOwner(),
+                existing.getTransactionType(), existing.getQuantity(), existing.getPricePerUnit());
+
+        // 2. Re-point the transaction to the (possibly changed) asset/account/owner and values.
+        Asset asset = assetService.getById(assetId);
+        Account account = accountService.getById(accountId);
+        Owner owner = ownerService.getById(ownerId);
+
+        BigDecimal totalAmount = quantity.multiply(pricePerUnit);
+        if (fees != null) totalAmount = totalAmount.add(fees);
+
+        existing.setAsset(asset);
+        existing.setAccount(account);
+        existing.setOwner(owner);
+        existing.setTransactionType(type);
+        existing.setQuantity(quantity);
+        existing.setPricePerUnit(pricePerUnit);
+        existing.setTotalAmount(totalAmount);
+        existing.setFees(fees != null ? fees : BigDecimal.ZERO);
+        existing.setCurrency(currency != null ? com.myfinance.model.enums.Currency.valueOf(currency) : account.getCurrency());
+        existing.setTransactionDate(date != null ? date : existing.getTransactionDate());
+        existing.setNotes(notes);
+        existing.setPurpose(purpose);
+
+        Transaction saved = transactionRepository.save(existing);
+
+        // 3. Apply the NEW transaction's effect on the holding.
+        updateHolding(asset, account, owner, type, quantity, pricePerUnit, purpose);
+        log.info("Updated Transaction id={} type={} assetId={} quantity={}", id, type, assetId, quantity);
+        return saved;
+    }
+
+    /** Undo a previously-applied transaction's effect on its holding (inverse of updateHolding). */
+    private void reverseHolding(Asset asset, Account account, Owner owner, TransactionType type,
+                                BigDecimal quantity, BigDecimal pricePerUnit) {
+        var holdingOpt = holdingService.getHolding(asset.getId(), account.getId(), owner.getId());
+        if (holdingOpt.isEmpty()) return; // Nothing to reverse (e.g. holding was already removed).
+        Holding h = holdingOpt.get();
+
+        if (type == TransactionType.BUY) {
+            // Removing a past BUY: subtract its quantity and invested amount at the ORIGINAL price.
+            BigDecimal newQty = h.getQuantity().subtract(quantity);
+            BigDecimal newInvested = h.getInvestedAmount().subtract(quantity.multiply(pricePerUnit));
+            if (newQty.compareTo(BigDecimal.ZERO) <= 0) {
+                holdingService.delete(h.getId());
+                return;
+            }
+            h.setQuantity(newQty);
+            h.setInvestedAmount(newInvested.max(BigDecimal.ZERO));
+            h.setAverageBuyPrice(h.getInvestedAmount().divide(newQty, 6, RoundingMode.HALF_UP));
+            holdingService.save(h);
+        } else if (type == TransactionType.SELL) {
+            // Removing a past SELL: add the quantity back at the current average buy price.
+            BigDecimal newQty = h.getQuantity().add(quantity);
+            h.setQuantity(newQty);
+            h.setInvestedAmount(h.getInvestedAmount().add(quantity.multiply(h.getAverageBuyPrice())));
+            holdingService.save(h);
+        }
+    }
+
     private void updateHolding(Asset asset, Account account, Owner owner, TransactionType type, BigDecimal quantity, BigDecimal pricePerUnit, InvestmentPurpose purpose) {
         var holdingOpt = holdingService.getHolding(asset.getId(), account.getId(), owner.getId());
 

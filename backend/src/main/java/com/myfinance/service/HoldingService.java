@@ -31,4 +31,8 @@ public class HoldingService {
         log.info("Saved Holding id={} assetId={} quantity={}", saved.getId(), saved.getAsset().getId(), saved.getQuantity());
         return saved;
     }
+    public void delete(Long id) {
+        holdingRepository.deleteById(id);
+        log.info("Deleted Holding id={}", id);
+    }
 }

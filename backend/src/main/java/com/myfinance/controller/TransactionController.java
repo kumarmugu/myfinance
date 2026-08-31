@@ -67,6 +67,26 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(tx);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Transaction> update(@PathVariable Long id, @Valid @RequestBody TransactionRequest req) {
+        Long uid = tenantContext.getCurrentUserId();
+        // Tenant isolation: only the owner of the record may modify it.
+        Transaction existing = transactionService.getByUser(uid).stream()
+                .filter(t -> t.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+        if (existing == null) {
+            return ResponseEntity.notFound().build();
+        }
+        log.info("Updating transaction id={}: assetId={}, type={}, quantity={}", id, req.getAssetId(), req.getTransactionType(), req.getQuantity());
+        Transaction tx = transactionService.update(
+                id, req.getAssetId(), req.getAccountId(), req.getOwnerId(),
+                req.getTransactionType(), req.getQuantity(), req.getPricePerUnit(),
+                req.getFees(), req.getCurrency(), req.getTransactionDate(), req.getNotes(),
+                req.getPurpose());
+        return ResponseEntity.ok(tx);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.info("Deleting transaction id={}", id);

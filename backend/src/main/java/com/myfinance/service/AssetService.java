@@ -31,6 +31,8 @@ public class AssetService {
     public List<Asset> getByType(AssetType type) { return assetRepository.findByAssetType(type); }
     public List<Asset> search(String query) { return assetRepository.findByNameContainingIgnoreCaseOrSymbolContainingIgnoreCase(query, query); }
     public Asset create(Asset asset) {
+        // Stamp the price date on creation only if a price was actually provided.
+        if (asset.getCurrentPrice() != null) asset.setPriceUpdatedAt(java.time.LocalDateTime.now());
         Asset saved = assetRepository.save(asset);
         log.info("Created Asset id={} symbol={}", saved.getId(), saved.getSymbol());
         return saved;
@@ -40,7 +42,9 @@ public class AssetService {
         existing.setName(updated.getName());
         existing.setSymbol(updated.getSymbol());
         existing.setAssetType(updated.getAssetType());
-        existing.setCurrentPrice(updated.getCurrentPrice());
+        // Only refresh priceUpdatedAt when the price value genuinely changes, so an unrelated
+        // edit (e.g. renaming the asset) doesn't make a stale price look freshly updated.
+        applyPriceChange(existing, updated.getCurrentPrice());
         existing.setCurrency(updated.getCurrency());
         existing.setExchange(updated.getExchange());
         existing.setDescription(updated.getDescription());
@@ -50,8 +54,20 @@ public class AssetService {
     }
     public Asset updatePrice(Long id, BigDecimal price) {
         Asset asset = getById(id);
-        asset.setCurrentPrice(price);
+        applyPriceChange(asset, price);
         return assetRepository.save(asset);
+    }
+
+    /** Set the price and stamp priceUpdatedAt only if the value actually differs from the current one. */
+    private void applyPriceChange(Asset asset, BigDecimal newPrice) {
+        BigDecimal current = asset.getCurrentPrice();
+        boolean changed = (current == null)
+                ? newPrice != null
+                : (newPrice == null || current.compareTo(newPrice) != 0);
+        asset.setCurrentPrice(newPrice);
+        if (changed && newPrice != null) {
+            asset.setPriceUpdatedAt(java.time.LocalDateTime.now());
+        }
     }
 
     public Asset toggleNetWorth(Long id, boolean include) {

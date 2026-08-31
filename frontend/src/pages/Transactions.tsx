@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Plus, Trash2, ArrowUpCircle, ArrowDownCircle, Lock } from 'lucide-react';
-import { getTransactions, createTransaction, deleteTransaction, getAssets, getAccounts, getOwners } from '../api';
+import { Plus, Trash2, Pencil, ArrowUpCircle, ArrowDownCircle, Lock } from 'lucide-react';
+import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions } from '../api';
 import { useAuth } from '../contexts/AuthContext';
-import { formatCurrency, formatDate } from '../utils/formatters';
+import { formatCurrency, formatDate, formatPercent } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import ExportMenu from '../components/ExportMenu';
 import { transactionsExportConfig } from '../utils/export/configs';
 import { useToast } from '../contexts/ToastContext';
-import type { Transaction, Asset, Account, Owner, TransactionRequest } from '../types';
+import type { Transaction, Asset, Account, Owner, TransactionRequest, SoldPosition } from '../types';
 
 export default function Transactions() {
   const { verifyPassword } = useAuth();
@@ -16,7 +16,9 @@ export default function Transactions() {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [owners, setOwners] = useState<Owner[]>([]);
+  const [soldPositions, setSoldPositions] = useState<SoldPosition[]>([]);
   const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [filterOwner, setFilterOwner] = useState<number | undefined>();
   const [deleteModal, setDeleteModal] = useState<{ id: number; symbol: string } | null>(null);
@@ -32,8 +34,8 @@ export default function Transactions() {
 
   const loadData = async () => {
     try {
-      const [txRes, assetRes, accRes, ownerRes] = await Promise.all([getTransactions(filterOwner), getAssets(), getAccounts(), getOwners()]);
-      setTransactions(txRes.data); setAssets(assetRes.data); setAccounts(accRes.data); setOwners(ownerRes.data);
+      const [txRes, assetRes, accRes, ownerRes, soldRes] = await Promise.all([getTransactions(filterOwner), getAssets(), getAccounts(), getOwners(), getSoldPositions(filterOwner)]);
+      setTransactions(txRes.data); setAssets(assetRes.data); setAccounts(accRes.data); setOwners(ownerRes.data); setSoldPositions(soldRes.data);
       if (ownerRes.data.length > 0 && form.ownerId === 0) setForm(f => ({ ...f, ownerId: ownerRes.data[0].id }));
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
@@ -41,8 +43,35 @@ export default function Transactions() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try { await createTransaction(form); setShowForm(false); loadData(); showToast('Transaction saved', 'success'); }
-    catch (err) { console.error(err); showToast('Failed to create transaction'); }
+    try {
+      if (editingId != null) {
+        await updateTransaction(editingId, form);
+        showToast('Transaction updated', 'success');
+      } else {
+        await createTransaction(form);
+        showToast('Transaction saved', 'success');
+      }
+      setShowForm(false); setEditingId(null); loadData();
+    }
+    catch (err) { console.error(err); showToast(editingId != null ? 'Failed to update transaction' : 'Failed to create transaction'); }
+  };
+
+  const startEdit = (tx: Transaction) => {
+    setEditingId(tx.id);
+    setForm({
+      assetId: tx.asset.id,
+      accountId: tx.account.id,
+      ownerId: tx.owner.id,
+      transactionType: tx.transactionType,
+      quantity: tx.quantity,
+      pricePerUnit: tx.pricePerUnit,
+      fees: tx.fees ?? 0,
+      currency: tx.currency,
+      transactionDate: tx.transactionDate,
+      notes: tx.notes ?? '',
+      purpose: tx.purpose ?? 'LONG_TERM',
+    });
+    setShowForm(true);
   };
 
   const confirmDelete = async () => {
@@ -53,6 +82,41 @@ export default function Transactions() {
     await deleteTransaction(deleteModal.id);
     setDeleteModal(null); setDeletePassword('');
     loadData();
+  };
+
+  // Look up the live asset (for its current price + when that price was last updated).
+  const assetById = new Map(assets.map(a => [a.id, a]));
+
+  /**
+   * Per-row profit/loss:
+   *  - BUY  → unrealized: (asset current price − buy price) × quantity, using the asset's live price.
+   *  - SELL → realized: taken from the matching SoldPosition (buy vs sell basis) when one can be found.
+   * Returns null when it can't be computed (no current price for a BUY, no matched sale for a SELL).
+   */
+  const rowPnl = (tx: Transaction): { amount: number; pct: number; priceUpdatedAt?: string | null } | null => {
+    if (tx.transactionType === 'BUY') {
+      const live = assetById.get(tx.asset.id);
+      const cp = live?.currentPrice;
+      if (cp == null || !tx.pricePerUnit) return null;
+      const amount = (cp - tx.pricePerUnit) * tx.quantity;
+      const cost = tx.pricePerUnit * tx.quantity;
+      return { amount, pct: cost ? (amount / cost) * 100 : 0, priceUpdatedAt: live?.priceUpdatedAt };
+    }
+    if (tx.transactionType === 'SELL') {
+      // Match a sold-position record by asset/account/owner + sold date + quantity.
+      const match = soldPositions.find(sp =>
+        sp.asset?.id === tx.asset.id &&
+        sp.account?.id === tx.account.id &&
+        sp.owner?.id === tx.owner.id &&
+        sp.soldDate === tx.transactionDate &&
+        Math.abs(sp.quantity - tx.quantity) < 1e-9
+      ) ?? soldPositions.find(sp =>
+        sp.asset?.id === tx.asset.id && sp.soldDate === tx.transactionDate && Math.abs(sp.quantity - tx.quantity) < 1e-9
+      );
+      if (!match) return null;
+      return { amount: match.profit, pct: match.profitPercentage };
+    }
+    return null;
   };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
@@ -76,7 +140,7 @@ export default function Transactions() {
             config={transactionsExportConfig}
             subtitle={filterOwner ? `Filtered by owner: ${owners.find(o => o.id === filterOwner)?.name ?? filterOwner}` : undefined}
           />
-          <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
+          <button onClick={() => { if (showForm) { setShowForm(false); setEditingId(null); } else { setEditingId(null); setShowForm(true); } }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
             <Plus size={16} /> New Transaction
           </button>
         </div>
@@ -85,7 +149,7 @@ export default function Transactions() {
       {/* Transaction Form */}
       {showForm && (
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-          <h3 className="text-base font-semibold text-slate-800 mb-4">Add Transaction</h3>
+          <h3 className="text-base font-semibold text-slate-800 mb-4">{editingId != null ? 'Modify Transaction' : 'Add Transaction'}</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner</label>
               <SearchableSelect options={owners.map(o => ({ value: o.id, label: o.name }))} value={form.ownerId} onChange={v => setForm({...form, ownerId: v})} placeholder="Select owner..." /></div>
@@ -114,8 +178,8 @@ export default function Transactions() {
                 ))}
               </div></div>
             <div className="flex items-end gap-2 lg:col-span-4">
-              <button type="submit" className="px-5 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">Save Transaction</button>
-              <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">Cancel</button>
+              <button type="submit" className="px-5 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">{editingId != null ? 'Update Transaction' : 'Save Transaction'}</button>
+              <button type="button" onClick={() => { setShowForm(false); setEditingId(null); }} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200">Cancel</button>
             </div>
           </form>
         </div>
@@ -135,7 +199,9 @@ export default function Transactions() {
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Purpose</th>
                 <th className="text-right px-4 py-3 font-medium text-slate-600">Qty</th>
                 <th className="text-right px-4 py-3 font-medium text-slate-600">Price</th>
+                <th className="text-right px-4 py-3 font-medium text-slate-600">Current</th>
                 <th className="text-right px-4 py-3 font-medium text-slate-600">Total</th>
+                <th className="text-right px-4 py-3 font-medium text-slate-600">P/L</th>
                 <th className="px-4 py-3 w-10"></th>
               </tr>
             </thead>
@@ -154,15 +220,46 @@ export default function Transactions() {
                   <td className="px-4 py-2.5"><span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{tx.purpose ? tx.purpose.replace(/_/g, ' ') : '-'}</span></td>
                   <td className="px-4 py-2.5 text-right text-slate-700">{tx.quantity}</td>
                   <td className="px-4 py-2.5 text-right text-slate-700">{formatCurrency(tx.pricePerUnit, tx.currency)}</td>
+                  <td className="px-4 py-2.5 text-right text-slate-600">
+                    {(() => {
+                      const live = assetById.get(tx.asset.id);
+                      if (tx.transactionType !== 'BUY' || live?.currentPrice == null) return <span className="text-slate-300">-</span>;
+                      return (
+                        <div>
+                          <span>{formatCurrency(live.currentPrice, tx.currency)}</span>
+                          {live.priceUpdatedAt && <p className="text-[10px] text-slate-400">as of {formatDate(live.priceUpdatedAt)}</p>}
+                        </div>
+                      );
+                    })()}
+                  </td>
                   <td className="px-4 py-2.5 text-right font-medium text-slate-800">{formatCurrency(tx.totalAmount, tx.currency)}</td>
+                  <td className="px-4 py-2.5 text-right">
+                    {(() => {
+                      const pnl = rowPnl(tx);
+                      if (!pnl) return <span className="text-slate-300">-</span>;
+                      const cls = pnl.amount >= 0 ? 'text-green-600' : 'text-red-600';
+                      const pctCls = pnl.pct >= 0 ? 'text-green-500' : 'text-red-500';
+                      return (
+                        <div>
+                          <span className={`font-medium ${cls}`}>{formatCurrency(pnl.amount, tx.currency)}</span>
+                          <p className={`text-[10px] ${pctCls}`}>{formatPercent(pnl.pct)}</p>
+                        </div>
+                      );
+                    })()}
+                  </td>
                   <td className="px-4 py-2.5">
-                    <button onClick={() => setDeleteModal({ id: tx.id, symbol: tx.asset.symbol })} className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500 transition-opacity" title="Delete (requires password)">
-                      <Trash2 size={14} />
-                    </button>
+                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button onClick={() => startEdit(tx)} className="text-slate-400 hover:text-indigo-600" title="Modify transaction">
+                        <Pencil size={14} />
+                      </button>
+                      <button onClick={() => setDeleteModal({ id: tx.id, symbol: tx.asset.symbol })} className="text-slate-400 hover:text-red-500" title="Delete (requires password)">
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
-              {transactions.length === 0 && <tr><td colSpan={9} className="px-4 py-12 text-center text-slate-400">No transactions yet</td></tr>}
+              {transactions.length === 0 && <tr><td colSpan={11} className="px-4 py-12 text-center text-slate-400">No transactions yet</td></tr>}
             </tbody>
           </table>
         </div>

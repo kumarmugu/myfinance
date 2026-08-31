@@ -30,6 +30,13 @@ public class Asset {
 
     private BigDecimal currentPrice;
 
+    /**
+     * When {@link #currentPrice} was last changed. Distinct from {@link #updatedAt} (which
+     * changes on ANY edit) so the UI can show how fresh the price — and thus any P/L derived
+     * from it — actually is. Nullable: legacy rows and assets whose price was never set have none.
+     */
+    private LocalDateTime priceUpdatedAt;
+
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Currency currency = Currency.USD;

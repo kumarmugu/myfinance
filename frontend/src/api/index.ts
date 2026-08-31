@@ -81,6 +81,7 @@ export const getTransactionsByAccount = (accountId: number) => api.get<Transacti
 export const getTransactionsByAsset = (assetId: number) => api.get<Transaction[]>(`/transactions/asset/${assetId}`);
 export const getRecentTransactions = (days: number) => api.get<Transaction[]>(`/transactions/recent?days=${days}`);
 export const createTransaction = (req: TransactionRequest) => api.post<Transaction>('/transactions', req);
+export const updateTransaction = (id: number, req: TransactionRequest) => api.put<Transaction>(`/transactions/${id}`, req);
 export const deleteTransaction = (id: number) => api.delete(`/transactions/${id}`);
 
 // ─── Holdings ───

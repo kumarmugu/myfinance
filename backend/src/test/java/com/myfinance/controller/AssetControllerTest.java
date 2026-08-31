@@ -108,4 +108,71 @@ class AssetControllerTest extends BaseControllerTest {
         Asset a = assetRepository.save(Asset.builder().name("Del").symbol("DEL-T").assetType(AssetType.OTHER).currency(Currency.USD).userId(testUser.getId()).build());
         mockMvc.perform(delete("/api/assets/" + a.getId())).andExpect(status().isNoContent());
     }
+
+    @Test
+    @WithMockUser
+    void updatePriceShouldStampPriceUpdatedAt() throws Exception {
+        Asset a = assetRepository.save(Asset.builder().name("Priced").symbol("PRC-T")
+                .assetType(AssetType.GROWTH_EQUITY).currency(Currency.USD).userId(testUser.getId()).build());
+        // Initially no price -> no priceUpdatedAt.
+        org.junit.jupiter.api.Assertions.assertNull(assetRepository.findById(a.getId()).orElseThrow().getPriceUpdatedAt());
+
+        mockMvc.perform(patch("/api/assets/" + a.getId() + "/price?price=123.45"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.currentPrice", is(123.45)))
+                .andExpect(jsonPath("$.priceUpdatedAt", notNullValue()));
+
+        org.junit.jupiter.api.Assertions.assertNotNull(
+                assetRepository.findById(a.getId()).orElseThrow().getPriceUpdatedAt());
+    }
+
+    @Test
+    @WithMockUser
+    void nonPriceUpdateShouldNotChangePriceUpdatedAt() throws Exception {
+        // Seed an asset that already has a price + a known priceUpdatedAt.
+        java.time.LocalDateTime stamp = java.time.LocalDateTime.now().minusDays(3);
+        Asset a = assetRepository.save(Asset.builder().name("Stable").symbol("STB-T")
+                .assetType(AssetType.GROWTH_EQUITY).currency(Currency.USD)
+                .currentPrice(new BigDecimal("50.00")).priceUpdatedAt(stamp)
+                .userId(testUser.getId()).build());
+
+        // Rename the asset but keep the same price -> priceUpdatedAt must be unchanged.
+        Asset update = Asset.builder().name("Renamed").symbol("STB-T")
+                .assetType(AssetType.GROWTH_EQUITY).currency(Currency.USD)
+                .currentPrice(new BigDecimal("50.00")).build();
+
+        mockMvc.perform(put("/api/assets/" + a.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(update)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("Renamed")));
+
+        Asset after = assetRepository.findById(a.getId()).orElseThrow();
+        // Same instant (to seconds) as before — a plain rename didn't refresh it.
+        org.junit.jupiter.api.Assertions.assertEquals(
+                stamp.withNano(0), after.getPriceUpdatedAt().withNano(0));
+    }
+
+    @Test
+    @WithMockUser
+    void changingPriceViaUpdateShouldRefreshPriceUpdatedAt() throws Exception {
+        java.time.LocalDateTime stamp = java.time.LocalDateTime.now().minusDays(5);
+        Asset a = assetRepository.save(Asset.builder().name("Mover").symbol("MOV-T")
+                .assetType(AssetType.GROWTH_EQUITY).currency(Currency.USD)
+                .currentPrice(new BigDecimal("10.00")).priceUpdatedAt(stamp)
+                .userId(testUser.getId()).build());
+
+        Asset update = Asset.builder().name("Mover").symbol("MOV-T")
+                .assetType(AssetType.GROWTH_EQUITY).currency(Currency.USD)
+                .currentPrice(new BigDecimal("11.00")).build();
+
+        mockMvc.perform(put("/api/assets/" + a.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(update)))
+                .andExpect(status().isOk());
+
+        Asset after = assetRepository.findById(a.getId()).orElseThrow();
+        org.junit.jupiter.api.Assertions.assertTrue(after.getPriceUpdatedAt().isAfter(stamp),
+                "priceUpdatedAt should advance when the price value changes");
+    }
 }

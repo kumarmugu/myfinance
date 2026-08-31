@@ -34,6 +34,8 @@ export interface Asset {
   symbol: string;
   assetType: AssetType;
   currentPrice: number;
+  /** When currentPrice was last changed (null if never set). Distinct from updatedAt. */
+  priceUpdatedAt: string | null;
   currency: Currency;
   exchange: string;
   description: string;
