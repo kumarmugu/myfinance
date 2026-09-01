@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Plus, Trash2, Pencil, ArrowUpCircle, ArrowDownCircle, Lock } from 'lucide-react';
-import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates } from '../api';
+import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates, getActiveHoldings } from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import { formatCurrency, formatDate, formatPercent } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import ExportMenu from '../components/ExportMenu';
 import { transactionsExportConfig } from '../utils/export/configs';
 import { useToast } from '../contexts/ToastContext';
-import type { Transaction, Asset, Account, Owner, TransactionRequest, SoldPosition, CurrencyRate } from '../types';
+import type { Transaction, Asset, Account, Owner, TransactionRequest, SoldPosition, CurrencyRate, Holding } from '../types';
 
 /** Latest rate to convert `from` → `to` from the user's stored FX rates (direct, then inverse). */
 function resolveRate(rates: CurrencyRate[], from: string, to: string): number | null {
@@ -31,6 +31,7 @@ export default function Transactions() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [owners, setOwners] = useState<Owner[]>([]);
   const [soldPositions, setSoldPositions] = useState<SoldPosition[]>([]);
+  const [holdings, setHoldings] = useState<Holding[]>([]);
   const [fxRates, setFxRates] = useState<CurrencyRate[]>([]);
   // Client-side column filters (owner stays server-side via filterOwner).
   const [filterType, setFilterType] = useState<string>('');
@@ -58,8 +59,8 @@ export default function Transactions() {
 
   const loadData = async () => {
     try {
-      const [txRes, assetRes, accRes, ownerRes, soldRes, fxRes] = await Promise.all([getTransactions(filterOwner), getAssets(), getAccounts(), getOwners(), getSoldPositions(filterOwner), getCurrencyRates()]);
-      setTransactions(txRes.data); setAssets(assetRes.data); setAccounts(accRes.data); setOwners(ownerRes.data); setSoldPositions(soldRes.data); setFxRates(fxRes.data);
+      const [txRes, assetRes, accRes, ownerRes, soldRes, fxRes, holdRes] = await Promise.all([getTransactions(filterOwner), getAssets(), getAccounts(), getOwners(), getSoldPositions(filterOwner), getCurrencyRates(), getActiveHoldings(filterOwner)]);
+      setTransactions(txRes.data); setAssets(assetRes.data); setAccounts(accRes.data); setOwners(ownerRes.data); setSoldPositions(soldRes.data); setFxRates(fxRes.data); setHoldings(holdRes.data);
       if (ownerRes.data.length > 0 && form.ownerId === 0) setForm(f => ({ ...f, ownerId: ownerRes.data[0].id }));
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
@@ -113,54 +114,63 @@ export default function Transactions() {
   // Look up the live asset (for its current price + when that price was last updated).
   const assetById = new Map(assets.map(a => [a.id, a]));
 
-  type Pnl = { amount: number; pct: number; currency: string; priceUpdatedAt?: string | null; noRate?: boolean };
+  // Remaining held quantity per (asset, account, owner) — used to classify a BUY as open/closed.
+  const heldQtyKey = (assetId: number, accountId: number, ownerId: number) => `${assetId}:${accountId}:${ownerId}`;
+  const heldQtyByKey = new Map<string, number>();
+  holdings.forEach(h => {
+    if (h.asset && h.account && h.owner) heldQtyByKey.set(heldQtyKey(h.asset.id, h.account.id, h.owner.id), h.quantity);
+  });
+
+  type BuyStatus = 'OPEN' | 'PARTIAL' | 'CLOSED';
+  type Pnl =
+    | { kind: 'unrealized'; amount: number; pct: number; currency: string; priceUpdatedAt?: string | null }
+    | { kind: 'realized'; amount: number; pct: number; currency: string }
+    | { kind: 'status'; status: BuyStatus }
+    | { kind: 'noRate' }
+    | null;
 
   /**
-   * Per-row profit/loss, expressed in the BROKER ACCOUNT's currency.
+   * Per-row P/L semantics (Option A — P/L is a property of a position, not a raw row):
    *
-   * BUY (unrealized):
-   *   The asset's current price is in the asset's own (instrument) currency. The cost basis is
-   *   what you actually paid, in the account currency — for a cross-currency buy (e.g. USD-priced
-   *   Tesla via an SGD Saxo account) the trade price is converted at the FX rate captured AT
-   *   PURCHASE (tx.fxRateToBase), and the current market value is converted at TODAY's FX rate.
-   *   The resulting P/L therefore includes the FX gain/loss. Same-currency buys (Tiger USD, all
-   *   LKR) need no conversion. Fees use their own feeCurrency.
+   *  BUY row:
+   *    - Fully OPEN (all bought shares still held) → unrealized P/L vs the asset's current price,
+   *      in the broker account's currency (FX-inclusive: purchase FX for cost, today's FX for value).
+   *    - PARTIALLY sold → no single P/L number is meaningful (the lot straddles realized + open),
+   *      so we show a "Partially sold" status; the realized part shows on the SELL row(s).
+   *    - Fully CLOSED (nothing of this asset still held) → "Closed"; realized P/L is on the SELL row(s).
    *
-   * SELL (realized): taken from the matching SoldPosition when one can be found.
-   * Returns null when it can't be computed; sets noRate=true when a needed FX rate is missing.
+   *  SELL row → realized P/L for that sale, from the matching SoldPosition.
    */
-  const rowPnl = (tx: Transaction): Pnl | null => {
+  const rowPnl = (tx: Transaction): Pnl => {
     const acctCcy = tx.account?.currency || tx.currency;
-    if (tx.transactionType === 'BUY') {
-      const live = assetById.get(tx.asset.id);
-      const marketPrice = live?.currentPrice; // in the asset's own currency
-      const assetCcy = live?.currency || tx.currency;
-      if (marketPrice == null || !tx.pricePerUnit) return null;
 
-      // Cost basis in the account currency.
-      // Trade→account rate: prefer the rate captured at purchase, else today's configured rate.
+    if (tx.transactionType === 'BUY') {
+      const held = heldQtyByKey.get(heldQtyKey(tx.asset.id, tx.account.id, tx.owner.id)) ?? 0;
+      // Classify against what this buy added. Partial sells make a single P/L number meaningless.
+      if (held <= 0) return { kind: 'status', status: 'CLOSED' };
+      if (held + 1e-9 < tx.quantity) return { kind: 'status', status: 'PARTIAL' };
+
+      // Fully open: show unrealized P/L on this lot.
+      const live = assetById.get(tx.asset.id);
+      const marketPrice = live?.currentPrice; // asset's own currency
+      const assetCcy = live?.currency || tx.currency;
+      if (marketPrice == null || !tx.pricePerUnit) return { kind: 'status', status: 'OPEN' };
+
       const purchaseRate = tx.fxRateToBase ?? resolveRate(fxRates, tx.currency, acctCcy);
-      if (purchaseRate == null) return { amount: 0, pct: 0, currency: acctCcy, noRate: true };
+      if (purchaseRate == null) return { kind: 'noRate' };
       const tradeCostAcct = tx.pricePerUnit * tx.quantity * purchaseRate;
-      // Fee in its own currency, converted to the account currency.
       const feeCcy = tx.feeCurrency || tx.currency;
-      const feeRate = resolveRate(fxRates, feeCcy, acctCcy);
-      const feeAcct = (tx.fees || 0) * (feeRate ?? 1);
+      const feeAcct = (tx.fees || 0) * (resolveRate(fxRates, feeCcy, acctCcy) ?? 1);
       const costAcct = tradeCostAcct + feeAcct;
 
-      // Current market value in the account currency, using today's FX (asset ccy → account ccy).
       const marketRate = resolveRate(fxRates, assetCcy, acctCcy);
-      if (marketRate == null) return { amount: 0, pct: 0, currency: acctCcy, noRate: true };
+      if (marketRate == null) return { kind: 'noRate' };
       const valueAcct = marketPrice * tx.quantity * marketRate;
 
       const amount = valueAcct - costAcct;
-      return {
-        amount,
-        pct: costAcct ? (amount / costAcct) * 100 : 0,
-        currency: acctCcy,
-        priceUpdatedAt: live?.priceUpdatedAt,
-      };
+      return { kind: 'unrealized', amount, pct: costAcct ? (amount / costAcct) * 100 : 0, currency: acctCcy, priceUpdatedAt: live?.priceUpdatedAt };
     }
+
     if (tx.transactionType === 'SELL') {
       const match = soldPositions.find(sp =>
         sp.asset?.id === tx.asset.id &&
@@ -172,7 +182,7 @@ export default function Transactions() {
         sp.asset?.id === tx.asset.id && sp.soldDate === tx.transactionDate && Math.abs(sp.quantity - tx.quantity) < 1e-9
       );
       if (!match) return null;
-      return { amount: match.profit, pct: match.profitPercentage, currency: match.currency || acctCcy };
+      return { kind: 'realized', amount: match.profit, pct: match.profitPercentage, currency: match.currency || acctCcy };
     }
     return null;
   };
