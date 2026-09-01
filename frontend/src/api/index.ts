@@ -65,6 +65,8 @@ export const searchAssets = (query: string) => api.get<Asset[]>(`/assets/search?
 export const createAsset = (asset: Partial<Asset>) => api.post<Asset>('/assets', asset);
 export const updateAsset = (id: number, asset: Partial<Asset>) => api.put<Asset>(`/assets/${id}`, asset);
 export const updateAssetPrice = (id: number, price: number) => api.patch<Asset>(`/assets/${id}/price?price=${price}`);
+export const refreshAssetPrice = (id: number) => api.post<{ updated: boolean; asset?: Asset; message?: string }>(`/assets/${id}/refresh-price`);
+export const refreshAllAssetPrices = () => api.post<{ updated: number; skipped: string[]; total: number }>(`/assets/refresh-prices`);
 export const toggleAssetNetWorth = (id: number, include: boolean) => api.patch<Asset>(`/assets/${id}/net-worth?include=${include}`);
 export const deleteAsset = (id: number) => api.delete(`/assets/${id}`);
 

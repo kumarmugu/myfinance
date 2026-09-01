@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Plus, Trash2, Pencil } from 'lucide-react';
-import { getAssets, createAsset, updateAsset, deleteAsset } from '../api';
+import { Plus, Trash2, Pencil, RefreshCw } from 'lucide-react';
+import { getAssets, createAsset, updateAsset, deleteAsset, refreshAssetPrice, refreshAllAssetPrices } from '../api';
 import SearchableSelect from '../components/SearchableSelect';
 import type { Asset, AssetType, Currency } from '../types';
 import { ASSET_TYPE_LABELS } from '../types';
@@ -58,6 +58,36 @@ export default function Assets() {
         const refs = err.response?.data?.references;
         showToast(refs ? `${msg}\n\nReferenced by:\n• ${refs.join('\n• ')}` : msg);
       }
+    }
+  };
+
+  // Fetch the latest online price for a single asset. Unfetchable symbols (e.g. Sri Lanka/CSE)
+  // are left unchanged and reported so the user can update them manually.
+  const handleRefreshPrice = async (id: number, symbol: string) => {
+    setRefreshingId(id);
+    try {
+      const res = await refreshAssetPrice(id);
+      if (res.data.updated) { showToast(`Updated ${symbol} price`, 'success'); loadData(); }
+      else { showToast(res.data.message || `No online price for ${symbol} — update it manually`, 'info'); }
+    } catch (err: any) {
+      showToast(err.response?.data?.error || 'Failed to fetch price');
+    } finally {
+      setRefreshingId(null);
+    }
+  };
+
+  // Refresh prices for all assets at once.
+  const handleRefreshAll = async () => {
+    setRefreshingAll(true);
+    try {
+      const res = await refreshAllAssetPrices();
+      const { updated, skipped, total } = res.data;
+      showToast(`Updated ${updated} of ${total} prices${skipped?.length ? ` (${skipped.length} not found: ${skipped.slice(0, 5).join(', ')}${skipped.length > 5 ? '…' : ''})` : ''}`, updated > 0 ? 'success' : 'info');
+      loadData();
+    } catch (err: any) {
+      showToast(err.response?.data?.error || 'Failed to refresh prices');
+    } finally {
+      setRefreshingAll(false);
     }
   };
 

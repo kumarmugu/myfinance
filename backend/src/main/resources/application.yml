@@ -45,6 +45,13 @@ app:
   ocr:
     tessdata-path: ${TESSDATA_PATH:}
     language: ${OCR_LANGUAGE:eng}
+  # Online market-price lookup for the Assets "Update Price" button.
+  # provider: "stooq" (default, no API key) or "yahoo" (unofficial, broader coverage).
+  # Prices are fetched server-side; unfetchable symbols (e.g. Sri Lanka/CSE) are left unchanged
+  # so the user can maintain them manually. enabled=false disables the refresh endpoints (503).
+  price:
+    provider: ${PRICE_PROVIDER:stooq}
+    enabled: ${PRICE_FETCH_ENABLED:true}
 
 # OpenAPI / Swagger
 springdoc:
