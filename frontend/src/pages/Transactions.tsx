@@ -32,6 +32,14 @@ export default function Transactions() {
   const [owners, setOwners] = useState<Owner[]>([]);
   const [soldPositions, setSoldPositions] = useState<SoldPosition[]>([]);
   const [fxRates, setFxRates] = useState<CurrencyRate[]>([]);
+  // Client-side column filters (owner stays server-side via filterOwner).
+  const [filterType, setFilterType] = useState<string>('');
+  const [filterAssetId, setFilterAssetId] = useState<string>('');
+  const [filterAccountId, setFilterAccountId] = useState<string>('');
+  const [filterPurpose, setFilterPurpose] = useState<string>('');
+  const [filterDateFrom, setFilterDateFrom] = useState<string>('');
+  const [filterDateTo, setFilterDateTo] = useState<string>('');
+  const [search, setSearch] = useState<string>('');
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -169,6 +177,35 @@ export default function Transactions() {
     return null;
   };
 
+  // Apply the client-side column filters (combined with AND). The owner filter is applied
+  // server-side (re-queries), so it is not repeated here.
+  const searchLc = search.trim().toLowerCase();
+  const filtered = transactions.filter(tx => {
+    if (filterType && tx.transactionType !== filterType) return false;
+    if (filterAssetId && String(tx.asset?.id) !== filterAssetId) return false;
+    if (filterAccountId && String(tx.account?.id) !== filterAccountId) return false;
+    if (filterPurpose && (tx.purpose ?? '') !== filterPurpose) return false;
+    if (filterDateFrom && tx.transactionDate < filterDateFrom) return false;
+    if (filterDateTo && tx.transactionDate > filterDateTo) return false;
+    if (searchLc) {
+      const hay = [tx.asset?.symbol, tx.asset?.name, tx.account?.name, tx.owner?.name, tx.notes]
+        .filter(Boolean).join(' ').toLowerCase();
+      if (!hay.includes(searchLc)) return false;
+    }
+    return true;
+  });
+
+  const filtersActive = !!(filterType || filterAssetId || filterAccountId || filterPurpose || filterDateFrom || filterDateTo || searchLc);
+  const clearFilters = () => {
+    setFilterType(''); setFilterAssetId(''); setFilterAccountId('');
+    setFilterPurpose(''); setFilterDateFrom(''); setFilterDateTo(''); setSearch('');
+  };
+
+  const PURPOSE_OPTIONS: [string, string][] = [
+    ['LONG_TERM', 'Long Term'], ['TRADING', 'Trading'], ['DIVIDEND_REINVESTMENT', 'Div Reinvest'],
+    ['SRS', 'SRS'], ['RETIREMENT', 'Retirement'], ['SHORT_TERM', 'Short Term'],
+  ];
+
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
   return (
@@ -186,14 +223,69 @@ export default function Transactions() {
             />
           </div>
           <ExportMenu
-            rows={transactions}
+            rows={filtered}
             config={transactionsExportConfig}
-            subtitle={filterOwner ? `Filtered by owner: ${owners.find(o => o.id === filterOwner)?.name ?? filterOwner}` : undefined}
+            subtitle={(filterOwner || filtersActive) ? 'Filtered view' : undefined}
           />
           <button onClick={() => { if (showForm) { setShowForm(false); setEditingId(null); } else { setEditingId(null); setShowForm(true); } }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
             <Plus size={16} /> New Transaction
           </button>
         </div>
+      </div>
+
+      {/* Filter bar */}
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-3">
+        <div className="flex flex-wrap items-end gap-3">
+          <div className="w-32">
+            <label className="block text-[11px] font-medium text-slate-500 mb-1">Type</label>
+            <select value={filterType} onChange={e => setFilterType(e.target.value)} className="w-full border border-slate-300 rounded-lg px-2 py-2 text-sm bg-white">
+              <option value="">All</option>
+              <option value="BUY">Buy</option>
+              <option value="SELL">Sell</option>
+            </select>
+          </div>
+          <div className="w-44">
+            <label className="block text-[11px] font-medium text-slate-500 mb-1">Asset</label>
+            <SearchableSelect
+              options={[{ value: '', label: 'All Assets' }, ...assets.map(a => ({ value: a.id.toString(), label: `${a.symbol}` }))]}
+              value={filterAssetId}
+              onChange={v => setFilterAssetId(v.toString())}
+              placeholder="All Assets"
+            />
+          </div>
+          <div className="w-44">
+            <label className="block text-[11px] font-medium text-slate-500 mb-1">Account</label>
+            <SearchableSelect
+              options={[{ value: '', label: 'All Accounts' }, ...accounts.map(a => ({ value: a.id.toString(), label: a.name }))]}
+              value={filterAccountId}
+              onChange={v => setFilterAccountId(v.toString())}
+              placeholder="All Accounts"
+            />
+          </div>
+          <div className="w-40">
+            <label className="block text-[11px] font-medium text-slate-500 mb-1">Purpose</label>
+            <select value={filterPurpose} onChange={e => setFilterPurpose(e.target.value)} className="w-full border border-slate-300 rounded-lg px-2 py-2 text-sm bg-white">
+              <option value="">All</option>
+              {PURPOSE_OPTIONS.map(([val, label]) => <option key={val} value={val}>{label}</option>)}
+            </select>
+          </div>
+          <div className="w-36">
+            <label className="block text-[11px] font-medium text-slate-500 mb-1">From</label>
+            <input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)} className="w-full border border-slate-300 rounded-lg px-2 py-2 text-sm" />
+          </div>
+          <div className="w-36">
+            <label className="block text-[11px] font-medium text-slate-500 mb-1">To</label>
+            <input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)} className="w-full border border-slate-300 rounded-lg px-2 py-2 text-sm" />
+          </div>
+          <div className="flex-1 min-w-[10rem]">
+            <label className="block text-[11px] font-medium text-slate-500 mb-1">Search</label>
+            <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Symbol, account, owner, notes..." className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" />
+          </div>
+          {filtersActive && (
+            <button onClick={clearFilters} className="px-3 py-2 text-sm font-medium text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50">Clear</button>
+          )}
+        </div>
+        <p className="text-[11px] text-slate-400 mt-2">Showing {filtered.length} of {transactions.length} transactions</p>
       </div>
 
       {/* Transaction Form */}
@@ -300,7 +392,7 @@ export default function Transactions() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {transactions.map(tx => (
+              {filtered.map(tx => (
                 <tr key={tx.id} className="hover:bg-slate-50 group">
                   <td className="px-4 py-2.5 text-slate-700 text-xs">{formatDate(tx.transactionDate)}</td>
                   <td className="px-4 py-2.5">
@@ -354,7 +446,7 @@ export default function Transactions() {
                   </td>
                 </tr>
               ))}
-              {transactions.length === 0 && <tr><td colSpan={11} className="px-4 py-12 text-center text-slate-400">No transactions yet</td></tr>}
+              {filtered.length === 0 && <tr><td colSpan={11} className="px-4 py-12 text-center text-slate-400">{transactions.length === 0 ? 'No transactions yet' : 'No transactions match the filters'}</td></tr>}
             </tbody>
           </table>
         </div>
