@@ -77,7 +77,10 @@ public class PriceFetchService {
             Optional<BigDecimal> price = parseStooqCsv(body);
             if (price.isPresent()) return price;
         }
-        return Optional.empty();
+        // Stooq often blocks server-side CSV access (returns an HTML error page). Fall back to
+        // Yahoo so the "stooq" setting still yields a price for common tickers.
+        log.debug("Stooq returned no price for {}, falling back to Yahoo", asset.getSymbol());
+        return fetchFromYahoo(asset);
     }
 
     /** Parse the Stooq CSV; the close price is column index 6 (Symbol,Date,Time,Open,High,Low,Close,Volume). */
@@ -110,10 +113,12 @@ public class PriceFetchService {
         };
     }
 
-    // ─── Yahoo Finance (unofficial JSON quote endpoint) ───
+    // ─── Yahoo Finance (unofficial chart endpoint) ───
+    // The old v7 /finance/quote endpoint now returns "Unauthorized"; the v8 /chart endpoint still
+    // works without auth and exposes the latest price at chart.result[0].meta.regularMarketPrice.
     private Optional<BigDecimal> fetchFromYahoo(Asset asset) throws Exception {
         String sym = mapYahooSymbol(asset.getSymbol().trim(), asset.getExchange());
-        String url = "https://query1.finance.yahoo.com/v7/finance/quote?symbols=" + urlEncode(sym);
+        String url = "https://query1.finance.yahoo.com/v8/finance/chart/" + urlEncode(sym) + "?range=1d&interval=1d";
         String body = get(url);
         return parseYahooJson(body);
     }
@@ -121,13 +126,11 @@ public class PriceFetchService {
     Optional<BigDecimal> parseYahooJson(String body) {
         if (body == null) return Optional.empty();
         try {
-            JsonNode result = mapper.readTree(body).path("quoteResponse").path("result");
-            if (result.isArray() && result.size() > 0) {
-                JsonNode price = result.get(0).path("regularMarketPrice");
-                if (price.isNumber()) {
-                    BigDecimal v = price.decimalValue();
-                    return v.signum() > 0 ? Optional.of(v) : Optional.empty();
-                }
+            JsonNode meta = mapper.readTree(body).path("chart").path("result").path(0).path("meta");
+            JsonNode price = meta.path("regularMarketPrice");
+            if (price.isNumber()) {
+                BigDecimal v = price.decimalValue();
+                return v.signum() > 0 ? Optional.of(v) : Optional.empty();
             }
         } catch (Exception e) {
             log.debug("Yahoo parse failed: {}", e.toString());

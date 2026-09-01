@@ -50,7 +50,10 @@ app:
   # Prices are fetched server-side; unfetchable symbols (e.g. Sri Lanka/CSE) are left unchanged
   # so the user can maintain them manually. enabled=false disables the refresh endpoints (503).
   price:
-    provider: ${PRICE_PROVIDER:stooq}
+    # "yahoo" (default; uses the v8 chart endpoint, broad coverage, no key) or "stooq".
+    # Stooq's CSV endpoint frequently blocks server-side requests, so yahoo is the reliable default;
+    # the stooq path falls back to yahoo when Stooq returns a non-CSV/error response.
+    provider: ${PRICE_PROVIDER:yahoo}
     enabled: ${PRICE_FETCH_ENABLED:true}
 
 # OpenAPI / Swagger

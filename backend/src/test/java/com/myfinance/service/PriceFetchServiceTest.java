@@ -51,15 +51,18 @@ class PriceFetchServiceTest {
 
     @Test
     void parsesYahooRegularMarketPrice() {
-        String json = "{\"quoteResponse\":{\"result\":[{\"symbol\":\"TSLA\",\"regularMarketPrice\":250.5}]}}";
+        // v8 chart endpoint shape: chart.result[0].meta.regularMarketPrice
+        String json = "{\"chart\":{\"result\":[{\"meta\":{\"currency\":\"USD\",\"symbol\":\"VOO\",\"regularMarketPrice\":700.19}}]}}";
         Optional<BigDecimal> price = svc.parseYahooJson(json);
         assertTrue(price.isPresent());
-        assertEquals(0, new BigDecimal("250.5").compareTo(price.get()));
+        assertEquals(0, new BigDecimal("700.19").compareTo(price.get()));
     }
 
     @Test
     void yahooReturnsEmptyForNoResult() {
-        assertTrue(svc.parseYahooJson("{\"quoteResponse\":{\"result\":[]}}").isEmpty());
+        assertTrue(svc.parseYahooJson("{\"chart\":{\"result\":[]}}").isEmpty());
+        // The "Unauthorized" error shape from the retired v7 endpoint must not parse to a price.
+        assertTrue(svc.parseYahooJson("{\"finance\":{\"result\":null,\"error\":{\"code\":\"Unauthorized\"}}}").isEmpty());
         assertTrue(svc.parseYahooJson(null).isEmpty());
         assertTrue(svc.parseYahooJson("not json").isEmpty());
     }
