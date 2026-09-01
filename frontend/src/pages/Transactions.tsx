@@ -433,13 +433,21 @@ export default function Transactions() {
                     {(() => {
                       const pnl = rowPnl(tx);
                       if (!pnl) return <span className="text-slate-300">-</span>;
-                      if (pnl.noRate) return <span className="text-[10px] text-amber-500" title="Set an FX rate for this currency pair to see P/L">no FX rate</span>;
+                      if (pnl.kind === 'noRate') return <span className="text-[10px] text-amber-500" title="Set an FX rate for this currency pair to see P/L">no FX rate</span>;
+                      if (pnl.kind === 'status') {
+                        const label = pnl.status === 'CLOSED' ? 'Closed' : pnl.status === 'PARTIAL' ? 'Partially sold' : 'Open';
+                        const tip = pnl.status === 'OPEN'
+                          ? 'Held — set the asset current price to see unrealized P/L'
+                          : 'Realized P/L is shown on the matching Sell row (see Portfolio → Sold Positions)';
+                        return <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-500" title={tip}>{label}</span>;
+                      }
+                      // unrealized (open BUY) or realized (SELL)
                       const cls = pnl.amount >= 0 ? 'text-green-600' : 'text-red-600';
                       const pctCls = pnl.pct >= 0 ? 'text-green-500' : 'text-red-500';
                       return (
                         <div>
                           <span className={`font-medium ${cls}`}>{formatCurrency(pnl.amount, pnl.currency)}</span>
-                          <p className={`text-[10px] ${pctCls}`}>{formatPercent(pnl.pct)}</p>
+                          <p className={`text-[10px] ${pctCls}`}>{formatPercent(pnl.pct)}{pnl.kind === 'realized' ? ' realized' : ''}</p>
                         </div>
                       );
                     })()}
