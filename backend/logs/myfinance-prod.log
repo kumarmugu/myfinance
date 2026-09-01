@@ -1547,3 +1547,14 @@ java.lang.RuntimeException: No holding found to sell
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
 	at java.base/java.lang.Thread.run(Thread.java:840)
 2026-09-01 23:47:18 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 400 (16ms)
+2026-09-01 23:49:49 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Creating transaction: assetId=65, type=BUY, quantity=5, price=318
+2026-09-01 23:49:49 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=67 type=BUY assetId=65 quantity=5
+2026-09-01 23:49:49 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=69 assetId=65 quantity=5
+2026-09-01 23:49:49 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Created transaction id=67
+2026-09-01 23:49:49 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (7ms)
+2026-09-01 23:49:49 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-01 23:49:49 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (1ms)
+2026-09-01 23:49:49 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-01 23:49:49 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (6ms)
+2026-09-01 23:49:49 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (6ms)
+2026-09-01 23:49:49 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
