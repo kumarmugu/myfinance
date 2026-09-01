@@ -1357,3 +1357,53 @@ Dates are emitted in ISO form (`YYYY-MM-DD`), datetimes as `YYYY-MM-DD HH:mm:ss`
 ### 16.10 Large datasets
 
 Because the app has no server-side pagination and datasets are per-user (not multi-tenant aggregates), client-side generation is sufficient and avoids extra server round-trips. If a future module introduces server-side pagination or genuinely large datasets, a backend streaming export endpoint can be added behind the same `ExportConfig` contract without changing callers.
+
+## 17. Investment Tracking Enhancements (Transactions, Assets, Portfolio)
+
+A set of related enhancements to how investment transactions, asset prices, and per-position P/L work.
+
+### 17.1 Edit / modify transactions (holding-safe)
+
+Transactions can be modified (not just created/deleted). `PUT /api/transactions/{id}` is tenant-guarded (only the owner's record) and keeps holdings correct by **reversing the old transaction's effect and re-applying the new values** — so editing quantity/price (e.g. a stock split: 10@$200 → 20@$100) never leaves the holding out of sync. The frontend adds a **Modify** (pencil) action per row that reopens the form pre-filled.
+
+### 17.2 Asset current price + price-updated date
+
+`Asset.currentPrice` is editable in the Asset Catalog form and shown in the list. `Asset.priceUpdatedAt` (nullable) records **when the price last changed** — distinct from `updatedAt` (which changes on any edit) — so the UI can show how fresh a price (and any P/L derived from it) is. It is only stamped when the price value actually changes.
+
+### 17.3 Online price lookup ("Update Price")
+
+The Assets page can fetch the latest market price from a public provider:
+- **Provider is configurable** via `app.price.provider` — `stooq` (default, no API key) or `yahoo` (unofficial, broader coverage). `app.price.enabled=false` disables it (endpoints return 503).
+- Endpoints: `POST /api/assets/{id}/refresh-price` (one) and `POST /api/assets/refresh-prices` (all of the user's assets). Both tenant-scoped.
+- **Best-effort by design:** symbols the provider doesn't quote (e.g. **Sri Lanka / CSE**, niche tickers) are left **unchanged** — the existing price and date are preserved and the UI reports them as "not found" so the user maintains them manually. Fetch failures never throw or alter data.
+- Symbol mapping uses `Asset.exchange` (e.g. Stooq `.us`/`.sg`/`.uk`; Yahoo `.SI`/`.L`/`.HK`).
+- Security: fetching happens **server-side** (keeps any future API key off the client, avoids CORS). Only the user's ticker symbols are sent to the provider; no account or holding data leaves the server.
+
+### 17.4 Per-row P/L semantics (position-aware)
+
+P/L is treated as a property of a **position**, not a raw transaction row:
+- **BUY row** — if the asset is still fully held → **unrealized** P/L vs current price. If partially sold → **"Partially sold"** (no single number is meaningful). If fully sold → **"Closed"**. Status is derived from the live holding quantity vs the buy quantity.
+- **SELL row** — **realized** P/L, computed and stored at sale time (see 17.5).
+
+### 17.5 FX-inclusive realized P/L (stock vs FX split)
+
+For accounts that settle in a different currency than the instrument (e.g. a USD-priced stock bought through an SGD broker), realized P/L must include the FX gain/loss. On a SELL the backend computes, in the **broker account's currency**:
+
+```
+stock component = (proceeds − cost) × avgBuyFx
+fx component    = proceeds × (sellFx − avgBuyFx)
+realized total  = stock + fx − fees(→account ccy)
+```
+
+- `avgBuyFx` is a new quantity-weighted **average buy FX rate** tracked on the `Holding` (from each buy's `Transaction.fxRateToBase`). `sellFx` is the FX rate captured on the SELL.
+- The split (stock vs FX) and total are stored on the SELL transaction (`realizedStockPnl`, `realizedFxPnl`, `realizedPnl`) and shown on the row (total + "Stock X • FX Y").
+- **Same-currency trades** (Tiger USD, all LKR) collapse to the plain formula — FX component is zero.
+- Original amounts/currencies are never mutated; all conversions are derived, consistent with the currency principle.
+
+### 17.6 Transactions filtering
+
+The Transactions page has a multi-column filter bar — Type, Asset, Account, Owner, Purpose, date range, and free-text search — combined with AND, plus Clear. The table, the empty-state, and the CSV/Excel/PDF Export all reflect the active filters.
+
+### 17.7 Portfolio per-owner
+
+The Portfolio page has an owner filter (like the Dashboard/Transactions pages). Holdings and sold positions filter server-side by owner; short-term trades filter client-side. Nothing is shared across owners.

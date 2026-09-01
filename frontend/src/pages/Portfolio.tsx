@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
-import { getActiveHoldings, getSoldPositions, getShortTermTrades } from '../api';
+import { getActiveHoldings, getSoldPositions, getShortTermTrades, getOwners } from '../api';
 import { formatCurrency, formatPercent } from '../utils/formatters';
 import ExportMenu from '../components/ExportMenu';
+import SearchableSelect from '../components/SearchableSelect';
 import { holdingsExportConfig, soldPositionsExportConfig } from '../utils/export/configs';
-import type { Holding, SoldPosition, Currency } from '../types';
+import type { Holding, SoldPosition, Currency, Owner } from '../types';
 import { ASSET_TYPE_LABELS, ASSET_TYPE_COLORS } from '../types';
 
 type Tab = 'holdings' | 'sold' | 'shortTerm';
@@ -16,15 +17,20 @@ export default function Portfolio() {
   const [shortTerm, setShortTerm] = useState<SoldPosition[]>([]);
   const [loading, setLoading] = useState(true);
   const [displayCurrency, setDisplayCurrency] = useState<Currency>('SGD');
+  const [owners, setOwners] = useState<Owner[]>([]);
+  const [filterOwner, setFilterOwner] = useState<number | undefined>();
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => { getOwners().then(r => setOwners(r.data)).catch(console.error); }, []);
+  useEffect(() => { loadData(); }, [filterOwner]);
 
   const loadData = async () => {
     try {
-      const [hRes, sRes, stRes] = await Promise.all([getActiveHoldings(), getSoldPositions(), getShortTermTrades()]);
+      // Holdings & sold positions filter server-side by owner; short-term trades have no owner
+      // param on the API, so they're filtered client-side below.
+      const [hRes, sRes, stRes] = await Promise.all([getActiveHoldings(filterOwner), getSoldPositions(filterOwner), getShortTermTrades()]);
       setHoldings(hRes.data);
       setSold(sRes.data);
-      setShortTerm(stRes.data);
+      setShortTerm(filterOwner ? stRes.data.filter(sp => sp.owner?.id === filterOwner) : stRes.data);
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
   };
@@ -58,9 +64,19 @@ export default function Portfolio() {
           <h1 className="text-2xl font-bold text-slate-800">Portfolio</h1>
           <p className="text-slate-500 text-sm mt-1">Your current holdings, sold positions, and short-term trades</p>
         </div>
-        <div className="flex bg-white border border-slate-200 rounded-lg overflow-hidden">
-          <button onClick={() => setDisplayCurrency('SGD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'SGD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>SGD</button>
-          <button onClick={() => setDisplayCurrency('USD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'USD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>USD</button>
+        <div className="flex items-center gap-3">
+          <div className="w-44">
+            <SearchableSelect
+              options={[{ value: '', label: 'All Owners' }, ...owners.map(o => ({ value: o.id, label: o.name, icon: o.name[0] }))]}
+              value={filterOwner || ''}
+              onChange={v => setFilterOwner(v ? Number(v) : undefined)}
+              placeholder="All Owners"
+            />
+          </div>
+          <div className="flex bg-white border border-slate-200 rounded-lg overflow-hidden">
+            <button onClick={() => setDisplayCurrency('SGD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'SGD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>SGD</button>
+            <button onClick={() => setDisplayCurrency('USD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'USD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>USD</button>
+          </div>
         </div>
       </div>
 

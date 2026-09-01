@@ -13,6 +13,8 @@ export default function Assets() {
   const [editing, setEditing] = useState<Asset | null>(null);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({ name: '', symbol: '', assetType: 'GROWTH_EQUITY' as AssetType, currency: 'USD' as Currency, exchange: '', description: '', currentPrice: 0 });
+  const [refreshingId, setRefreshingId] = useState<number | null>(null);
+  const [refreshingAll, setRefreshingAll] = useState(false);
   const { showToast } = useToast();
 
   useEffect(() => { loadData(); }, []);
@@ -97,7 +99,12 @@ export default function Assets() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-2xl font-bold text-slate-800">Assets</h1><p className="text-slate-500 text-sm mt-1">Manage stocks, ETFs, funds, and crypto</p></div>
-        <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> New Asset</button>
+        <div className="flex items-center gap-3">
+          <button onClick={handleRefreshAll} disabled={refreshingAll || assets.length === 0} className="flex items-center gap-2 px-4 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed" title="Fetch the latest online prices for all assets">
+            <RefreshCw size={16} className={refreshingAll ? 'animate-spin' : ''} /> {refreshingAll ? 'Updating...' : 'Update All Prices'}
+          </button>
+          <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> New Asset</button>
+        </div>
       </div>
 
       {showForm && (
@@ -158,6 +165,9 @@ export default function Assets() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button onClick={() => handleRefreshPrice(a.id, a.symbol)} disabled={refreshingId === a.id} className="text-slate-400 hover:text-emerald-600 disabled:opacity-50" title="Fetch latest price online">
+                        <RefreshCw size={14} className={refreshingId === a.id ? 'animate-spin' : ''} />
+                      </button>
                       <button onClick={() => startEdit(a)} className="text-slate-400 hover:text-indigo-600"><Pencil size={14} /></button>
                       <button onClick={() => handleDelete(a.id)} className="text-slate-400 hover:text-red-500"><Trash2 size={14} /></button>
                     </div>

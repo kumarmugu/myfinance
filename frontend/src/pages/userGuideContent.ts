@@ -808,6 +808,60 @@ export const GUIDE_SECTIONS: GuideSection[] = [
         ],
         screenshots: [{ alt: 'Export dropdown showing CSV, Excel and PDF options on a table', caption: 'The Export menu appears on tables that contain row-level data.' }],
       },
+      {
+        id: 'update-prices',
+        title: 'Updating Asset Prices',
+        summary: 'Fetch the latest market price online, or set it manually.',
+        what:
+          'On the Assets page each asset has a current price. You can refresh it from an online source with the per-asset refresh button, or update every asset at once with "Update All Prices". You can also type a price in manually when you edit the asset.',
+        why:
+          'Your unrealized profit/loss on the Transactions and Portfolio pages is calculated from the current price, so keeping prices fresh keeps those figures meaningful. The "as of" date under each price shows how recent it is.',
+        steps: [
+          'Open the Assets page.',
+          'To update one asset, hover its row and click the circular refresh icon.',
+          'To update everything, click "Update All Prices" at the top.',
+          'A message tells you how many prices were updated. Anything that could not be found is left unchanged.',
+        ],
+        afterSave:
+          'Prices that were found are updated and stamped with today as the "as of" date. Assets the online source does not cover (for example Sri Lankan / CSE stocks, or unusual tickers) are left exactly as they were — update those manually by editing the asset and typing the price.',
+        commonMistakes: [
+          'Expecting every asset to update — free price sources do not cover all markets; unfound ones stay unchanged on purpose.',
+          'Forgetting that the exchange field helps map the symbol (e.g. SGX, NASDAQ) so the online lookup can find it.',
+        ],
+        tips: [
+          'The price source can be configured by your administrator (Stooq by default, or Yahoo).',
+          'For markets that are never covered online (e.g. Sri Lanka), just keep the price updated manually — everything else still works.',
+        ],
+        related: [
+          { label: 'Open Assets', route: '/assets' },
+          { label: 'Portfolio', pageId: 'dashboard' },
+        ],
+      },
+      {
+        id: 'transaction-pnl',
+        title: 'Transaction P/L, editing & filters',
+        summary: 'How profit/loss shows per transaction, and how to edit and filter.',
+        feature: 'PORTFOLIO',
+        what:
+          'The Transactions page shows profit/loss per row, lets you modify a transaction, and filter the list by several columns.',
+        why:
+          'It gives you an at-a-glance read on each position and an easy way to find and correct entries.',
+        steps: [
+          'Use the filter bar (Type, Asset, Account, Owner, Purpose, date range, search) to narrow the list; click Clear to reset.',
+          'Click the pencil icon on a row to modify a transaction (including quantity — useful for stock splits).',
+          'Read the P/L column: a still-held Buy shows unrealized P/L vs the current price; a fully sold Buy shows "Closed"; a partially sold Buy shows "Partially sold".',
+          'A Sell row shows the realized profit/loss for that sale.',
+        ],
+        afterSave:
+          'For a stock bought in one currency but settled in another (e.g. a US stock bought through an SGD account), realized P/L includes the currency gain/loss. Hover the figure to see the split between the stock move and the FX move.',
+        tips: [
+          'Enter the FX rate at purchase (and the fee currency) on cross-currency trades so the P/L — including FX — is accurate.',
+          'Realized profit for closed positions also appears under Portfolio → Sold Positions.',
+        ],
+        related: [
+          { label: 'Open Transactions', route: '/transactions' },
+        ],
+      },
     ],
   },
 
