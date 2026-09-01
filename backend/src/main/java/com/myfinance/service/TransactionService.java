@@ -76,7 +76,13 @@ public class TransactionService {
 
         Transaction saved = transactionRepository.save(tx);
         log.info("Created Transaction id={} type={} assetId={} quantity={}", saved.getId(), type, assetId, quantity);
-        updateHolding(asset, account, owner, type, quantity, pricePerUnit, purpose);
+        RealizedPnl realized = updateHolding(asset, account, owner, type, quantity, pricePerUnit, purpose, fxRateToBase, fees, feeCurrency);
+        if (realized != null) {
+            saved.setRealizedPnl(realized.total());
+            saved.setRealizedStockPnl(realized.stock());
+            saved.setRealizedFxPnl(realized.fx());
+            saved = transactionRepository.save(saved);
+        }
         return saved;
     }
 
@@ -128,10 +134,13 @@ public class TransactionService {
         existing.setNotes(notes);
         existing.setPurpose(purpose);
 
-        Transaction saved = transactionRepository.save(existing);
+        // 3. Apply the NEW transaction's effect on the holding, capturing realized P/L for sells.
+        RealizedPnl realized = updateHolding(asset, account, owner, type, quantity, pricePerUnit, purpose, fxRateToBase, fees, feeCurrency);
+        existing.setRealizedPnl(realized != null ? realized.total() : null);
+        existing.setRealizedStockPnl(realized != null ? realized.stock() : null);
+        existing.setRealizedFxPnl(realized != null ? realized.fx() : null);
 
-        // 3. Apply the NEW transaction's effect on the holding.
-        updateHolding(asset, account, owner, type, quantity, pricePerUnit, purpose);
+        Transaction saved = transactionRepository.save(existing);
         log.info("Updated Transaction id={} type={} assetId={} quantity={}", id, type, assetId, quantity);
         return saved;
     }
@@ -164,8 +173,24 @@ public class TransactionService {
         }
     }
 
+    /** Realized P/L breakdown returned by a SELL, all in the broker account's currency. */
+    public record RealizedPnl(BigDecimal total, BigDecimal stock, BigDecimal fx) {}
+
     private void updateHolding(Asset asset, Account account, Owner owner, TransactionType type, BigDecimal quantity, BigDecimal pricePerUnit, InvestmentPurpose purpose) {
+        updateHolding(asset, account, owner, type, quantity, pricePerUnit, purpose, null, null, null);
+    }
+
+    /**
+     * Apply a transaction's effect to its holding. For BUY, maintains quantity, average buy price,
+     * invested amount and the quantity-weighted average buy FX rate. For SELL, reduces the holding
+     * and returns the realized P/L (stock + FX split) in the account currency; returns null for BUY.
+     */
+    private RealizedPnl updateHolding(Asset asset, Account account, Owner owner, TransactionType type,
+                                      BigDecimal quantity, BigDecimal pricePerUnit, InvestmentPurpose purpose,
+                                      BigDecimal fxRateToBase, BigDecimal fees, String feeCurrency) {
         var holdingOpt = holdingService.getHolding(asset.getId(), account.getId(), owner.getId());
+        // buyFx: the trade→account FX for this transaction. 1 when same currency / not provided.
+        BigDecimal txFx = fxRateToBase != null ? fxRateToBase : BigDecimal.ONE;
 
         if (type == TransactionType.BUY) {
             if (holdingOpt.isPresent()) {
@@ -173,23 +198,27 @@ public class TransactionService {
                 BigDecimal newQty = h.getQuantity().add(quantity);
                 BigDecimal newInvested = h.getInvestedAmount().add(quantity.multiply(pricePerUnit));
                 BigDecimal newAvg = newInvested.divide(newQty, 6, RoundingMode.HALF_UP);
+                // Quantity-weighted average of the buy FX rate.
+                BigDecimal prevFx = h.getAverageBuyFxRate() != null ? h.getAverageBuyFxRate() : BigDecimal.ONE;
+                BigDecimal newAvgFx = prevFx.multiply(h.getQuantity()).add(txFx.multiply(quantity))
+                        .divide(newQty, 6, RoundingMode.HALF_UP);
                 h.setQuantity(newQty);
                 h.setAverageBuyPrice(newAvg);
                 h.setInvestedAmount(newInvested);
+                h.setAverageBuyFxRate(newAvgFx);
                 if (purpose != null) h.setPurpose(purpose);
                 holdingService.save(h);
             } else {
-                // The holding represents the underlying instrument, so it carries the ASSET's
-                // currency (e.g. an EUR fund), NOT the broker account's currency. The purchase
-                // settled in the account/transaction currency, which is preserved on the Transaction.
                 holdingService.save(Holding.builder()
                         .asset(asset).account(account).owner(owner)
                         .quantity(quantity).averageBuyPrice(pricePerUnit)
                         .investedAmount(quantity.multiply(pricePerUnit))
+                        .averageBuyFxRate(txFx)
                         .currency(asset.getCurrency() != null ? asset.getCurrency() : account.getCurrency())
                         .purpose(purpose)
                         .userId(tenantContext.getCurrentUserId()).build());
             }
+            return null;
         } else if (type == TransactionType.SELL) {
             if (holdingOpt.isPresent()) {
                 Holding h = holdingOpt.get();
@@ -202,11 +231,42 @@ public class TransactionService {
                 h.setQuantity(newQty);
                 h.setInvestedAmount(h.getInvestedAmount().subtract(soldInvestment));
                 holdingService.save(h);
+
+                // ── Realized P/L in the account currency, split into stock and FX components ──
+                // avgBuyFx: FX rate at which the sold shares were originally bought (quantity-weighted).
+                BigDecimal avgBuyFx = h.getAverageBuyFxRate() != null ? h.getAverageBuyFxRate() : BigDecimal.ONE;
+                BigDecimal sellFx = txFx; // FX rate captured on this SELL (or 1 if same currency)
+                BigDecimal avgBuyPrice = h.getAverageBuyPrice();
+
+                // Proceeds and cost in the trade (instrument) currency.
+                BigDecimal proceedsTrade = quantity.multiply(pricePerUnit);
+                BigDecimal costTrade = quantity.multiply(avgBuyPrice);
+
+                // Stock component: valued at the BUY FX rate (so only the price move shows here).
+                BigDecimal stock = proceedsTrade.subtract(costTrade).multiply(avgBuyFx);
+                // FX component: proceeds re-valued at (sellFx − buyFx).
+                BigDecimal fx = proceedsTrade.multiply(sellFx.subtract(avgBuyFx));
+
+                // Fees reduce the realized total (converted into the account currency).
+                BigDecimal feeAcct = BigDecimal.ZERO;
+                if (fees != null && fees.signum() != 0) {
+                    // A fee in the account currency needs no conversion; a fee in the trade currency
+                    // uses the sell FX rate. (feeCurrency null → assume account currency.)
+                    boolean feeInTradeCcy = feeCurrency != null
+                            && account.getCurrency() != null
+                            && !feeCurrency.equalsIgnoreCase(account.getCurrency().name());
+                    feeAcct = feeInTradeCcy ? fees.multiply(sellFx) : fees;
+                }
+
+                BigDecimal total = stock.add(fx).subtract(feeAcct);
+                // Fees are booked against the stock component for the split (they're not an FX effect).
+                return new RealizedPnl(total, stock.subtract(feeAcct), fx);
             } else {
                 log.error("Failed to sell: no holding found for assetId={} accountId={} ownerId={}", asset.getId(), account.getId(), owner.getId());
                 throw new RuntimeException("No holding found to sell");
             }
         }
+        return null;
     }
 
     public void delete(Long id) {

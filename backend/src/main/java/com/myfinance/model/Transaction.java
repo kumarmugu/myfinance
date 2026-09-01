@@ -63,6 +63,19 @@ public class Transaction {
      */
     private BigDecimal fxRateToBase;
 
+    /**
+     * Realized profit/loss for a SELL, in the broker account's currency, computed at sale time as
+     * proceeds − cost basis − fees. Null on BUYs and on legacy sells. See {@link #realizedStockPnl}
+     * and {@link #realizedFxPnl} for the stock-move vs FX-move split (their sum equals this).
+     */
+    private BigDecimal realizedPnl;
+
+    /** The stock-price component of {@link #realizedPnl} (valued at the buy-time FX rate). */
+    private BigDecimal realizedStockPnl;
+
+    /** The FX component of {@link #realizedPnl} (gain/loss from sell-time FX vs buy-time FX). */
+    private BigDecimal realizedFxPnl;
+
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Currency currency = Currency.USD;

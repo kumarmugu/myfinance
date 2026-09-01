@@ -225,6 +225,80 @@ class TransactionServiceTest {
 
     @Test
     @WithMockUser(username = "user")
+    void realizedPnlSplitsStockAndFxForCrossCurrencySell() {
+        // Buy 10 @ $100 with USD→SGD = 1.30 (cost basis 1300 SGD/lot rate).
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy", null,
+                "SGD", new BigDecimal("1.30"));
+
+        // Sell 10 @ $120 with USD→SGD = 1.40, no fee.
+        Transaction sell = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.SELL, BigDecimal.TEN, new BigDecimal("120.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 6, 1), "Sell", null,
+                null, new BigDecimal("1.40"));
+
+        // Stock component: (10*120 - 10*100) * buyFx(1.30) = 200 * 1.30 = 260
+        assertEquals(0, new BigDecimal("260.00").compareTo(sell.getRealizedStockPnl().setScale(2, RoundingMode.HALF_UP)));
+        // FX component: proceeds(10*120=1200) * (sellFx 1.40 - buyFx 1.30) = 1200 * 0.10 = 120
+        assertEquals(0, new BigDecimal("120.00").compareTo(sell.getRealizedFxPnl().setScale(2, RoundingMode.HALF_UP)));
+        // Total = 260 + 120 = 380
+        assertEquals(0, new BigDecimal("380.00").compareTo(sell.getRealizedPnl().setScale(2, RoundingMode.HALF_UP)));
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void realizedPnlSubtractsSellFee() {
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy", null,
+                "SGD", new BigDecimal("1.30"));
+
+        // Sell 10 @ $120, sellFx 1.40. The test account currency is USD, so a fee in the account
+        // currency (USD) is subtracted as-is (no conversion): 15 USD fee.
+        Transaction sell = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.SELL, BigDecimal.TEN, new BigDecimal("120.00"),
+                new BigDecimal("15.00"), "USD", LocalDate.of(2024, 6, 1), "Sell", null,
+                "USD", new BigDecimal("1.40"));
+
+        // Total from the split test (380) minus the 15 fee (account currency) = 365.
+        assertEquals(0, new BigDecimal("365.00").compareTo(sell.getRealizedPnl().setScale(2, RoundingMode.HALF_UP)));
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void realizedPnlSameCurrencyHasNoFxComponent() {
+        // Plain USD buy/sell (no fx rates) → FX component is zero, stock component is the whole P/L.
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy");
+        Transaction sell = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.SELL, BigDecimal.TEN, new BigDecimal("130.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 6, 1), "Sell");
+
+        assertEquals(0, BigDecimal.ZERO.compareTo(sell.getRealizedFxPnl().setScale(2, RoundingMode.HALF_UP)));
+        // (130-100)*10 = 300
+        assertEquals(0, new BigDecimal("300.00").compareTo(sell.getRealizedPnl().setScale(2, RoundingMode.HALF_UP)));
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void buyLeavesRealizedPnlNull() {
+        Transaction buy = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy");
+        assertNull(buy.getRealizedPnl());
+    }
+
+    @Test
+    @WithMockUser(username = "user")
     void updateBuyRecalculatesHolding() {
         Transaction tx = transactionService.create(
                 asset.getId(), account.getId(), owner.getId(),

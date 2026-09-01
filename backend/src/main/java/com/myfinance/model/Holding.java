@@ -41,6 +41,15 @@ public class Holding {
     @Column(nullable = false)
     private BigDecimal investedAmount;
 
+    /**
+     * Quantity-weighted average of the trade→account(base) FX rate across the BUYs that make up
+     * this holding (from each buy's Transaction.fxRateToBase). Lets a later SELL value the cost
+     * basis at the FX rate actually paid, so realized P/L separates the stock move from the FX
+     * move. Nullable: same-currency holdings (trade ccy == account ccy) leave this null → treated
+     * as rate 1. Legacy rows are null until the next buy refreshes them.
+     */
+    private BigDecimal averageBuyFxRate;
+
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Currency currency = Currency.USD;

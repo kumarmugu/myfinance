@@ -67,6 +67,12 @@ export interface Transaction {
   feeCurrency: string | null;
   /** FX rate trade-currency → account-currency captured at purchase (null = same currency). */
   fxRateToBase: number | null;
+  /** Realized P/L for a SELL, in the account currency (null on buys/legacy). */
+  realizedPnl: number | null;
+  /** Stock-move component of realizedPnl. */
+  realizedStockPnl: number | null;
+  /** FX-move component of realizedPnl. */
+  realizedFxPnl: number | null;
   currency: Currency;
   transactionDate: string;
   notes: string;

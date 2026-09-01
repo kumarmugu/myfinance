@@ -124,7 +124,7 @@ export default function Transactions() {
   type BuyStatus = 'OPEN' | 'PARTIAL' | 'CLOSED';
   type Pnl =
     | { kind: 'unrealized'; amount: number; pct: number; currency: string; priceUpdatedAt?: string | null }
-    | { kind: 'realized'; amount: number; pct: number; currency: string }
+    | { kind: 'realized'; amount: number; pct: number; currency: string; stock?: number | null; fx?: number | null }
     | { kind: 'status'; status: BuyStatus }
     | { kind: 'noRate' }
     | null;
@@ -172,6 +172,20 @@ export default function Transactions() {
     }
 
     if (tx.transactionType === 'SELL') {
+      // Preferred: the realized P/L computed and stored at sale time (FX-inclusive, fees deducted).
+      if (tx.realizedPnl != null) {
+        const cost = (tx.pricePerUnit || 0) * (tx.quantity || 0);
+        const pctBase = cost || 1;
+        return {
+          kind: 'realized',
+          amount: tx.realizedPnl,
+          pct: (tx.realizedPnl / pctBase) * 100,
+          currency: acctCcy,
+          stock: tx.realizedStockPnl,
+          fx: tx.realizedFxPnl,
+        };
+      }
+      // Fallback for legacy sells: match a SoldPosition record if one exists.
       const match = soldPositions.find(sp =>
         sp.asset?.id === tx.asset.id &&
         sp.account?.id === tx.account.id &&
@@ -444,10 +458,14 @@ export default function Transactions() {
                       // unrealized (open BUY) or realized (SELL)
                       const cls = pnl.amount >= 0 ? 'text-green-600' : 'text-red-600';
                       const pctCls = pnl.pct >= 0 ? 'text-green-500' : 'text-red-500';
+                      const split = (pnl.kind === 'realized' && (pnl.stock != null || pnl.fx != null))
+                        ? `Stock ${formatCurrency(pnl.stock ?? 0, pnl.currency)} • FX ${formatCurrency(pnl.fx ?? 0, pnl.currency)}`
+                        : undefined;
                       return (
-                        <div>
+                        <div title={split}>
                           <span className={`font-medium ${cls}`}>{formatCurrency(pnl.amount, pnl.currency)}</span>
                           <p className={`text-[10px] ${pctCls}`}>{formatPercent(pnl.pct)}{pnl.kind === 'realized' ? ' realized' : ''}</p>
+                          {split && <p className="text-[9px] text-slate-400">{split}</p>}
                         </div>
                       );
                     })()}
