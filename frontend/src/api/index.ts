@@ -187,3 +187,27 @@ export const createLoanPayment = (loanId: number, payment: any) => api.post<any>
 export const deleteLoanPayment = (paymentId: number) => api.delete(`/home-loans/payments/${paymentId}`);
 
 export default api;
+
+// ─── Expenses / Receipt Scan ───
+export interface ReceiptScanResult {
+  expenseDate: string | null;
+  description: string | null;
+  amount: number | null;
+  currency: string | null;
+  suggestedCategoryId: number | null;
+  suggestedCategoryName: string | null;
+  rawText: string | null;
+  lowConfidence: boolean;
+}
+
+/**
+ * Uploads a receipt image for local OCR and returns a DRAFT expense to review.
+ * Overrides the default JSON content-type so the browser sets the multipart boundary.
+ */
+export const scanReceipt = (file: File) => {
+  const form = new FormData();
+  form.append('file', file);
+  return api.post<ReceiptScanResult>('/expenses/scan-receipt', form, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};

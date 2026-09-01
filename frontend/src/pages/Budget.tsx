@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { Plus, Trash2, Pencil, Save, X, AlertTriangle } from 'lucide-react';
-import api from '../api';
+import { Plus, Trash2, Pencil, Save, X, AlertTriangle, ScanLine, Loader2 } from 'lucide-react';
+import api, { scanReceipt } from '../api';
 import { formatCurrency } from '../utils/formatters';
 import { useToast } from '../contexts/ToastContext';
 
@@ -42,6 +42,7 @@ export default function Budget() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [expForm, setExpForm] = useState({ id: 0, expenseDate: '', description: '', categoryId: '', amount: '' });
   const [editingExpense, setEditingExpense] = useState(false);
+  const [scanning, setScanning] = useState(false);
 
   // Report state
   const [report, setReport] = useState<MonthlyReport | null>(null);
@@ -195,6 +196,44 @@ export default function Budget() {
   };
 
   const resetExpForm = () => { setExpForm({ id: 0, expenseDate: '', description: '', categoryId: '', amount: '' }); setEditingExpense(false); };
+
+  // Uploads a receipt image, runs local OCR, and prefills the add-expense form for review.
+  // Nothing is saved automatically — the user checks the fields and clicks Add.
+  const handleReceiptScan = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // allow re-selecting the same file later
+    if (!file) return;
+    setScanning(true);
+    try {
+      const { data } = await scanReceipt(file);
+      // Only prefill fields OCR was confident about; leave the rest for the user.
+      const matchedCategory = data.suggestedCategoryId
+        ? categories.find(c => c.id === data.suggestedCategoryId)
+        : undefined;
+      setExpForm({
+        id: 0,
+        expenseDate: data.expenseDate ?? '',
+        description: data.description ?? '',
+        categoryId: matchedCategory ? String(matchedCategory.id) : '',
+        amount: data.amount != null ? String(data.amount) : '',
+      });
+      setEditingExpense(false);
+      if (data.lowConfidence || (data.amount == null && !data.description)) {
+        showToast('Could not read much from that image. Please fill the fields manually.', 'info');
+      } else {
+        showToast('Receipt scanned. Review the details and click Add.', 'success');
+      }
+    } catch (err: any) {
+      const status = err.response?.status;
+      if (status === 503) {
+        showToast('Receipt scanning is not enabled on this server.', 'info');
+      } else {
+        showToast(err.response?.data?.message || 'Could not scan the receipt.');
+      }
+    } finally {
+      setScanning(false);
+    }
+  };
 
   // ─── Computed values ───
   const totalIncome = incomes.reduce((s, i) => s + i.amount, 0);
@@ -393,7 +432,21 @@ export default function Budget() {
 
           {/* Add/Edit Form */}
           <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-            <h3 className="font-semibold text-slate-800 mb-4">{editingExpense ? 'Edit Expense' : 'Add Expense'}</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-slate-800">{editingExpense ? 'Edit Expense' : 'Add Expense'}</h3>
+              {!editingExpense && (
+                <label className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg border cursor-pointer transition-colors ${
+                  scanning ? 'text-slate-400 border-slate-200 cursor-wait' : 'text-indigo-700 border-indigo-200 hover:bg-indigo-50'
+                }`}>
+                  {scanning ? <Loader2 size={14} className="animate-spin" /> : <ScanLine size={14} />}
+                  {scanning ? 'Scanning…' : 'Scan receipt'}
+                  <input type="file" accept="image/*" className="hidden" disabled={scanning} onChange={handleReceiptScan} />
+                </label>
+              )}
+            </div>
+            {!editingExpense && (
+              <p className="text-xs text-slate-400 mb-3">Upload a photo of a receipt to auto-fill the fields below. Always review before adding.</p>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
               <input type="date" value={expForm.expenseDate} onChange={e => setExpForm(p => ({ ...p, expenseDate: e.target.value }))}
                 className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" />
