@@ -49,6 +49,14 @@ public class TransactionService {
     public Transaction create(Long assetId, Long accountId, Long ownerId, TransactionType type,
                               BigDecimal quantity, BigDecimal pricePerUnit, BigDecimal fees,
                               String currency, LocalDate date, String notes, InvestmentPurpose purpose) {
+        return create(assetId, accountId, ownerId, type, quantity, pricePerUnit, fees, currency, date, notes, purpose, null, null);
+    }
+
+    @Transactional
+    public Transaction create(Long assetId, Long accountId, Long ownerId, TransactionType type,
+                              BigDecimal quantity, BigDecimal pricePerUnit, BigDecimal fees,
+                              String currency, LocalDate date, String notes, InvestmentPurpose purpose,
+                              String feeCurrency, BigDecimal fxRateToBase) {
         Asset asset = assetService.getById(assetId);
         Account account = accountService.getById(accountId);
         Owner owner = ownerService.getById(ownerId);
@@ -60,6 +68,7 @@ public class TransactionService {
                 .asset(asset).account(account).owner(owner)
                 .transactionType(type).quantity(quantity).pricePerUnit(pricePerUnit)
                 .totalAmount(totalAmount).fees(fees != null ? fees : BigDecimal.ZERO)
+                .feeCurrency(feeCurrency).fxRateToBase(fxRateToBase)
                 .currency(currency != null ? com.myfinance.model.enums.Currency.valueOf(currency) : account.getCurrency())
                 .transactionDate(date != null ? date : LocalDate.now())
                 .notes(notes).purpose(purpose)
@@ -81,6 +90,14 @@ public class TransactionService {
     public Transaction update(Long id, Long assetId, Long accountId, Long ownerId, TransactionType type,
                               BigDecimal quantity, BigDecimal pricePerUnit, BigDecimal fees,
                               String currency, LocalDate date, String notes, InvestmentPurpose purpose) {
+        return update(id, assetId, accountId, ownerId, type, quantity, pricePerUnit, fees, currency, date, notes, purpose, null, null);
+    }
+
+    @Transactional
+    public Transaction update(Long id, Long assetId, Long accountId, Long ownerId, TransactionType type,
+                              BigDecimal quantity, BigDecimal pricePerUnit, BigDecimal fees,
+                              String currency, LocalDate date, String notes, InvestmentPurpose purpose,
+                              String feeCurrency, BigDecimal fxRateToBase) {
         Transaction existing = transactionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Transaction not found: " + id));
 
@@ -104,6 +121,8 @@ public class TransactionService {
         existing.setPricePerUnit(pricePerUnit);
         existing.setTotalAmount(totalAmount);
         existing.setFees(fees != null ? fees : BigDecimal.ZERO);
+        existing.setFeeCurrency(feeCurrency);
+        existing.setFxRateToBase(fxRateToBase);
         existing.setCurrency(currency != null ? com.myfinance.model.enums.Currency.valueOf(currency) : account.getCurrency());
         existing.setTransactionDate(date != null ? date : existing.getTransactionDate());
         existing.setNotes(notes);

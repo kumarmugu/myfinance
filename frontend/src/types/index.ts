@@ -63,6 +63,10 @@ export interface Transaction {
   pricePerUnit: number;
   totalAmount: number;
   fees: number;
+  /** Currency of the fee; may differ from the trade currency (null = same as `currency`). */
+  feeCurrency: string | null;
+  /** FX rate trade-currency → account-currency captured at purchase (null = same currency). */
+  fxRateToBase: number | null;
   currency: Currency;
   transactionDate: string;
   notes: string;
@@ -230,6 +234,8 @@ export interface TransactionRequest {
   quantity: number;
   pricePerUnit: number;
   fees?: number;
+  feeCurrency?: string;
+  fxRateToBase?: number;
   currency?: string;
   transactionDate?: string;
   notes?: string;

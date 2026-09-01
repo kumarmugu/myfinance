@@ -62,7 +62,7 @@ public class TransactionController {
                 req.getAssetId(), req.getAccountId(), req.getOwnerId(),
                 req.getTransactionType(), req.getQuantity(), req.getPricePerUnit(),
                 req.getFees(), req.getCurrency(), req.getTransactionDate(), req.getNotes(),
-                req.getPurpose());
+                req.getPurpose(), req.getFeeCurrency(), req.getFxRateToBase());
         log.info("Created transaction id={}", tx.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(tx);
     }
@@ -83,7 +83,7 @@ public class TransactionController {
                 id, req.getAssetId(), req.getAccountId(), req.getOwnerId(),
                 req.getTransactionType(), req.getQuantity(), req.getPricePerUnit(),
                 req.getFees(), req.getCurrency(), req.getTransactionDate(), req.getNotes(),
-                req.getPurpose());
+                req.getPurpose(), req.getFeeCurrency(), req.getFxRateToBase());
         return ResponseEntity.ok(tx);
     }
 

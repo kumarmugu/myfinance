@@ -48,6 +48,21 @@ public class Transaction {
     @Builder.Default
     private BigDecimal fees = BigDecimal.ZERO;
 
+    /**
+     * Currency of {@link #fees}. May differ from the trade currency — e.g. a Saxo trade priced
+     * in USD but charged a fee in SGD. Nullable: when null, the fee is assumed to be in the
+     * transaction's own {@link #currency} (backward-compatible for existing rows).
+     */
+    private String feeCurrency;
+
+    /**
+     * FX rate from the trade {@link #currency} into the settling broker account's currency,
+     * captured AT PURCHASE. Used to lock in an exact cost basis for cross-currency buys
+     * (e.g. USD-priced Tesla bought through an SGD Saxo account). Nullable: only set when the
+     * trade currency differs from the account currency; otherwise no conversion is needed.
+     */
+    private BigDecimal fxRateToBase;
+
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Currency currency = Currency.USD;

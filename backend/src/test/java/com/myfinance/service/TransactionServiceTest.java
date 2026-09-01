@@ -200,6 +200,31 @@ class TransactionServiceTest {
 
     @Test
     @WithMockUser(username = "user")
+    void storesFeeCurrencyAndPurchaseFxRateForCrossCurrencyBuy() {
+        // USD-priced asset bought via an SGD account: capture SGD fee currency + purchase FX rate.
+        Transaction tx = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("100.00"),
+                new BigDecimal("12.00"), "USD", LocalDate.of(2024, 1, 1), "Saxo buy", null,
+                "SGD", new BigDecimal("1.35"));
+
+        assertEquals("SGD", tx.getFeeCurrency());
+        assertEquals(0, new BigDecimal("1.35").compareTo(tx.getFxRateToBase()));
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void defaultsFeeCurrencyAndFxRateToNullForPlainBuy() {
+        Transaction tx = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Plain buy");
+        assertNull(tx.getFeeCurrency());
+        assertNull(tx.getFxRateToBase());
+    }
+
+    @Test
+    @WithMockUser(username = "user")
     void updateBuyRecalculatesHolding() {
         Transaction tx = transactionService.create(
                 asset.getId(), account.getId(), owner.getId(),

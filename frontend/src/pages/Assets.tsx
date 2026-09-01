@@ -1,29 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Plus, Trash2, Pencil } from 'lucide-react';
-import { getAssets, createAsset, updateAsset, deleteAsset, getCurrencyRates } from '../api';
+import { getAssets, createAsset, updateAsset, deleteAsset } from '../api';
 import SearchableSelect from '../components/SearchableSelect';
-import type { Asset, AssetType, Currency, CurrencyRate } from '../types';
+import type { Asset, AssetType, Currency } from '../types';
 import { ASSET_TYPE_LABELS } from '../types';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import { useToast } from '../contexts/ToastContext';
-
-/** Return the latest rate to convert `from` → `to` using the user's stored FX rates.
- *  Tries direct pair, then inverse. Returns null if no rate is found. */
-function resolveRate(rates: CurrencyRate[], from: string, to: string): number | null {
-  if (from === to) return 1;
-  const f = from.toUpperCase(), t = to.toUpperCase();
-  // Latest direct rate (highest effectiveDate first).
-  const direct = rates
-    .filter(r => r.fromCurrency.toUpperCase() === f && r.toCurrency.toUpperCase() === t)
-    .sort((a, b) => b.effectiveDate.localeCompare(a.effectiveDate))[0];
-  if (direct) return direct.rate;
-  // Inverse.
-  const inverse = rates
-    .filter(r => r.fromCurrency.toUpperCase() === t && r.toCurrency.toUpperCase() === f)
-    .sort((a, b) => b.effectiveDate.localeCompare(a.effectiveDate))[0];
-  if (inverse && inverse.rate) return 1 / inverse.rate;
-  return null;
-}
 
 export default function Assets() {
   const [assets, setAssets] = useState<Asset[]>([]);

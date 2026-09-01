@@ -1,13 +1,27 @@
 import { useEffect, useState } from 'react';
 import { Plus, Trash2, Pencil, ArrowUpCircle, ArrowDownCircle, Lock } from 'lucide-react';
-import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions } from '../api';
+import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates } from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import { formatCurrency, formatDate, formatPercent } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import ExportMenu from '../components/ExportMenu';
 import { transactionsExportConfig } from '../utils/export/configs';
 import { useToast } from '../contexts/ToastContext';
-import type { Transaction, Asset, Account, Owner, TransactionRequest, SoldPosition } from '../types';
+import type { Transaction, Asset, Account, Owner, TransactionRequest, SoldPosition, CurrencyRate } from '../types';
+
+/** Latest rate to convert `from` → `to` from the user's stored FX rates (direct, then inverse). */
+function resolveRate(rates: CurrencyRate[], from: string, to: string): number | null {
+  if (!from || !to) return null;
+  if (from.toUpperCase() === to.toUpperCase()) return 1;
+  const f = from.toUpperCase(), t = to.toUpperCase();
+  const direct = rates.filter(r => r.fromCurrency.toUpperCase() === f && r.toCurrency.toUpperCase() === t)
+    .sort((a, b) => b.effectiveDate.localeCompare(a.effectiveDate))[0];
+  if (direct) return direct.rate;
+  const inverse = rates.filter(r => r.fromCurrency.toUpperCase() === t && r.toCurrency.toUpperCase() === f)
+    .sort((a, b) => b.effectiveDate.localeCompare(a.effectiveDate))[0];
+  if (inverse && inverse.rate) return 1 / inverse.rate;
+  return null;
+}
 
 export default function Transactions() {
   const { verifyPassword } = useAuth();
@@ -17,6 +31,7 @@ export default function Transactions() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [owners, setOwners] = useState<Owner[]>([]);
   const [soldPositions, setSoldPositions] = useState<SoldPosition[]>([]);
+  const [fxRates, setFxRates] = useState<CurrencyRate[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -27,15 +42,16 @@ export default function Transactions() {
 
   const [form, setForm] = useState<TransactionRequest>({
     assetId: 0, accountId: 0, ownerId: 0, transactionType: 'BUY',
-    quantity: 0, pricePerUnit: 0, fees: 0, transactionDate: new Date().toISOString().split('T')[0], notes: '', purpose: 'LONG_TERM',
+    quantity: 0, pricePerUnit: 0, fees: 0, feeCurrency: undefined, fxRateToBase: undefined,
+    transactionDate: new Date().toISOString().split('T')[0], notes: '', purpose: 'LONG_TERM',
   });
 
   useEffect(() => { loadData(); }, [filterOwner]);
 
   const loadData = async () => {
     try {
-      const [txRes, assetRes, accRes, ownerRes, soldRes] = await Promise.all([getTransactions(filterOwner), getAssets(), getAccounts(), getOwners(), getSoldPositions(filterOwner)]);
-      setTransactions(txRes.data); setAssets(assetRes.data); setAccounts(accRes.data); setOwners(ownerRes.data); setSoldPositions(soldRes.data);
+      const [txRes, assetRes, accRes, ownerRes, soldRes, fxRes] = await Promise.all([getTransactions(filterOwner), getAssets(), getAccounts(), getOwners(), getSoldPositions(filterOwner), getCurrencyRates()]);
+      setTransactions(txRes.data); setAssets(assetRes.data); setAccounts(accRes.data); setOwners(ownerRes.data); setSoldPositions(soldRes.data); setFxRates(fxRes.data);
       if (ownerRes.data.length > 0 && form.ownerId === 0) setForm(f => ({ ...f, ownerId: ownerRes.data[0].id }));
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
@@ -66,6 +82,8 @@ export default function Transactions() {
       quantity: tx.quantity,
       pricePerUnit: tx.pricePerUnit,
       fees: tx.fees ?? 0,
+      feeCurrency: tx.feeCurrency ?? undefined,
+      fxRateToBase: tx.fxRateToBase ?? undefined,
       currency: tx.currency,
       transactionDate: tx.transactionDate,
       notes: tx.notes ?? '',
@@ -87,23 +105,55 @@ export default function Transactions() {
   // Look up the live asset (for its current price + when that price was last updated).
   const assetById = new Map(assets.map(a => [a.id, a]));
 
+  type Pnl = { amount: number; pct: number; currency: string; priceUpdatedAt?: string | null; noRate?: boolean };
+
   /**
-   * Per-row profit/loss:
-   *  - BUY  → unrealized: (asset current price − buy price) × quantity, using the asset's live price.
-   *  - SELL → realized: taken from the matching SoldPosition (buy vs sell basis) when one can be found.
-   * Returns null when it can't be computed (no current price for a BUY, no matched sale for a SELL).
+   * Per-row profit/loss, expressed in the BROKER ACCOUNT's currency.
+   *
+   * BUY (unrealized):
+   *   The asset's current price is in the asset's own (instrument) currency. The cost basis is
+   *   what you actually paid, in the account currency — for a cross-currency buy (e.g. USD-priced
+   *   Tesla via an SGD Saxo account) the trade price is converted at the FX rate captured AT
+   *   PURCHASE (tx.fxRateToBase), and the current market value is converted at TODAY's FX rate.
+   *   The resulting P/L therefore includes the FX gain/loss. Same-currency buys (Tiger USD, all
+   *   LKR) need no conversion. Fees use their own feeCurrency.
+   *
+   * SELL (realized): taken from the matching SoldPosition when one can be found.
+   * Returns null when it can't be computed; sets noRate=true when a needed FX rate is missing.
    */
-  const rowPnl = (tx: Transaction): { amount: number; pct: number; priceUpdatedAt?: string | null } | null => {
+  const rowPnl = (tx: Transaction): Pnl | null => {
+    const acctCcy = tx.account?.currency || tx.currency;
     if (tx.transactionType === 'BUY') {
       const live = assetById.get(tx.asset.id);
-      const cp = live?.currentPrice;
-      if (cp == null || !tx.pricePerUnit) return null;
-      const amount = (cp - tx.pricePerUnit) * tx.quantity;
-      const cost = tx.pricePerUnit * tx.quantity;
-      return { amount, pct: cost ? (amount / cost) * 100 : 0, priceUpdatedAt: live?.priceUpdatedAt };
+      const marketPrice = live?.currentPrice; // in the asset's own currency
+      const assetCcy = live?.currency || tx.currency;
+      if (marketPrice == null || !tx.pricePerUnit) return null;
+
+      // Cost basis in the account currency.
+      // Trade→account rate: prefer the rate captured at purchase, else today's configured rate.
+      const purchaseRate = tx.fxRateToBase ?? resolveRate(fxRates, tx.currency, acctCcy);
+      if (purchaseRate == null) return { amount: 0, pct: 0, currency: acctCcy, noRate: true };
+      const tradeCostAcct = tx.pricePerUnit * tx.quantity * purchaseRate;
+      // Fee in its own currency, converted to the account currency.
+      const feeCcy = tx.feeCurrency || tx.currency;
+      const feeRate = resolveRate(fxRates, feeCcy, acctCcy);
+      const feeAcct = (tx.fees || 0) * (feeRate ?? 1);
+      const costAcct = tradeCostAcct + feeAcct;
+
+      // Current market value in the account currency, using today's FX (asset ccy → account ccy).
+      const marketRate = resolveRate(fxRates, assetCcy, acctCcy);
+      if (marketRate == null) return { amount: 0, pct: 0, currency: acctCcy, noRate: true };
+      const valueAcct = marketPrice * tx.quantity * marketRate;
+
+      const amount = valueAcct - costAcct;
+      return {
+        amount,
+        pct: costAcct ? (amount / costAcct) * 100 : 0,
+        currency: acctCcy,
+        priceUpdatedAt: live?.priceUpdatedAt,
+      };
     }
     if (tx.transactionType === 'SELL') {
-      // Match a sold-position record by asset/account/owner + sold date + quantity.
       const match = soldPositions.find(sp =>
         sp.asset?.id === tx.asset.id &&
         sp.account?.id === tx.account.id &&
@@ -114,7 +164,7 @@ export default function Transactions() {
         sp.asset?.id === tx.asset.id && sp.soldDate === tx.transactionDate && Math.abs(sp.quantity - tx.quantity) < 1e-9
       );
       if (!match) return null;
-      return { amount: match.profit, pct: match.profitPercentage };
+      return { amount: match.profit, pct: match.profitPercentage, currency: match.currency || acctCcy };
     }
     return null;
   };
@@ -168,6 +218,50 @@ export default function Transactions() {
               <input type="number" step="any" value={form.pricePerUnit || ''} onChange={e => setForm({...form, pricePerUnit: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Date</label>
               <input type="date" value={form.transactionDate} onChange={e => setForm({...form, transactionDate: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" required /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Fees</label>
+              <input type="number" step="any" value={form.fees || ''} onChange={e => setForm({...form, fees: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Optional" /></div>
+            {(() => {
+              // Cross-currency block: shown only when the selected account's currency differs from
+              // the selected asset's currency (e.g. USD-priced Tesla bought via an SGD Saxo account).
+              const acct = accounts.find(a => a.id === form.accountId);
+              const asset = assets.find(a => a.id === form.assetId);
+              const tradeCcy = asset?.currency;              // instrument/trade currency
+              const acctCcy = acct?.currency;                // settlement/account currency
+              if (!acct || !asset || !tradeCcy || !acctCcy || tradeCcy === acctCcy) {
+                return (
+                  <div><label className="block text-xs font-medium text-slate-600 mb-1">Fee Currency</label>
+                    <input type="text" value={form.feeCurrency || (acctCcy || tradeCcy || '')} disabled className="w-full border border-slate-200 bg-slate-50 rounded-lg px-3 py-2 text-sm text-slate-500" /></div>
+                );
+              }
+              const suggested = resolveRate(fxRates, tradeCcy, acctCcy);
+              const rate = form.fxRateToBase ?? suggested ?? 0;
+              const costPreview = (form.pricePerUnit || 0) * (form.quantity || 0) * (rate || 0)
+                + (form.fees || 0) * (((form.feeCurrency || acctCcy) === acctCcy) ? 1 : (resolveRate(fxRates, form.feeCurrency || acctCcy, acctCcy) ?? 1));
+              return (
+                <>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-600 mb-1">FX Rate ({tradeCcy}→{acctCcy}) at purchase</label>
+                    <input type="number" step="any"
+                      value={form.fxRateToBase ?? (suggested != null ? Number(suggested.toFixed(6)) : '')}
+                      onChange={e => setForm({ ...form, fxRateToBase: parseFloat(e.target.value) || undefined })}
+                      className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm"
+                      placeholder={suggested != null ? `≈ ${suggested.toFixed(4)}` : 'Enter rate'} />
+                    <p className="text-[10px] text-slate-400 mt-0.5">{suggested != null ? `Configured rate ≈ ${suggested.toFixed(4)} — override with your actual purchase rate` : 'No configured rate; enter your actual purchase rate'}</p>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-600 mb-1">Fee Currency</label>
+                    <SearchableSelect
+                      options={[acctCcy, tradeCcy].map(c => ({ value: c, label: c }))}
+                      value={form.feeCurrency || acctCcy}
+                      onChange={v => setForm({ ...form, feeCurrency: String(v) })}
+                      placeholder="Fee currency" />
+                  </div>
+                  <div className="lg:col-span-2 flex items-end">
+                    <p className="text-xs text-slate-500">Est. cost in {acctCcy}: <span className="font-semibold text-slate-700">{formatCurrency(costPreview, acctCcy)}</span> <span className="text-slate-400">(reconcile against what {acct.name} debited)</span></p>
+                  </div>
+                </>
+              );
+            })()}
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Notes</label>
               <input type="text" value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Optional" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Purpose</label>
@@ -237,11 +331,12 @@ export default function Transactions() {
                     {(() => {
                       const pnl = rowPnl(tx);
                       if (!pnl) return <span className="text-slate-300">-</span>;
+                      if (pnl.noRate) return <span className="text-[10px] text-amber-500" title="Set an FX rate for this currency pair to see P/L">no FX rate</span>;
                       const cls = pnl.amount >= 0 ? 'text-green-600' : 'text-red-600';
                       const pctCls = pnl.pct >= 0 ? 'text-green-500' : 'text-red-500';
                       return (
                         <div>
-                          <span className={`font-medium ${cls}`}>{formatCurrency(pnl.amount, tx.currency)}</span>
+                          <span className={`font-medium ${cls}`}>{formatCurrency(pnl.amount, pnl.currency)}</span>
                           <p className={`text-[10px] ${pctCls}`}>{formatPercent(pnl.pct)}</p>
                         </div>
                       );
