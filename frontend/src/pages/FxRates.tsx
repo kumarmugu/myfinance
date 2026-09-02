@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Pencil, Trash2, RefreshCw, HelpCircle } from 'lucide-react';
-import api, { getCurrencyRates, getAvailableCurrencies, createCurrencyRate, updateCurrencyRate, deleteCurrencyRate } from '../api';
+import api, {
+  getCurrencyRates, getAvailableCurrencies, createCurrencyRate, updateCurrencyRate,
+  deleteCurrencyRate, refreshCurrencyRate, refreshAllCurrencyRates,
+} from '../api';
 import { formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import HelpTip from '../components/HelpTip';
@@ -15,9 +18,11 @@ export default function FxRates() {
   const { showToast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<CurrencyRate | null>(null);
-  const [form, setForm] = useState({ fromCurrency: 'USD', toCurrency: 'SGD', rate: '', effectiveDate: new Date().toISOString().split('T')[0] });
+  const [form, setForm] = useState({ fromCurrency: 'USD', toCurrency: 'SGD', rate: '', spreadPct: '' });
   const [newCurrency, setNewCurrency] = useState('');
   const [error, setError] = useState('');
+  const [refreshingId, setRefreshingId] = useState<number | null>(null);
+  const [refreshingAll, setRefreshingAll] = useState(false);
 
   useEffect(() => { loadData(); }, []);
 
@@ -31,22 +36,26 @@ export default function FxRates() {
     finally { setLoading(false); }
   };
 
+  const resetForm = () => setForm({ fromCurrency: 'USD', toCurrency: 'SGD', rate: '', spreadPct: '' });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     const rateValue = parseFloat(form.rate);
     if (!rateValue || rateValue <= 0) { setError('Please enter a valid rate'); return; }
     if (form.fromCurrency === form.toCurrency) { setError('From and To currencies must be different'); return; }
+    const spread = form.spreadPct.trim() === '' ? null : parseFloat(form.spreadPct);
+    if (spread != null && (isNaN(spread) || spread < 0 || spread >= 100)) { setError('Spread % must be between 0 and 100'); return; }
     try {
-      const payload = { fromCurrency: form.fromCurrency, toCurrency: form.toCurrency, rate: rateValue, effectiveDate: form.effectiveDate };
+      const payload = { fromCurrency: form.fromCurrency, toCurrency: form.toCurrency, rate: rateValue, spreadPct: spread };
       if (editing) {
         await updateCurrencyRate(editing.id, payload);
       } else {
         await createCurrencyRate(payload);
       }
-      setShowForm(false); setEditing(null);
-      setForm({ fromCurrency: 'USD', toCurrency: 'SGD', rate: '', effectiveDate: new Date().toISOString().split('T')[0] });
+      setShowForm(false); setEditing(null); resetForm();
       loadData();
+      showToast(editing ? 'Rate updated' : 'Rate saved', 'success');
     } catch (err: any) {
       console.error(err);
       setError(err.response?.data?.message || 'Failed to save rate');
@@ -55,12 +64,48 @@ export default function FxRates() {
 
   const startEdit = (rate: CurrencyRate) => {
     setEditing(rate);
-    setForm({ fromCurrency: rate.fromCurrency, toCurrency: rate.toCurrency, rate: rate.rate.toString(), effectiveDate: rate.effectiveDate });
+    setForm({
+      fromCurrency: rate.fromCurrency,
+      toCurrency: rate.toCurrency,
+      rate: rate.rate.toString(),
+      spreadPct: rate.spreadPct != null ? rate.spreadPct.toString() : '',
+    });
     setShowForm(true);
     setError('');
   };
 
   const handleDelete = async (id: number) => { if (confirm('Delete this rate?')) { await deleteCurrencyRate(id); loadData(); } };
+
+  // Fetch the latest mid-market rate online for one pair. Unquoted pairs (e.g. many LKR pairs)
+  // are left unchanged and reported so the user can maintain them manually.
+  const handleRefreshRate = async (id: number, pair: string) => {
+    setRefreshingId(id);
+    try {
+      const res = await refreshCurrencyRate(id);
+      if (res.data.updated) { showToast(`Updated ${pair} rate`, 'success'); loadData(); }
+      else { showToast(res.data.message || `No online rate for ${pair} — update it manually`, 'info'); }
+    } catch (err: any) {
+      const status = err.response?.status;
+      showToast(status === 503 ? 'Online rate lookup is disabled on this server.' : (err.response?.data?.error || 'Failed to fetch rate'), status === 503 ? 'info' : undefined);
+    } finally {
+      setRefreshingId(null);
+    }
+  };
+
+  const handleRefreshAll = async () => {
+    setRefreshingAll(true);
+    try {
+      const res = await refreshAllCurrencyRates();
+      const { updated, skipped, total } = res.data;
+      showToast(`Updated ${updated} of ${total} rates${skipped?.length ? ` (${skipped.length} not found: ${skipped.slice(0, 5).join(', ')}${skipped.length > 5 ? '…' : ''})` : ''}`, updated > 0 ? 'success' : 'info');
+      loadData();
+    } catch (err: any) {
+      const status = err.response?.status;
+      showToast(status === 503 ? 'Online rate lookup is disabled on this server.' : (err.response?.data?.error || 'Failed to refresh rates'), status === 503 ? 'info' : undefined);
+    } finally {
+      setRefreshingAll(false);
+    }
+  };
 
   const handleAddCurrency = async () => {
     const code = newCurrency.trim().toUpperCase();
@@ -87,16 +132,17 @@ export default function FxRates() {
     }
   };
 
+  // Effective rate after the broker spread, shown as a preview.
+  const effectiveRate = (r: { rate: number; spreadPct: number | null }) =>
+    r.spreadPct && r.spreadPct > 0 ? r.rate * (1 - r.spreadPct / 100) : r.rate;
+
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
-  // Group rates by pair for quick view
-  const latestRates: Record<string, CurrencyRate> = {};
-  rates.forEach(r => {
-    const key = `${r.fromCurrency}/${r.toCurrency}`;
-    if (!latestRates[key] || r.effectiveDate > latestRates[key].effectiveDate) {
-      latestRates[key] = r;
-    }
-  });
+  const formRateNum = parseFloat(form.rate);
+  const formSpreadNum = form.spreadPct.trim() === '' ? 0 : parseFloat(form.spreadPct);
+  const formEffective = !isNaN(formRateNum) && formRateNum > 0
+    ? (formSpreadNum > 0 && formSpreadNum < 100 ? formRateNum * (1 - formSpreadNum / 100) : formRateNum)
+    : null;
 
   return (
     <div className="space-y-6">
@@ -106,42 +152,59 @@ export default function FxRates() {
             FX Rates
             <HelpTip
               label="What are FX rates?"
-              text="FX rates convert amounts held in different currencies into your base currency for reporting and Net Worth. Your original values are never changed — the app only derives converted views. There is no live feed; it uses the rates you enter here."
+              text="FX rates convert amounts held in other currencies into your base currency for Net Worth and totals. Enter one rate per pair; the broker spread % reduces it to a realistic value when converting into your base. Your original per-record amounts are never changed."
             />
           </h1>
           <p className="text-slate-500 text-sm mt-0.5">
-            Manage exchange rates for currency conversion.{' '}
+            One rate per currency pair, with an optional broker spread.{' '}
             <Link to="/guide" className="text-indigo-600 hover:underline inline-flex items-center gap-0.5">
-              <HelpCircle size={12} /> Learn more in the guide
+              <HelpCircle size={12} /> Learn more
             </Link>
           </p>
         </div>
-        <button onClick={() => { setShowForm(!showForm); setEditing(null); setError(''); setForm({ fromCurrency: 'USD', toCurrency: 'SGD', rate: '', effectiveDate: new Date().toISOString().split('T')[0] }); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
-          <Plus size={16} /> Add FX Rate
-        </button>
+        <div className="flex items-center gap-3">
+          <button onClick={handleRefreshAll} disabled={refreshingAll || rates.length === 0} className="flex items-center gap-2 px-4 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed" title="Fetch the latest online mid-market rates for all pairs">
+            <RefreshCw size={16} className={refreshingAll ? 'animate-spin' : ''} /> {refreshingAll ? 'Updating...' : 'Update All Rates'}
+          </button>
+          <button onClick={() => { setShowForm(!showForm); setEditing(null); setError(''); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
+            <Plus size={16} /> Add FX Rate
+          </button>
+        </div>
       </div>
 
-      {/* Current Rates Cards */}
+      {/* Rate Cards (one per pair) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {Object.entries(latestRates).map(([pair, rate]) => (
-          <div key={pair} className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">{rate.fromCurrency}</span>
-                <span className="text-slate-400">→</span>
-                <span className="text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded">{rate.toCurrency}</span>
+        {rates.map(rate => {
+          const pair = `${rate.fromCurrency}/${rate.toCurrency}`;
+          const hasSpread = rate.spreadPct != null && rate.spreadPct > 0;
+          return (
+            <div key={rate.id} className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">{rate.fromCurrency}</span>
+                  <span className="text-slate-400">→</span>
+                  <span className="text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded">{rate.toCurrency}</span>
+                </div>
+                <div className="flex gap-1">
+                  <button onClick={() => handleRefreshRate(rate.id, pair)} disabled={refreshingId === rate.id} className="p-1 text-slate-400 hover:text-indigo-600 disabled:opacity-50" title="Fetch latest online rate">
+                    <RefreshCw size={14} className={refreshingId === rate.id ? 'animate-spin' : ''} />
+                  </button>
+                  <button onClick={() => startEdit(rate)} className="p-1 text-slate-400 hover:text-indigo-600"><Pencil size={14} /></button>
+                  <button onClick={() => handleDelete(rate.id)} className="p-1 text-slate-400 hover:text-red-500"><Trash2 size={14} /></button>
+                </div>
               </div>
-              <div className="flex gap-1">
-                <button onClick={() => startEdit(rate)} className="p-1 text-slate-400 hover:text-indigo-600"><Pencil size={14} /></button>
-                <button onClick={() => handleDelete(rate.id)} className="p-1 text-slate-400 hover:text-red-500"><Trash2 size={14} /></button>
-              </div>
+              <p className="text-2xl font-bold text-slate-800">{rate.rate.toFixed(4)}</p>
+              <p className="text-xs text-slate-500 mt-1">1 {rate.fromCurrency} = {rate.rate} {rate.toCurrency} <span className="text-slate-400">(market)</span></p>
+              {hasSpread && (
+                <p className="text-xs text-amber-600 mt-1">
+                  Broker spread {rate.spreadPct}% → effective {effectiveRate(rate).toFixed(4)}
+                </p>
+              )}
+              <p className="text-[10px] text-slate-400 mt-1">Updated: {formatDate(rate.effectiveDate)}</p>
             </div>
-            <p className="text-2xl font-bold text-slate-800">{rate.rate.toFixed(4)}</p>
-            <p className="text-xs text-slate-500 mt-1">1 {rate.fromCurrency} = {rate.rate} {rate.toCurrency}</p>
-            <p className="text-[10px] text-slate-400 mt-1">Updated: {formatDate(rate.effectiveDate)}</p>
-          </div>
-        ))}
-        {Object.keys(latestRates).length === 0 && (
+          );
+        })}
+        {rates.length === 0 && (
           <div className="col-span-3 text-center text-slate-400 py-12">No rates configured. Click "Add FX Rate" to get started.</div>
         )}
       </div>
@@ -156,55 +219,27 @@ export default function FxRates() {
               <SearchableSelect options={currencies.map(c => ({ value: c, label: c }))} value={form.fromCurrency} onChange={v => setForm({...form, fromCurrency: v})} placeholder="From..." disabled={!!editing} /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">To Currency</label>
               <SearchableSelect options={currencies.map(c => ({ value: c, label: c }))} value={form.toCurrency} onChange={v => setForm({...form, toCurrency: v})} placeholder="To..." disabled={!!editing} /></div>
-            <div><label className="block text-xs font-medium text-slate-600 mb-1">Rate *</label>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Market Rate *</label>
               <input type="number" step="any" value={form.rate} onChange={e => setForm({...form, rate: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required placeholder="e.g. 1.3500" /></div>
-            <div><label className="block text-xs font-medium text-slate-600 mb-1">Effective Date *</label>
-              <input type="date" value={form.effectiveDate} onChange={e => setForm({...form, effectiveDate: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" required /></div>
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1 flex items-center gap-1">
+                Broker Spread %
+                <HelpTip label="Broker spread" text="Brokers pay less than the mid-market rate when you convert back to your base currency. Enter the approximate % they take (e.g. 1.5). Net Worth then uses rate × (1 − spread%) so it reflects what you'd actually receive. Leave blank for none." />
+              </label>
+              <input type="number" step="any" value={form.spreadPct} onChange={e => setForm({...form, spreadPct: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="optional, e.g. 1.5" /></div>
             <div className="flex items-end gap-2">
               <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">{editing ? 'Update' : 'Save'}</button>
               <button type="button" onClick={() => { setShowForm(false); setEditing(null); setError(''); }} className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
             </div>
+            {formEffective != null && (
+              <div className="lg:col-span-5 text-xs text-slate-500">
+                Effective conversion rate: <span className="font-medium text-slate-700">{formEffective.toFixed(4)}</span>
+                {formSpreadNum > 0 && formSpreadNum < 100 && <span className="text-amber-600"> (after {formSpreadNum}% spread)</span>}
+              </div>
+            )}
           </form>
         </div>
       )}
-
-      {/* Full History Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-slate-200 flex items-center justify-between">
-          <h3 className="font-semibold text-slate-800 text-sm">Rate History ({rates.length})</h3>
-          <RefreshCw size={14} className="text-slate-400 cursor-pointer hover:text-indigo-600" onClick={loadData} />
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200">
-              <tr>
-                <th className="text-left px-4 py-2.5 font-medium text-slate-600">From</th>
-                <th className="text-left px-4 py-2.5 font-medium text-slate-600">To</th>
-                <th className="text-right px-4 py-2.5 font-medium text-slate-600">Rate</th>
-                <th className="text-left px-4 py-2.5 font-medium text-slate-600">Effective Date</th>
-                <th className="px-4 py-2.5 w-20"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {[...rates].sort((a, b) => b.effectiveDate.localeCompare(a.effectiveDate)).map(r => (
-                <tr key={r.id} className="hover:bg-slate-50 group">
-                  <td className="px-4 py-2.5"><span className="text-xs font-bold bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded">{r.fromCurrency}</span></td>
-                  <td className="px-4 py-2.5"><span className="text-xs font-bold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded">{r.toCurrency}</span></td>
-                  <td className="px-4 py-2.5 text-right font-mono font-medium text-slate-800">{r.rate.toFixed(4)}</td>
-                  <td className="px-4 py-2.5 text-slate-600 text-xs">{formatDate(r.effectiveDate)}</td>
-                  <td className="px-4 py-2.5">
-                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => startEdit(r)} className="text-slate-400 hover:text-indigo-600"><Pencil size={13} /></button>
-                      <button onClick={() => handleDelete(r.id)} className="text-slate-400 hover:text-red-500"><Trash2 size={13} /></button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {rates.length === 0 && <tr><td colSpan={5} className="px-4 py-12 text-center text-slate-400">No rates</td></tr>}
-            </tbody>
-          </table>
-        </div>
-      </div>
 
       {/* Add New Currency */}
       <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
@@ -220,7 +255,6 @@ export default function FxRates() {
           <input type="text" value={newCurrency} onChange={e => setNewCurrency(e.target.value.toUpperCase())} placeholder="e.g. INR, BTC, KRW" maxLength={5} className="border border-slate-300 rounded-lg px-3 py-2 text-sm w-32 uppercase" onKeyDown={e => e.key === 'Enter' && handleAddCurrency()} />
           <button onClick={handleAddCurrency} className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">Add</button>
         </div>
-        {/* Currency Table */}
         <div className="border border-slate-200 rounded-lg overflow-hidden">
           <table className="w-full text-sm">
             <thead className="bg-slate-50 border-b border-slate-200">
@@ -249,10 +283,10 @@ export default function FxRates() {
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
         <p className="text-sm text-blue-800 font-medium">How FX rates are used</p>
         <ul className="text-xs text-blue-600 mt-1 space-y-0.5 list-disc list-inside">
-          <li>Dashboard and Reports use the latest rate for currency conversion</li>
-          <li>SGD/USD toggle converts all displayed amounts using stored rates</li>
-          <li>LKR rate is used for Fixed Deposit net worth calculations</li>
-          <li>Historical rates can be stored for accurate point-in-time reporting</li>
+          <li>One rate is kept per currency pair (no history) — updating replaces it.</li>
+          <li>Net Worth and totals convert each amount into your base currency using rate × (1 − spread%).</li>
+          <li>The broker spread % reflects that brokers pay below mid-market when you repatriate.</li>
+          <li>Use "Update All Rates" to fetch the latest market rates online; unquoted pairs stay manual.</li>
         </ul>
       </div>
     </div>

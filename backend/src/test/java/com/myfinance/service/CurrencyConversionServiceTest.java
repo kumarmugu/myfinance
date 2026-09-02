@@ -119,4 +119,53 @@ class CurrencyConversionServiceTest {
     void factorFromBaseIsOneForBaseCurrency() {
         assertThat(service.factorFromBase("SGD", 1L)).isEqualByComparingTo("1");
     }
+
+    // ─── Broker spread (per-pair) ───
+
+    private CurrencyRate rateWithSpread(String from, String to, String value, String spreadPct) {
+        return CurrencyRate.builder()
+                .fromCurrency(from).toCurrency(to)
+                .rate(new BigDecimal(value)).spreadPct(new BigDecimal(spreadPct))
+                .effectiveDate(LocalDate.of(2026, 1, 1)).userId(1L).build();
+    }
+
+    @Test
+    void appliesSpreadToDirectRate() {
+        // Market 1.35, broker spread 1.5% -> effective 1.35 * 0.985 = 1.32975
+        when(currencyRateRepository.findByUserId(1L))
+                .thenReturn(List.of(rateWithSpread("USD", "SGD", "1.35", "1.5")));
+
+        assertThat(service.factorToBase("USD", 1L)).isEqualByComparingTo("1.32975");
+        assertThat(service.toBase(new BigDecimal("100"), "USD", 1L)).isEqualByComparingTo("132.975");
+    }
+
+    @Test
+    void zeroOrNullSpreadUsesMidMarket() {
+        when(currencyRateRepository.findByUserId(1L))
+                .thenReturn(List.of(rateWithSpread("USD", "SGD", "1.35", "0")));
+        assertThat(service.factorToBase("USD", 1L)).isEqualByComparingTo("1.35");
+    }
+
+    @Test
+    void applySpreadHelperClampsAtHundred() {
+        // A pathological spread >= 100 is clamped so the factor never hits zero/negative.
+        BigDecimal result = service.applySpread(new BigDecimal("1.35"), new BigDecimal("150"));
+        assertThat(result).isGreaterThan(BigDecimal.ZERO);
+    }
+
+    @Test
+    void applySpreadHelperReturnsRateWhenSpreadNull() {
+        assertThat(service.applySpread(new BigDecimal("1.35"), null)).isEqualByComparingTo("1.35");
+    }
+
+    @Test
+    void spreadAppliedThroughInverseRate() {
+        // Only SGD->USD = 0.74 with a 2% spread; USD->base factor = 1 / (0.74 * 0.98)
+        when(currencyRateRepository.findByUserId(1L))
+                .thenReturn(List.of(rateWithSpread("SGD", "USD", "0.74", "2")));
+
+        BigDecimal effInverse = new BigDecimal("0.74").multiply(new BigDecimal("0.98"));
+        BigDecimal expected = BigDecimal.ONE.divide(effInverse, 10, java.math.RoundingMode.HALF_UP);
+        assertThat(service.factorToBase("USD", 1L)).isEqualByComparingTo(expected);
+    }
 }

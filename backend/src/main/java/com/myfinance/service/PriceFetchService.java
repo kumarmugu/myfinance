@@ -150,6 +150,31 @@ public class PriceFetchService {
         };
     }
 
+    // ─── FX rates (mid-market) ───
+    /**
+     * Best-effort mid-market FX rate for {@code from->to} (e.g. USD->SGD) from Yahoo's chart
+     * endpoint using the {@code FROMTO=X} convention (e.g. USDSGD=X). Returns empty when disabled,
+     * the pair is unquoted (e.g. many LKR pairs), or the request fails. Never throws.
+     * The returned value is the mid-market rate WITHOUT any broker spread — the caller stores it
+     * as the rate and the spread is applied separately at conversion time.
+     */
+    public Optional<BigDecimal> fetchFxRate(String from, String to) {
+        if (!enabled) return Optional.empty();
+        if (from == null || to == null) return Optional.empty();
+        String f = from.trim().toUpperCase();
+        String t = to.trim().toUpperCase();
+        if (f.isEmpty() || t.isEmpty() || f.equals(t)) return Optional.empty();
+        try {
+            String pair = f + t + "=X";
+            String url = "https://query1.finance.yahoo.com/v8/finance/chart/" + urlEncode(pair) + "?range=1d&interval=1d";
+            String body = get(url);
+            return parseYahooJson(body); // same meta.regularMarketPrice shape as equities
+        } catch (Exception e) {
+            log.debug("FX fetch failed for {}->{}: {}", from, to, e.toString());
+            return Optional.empty();
+        }
+    }
+
     private String get(String url) throws Exception {
         HttpRequest req = HttpRequest.newBuilder()
                 .uri(URI.create(url))

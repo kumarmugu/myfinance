@@ -139,6 +139,8 @@ export const getAvailableCurrencies = () => api.get<string[]>('/currency-rates/c
 export const createCurrencyRate = (rate: Partial<CurrencyRate>) => api.post<CurrencyRate>('/currency-rates', rate);
 export const updateCurrencyRate = (id: number, rate: Partial<CurrencyRate>) => api.put<CurrencyRate>(`/currency-rates/${id}`, rate);
 export const deleteCurrencyRate = (id: number) => api.delete(`/currency-rates/${id}`);
+export const refreshCurrencyRate = (id: number) => api.post<{ updated: boolean; rate?: CurrencyRate; message?: string }>(`/currency-rates/${id}/refresh`);
+export const refreshAllCurrencyRates = () => api.post<{ updated: number; skipped: string[]; total: number }>(`/currency-rates/refresh-all`);
 
 // ─── Insurance ───
 export const getInsurancePolicies = (ownerId?: number) => api.get<any[]>('/insurance', { params: { ownerId } });

@@ -252,6 +252,33 @@ class TransactionServiceTest {
 
     @Test
     @WithMockUser(username = "user")
+    void realizedPnlForCrossCurrencySellWhenBaseWeakened() {
+        // Real-world case: USD asset via SGD (Saxo) account.
+        // Buy 5 @ $318 with USD→SGD = 1.36; sell 5 @ $373.47 with USD→SGD = 1.28 (SGD strengthened),
+        // fee 7.40 in the account currency (SGD).
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, new BigDecimal("5"), new BigDecimal("318.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy", null,
+                "SGD", new BigDecimal("1.36"));
+
+        // Fee currency = account currency (test account is USD here) so it is subtracted as-is.
+        Transaction sell = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.SELL, new BigDecimal("5"), new BigDecimal("373.47"),
+                new BigDecimal("7.40"), "USD", LocalDate.of(2024, 6, 1), "Sell", null,
+                "USD", new BigDecimal("1.28"));
+
+        // FX: proceeds(1867.35) * (1.28 - 1.36) = 1867.35 * -0.08 = -149.388
+        assertEquals(0, new BigDecimal("-149.39").compareTo(sell.getRealizedFxPnl().setScale(2, RoundingMode.HALF_UP)));
+        // Stock (with fee booked against it): 277.35*1.36 - 7.40 = 377.196 - 7.40 = 369.796 → 369.80
+        assertEquals(0, new BigDecimal("369.80").compareTo(sell.getRealizedStockPnl().setScale(2, RoundingMode.HALF_UP)));
+        // Total: 377.196 - 149.388 - 7.40 fee = 220.408 → 220.41
+        assertEquals(0, new BigDecimal("220.41").compareTo(sell.getRealizedPnl().setScale(2, RoundingMode.HALF_UP)));
+    }
+
+    @Test
+    @WithMockUser(username = "user")
     void realizedPnlSubtractsSellFee() {
         transactionService.create(
                 asset.getId(), account.getId(), owner.getId(),
@@ -392,6 +419,50 @@ class TransactionServiceTest {
         assertEquals(0, new BigDecimal("20").compareTo(h.get().getQuantity()));
         assertEquals(0, new BigDecimal("4000.00").compareTo(h.get().getInvestedAmount()));
         assertEquals(0, new BigDecimal("200.000000").compareTo(h.get().getAverageBuyPrice()));
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void resavingBuyThenSellRepairsMissingBuyFxOnAClosedPosition() {
+        // Mirrors the real repair path: a BUY was originally recorded WITHOUT stamping its FX onto
+        // the holding (legacy data), the position was fully sold, so the sell fell back to sellFx and
+        // over/under-stated FX. Re-saving the BUY (with its real FX) then the SELL must fix the P/L.
+
+        // 1) Legacy-style buy: no fx captured on the holding.
+        Transaction buy = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, new BigDecimal("5"), new BigDecimal("318.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Legacy buy");
+
+        // 2) Sell everything with a real sell FX — with no buy FX, this books zero FX P/L.
+        Transaction sell = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.SELL, new BigDecimal("5"), new BigDecimal("373.47"),
+                new BigDecimal("7.40"), "USD", LocalDate.of(2024, 6, 1), "Sell", null,
+                "USD", new BigDecimal("1.28"));
+        assertEquals(0, BigDecimal.ZERO.compareTo(sell.getRealizedFxPnl().setScale(2, RoundingMode.HALF_UP)));
+
+        // 3) Repair: re-save the BUY with its real purchase FX (1.36) — restamps the holding.
+        transactionService.update(
+                buy.getId(), asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, new BigDecimal("5"), new BigDecimal("318.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy repaired", null,
+                "SGD", new BigDecimal("1.36"));
+
+        // 4) Re-save the SELL — now it recomputes against the repaired buy FX (1.36).
+        Transaction fixed = transactionService.update(
+                sell.getId(), asset.getId(), account.getId(), owner.getId(),
+                TransactionType.SELL, new BigDecimal("5"), new BigDecimal("373.47"),
+                new BigDecimal("7.40"), "USD", LocalDate.of(2024, 6, 1), "Sell repaired", null,
+                "USD", new BigDecimal("1.28"));
+
+        // Now the FX loss shows and the total is the correct 220.41.
+        assertEquals(0, new BigDecimal("-149.39").compareTo(fixed.getRealizedFxPnl().setScale(2, RoundingMode.HALF_UP)));
+        assertEquals(0, new BigDecimal("220.41").compareTo(fixed.getRealizedPnl().setScale(2, RoundingMode.HALF_UP)));
+
+        // The sold position reflects the corrected profit too.
+        SoldPosition sp = soldPositionRepository.findBySourceTransactionId(sell.getId()).orElseThrow();
+        assertEquals(0, new BigDecimal("220.41").compareTo(sp.getProfit().setScale(2, RoundingMode.HALF_UP)));
     }
 
     // ── Portfolio → Sold tab sync (a SELL transaction generates a SoldPosition) ──

@@ -5,7 +5,10 @@ import com.myfinance.model.UserCurrency;
 import com.myfinance.repository.CurrencyRateRepository;
 import com.myfinance.repository.UserCurrencyRepository;
 import com.myfinance.security.TenantContext;
+import com.myfinance.service.PriceFetchService;
 import lombok.RequiredArgsConstructor;
+
+import java.math.BigDecimal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,7 @@ public class CurrencyRateController {
     private final CurrencyRateRepository repository;
     private final UserCurrencyRepository userCurrencyRepository;
     private final TenantContext tenantContext;
+    private final PriceFetchService priceFetchService;
 
     @GetMapping
     public List<CurrencyRate> getAll() { return repository.findByUserId(tenantContext.getCurrentUserId()); }
@@ -124,5 +128,62 @@ public class CurrencyRateController {
         log.info("Deleting currency rate id={}", id);
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // ─── Online mid-market rate refresh (mirrors the Assets "Update Price" feature) ───
+
+    /**
+     * Fetch the latest mid-market rate for one pair from the online provider and store it.
+     * The broker spread is preserved (only the rate is updated). Returns { updated, rate, message };
+     * pairs the feed doesn't quote (e.g. many LKR pairs) leave the existing rate unchanged.
+     */
+    @PostMapping("/{id}/refresh")
+    public ResponseEntity<?> refreshRate(@PathVariable Long id) {
+        if (!priceFetchService.isEnabled()) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                    .body(Map.of("error", "Online rate lookup is disabled"));
+        }
+        Long uid = tenantContext.getCurrentUserId();
+        CurrencyRate rate = repository.findById(id).filter(r -> uid.equals(r.getUserId())).orElse(null);
+        if (rate == null) return ResponseEntity.notFound().build();
+
+        var fetched = priceFetchService.fetchFxRate(rate.getFromCurrency(), rate.getToCurrency());
+        if (fetched.isEmpty()) {
+            return ResponseEntity.ok(Map.of(
+                    "updated", false,
+                    "rate", rate,
+                    "message", "No online rate for " + rate.getFromCurrency() + "/" + rate.getToCurrency() + " — update it manually"));
+        }
+        rate.setRate(fetched.get());
+        rate.setEffectiveDate(LocalDate.now());
+        CurrencyRate saved = repository.save(rate);
+        log.info("Refreshed FX rate id={} {}->{} = {}", id, rate.getFromCurrency(), rate.getToCurrency(), fetched.get());
+        return ResponseEntity.ok(Map.of("updated", true, "rate", saved));
+    }
+
+    /** Refresh all of the current user's rates. Returns counts of updated vs skipped pairs. */
+    @PostMapping("/refresh-all")
+    public ResponseEntity<?> refreshAll() {
+        if (!priceFetchService.isEnabled()) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                    .body(Map.of("error", "Online rate lookup is disabled"));
+        }
+        Long uid = tenantContext.getCurrentUserId();
+        List<CurrencyRate> rates = repository.findByUserId(uid);
+        int updated = 0;
+        List<String> skipped = new ArrayList<>();
+        for (CurrencyRate r : rates) {
+            var fetched = priceFetchService.fetchFxRate(r.getFromCurrency(), r.getToCurrency());
+            if (fetched.isPresent()) {
+                r.setRate(fetched.get());
+                r.setEffectiveDate(LocalDate.now());
+                repository.save(r);
+                updated++;
+            } else {
+                skipped.add(r.getFromCurrency() + "/" + r.getToCurrency());
+            }
+        }
+        log.info("Refresh-all FX rates for user={}: updated={}, skipped={}", uid, updated, skipped.size());
+        return ResponseEntity.ok(Map.of("updated", updated, "skipped", skipped, "total", rates.size()));
     }
 }

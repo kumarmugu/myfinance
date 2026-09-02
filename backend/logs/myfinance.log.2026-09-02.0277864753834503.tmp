@@ -1,0 +1,40 @@
+2026-09-03 00:00:00 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-03 00:00:00 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-03 00:00:00 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-03 00:00:00 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-03 00:00:00 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-03 00:00:00 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-09-03 00:00:00 [main] INFO  c.m.c.RetirementFundControllerTest - Started RetirementFundControllerTest in 4.996 seconds (process running for 132.529)
+2026-09-03 00:00:00 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-03 00:00:00 [main] INFO  c.m.c.RetirementFundController - Creating retirement fund entry: fundType=SRS, amount=15300
+2026-09-03 00:00:00 [main] INFO  c.m.c.RetirementFundController - Created retirement fund entry id=1
+2026-09-03 00:00:00 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/retirement-fund → 201 (22ms)
+2026-09-03 00:00:00 [main] INFO  c.m.c.RetirementFundController - Creating retirement fund entry: fundType=EPF, amount=3000
+2026-09-03 00:00:00 [main] INFO  c.m.c.RetirementFundController - Created retirement fund entry id=2
+2026-09-03 00:00:00 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/retirement-fund → 201 (10ms)
+2026-09-03 00:00:00 [main] INFO  c.m.c.RetirementFundController - Deleting retirement fund entry id=3
+2026-09-03 00:00:00 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/retirement-fund/3 → 204 (5ms)
+2026-09-03 00:00:00 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/retirement-fund → 200 (5ms)
+2026-09-03 00:00:00 [main] INFO  c.m.c.RetirementFundController - Updating retirement fund entry id=4
+2026-09-03 00:00:00 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/retirement-fund/4 → 200 (9ms)
+2026-09-03 00:00:00 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/retirement-fund → 200 (6ms)
+2026-09-03 00:00:01 [main] INFO  c.m.c.RetirementFundController - Creating retirement fund entry: fundType=CPF, amount=2500
+2026-09-03 00:00:01 [main] INFO  c.m.c.RetirementFundController - Created retirement fund entry id=8
+2026-09-03 00:00:01 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/retirement-fund → 201 (6ms)
+2026-09-03 00:00:01 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/retirement-fund → 200 (6ms)
+2026-09-03 00:00:01 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/retirement-fund → 200 (11ms)
+2026-09-03 00:00:01 [main] INFO  c.m.c.RetirementFundController - Creating retirement fund entry: fundType=CPF, amount=50000
+2026-09-03 00:00:01 [main] INFO  c.m.c.RetirementFundController - Created retirement fund entry id=14
+2026-09-03 00:00:01 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/retirement-fund → 201 (20ms)
+2026-09-03 00:00:01 [main] INFO  c.m.c.RetirementFundController - Creating retirement fund entry: fundType=CPF, amount=2500
+2026-09-03 00:00:01 [main] INFO  c.m.c.RetirementFundController - Created retirement fund entry id=15
+2026-09-03 00:00:01 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/retirement-fund → 201 (11ms)
+2026-09-03 00:00:01 [main] INFO  c.m.c.RetirementFundController - Creating retirement fund entry: fundType=CPF, amount=1200
+2026-09-03 00:00:01 [main] INFO  c.m.c.RetirementFundController - Created retirement fund entry id=16
+2026-09-03 00:00:01 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/retirement-fund → 201 (10ms)
+2026-09-03 00:00:01 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/retirement-fund/summary → 200 (27ms)
+2026-09-03 00:00:01 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-03 00:00:01 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-18 - Shutdown initiated...
+2026-09-03 00:00:01 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-18 - Shutdown completed.
+2026-09-03 00:00:01 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.ExpenseControllerTest]: ExpenseControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-03 00:00:01 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.ExpenseControllerTest
