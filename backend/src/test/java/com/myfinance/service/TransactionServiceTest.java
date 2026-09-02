@@ -273,6 +273,29 @@ class TransactionServiceTest {
 
     @Test
     @WithMockUser(username = "user")
+    void buyWithoutFxRateDoesNotInventFxGainOnSell() {
+        // Regression: the BUY was entered WITHOUT an fx rate (older data). If we default the buy FX
+        // to 1 while the SELL carries a real rate, we manufacture a phantom FX gain of
+        // proceeds×(sellFx−1). Instead the FX component must be zero and P/L = (proceeds−cost)×sellFx.
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy without fx");
+
+        Transaction sell = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.SELL, BigDecimal.TEN, new BigDecimal("120.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 6, 1), "Sell with fx", null,
+                null, new BigDecimal("1.28"));
+
+        // No phantom FX gain.
+        assertEquals(0, BigDecimal.ZERO.compareTo(sell.getRealizedFxPnl().setScale(2, RoundingMode.HALF_UP)));
+        // Whole P/L = (120-100)*10 * 1.28 = 200 * 1.28 = 256.
+        assertEquals(0, new BigDecimal("256.00").compareTo(sell.getRealizedPnl().setScale(2, RoundingMode.HALF_UP)));
+    }
+
+    @Test
+    @WithMockUser(username = "user")
     void realizedPnlSameCurrencyHasNoFxComponent() {
         // Plain USD buy/sell (no fx rates) → FX component is zero, stock component is the whole P/L.
         transactionService.create(

@@ -201,16 +201,32 @@ public class TransactionService {
         // buyFx: the trade→account FX for this transaction. 1 when same currency / not provided.
         BigDecimal txFx = fxRateToBase != null ? fxRateToBase : BigDecimal.ONE;
 
+        // The buy FX rate for THIS transaction, or null when the user didn't record one. We keep it
+        // null (rather than defaulting to 1) so a later SELL can tell "same currency / genuinely 1.0"
+        // apart from "unknown" — defaulting an unknown buy FX to 1 would invent a phantom FX gain.
+        BigDecimal buyFxOrNull = fxRateToBase;
+
         if (type == TransactionType.BUY) {
             if (holdingOpt.isPresent()) {
                 Holding h = holdingOpt.get();
                 BigDecimal newQty = h.getQuantity().add(quantity);
                 BigDecimal newInvested = h.getInvestedAmount().add(quantity.multiply(pricePerUnit));
                 BigDecimal newAvg = newInvested.divide(newQty, 6, RoundingMode.HALF_UP);
-                // Quantity-weighted average of the buy FX rate.
-                BigDecimal prevFx = h.getAverageBuyFxRate() != null ? h.getAverageBuyFxRate() : BigDecimal.ONE;
-                BigDecimal newAvgFx = prevFx.multiply(h.getQuantity()).add(txFx.multiply(quantity))
-                        .divide(newQty, 6, RoundingMode.HALF_UP);
+                // Quantity-weighted average of the buy FX rate. If neither the existing holding nor
+                // this buy has a recorded rate, leave it null (unknown). If only one side has a rate,
+                // use that rate for the whole position rather than mixing in a fabricated 1.0.
+                BigDecimal prevFx = h.getAverageBuyFxRate();
+                BigDecimal newAvgFx;
+                if (prevFx == null && buyFxOrNull == null) {
+                    newAvgFx = null;
+                } else if (prevFx == null) {
+                    newAvgFx = buyFxOrNull;
+                } else if (buyFxOrNull == null) {
+                    newAvgFx = prevFx;
+                } else {
+                    newAvgFx = prevFx.multiply(h.getQuantity()).add(buyFxOrNull.multiply(quantity))
+                            .divide(newQty, 6, RoundingMode.HALF_UP);
+                }
                 h.setQuantity(newQty);
                 h.setAverageBuyPrice(newAvg);
                 h.setInvestedAmount(newInvested);
@@ -222,7 +238,7 @@ public class TransactionService {
                         .asset(asset).account(account).owner(owner)
                         .quantity(quantity).averageBuyPrice(pricePerUnit)
                         .investedAmount(quantity.multiply(pricePerUnit))
-                        .averageBuyFxRate(txFx)
+                        .averageBuyFxRate(buyFxOrNull)
                         .currency(asset.getCurrency() != null ? asset.getCurrency() : account.getCurrency())
                         .purpose(purpose)
                         .userId(tenantContext.getCurrentUserId()).build());
@@ -242,9 +258,13 @@ public class TransactionService {
                 holdingService.save(h);
 
                 // ── Realized P/L in the account currency, split into stock and FX components ──
-                // avgBuyFx: FX rate at which the sold shares were originally bought (quantity-weighted).
-                BigDecimal avgBuyFx = h.getAverageBuyFxRate() != null ? h.getAverageBuyFxRate() : BigDecimal.ONE;
                 BigDecimal sellFx = txFx; // FX rate captured on this SELL (or 1 if same currency)
+                // avgBuyFx: FX rate at which the sold shares were originally bought (quantity-weighted).
+                // When the buy has NO recorded FX rate (older buys, or buys entered without one), we
+                // must NOT default it to 1 — doing so invents a phantom FX gain of proceeds×(sellFx−1)
+                // on the whole position. Instead fall back to the sell FX so the FX component is zero
+                // and the entire realized P/L is treated as a price (stock) move in the account currency.
+                BigDecimal avgBuyFx = h.getAverageBuyFxRate() != null ? h.getAverageBuyFxRate() : sellFx;
                 BigDecimal avgBuyPrice = h.getAverageBuyPrice();
 
                 // Proceeds and cost in the trade (instrument) currency.
