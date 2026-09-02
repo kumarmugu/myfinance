@@ -49,6 +49,8 @@ export interface CurrencyRate {
   fromCurrency: string;
   toCurrency: string;
   rate: number;
+  /** Broker spread % below mid-market applied when converting to base (null/0 = mid-market). */
+  spreadPct: number | null;
   effectiveDate: string;
 }
 
