@@ -200,8 +200,8 @@ INSERT INTO generic_fixed_deposits (id, user_id, bank_name, account_number, prin
 
 -- 13. REAL ESTATE (Property)
 INSERT INTO properties (id, user_id, owner_id, property_name, property_type, address, country, purchase_price, current_value, outstanding_loan, currency, purchase_date, tenure, area_size, area_unit, ownership, monthly_rental, include_in_net_worth, status, notes, created_at, updated_at) VALUES
- (1, @UID@, 1, 'HDB Flat - Woodlands', 'HDB',         '123 Woodlands Ave', 'Singapore', 500000, 620000, 380000, 'SGD', DATE '2020-06-01', '99-year',  90.0,  'sqm', 'Joint',  0,    TRUE, 'OWNED',  'Primary residence', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- (2, @UID@, 1, 'Condo - Colombo',      'Condominium', 'Marine Drive',      'Sri Lanka', 200000, 240000, 0,      'LKR', DATE '2019-03-15', 'Freehold', 120.0, 'sqm', 'Single', 1200, TRUE, 'RENTED', 'Rental income property', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+ (1, @UID@, 1, 'Demo Home',      'HDB',         '1 Demo Street',   'Singapore', 500000, 620000, 380000, 'SGD', DATE '2020-06-01', '99-year',  90.0,  'sqm', 'Joint',  0,    TRUE, 'OWNED',  'Sample primary residence', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ (2, @UID@, 1, 'Demo Rental Unit','Condominium', '2 Sample Road',  'Sri Lanka', 200000, 240000, 0,      'LKR', DATE '2019-03-15', 'Freehold', 120.0, 'sqm', 'Single', 1200, TRUE, 'RENTED', 'Sample rental property', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- 14. PRECIOUS METALS
 INSERT INTO precious_metals (id, user_id, owner_id, metal_type, form, description, weight, weight_unit, purity, purchase_price, current_price, currency, purchase_date, purchased_from, storage_location, include_in_net_worth, status, notes, created_at, updated_at) VALUES
@@ -215,7 +215,7 @@ INSERT INTO bonds (id, user_id, owner_id, name, issuer, bond_type, isin, currenc
 
 -- 16. HOME LOANS + PAYMENTS
 INSERT INTO home_loans (id, user_id, owner_id, property_name, property_address, property_value, loan_amount, interest_rate, loan_type, tenure_months, monthly_emi, outstanding_balance, total_paid, total_interest_paid, start_date, expected_end_date, bank, currency, is_active, include_in_net_worth, notes, created_at, updated_at) VALUES
- (1, @UID@, 1, 'HDB Flat - Woodlands', '123 Woodlands Ave', 550000, 400000, 2.6, 'HDB', 300, 1800, 380000, 43200, 20800, DATE '2020-06-01', DATE '2045-06-01', 'HDB', 'SGD', TRUE, TRUE, 'Primary mortgage', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+ (1, @UID@, 1, 'Demo Home', '1 Demo Street', 550000, 400000, 2.6, 'HDB', 300, 1800, 380000, 43200, 20800, DATE '2020-06-01', DATE '2045-06-01', 'Demo Bank', 'SGD', TRUE, TRUE, 'Sample mortgage', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO loan_payments (id, user_id, loan_id, payment_date, amount, principal_portion, interest_portion, balance_after, payment_type, notes, created_at) VALUES
  (1, @UID@, 1, DATE '2026-06-01', 1800,  940,   860, 381000, 'EMI',        NULL, CURRENT_TIMESTAMP),
@@ -224,8 +224,8 @@ INSERT INTO loan_payments (id, user_id, loan_id, payment_date, amount, principal
 
 -- 17. INSURANCE + BONUS ENTRIES
 INSERT INTO insurance_policies (id, user_id, owner_id, policy_name, provider, policy_number, policy_type, annual_premium, currency, coverage_amount, cash_value, start_date, maturity_date, is_active, include_in_net_worth, beneficiary, notes, created_at, updated_at) VALUES
- (1, @UID@, 1, 'Whole Life Plan', 'Prudential', 'PRU-001', 'WHOLE_LIFE', 3600, 'SGD', 200000, 18000, DATE '2015-10-01', DATE '2055-10-01', TRUE, TRUE,  'Spouse', 'Participating policy', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- (2, @UID@, 1, 'Term Life',       'AIA',        'AIA-001', 'TERM',       800,  'SGD', 500000, 0,     DATE '2020-01-01', DATE '2045-01-01', TRUE, FALSE, 'Spouse', 'Pure protection', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+ (1, @UID@, 1, 'Whole Life Plan', 'Demo Insurer A', 'POL-001', 'WHOLE_LIFE', 3600, 'SGD', 200000, 18000, DATE '2015-10-01', DATE '2055-10-01', TRUE, TRUE,  'Spouse', 'Sample participating policy', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ (2, @UID@, 1, 'Term Life',       'Demo Insurer B', 'POL-002', 'TERM',       800,  'SGD', 500000, 0,     DATE '2020-01-01', DATE '2045-01-01', TRUE, FALSE, 'Spouse', 'Sample pure protection', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO insurance_bonus_entries (id, user_id, policy_id, year_number, year_date, age, premium_amount, expected_bonus, expected_bonus_total, expected_total, actual_bonus, actual_bonus_total, notes, created_at) VALUES
  (1, @UID@, 1, 1, '10/2015', 30, 3600, 500, 500,  4100,  480, 480,  NULL, CURRENT_TIMESTAMP),
@@ -234,28 +234,28 @@ INSERT INTO insurance_bonus_entries (id, user_id, policy_id, year_number, year_d
 
 -- 18. RETIREMENT (CPF / SRS)
 INSERT INTO retirement_fund_entries (id, user_id, owner_id, fund_type, entry_type, amount, entry_date, "year", "month", account, balance, employer, currency, notes, created_at, updated_at) VALUES
- (1, @UID@, 1, 'CPF', 'CONTRIBUTION',          2500,  DATE '2026-01-15', 2026, 1, 'OA', 85000, 'BCS', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- (2, @UID@, 1, 'CPF', 'EMPLOYER_CONTRIBUTION', 2448,  DATE '2026-01-15', 2026, 1, 'OA', 87448, 'BCS', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- (3, @UID@, 1, 'CPF', 'CONTRIBUTION',          1300,  DATE '2026-01-15', 2026, 1, 'SA', 42000, 'BCS', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- (4, @UID@, 1, 'SRS', 'CONTRIBUTION',          15300, DATE '2026-01-05', 2026, 1, NULL, 15300, NULL,  'SGD', 'Annual SRS top-up', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+ (1, @UID@, 1, 'CPF', 'CONTRIBUTION',          1000,  DATE '2026-01-15', 2026, 1, 'OA', 50000, 'Demo Corp', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ (2, @UID@, 1, 'CPF', 'EMPLOYER_CONTRIBUTION', 1000,  DATE '2026-01-15', 2026, 1, 'OA', 51000, 'Demo Corp', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ (3, @UID@, 1, 'CPF', 'CONTRIBUTION',          500,   DATE '2026-01-15', 2026, 1, 'SA', 20000, 'Demo Corp', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ (4, @UID@, 1, 'SRS', 'CONTRIBUTION',          5000,  DATE '2026-01-05', 2026, 1, NULL, 5000,  NULL,        'SGD', 'Sample SRS top-up', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- 19. SALARY
 INSERT INTO salary_records (id, user_id, owner_id, "year", "month", company, amount, basic, mobile, deductions, is_bonus, bonus_months, country, currency, notes, created_at, updated_at) VALUES
- (1, @UID@, 1, 2026, 1, 'BCS', 14442, 14400, 60, 18, FALSE, NULL, 'Singapore', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- (2, @UID@, 1, 2026, 2, 'BCS', 14442, 14400, 60, 18, FALSE, NULL, 'Singapore', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- (3, @UID@, 1, 2026, 3, 'BCS', 14442, 14400, 60, 18, FALSE, NULL, 'Singapore', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- (4, @UID@, 1, 2026, 3, 'BCS', 56000, NULL, NULL, NULL, TRUE, 4.04, 'Singapore', 'SGD', 'Annual bonus', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+ (1, @UID@, 1, 2026, 1, 'Demo Corp', 8000, 7900, 50, 20, FALSE, NULL, 'Singapore', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ (2, @UID@, 1, 2026, 2, 'Demo Corp', 8000, 7900, 50, 20, FALSE, NULL, 'Singapore', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ (3, @UID@, 1, 2026, 3, 'Demo Corp', 8000, 7900, 50, 20, FALSE, NULL, 'Singapore', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ (4, @UID@, 1, 2026, 3, 'Demo Corp', 16000, NULL, NULL, NULL, TRUE, 2.0, 'Singapore', 'SGD', 'Sample annual bonus', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- 20. WORK EXPERIENCE
 INSERT INTO work_experiences (id, user_id, owner_id, company, position, level, country, start_date, end_date, is_current, industry, notes, created_at, updated_at) VALUES
- (1, @UID@, 1, 'Shell Infortech',  'Software Developer',       NULL,  'Singapore', DATE '2015-01-15', DATE '2016-10-15', FALSE, 'Tech', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- (2, @UID@, 1, 'Welcome Realtime', 'Software Engineer',        NULL,  'Singapore', DATE '2016-10-16', DATE '2019-02-28', FALSE, 'Tech', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- (3, @UID@, 1, 'BCS',              'Senior Software Engineer', 'PM5', 'Singapore', DATE '2019-03-01', NULL,              TRUE,  'Tech', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+ (1, @UID@, 1, 'Acme Software',  'Software Developer',       NULL,  'Singapore', DATE '2015-01-15', DATE '2016-10-15', FALSE, 'Tech', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ (2, @UID@, 1, 'Globex Systems', 'Software Engineer',        NULL,  'Singapore', DATE '2016-10-16', DATE '2019-02-28', FALSE, 'Tech', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ (3, @UID@, 1, 'Demo Corp',      'Senior Software Engineer', 'L5',  'Singapore', DATE '2019-03-01', NULL,              TRUE,  'Tech', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- 21. TAX RECORDS
 INSERT INTO tax_records (id, user_id, owner_id, assessment_year, employment, donations, reliefs, srs_deduction, chargeable_income, tax, tax_rebate, tax_payable, country, currency, notes, created_at, updated_at) VALUES
- (1, @UID@, 1, 2024, 220032, 570, 1000, 0,     218220, 24611.80, 200, 24411.80, 'Singapore', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- (2, @UID@, 1, 2025, 275300, 570, 1000, 35400, 238330, 27000.00, 0,   27000.00, 'Singapore', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+ (1, @UID@, 1, 2024, 96000, 500, 1000, 0,    94500, 4500.00, 200, 4300.00, 'Singapore', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ (2, @UID@, 1, 2025, 96000, 500, 1000, 5000, 89500, 4000.00, 0,   4000.00, 'Singapore', 'SGD', NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- 22. BUDGET & EXPENSES
 INSERT INTO budget_categories (id, user_id, name, parent_category, sort_order, is_active, created_at) VALUES
@@ -269,8 +269,8 @@ INSERT INTO budget_plans (id, user_id, "year", "month", savings_target_pct, note
  (1, @UID@, 2026, 8, 40.00, 'August plan', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO budget_incomes (id, user_id, budget_plan_id, source, amount, notes, created_at) VALUES
- (1, @UID@, 1, 'Salary',    14442, NULL, CURRENT_TIMESTAMP),
- (2, @UID@, 1, 'Dividends', 200,   NULL, CURRENT_TIMESTAMP);
+ (1, @UID@, 1, 'Salary',    8000, NULL, CURRENT_TIMESTAMP),
+ (2, @UID@, 1, 'Dividends', 200,  NULL, CURRENT_TIMESTAMP);
 
 INSERT INTO budget_allocations (id, user_id, budget_plan_id, category_id, planned_amount, created_at) VALUES
  (1, @UID@, 1, 1, 800, CURRENT_TIMESTAMP),
