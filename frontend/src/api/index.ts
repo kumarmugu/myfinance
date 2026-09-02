@@ -85,6 +85,8 @@ export const getRecentTransactions = (days: number) => api.get<Transaction[]>(`/
 export const createTransaction = (req: TransactionRequest) => api.post<Transaction>('/transactions', req);
 export const updateTransaction = (id: number, req: TransactionRequest) => api.put<Transaction>(`/transactions/${id}`, req);
 export const deleteTransaction = (id: number) => api.delete(`/transactions/${id}`);
+// One-time maintenance: recompute FX-aware realized P/L for the user's existing sells.
+export const recomputeRealizedPnl = () => api.post<{ sellsRecomputed: number; soldPositionsSynced: number }>('/transactions/recompute-pnl');
 
 // ─── Holdings ───
 export const getActiveHoldings = (ownerId?: number) => api.get<Holding[]>('/holdings', { params: { ownerId } });

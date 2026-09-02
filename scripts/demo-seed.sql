@@ -294,10 +294,10 @@ INSERT INTO user_currencies (id, user_id, code, name, created_at) VALUES
  (3, @UID@, 'EUR', 'Euro',             CURRENT_TIMESTAMP),
  (4, @UID@, 'LKR', 'Sri Lankan Rupee', CURRENT_TIMESTAMP);
 
-INSERT INTO currency_rates (id, user_id, from_currency, to_currency, rate, effective_date, updated_at) VALUES
- (1, @UID@, 'USD', 'SGD', 1.35000000, CURRENT_DATE, CURRENT_TIMESTAMP),
- (2, @UID@, 'EUR', 'SGD', 1.45000000, CURRENT_DATE, CURRENT_TIMESTAMP),
- (3, @UID@, 'LKR', 'SGD', 0.00390000, CURRENT_DATE, CURRENT_TIMESTAMP);
+INSERT INTO currency_rates (id, user_id, from_currency, to_currency, rate, spread_pct, effective_date, updated_at) VALUES
+ (1, @UID@, 'USD', 'SGD', 1.35000000, 1.5,  CURRENT_DATE, CURRENT_TIMESTAMP),
+ (2, @UID@, 'EUR', 'SGD', 1.45000000, 2.0,  CURRENT_DATE, CURRENT_TIMESTAMP),
+ (3, @UID@, 'LKR', 'SGD', 0.00390000, NULL, CURRENT_DATE, CURRENT_TIMESTAMP);
 
 -- 24. PLANNING: ALLOCATION TARGETS
 INSERT INTO allocation_targets (id, user_id, owner_id, asset_type, target_percentage, target_amount) VALUES

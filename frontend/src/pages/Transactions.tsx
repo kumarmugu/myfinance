@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Plus, Trash2, Pencil, ArrowUpCircle, ArrowDownCircle, Lock } from 'lucide-react';
-import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates, getActiveHoldings } from '../api';
+import { Plus, Trash2, Pencil, ArrowUpCircle, ArrowDownCircle, Lock, RefreshCw } from 'lucide-react';
+import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates, getActiveHoldings, recomputeRealizedPnl } from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import { formatCurrency, formatDate, formatPercent } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
@@ -48,6 +48,7 @@ export default function Transactions() {
   const [deleteModal, setDeleteModal] = useState<{ id: number; symbol: string } | null>(null);
   const [deletePassword, setDeletePassword] = useState('');
   const [deleteError, setDeleteError] = useState('');
+  const [recomputing, setRecomputing] = useState(false);
 
   const [form, setForm] = useState<TransactionRequest>({
     assetId: 0, accountId: 0, ownerId: 0, transactionType: 'BUY',
@@ -99,6 +100,20 @@ export default function Transactions() {
       purpose: tx.purpose ?? 'LONG_TERM',
     });
     setShowForm(true);
+  };
+
+  const handleRecompute = async () => {
+    setRecomputing(true);
+    try {
+      const { data } = await recomputeRealizedPnl();
+      showToast(`Recomputed P/L for ${data.sellsRecomputed} sell${data.sellsRecomputed === 1 ? '' : 's'}`, 'success');
+      loadData();
+    } catch (err) {
+      console.error(err);
+      showToast('Failed to recompute realized P/L');
+    } finally {
+      setRecomputing(false);
+    }
   };
 
   const confirmDelete = async () => {
@@ -251,6 +266,9 @@ export default function Transactions() {
             config={transactionsExportConfig}
             subtitle={(filterOwner || filtersActive) ? 'Filtered view' : undefined}
           />
+          <button onClick={handleRecompute} disabled={recomputing} title="Recompute FX-aware realized P/L for your existing sells (one-time fix for older trades)" className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 disabled:opacity-50">
+            <RefreshCw size={16} className={recomputing ? 'animate-spin' : ''} /> {recomputing ? 'Recomputing...' : 'Recompute P/L'}
+          </button>
           <button onClick={() => { if (showForm) { setShowForm(false); setEditingId(null); } else { setEditingId(null); setShowForm(true); } }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
             <Plus size={16} /> New Transaction
           </button>
