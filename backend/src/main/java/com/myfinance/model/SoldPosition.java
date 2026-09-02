@@ -61,6 +61,13 @@ public class SoldPosition {
     @Column(nullable = false)
     private LocalDate soldDate;
 
+    /**
+     * The SELL Transaction this closed position was generated from, when it was created
+     * automatically by selling on the Transactions page. Lets edits/deletes of that sell keep the
+     * matching sold-position record in sync. Nullable: manually-created sold positions have none.
+     */
+    private Long sourceTransactionId;
+
     private String holdingPeriod;
 
     @Builder.Default

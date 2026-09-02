@@ -29,6 +29,7 @@ class TransactionServiceTest {
     @Autowired private OwnerRepository ownerRepository;
     @Autowired private TransactionRepository transactionRepository;
     @Autowired private HoldingRepository holdingRepository;
+    @Autowired private SoldPositionRepository soldPositionRepository;
     @Autowired private AppUserRepository appUserRepository;
     @Autowired private PasswordEncoder passwordEncoder;
 
@@ -39,6 +40,7 @@ class TransactionServiceTest {
 
     @BeforeEach
     void setup() {
+        soldPositionRepository.deleteAll();
         holdingRepository.deleteAll();
         transactionRepository.deleteAll();
         assetRepository.deleteAll();
@@ -367,5 +369,119 @@ class TransactionServiceTest {
         assertEquals(0, new BigDecimal("20").compareTo(h.get().getQuantity()));
         assertEquals(0, new BigDecimal("4000.00").compareTo(h.get().getInvestedAmount()));
         assertEquals(0, new BigDecimal("200.000000").compareTo(h.get().getAverageBuyPrice()));
+    }
+
+    // ── Portfolio → Sold tab sync (a SELL transaction generates a SoldPosition) ──
+
+    @Test
+    @WithMockUser(username = "user")
+    void sellCreatesSoldPositionWithRealizedProfit() {
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy");
+        Transaction sell = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.SELL, BigDecimal.TEN, new BigDecimal("130.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 6, 1), "Sell");
+
+        Optional<SoldPosition> spOpt = soldPositionRepository.findBySourceTransactionId(sell.getId());
+        assertTrue(spOpt.isPresent(), "A SELL must generate a matching sold position");
+        SoldPosition sp = spOpt.get();
+
+        // Profit reuses the transaction's realized P/L (same-currency: (130-100)*10 = 300).
+        assertEquals(0, sell.getRealizedPnl().compareTo(sp.getProfit()));
+        assertEquals(0, new BigDecimal("300.00").compareTo(sp.getProfit().setScale(2, RoundingMode.HALF_UP)));
+        assertEquals(0, BigDecimal.TEN.compareTo(sp.getQuantity()));
+        assertEquals(0, new BigDecimal("100").compareTo(sp.getBuyPrice().setScale(0, RoundingMode.HALF_UP)));
+        assertEquals(0, new BigDecimal("130.00").compareTo(sp.getSellPrice()));
+        assertEquals(LocalDate.of(2024, 6, 1), sp.getSoldDate());
+        // investedDate = earliest BUY date.
+        assertEquals(LocalDate.of(2024, 1, 1), sp.getInvestedDate());
+        assertEquals(Currency.USD, sp.getCurrency());
+        assertEquals(sell.getId(), sp.getSourceTransactionId());
+        assertEquals(testUser.getId(), sp.getUserId());
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void buyDoesNotCreateSoldPosition() {
+        Transaction buy = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy");
+        assertTrue(soldPositionRepository.findBySourceTransactionId(buy.getId()).isEmpty());
+        assertEquals(0, soldPositionRepository.count());
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void editingSellUpdatesTheSameSoldPositionInPlace() {
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, new BigDecimal("20"), new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy");
+        Transaction sell = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.SELL, BigDecimal.TEN, new BigDecimal("130.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 6, 1), "Sell");
+
+        Long spId = soldPositionRepository.findBySourceTransactionId(sell.getId()).orElseThrow().getId();
+
+        // Correct the sell price to $150.
+        Transaction updated = transactionService.update(
+                sell.getId(), asset.getId(), account.getId(), owner.getId(),
+                TransactionType.SELL, BigDecimal.TEN, new BigDecimal("150.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 6, 1), "Sell corrected", null);
+
+        // Still exactly one sold position, same row (updated in place), reflecting the new profit.
+        assertEquals(1, soldPositionRepository.count());
+        SoldPosition sp = soldPositionRepository.findBySourceTransactionId(sell.getId()).orElseThrow();
+        assertEquals(spId, sp.getId(), "The existing sold position must be updated, not duplicated");
+        assertEquals(0, new BigDecimal("150.00").compareTo(sp.getSellPrice()));
+        assertEquals(0, updated.getRealizedPnl().compareTo(sp.getProfit()));
+        // (150-100)*10 = 500.
+        assertEquals(0, new BigDecimal("500.00").compareTo(sp.getProfit().setScale(2, RoundingMode.HALF_UP)));
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void editingSellIntoBuyRemovesSoldPosition() {
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, new BigDecimal("20"), new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy");
+        Transaction sell = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.SELL, BigDecimal.TEN, new BigDecimal("130.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 6, 1), "Sell");
+        assertEquals(1, soldPositionRepository.count());
+
+        // Change the transaction from a SELL into a BUY — the sold position must disappear.
+        transactionService.update(
+                sell.getId(), asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("130.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 6, 1), "Now a buy", null);
+
+        assertTrue(soldPositionRepository.findBySourceTransactionId(sell.getId()).isEmpty());
+        assertEquals(0, soldPositionRepository.count());
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void deletingSellRemovesSoldPosition() {
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, new BigDecimal("20"), new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy");
+        Transaction sell = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.SELL, BigDecimal.TEN, new BigDecimal("130.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 6, 1), "Sell");
+        assertEquals(1, soldPositionRepository.count());
+
+        transactionService.delete(sell.getId());
+
+        assertEquals(0, soldPositionRepository.count());
     }
 }

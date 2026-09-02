@@ -25,6 +25,7 @@ public class TransactionService {
     private final AccountService accountService;
     private final OwnerService ownerService;
     private final TenantContext tenantContext;
+    private final com.myfinance.repository.SoldPositionRepository soldPositionRepository;
 
     public List<Transaction> getAll() { return transactionRepository.findAllByOrderByTransactionDateDesc(); }
     public List<Transaction> getByUser(Long userId) { return transactionRepository.findByUserIdOrderByTransactionDateDesc(userId); }
@@ -83,6 +84,7 @@ public class TransactionService {
             saved.setRealizedFxPnl(realized.fx());
             saved = transactionRepository.save(saved);
         }
+        syncSoldPosition(saved, realized);
         return saved;
     }
 
@@ -142,6 +144,7 @@ public class TransactionService {
 
         Transaction saved = transactionRepository.save(existing);
         log.info("Updated Transaction id={} type={} assetId={} quantity={}", id, type, assetId, quantity);
+        syncSoldPosition(saved, realized);
         return saved;
     }
 
@@ -173,8 +176,14 @@ public class TransactionService {
         }
     }
 
-    /** Realized P/L breakdown returned by a SELL, all in the broker account's currency. */
-    public record RealizedPnl(BigDecimal total, BigDecimal stock, BigDecimal fx) {}
+    /**
+     * Realized P/L breakdown returned by a SELL, all in the broker account's currency.
+     * Also carries the figures needed to build the matching {@link SoldPosition} record:
+     * the average buy price, sold quantity, cost (invested) and proceeds (sold) amounts.
+     */
+    public record RealizedPnl(BigDecimal total, BigDecimal stock, BigDecimal fx,
+                              BigDecimal avgBuyPrice, BigDecimal quantity,
+                              BigDecimal investedAmount, BigDecimal soldAmount) {}
 
     private void updateHolding(Asset asset, Account account, Owner owner, TransactionType type, BigDecimal quantity, BigDecimal pricePerUnit, InvestmentPurpose purpose) {
         updateHolding(asset, account, owner, type, quantity, pricePerUnit, purpose, null, null, null);
@@ -260,7 +269,8 @@ public class TransactionService {
 
                 BigDecimal total = stock.add(fx).subtract(feeAcct);
                 // Fees are booked against the stock component for the split (they're not an FX effect).
-                return new RealizedPnl(total, stock.subtract(feeAcct), fx);
+                return new RealizedPnl(total, stock.subtract(feeAcct), fx,
+                        avgBuyPrice, quantity, costTrade, proceedsTrade);
             } else {
                 log.error("Failed to sell: no holding found for assetId={} accountId={} ownerId={}", asset.getId(), account.getId(), owner.getId());
                 throw new RuntimeException("No holding found to sell");
@@ -269,8 +279,83 @@ public class TransactionService {
         return null;
     }
 
+    @Transactional
     public void delete(Long id) {
+        // Remove any sold-position record this SELL generated so the Portfolio Sold tab stays in sync.
+        removeSoldPosition(id);
         transactionRepository.deleteById(id);
         log.info("Deleted Transaction id={}", id);
+    }
+
+    /**
+     * Keep the Portfolio → Sold tab in sync with a SELL transaction. Creates (or updates) the
+     * matching {@link SoldPosition} when the transaction realized a P/L; removes it otherwise
+     * (e.g. the transaction was edited from a SELL into a BUY). The realized profit reuses the
+     * FX-inclusive figure already computed for the transaction, so both views agree.
+     */
+    private void syncSoldPosition(Transaction tx, RealizedPnl realized) {
+        if (realized == null) {
+            // No longer a realizing SELL — drop any previously-generated sold position.
+            removeSoldPosition(tx.getId());
+            return;
+        }
+
+        SoldPosition sp = soldPositionRepository.findBySourceTransactionId(tx.getId())
+                .orElseGet(SoldPosition::new);
+
+        BigDecimal invested = realized.investedAmount();
+        BigDecimal sold = realized.soldAmount();
+        BigDecimal profitPct = (invested != null && invested.signum() != 0)
+                ? realized.total().multiply(BigDecimal.valueOf(100)).divide(invested, 2, RoundingMode.HALF_UP)
+                : BigDecimal.ZERO;
+
+        LocalDate soldDate = tx.getTransactionDate();
+        LocalDate investedDate = earliestBuyDate(tx.getAsset().getId(), soldDate);
+        boolean shortTerm = investedDate != null
+                && investedDate.plusYears(1).isAfter(soldDate);
+
+        sp.setUserId(tx.getUserId());
+        sp.setAsset(tx.getAsset());
+        sp.setAccount(tx.getAccount());
+        sp.setOwner(tx.getOwner());
+        sp.setQuantity(realized.quantity());
+        sp.setBuyPrice(realized.avgBuyPrice());
+        sp.setSellPrice(tx.getPricePerUnit());
+        sp.setInvestedAmount(invested);
+        sp.setSoldAmount(sold);
+        sp.setProfit(realized.total());
+        sp.setProfitPercentage(profitPct);
+        sp.setCurrency(tx.getCurrency());
+        sp.setInvestedDate(investedDate != null ? investedDate : soldDate);
+        sp.setSoldDate(soldDate);
+        sp.setIsShortTerm(shortTerm);
+        sp.setPurpose(tx.getPurpose());
+        sp.setNotes(tx.getNotes());
+        sp.setSourceTransactionId(tx.getId());
+
+        soldPositionRepository.save(sp);
+        log.info("Synced SoldPosition for SELL transactionId={} profit={}", tx.getId(), realized.total());
+    }
+
+    /** Remove the sold position generated by a given SELL transaction, if any. */
+    private void removeSoldPosition(Long transactionId) {
+        soldPositionRepository.findBySourceTransactionId(transactionId).ifPresent(sp -> {
+            soldPositionRepository.delete(sp);
+            log.info("Removed SoldPosition for transactionId={}", transactionId);
+        });
+    }
+
+    /**
+     * Best-effort original-purchase date for an average-cost holding: the earliest BUY date for
+     * the asset. Average costing has no single buy date, so this is approximate. Falls back to the
+     * given sell date when there is no BUY on record.
+     */
+    private LocalDate earliestBuyDate(Long assetId, LocalDate fallback) {
+        return transactionRepository.findByAssetIdOrderByTransactionDateDesc(assetId).stream()
+                .filter(t -> t.getTransactionType() == TransactionType.BUY)
+                .map(Transaction::getTransactionDate)
+                .filter(java.util.Objects::nonNull)
+                .min(LocalDate::compareTo)
+                .orElse(fallback);
     }
 }

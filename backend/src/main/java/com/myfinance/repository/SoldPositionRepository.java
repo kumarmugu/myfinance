@@ -21,6 +21,9 @@ public interface SoldPositionRepository extends JpaRepository<SoldPosition, Long
 
     List<SoldPosition> findByUserIdOrderBySoldDateDesc(Long userId);
 
+    /** The auto-generated sold position for a given SELL transaction (for edit/delete sync). */
+    java.util.Optional<SoldPosition> findBySourceTransactionId(Long sourceTransactionId);
+
     @Query("SELECT sp FROM SoldPosition sp WHERE sp.userId = :userId AND (sp.isShortTerm = true OR sp.purpose = 'TRADING' OR sp.purpose = 'SHORT_TERM') ORDER BY sp.soldDate DESC")
     List<SoldPosition> findShortTermTradesByUser(@Param("userId") Long userId);
 }
