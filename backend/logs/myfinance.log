@@ -40498,3 +40498,1104 @@ java.lang.RuntimeException: Owner is required
 2026-09-02 09:40:00 [http-nio-8080-exec-1] INFO  c.m.controller.AuthController - Login attempt for user=mugu
 2026-09-02 09:40:00 [http-nio-8080-exec-1] INFO  c.m.controller.AuthController - Login successful for user=mugu
 2026-09-02 09:40:00 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (449ms)
+2026-09-02 09:40:32 [main] INFO  c.myfinance.security.JwtServiceTest - Starting JwtServiceTest using Java 17.0.20 with PID 87645 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-02 09:40:32 [main] DEBUG c.myfinance.security.JwtServiceTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-02 09:40:32 [main] INFO  c.myfinance.security.JwtServiceTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-02 09:40:34 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-02 09:40:34 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 181 ms. Found 36 JPA repository interfaces.
+2026-09-02 09:40:35 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-02 09:40:35 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-02 09:40:35 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-02 09:40:36 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-02 09:40:36 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-02 09:40:36 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-09-02 09:40:36 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-02 09:40:36 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-02 09:40:39 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-02 09:40:39 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-02 09:40:41 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-02 09:40:44 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-02 09:40:46 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6f156b3c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@618f6324, org.springframework.security.web.context.SecurityContextHolderFilter@4c07bc83, org.springframework.security.web.header.HeaderWriterFilter@3d04e5de, org.springframework.web.filter.CorsFilter@83757fc, org.springframework.security.web.authentication.logout.LogoutFilter@2e48e611, com.myfinance.provisioning.ProvisioningTokenFilter@3158e4c3, com.myfinance.security.JwtAuthFilter@10a190d1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@200f7fa4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@31c93dee, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1b319396, org.springframework.security.web.session.SessionManagementFilter@1a17b688, org.springframework.security.web.access.ExceptionTranslationFilter@2d171356, org.springframework.security.web.access.intercept.AuthorizationFilter@69df990]
+2026-09-02 09:40:47 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-02 09:40:48 [main] INFO  c.myfinance.security.JwtServiceTest - Started JwtServiceTest in 16.015 seconds (process running for 23.408)
+2026-09-02 09:40:48 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-02 09:40:49 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-02 09:40:49 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-02 09:40:49 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-09-02 09:40:50 [main] DEBUG c.myfinance.security.JwtAuthFilter - JWT authentication failed: malformed
+2026-09-02 09:40:50 [main] DEBUG c.myfinance.security.JwtAuthFilter - Invalid JWT token for user=mugu
+2026-09-02 09:40:50 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.provisioning.ProvisioningControllerTest]: ProvisioningControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-02 09:40:50 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.provisioning.ProvisioningControllerTest
+2026-09-02 09:40:50 [main] INFO  c.m.p.ProvisioningControllerTest - Starting ProvisioningControllerTest using Java 17.0.20 with PID 87645 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-02 09:40:50 [main] DEBUG c.m.p.ProvisioningControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-02 09:40:50 [main] INFO  c.m.p.ProvisioningControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-02 09:40:51 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-02 09:40:51 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 110 ms. Found 36 JPA repository interfaces.
+2026-09-02 09:40:52 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-02 09:40:52 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-02 09:40:52 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-02 09:40:52 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2026-09-02 09:40:52 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:testdb user=SA
+2026-09-02 09:40:52 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2026-09-02 09:40:52 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-02 09:40:55 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-02 09:40:55 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-02 09:41:02 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-02 09:41:04 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4c8c4079, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@18708501, org.springframework.security.web.context.SecurityContextHolderFilter@4d3d5062, org.springframework.security.web.header.HeaderWriterFilter@27a5e48c, org.springframework.web.filter.CorsFilter@609e5661, org.springframework.security.web.authentication.logout.LogoutFilter@304c9c9d, com.myfinance.provisioning.ProvisioningTokenFilter@cdc953, com.myfinance.security.JwtAuthFilter@2b475ff5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4a634b9f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@426a57db, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2abc231b, org.springframework.security.web.session.SessionManagementFilter@4242f506, org.springframework.security.web.access.ExceptionTranslationFilter@2dc54391, org.springframework.security.web.access.intercept.AuthorizationFilter@706751f8]
+2026-09-02 09:41:05 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-02 09:41:05 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-02 09:41:05 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-02 09:41:05 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-02 09:41:05 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-02 09:41:05 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-02 09:41:05 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 2 ms
+2026-09-02 09:41:05 [main] INFO  c.m.p.ProvisioningControllerTest - Started ProvisioningControllerTest in 15.261 seconds (process running for 41.307)
+2026-09-02 09:41:06 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-02 09:41:06 [main] WARN  c.m.p.ProvisioningTokenFilter - Rejected provisioning request with missing/invalid token from 127.0.0.1
+2026-09-02 09:41:06 [main] INFO  c.m.provisioning.ProvisioningService - Provisioned new finance user id=2 username=saas-customer for email(hash)=e90f7a48
+2026-09-02 09:41:06 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 201 (331ms)
+2026-09-02 09:41:06 [main] INFO  c.m.provisioning.ProvisioningService - Provisioning idempotent hit: existing user id=2 for email(hash)=e90f7a48
+2026-09-02 09:41:06 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 200 (11ms)
+2026-09-02 09:41:06 [main] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/internal/provisioning/users → 404 (19ms)
+2026-09-02 09:41:06 [main] WARN  c.m.config.GlobalExceptionHandler - Validation failed: 1 field error(s)
+2026-09-02 09:41:06 [main] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 400 (28ms)
+2026-09-02 09:41:06 [main] INFO  c.m.provisioning.ProvisioningService - Provisioned new finance user id=3 username=saas-customer for email(hash)=e90f7a48
+2026-09-02 09:41:06 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 201 (87ms)
+2026-09-02 09:41:06 [main] INFO  c.m.provisioning.ProvisioningService - Updated access for user id=3 active=false for email(hash)=e90f7a48
+2026-09-02 09:41:06 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/status → 200 (28ms)
+2026-09-02 09:41:07 [main] INFO  c.m.provisioning.ProvisioningService - Provisioned new finance user id=4 username=saas-customer for email(hash)=e90f7a48
+2026-09-02 09:41:07 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 201 (92ms)
+2026-09-02 09:41:07 [main] WARN  c.m.p.ProvisioningTokenFilter - Rejected provisioning request with missing/invalid token from 127.0.0.1
+2026-09-02 09:41:07 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-02 09:41:07 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
+2026-09-02 09:41:07 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+2026-09-02 09:41:07 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.HomeLoanControllerTest]: HomeLoanControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-02 09:41:07 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.HomeLoanControllerTest
+2026-09-02 09:41:07 [main] INFO  c.m.c.HomeLoanControllerTest - Starting HomeLoanControllerTest using Java 17.0.20 with PID 87645 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-02 09:41:07 [main] DEBUG c.m.c.HomeLoanControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-02 09:41:07 [main] INFO  c.m.c.HomeLoanControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-02 09:41:07 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-02 09:41:07 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 56 ms. Found 36 JPA repository interfaces.
+2026-09-02 09:41:07 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-02 09:41:07 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-02 09:41:07 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-02 09:41:07 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Starting...
+2026-09-02 09:41:07 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Added connection conn20: url=jdbc:h2:mem:testdb user=SA
+2026-09-02 09:41:07 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Start completed.
+2026-09-02 09:41:07 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-02 09:41:09 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-02 09:41:09 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-02 09:41:12 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-02 09:41:13 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@70ae13f4, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5880909c, org.springframework.security.web.context.SecurityContextHolderFilter@43dccbe3, org.springframework.security.web.header.HeaderWriterFilter@36355f78, org.springframework.web.filter.CorsFilter@48bab1c7, org.springframework.security.web.authentication.logout.LogoutFilter@41dd2b66, com.myfinance.provisioning.ProvisioningTokenFilter@69b6fbfc, com.myfinance.security.JwtAuthFilter@520623ba, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5a2da56b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@467fefc9, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@24815f98, org.springframework.security.web.session.SessionManagementFilter@dd5fe69, org.springframework.security.web.access.ExceptionTranslationFilter@465bf66d, org.springframework.security.web.access.intercept.AuthorizationFilter@4fd46068]
+2026-09-02 09:41:14 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-02 09:41:14 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-02 09:41:14 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-02 09:41:14 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-02 09:41:14 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-02 09:41:14 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-02 09:41:14 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 2 ms
+2026-09-02 09:41:14 [main] INFO  c.m.c.HomeLoanControllerTest - Started HomeLoanControllerTest in 7.319 seconds (process running for 49.898)
+2026-09-02 09:41:14 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-02 09:41:14 [main] INFO  c.m.controller.HomeLoanController - Soft-deleting home loan id=1
+2026-09-02 09:41:14 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/home-loans/1 → 204 (30ms)
+2026-09-02 09:41:14 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/home-loans → 200 (15ms)
+2026-09-02 09:41:14 [main] INFO  c.m.controller.HomeLoanController - Updating home loan id=2
+2026-09-02 09:41:14 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/home-loans/2 → 200 (32ms)
+2026-09-02 09:41:14 [main] INFO  c.m.controller.HomeLoanController - Creating home loan: property=Condo Woodlands
+2026-09-02 09:41:14 [main] INFO  c.m.controller.HomeLoanController - Created home loan id=3
+2026-09-02 09:41:14 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/home-loans → 201 (14ms)
+2026-09-02 09:41:14 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/home-loans → 200 (6ms)
+2026-09-02 09:41:14 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-02 09:41:14 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown initiated...
+2026-09-02 09:41:14 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown completed.
+2026-09-02 09:41:14 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.BankSavingsControllerTest]: BankSavingsControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-02 09:41:14 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.BankSavingsControllerTest
+2026-09-02 09:41:14 [main] INFO  c.m.c.BankSavingsControllerTest - Starting BankSavingsControllerTest using Java 17.0.20 with PID 87645 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-02 09:41:14 [main] DEBUG c.m.c.BankSavingsControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-02 09:41:14 [main] INFO  c.m.c.BankSavingsControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-02 09:41:15 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-02 09:41:15 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 47 ms. Found 36 JPA repository interfaces.
+2026-09-02 09:41:15 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-02 09:41:15 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-02 09:41:15 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-02 09:41:15 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Starting...
+2026-09-02 09:41:15 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-4 - Added connection conn30: url=jdbc:h2:mem:testdb user=SA
+2026-09-02 09:41:15 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Start completed.
+2026-09-02 09:41:15 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-02 09:41:16 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-02 09:41:16 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-02 09:41:18 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-02 09:41:19 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@71bd4945, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3b3b8678, org.springframework.security.web.context.SecurityContextHolderFilter@7301dd10, org.springframework.security.web.header.HeaderWriterFilter@307a5c21, org.springframework.web.filter.CorsFilter@68e03f81, org.springframework.security.web.authentication.logout.LogoutFilter@4fe0b587, com.myfinance.provisioning.ProvisioningTokenFilter@5c8a272c, com.myfinance.security.JwtAuthFilter@3e4dd167, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@29cb5ca7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4bb296eb, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@320d7ffd, org.springframework.security.web.session.SessionManagementFilter@4f86c73e, org.springframework.security.web.access.ExceptionTranslationFilter@86a4f58, org.springframework.security.web.access.intercept.AuthorizationFilter@63e73a0a]
+2026-09-02 09:41:20 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-02 09:41:20 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-02 09:41:20 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-02 09:41:20 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-02 09:41:20 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-02 09:41:20 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-02 09:41:20 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-09-02 09:41:20 [main] INFO  c.m.c.BankSavingsControllerTest - Started BankSavingsControllerTest in 5.582 seconds (process running for 55.916)
+2026-09-02 09:41:20 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-02 09:41:20 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (18ms)
+2026-09-02 09:41:20 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (6ms)
+2026-09-02 09:41:20 [main] DEBUG c.m.controller.BankSavingsController - Creating bank savings: accountName=No Owner, bankName=DBS, balance=100, currency=SGD, country=Singapore
+2026-09-02 09:41:20 [main] ERROR c.m.config.GlobalExceptionHandler - Unhandled RuntimeException: Owner is required
+java.lang.RuntimeException: Owner is required
+	at com.myfinance.controller.BankSavingsController.create(BankSavingsController.java:68) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor.invoke(AfterReturningAdviceInterceptor.java:57) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:173) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768) ~[spring-aop-6.1.6.jar:6.1.6]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720) ~[spring-aop-6.1.6.jar:6.1.6]
+	at com.myfinance.controller.BankSavingsController$$SpringCGLIB$$0.create(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.6.jar:6.1.6]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.6.jar:6.1.6]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.6.jar:6.1.6]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.6.jar:6.1.6]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.6.jar:6.1.6]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.6.jar:6.1.6]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.6.jar:6.1.6]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.1.6.jar:6.1.6]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.20.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.6.jar:6.1.6]
+	at org.springframework.test.web.servlet.TestDispatcherServlet.service(TestDispatcherServlet.java:72) ~[spring-test-6.1.6.jar:6.1.6]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.20.jar:6.0]
+	at org.springframework.mock.web.MockFilterChain$ServletFilterProxy.doFilter(MockFilterChain.java:165) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132) ~[spring-test-6.1.6.jar:6.1.6]
+	at com.myfinance.config.RequestLoggingConfig$1.doFilterInternal(RequestLoggingConfig.java:30) ~[classes/:na]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.test.web.servlet.setup.MockMvcFilterDecorator.doFilter(MockMvcFilterDecorator.java:151) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.test.web.servlet.setup.MockMvcFilterDecorator.doFilter(MockMvcFilterDecorator.java:151) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.test.web.servlet.setup.MockMvcFilterDecorator.doFilter(MockMvcFilterDecorator.java:151) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at com.myfinance.security.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:33) ~[classes/:na]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191) ~[spring-security-web-6.2.4.jar:6.2.4]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195) ~[spring-webmvc-6.1.6.jar:6.1.6]
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230) ~[spring-security-config-6.2.4.jar:6.2.4]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.test.web.servlet.setup.MockMvcFilterDecorator.doFilter(MockMvcFilterDecorator.java:151) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.test.web.servlet.setup.MockMvcFilterDecorator.doFilter(MockMvcFilterDecorator.java:151) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.test.web.servlet.setup.MockMvcFilterDecorator.doFilter(MockMvcFilterDecorator.java:151) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.6.jar:6.1.6]
+	at org.springframework.test.web.servlet.setup.MockMvcFilterDecorator.doFilter(MockMvcFilterDecorator.java:151) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.mock.web.MockFilterChain.doFilter(MockFilterChain.java:132) ~[spring-test-6.1.6.jar:6.1.6]
+	at org.springframework.test.web.servlet.MockMvc.perform(MockMvc.java:201) ~[spring-test-6.1.6.jar:6.1.6]
+	at com.myfinance.controller.BankSavingsControllerTest.shouldRejectCreateWithoutOwner(BankSavingsControllerTest.java:57) ~[test-classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728) ~[junit-platform-commons-1.10.2.jar:1.10.2]
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:218) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:214) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:139) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511) ~[na:na]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511) ~[na:na]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198) ~[junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169) ~[junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93) ~[junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58) ~[junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141) ~[junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57) ~[junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103) ~[junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85) ~[junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47) ~[junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56) ~[surefire-junit-platform-3.1.2.jar:3.1.2]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184) ~[surefire-junit-platform-3.1.2.jar:3.1.2]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148) ~[surefire-junit-platform-3.1.2.jar:3.1.2]
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122) ~[surefire-junit-platform-3.1.2.jar:3.1.2]
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385) ~[surefire-booter-3.1.2.jar:3.1.2]
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162) ~[surefire-booter-3.1.2.jar:3.1.2]
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507) ~[surefire-booter-3.1.2.jar:3.1.2]
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495) ~[surefire-booter-3.1.2.jar:3.1.2]
+2026-09-02 09:41:20 [main] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/bank-savings → 400 (14ms)
+2026-09-02 09:41:20 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PATCH /api/bank-savings/4/net-worth → 200 (16ms)
+2026-09-02 09:41:20 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (12ms)
+2026-09-02 09:41:20 [main] DEBUG c.m.controller.BankSavingsController - Creating bank savings: accountName=DBS Savings, bankName=DBS, balance=50000, currency=SGD, country=Singapore
+2026-09-02 09:41:20 [main] INFO  c.m.controller.BankSavingsController - Created bank savings id=6 for userId=2
+2026-09-02 09:41:20 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/bank-savings → 201 (10ms)
+2026-09-02 09:41:20 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-02 09:41:20 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown initiated...
+2026-09-02 09:41:20 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown completed.
+2026-09-02 09:41:20 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.BankSavingsExtraTest]: BankSavingsExtraTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-02 09:41:20 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.BankSavingsExtraTest
+2026-09-02 09:41:20 [main] INFO  c.m.controller.BankSavingsExtraTest - Starting BankSavingsExtraTest using Java 17.0.20 with PID 87645 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-02 09:41:20 [main] DEBUG c.m.controller.BankSavingsExtraTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-02 09:41:20 [main] INFO  c.m.controller.BankSavingsExtraTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-02 09:41:21 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-02 09:41:21 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 36 ms. Found 36 JPA repository interfaces.
+2026-09-02 09:41:21 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-02 09:41:21 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-02 09:41:21 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-02 09:41:21 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Starting...
+2026-09-02 09:41:21 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-5 - Added connection conn40: url=jdbc:h2:mem:testdb user=SA
+2026-09-02 09:41:21 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Start completed.
+2026-09-02 09:41:21 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-02 09:41:22 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-02 09:41:22 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-02 09:41:23 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-02 09:41:24 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4a11bd30, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@649de3f, org.springframework.security.web.context.SecurityContextHolderFilter@69bf4dfc, org.springframework.security.web.header.HeaderWriterFilter@73e00692, org.springframework.web.filter.CorsFilter@421fb7cb, org.springframework.security.web.authentication.logout.LogoutFilter@47a166b3, com.myfinance.provisioning.ProvisioningTokenFilter@4d805a8b, com.myfinance.security.JwtAuthFilter@33fde9e9, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@63e4c918, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@10439760, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@296fc004, org.springframework.security.web.session.SessionManagementFilter@12aad9e7, org.springframework.security.web.access.ExceptionTranslationFilter@2d1101b, org.springframework.security.web.access.intercept.AuthorizationFilter@ebcb4f8]
+2026-09-02 09:41:25 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-02 09:41:25 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-02 09:41:25 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-02 09:41:25 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-02 09:41:25 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-02 09:41:25 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-02 09:41:25 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-09-02 09:41:25 [main] INFO  c.m.controller.BankSavingsExtraTest - Started BankSavingsExtraTest in 4.181 seconds (process running for 60.511)
+2026-09-02 09:41:25 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-02 09:41:25 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Shutdown initiated...
+2026-09-02 09:41:25 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Shutdown completed.
+2026-09-02 09:44:48 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (10ms)
+2026-09-02 09:44:48 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (6ms)
+2026-09-02 09:44:48 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (52ms)
+2026-09-02 09:44:48 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (69ms)
+2026-09-02 09:44:48 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (65ms)
+2026-09-02 09:44:48 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (9ms)
+2026-09-02 09:44:48 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (12ms)
+2026-09-02 09:44:48 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (21ms)
+2026-09-02 09:52:54 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=8m987ms).
+2026-09-02 11:11:39 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h18m8s512ms).
+2026-09-02 11:29:19 [http-nio-8080-exec-3] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-09-02 11:29:19 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (5ms)
+2026-09-02 11:29:19 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (11ms)
+2026-09-02 11:29:19 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (13ms)
+2026-09-02 11:29:19 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (5ms)
+2026-09-02 11:29:19 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (8ms)
+2026-09-02 11:29:19 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (9ms)
+2026-09-02 11:29:19 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (96ms)
+2026-09-02 11:29:19 [http-nio-8080-exec-8] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-09-02 11:29:19 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (66ms)
+2026-09-02 11:29:21 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/generic-fd → 200 (7ms)
+2026-09-02 11:29:21 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/generic-fd → 200 (8ms)
+2026-09-02 11:30:06 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-09-02 11:30:06 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-09-02 11:30:06 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/generic-fd → 200 (3ms)
+2026-09-02 11:30:06 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/generic-fd → 200 (3ms)
+2026-09-02 11:31:25 [http-nio-8080-exec-5] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:31:25 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (6ms)
+2026-09-02 11:31:25 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (16ms)
+2026-09-02 11:31:25 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (17ms)
+2026-09-02 11:31:25 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (19ms)
+2026-09-02 11:31:25 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (8ms)
+2026-09-02 11:31:25 [http-nio-8080-exec-2] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:31:25 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (7ms)
+2026-09-02 11:31:25 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (8ms)
+2026-09-02 11:31:25 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (17ms)
+2026-09-02 11:33:28 [http-nio-8080-exec-1] INFO  c.m.controller.AuthController - Login attempt for user=admin
+2026-09-02 11:33:28 [http-nio-8080-exec-1] INFO  c.m.controller.AuthController - Login successful for user=admin
+2026-09-02 11:33:28 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (92ms)
+2026-09-02 11:33:28 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (5ms)
+2026-09-02 11:33:28 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (3ms)
+2026-09-02 11:33:37 [http-nio-8080-exec-3] INFO  c.m.controller.AuthController - Login attempt for user=admin
+2026-09-02 11:33:37 [http-nio-8080-exec-3] INFO  c.m.controller.AuthController - Login successful for user=admin
+2026-09-02 11:33:37 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (93ms)
+2026-09-02 11:33:37 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (3ms)
+2026-09-02 11:33:37 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (2ms)
+2026-09-02 11:34:02 [http-nio-8080-exec-9] DEBUG c.m.controller.AuditController - Fetching audit logs: userId=null, action=null, entity=null, from=null, to=null
+2026-09-02 11:34:02 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/audit → 200 (21ms)
+2026-09-02 11:34:02 [http-nio-8080-exec-10] DEBUG c.m.controller.AuditController - Fetching audit logs: userId=null, action=null, entity=null, from=null, to=null
+2026-09-02 11:34:02 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/audit → 200 (5ms)
+2026-09-02 11:34:55 [http-nio-8080-exec-4] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 1496 ms
+2026-09-02 11:35:34 [http-nio-8080-exec-1] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-09-02 11:35:34 [http-nio-8080-exec-1] INFO  c.m.controller.AuthController - Login successful for user=mugu
+2026-09-02 11:35:34 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (99ms)
+2026-09-02 11:35:39 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (58ms)
+2026-09-02 11:35:39 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (2ms)
+2026-09-02 11:36:08 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (6ms)
+2026-09-02 11:36:08 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (5ms)
+2026-09-02 11:36:08 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (5ms)
+2026-09-02 11:36:08 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-09-02 11:36:21 [http-nio-8080-exec-1] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-09-02 11:36:21 [http-nio-8080-exec-7] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:36:21 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-02 11:36:21 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (4ms)
+2026-09-02 11:36:21 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (9ms)
+2026-09-02 11:36:21 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-09-02 11:36:21 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-02 11:36:21 [http-nio-8080-exec-5] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:36:21 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (9ms)
+2026-09-02 11:36:21 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (76ms)
+2026-09-02 11:36:21 [http-nio-8080-exec-9] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-09-02 11:36:21 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (101ms)
+2026-09-02 11:36:30 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (2ms)
+2026-09-02 11:36:30 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-02 11:36:30 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (4ms)
+2026-09-02 11:36:30 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (6ms)
+2026-09-02 11:36:43 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-02 11:36:43 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-02 11:36:52 [http-nio-8080-exec-8] DEBUG c.m.service.PriceFetchService - Price provider returned 404 for https://query1.finance.yahoo.com/v8/finance/chart/AMUNDI-USA?range=1d&interval=1d
+2026-09-02 11:36:52 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Refresh-all prices for user=2: updated=9, skipped=1
+2026-09-02 11:36:52 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/refresh-prices → 200 (669ms)
+2026-09-02 11:36:52 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-02 11:36:59 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Refreshed price for asset id=2 symbol=QQQ -> 707.64
+2026-09-02 11:36:59 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/2/refresh-price → 200 (14ms)
+2026-09-02 11:36:59 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-02 11:37:06 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (3ms)
+2026-09-02 11:37:06 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-09-02 11:37:06 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (3ms)
+2026-09-02 11:37:06 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-02 11:37:07 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-02 11:37:07 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-02 11:37:07 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-02 11:37:07 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-02 11:38:09 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-02 11:38:09 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (6ms)
+2026-09-02 11:38:09 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (13ms)
+2026-09-02 11:38:09 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (5ms)
+2026-09-02 11:38:09 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (8ms)
+2026-09-02 11:38:09 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (5ms)
+2026-09-02 11:38:35 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] PATCH /api/bank-savings/2/net-worth → 200 (8ms)
+2026-09-02 11:38:35 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (3ms)
+2026-09-02 11:38:35 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (5ms)
+2026-09-02 11:39:29 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/generic-fd → 200 (4ms)
+2026-09-02 11:39:29 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/generic-fd → 200 (3ms)
+2026-09-02 11:39:50 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (3ms)
+2026-09-02 11:39:50 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (3ms)
+2026-09-02 11:39:50 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (9ms)
+2026-09-02 11:39:50 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (10ms)
+2026-09-02 11:39:50 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (2ms)
+2026-09-02 11:39:50 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (2ms)
+2026-09-02 11:39:50 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (25ms)
+2026-09-02 11:39:50 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (5ms)
+2026-09-02 11:39:50 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (4ms)
+2026-09-02 11:39:50 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (7ms)
+2026-09-02 11:40:18 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-02 11:40:18 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (5ms)
+2026-09-02 11:40:18 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-02 11:40:18 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/properties → 200 (4ms)
+2026-09-02 11:40:41 [http-nio-8080-exec-5] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-09-02 11:40:41 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-02 11:40:41 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-09-02 11:40:41 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bonds → 200 (6ms)
+2026-09-02 11:40:41 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bonds/summary → 200 (17ms)
+2026-09-02 11:40:41 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-02 11:40:41 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bonds → 200 (3ms)
+2026-09-02 11:40:41 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-02 11:40:41 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bonds/summary → 200 (5ms)
+2026-09-02 11:40:41 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (51ms)
+2026-09-02 11:40:41 [http-nio-8080-exec-10] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-09-02 11:40:41 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (38ms)
+2026-09-02 11:40:47 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-02 11:40:47 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals → 200 (6ms)
+2026-09-02 11:40:47 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals/summary → 200 (12ms)
+2026-09-02 11:40:47 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-02 11:40:47 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals → 200 (4ms)
+2026-09-02 11:40:47 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/precious-metals/summary → 200 (6ms)
+2026-09-02 11:41:28 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-09-02 11:41:28 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (3ms)
+2026-09-02 11:41:28 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (8ms)
+2026-09-02 11:41:28 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (2ms)
+2026-09-02 11:41:28 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (8ms)
+2026-09-02 11:41:28 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (9ms)
+2026-09-02 11:42:17 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (5ms)
+2026-09-02 11:42:17 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (9ms)
+2026-09-02 11:42:18 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-09-02 11:42:18 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (3ms)
+2026-09-02 11:42:18 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (8ms)
+2026-09-02 11:42:18 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (4ms)
+2026-09-02 11:42:18 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (4ms)
+2026-09-02 11:42:18 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (8ms)
+2026-09-02 11:42:24 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-09-02 11:42:24 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-09-02 11:44:47 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/retirement-fund → 200 (4ms)
+2026-09-02 11:44:47 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/retirement-fund → 200 (2ms)
+2026-09-02 11:44:53 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:44:53 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/tax → 200 (5ms)
+2026-09-02 11:44:53 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/tax/summary → 200 (10ms)
+2026-09-02 11:44:53 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-02 11:44:53 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/tax → 200 (3ms)
+2026-09-02 11:44:53 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/tax/summary → 200 (7ms)
+2026-09-02 11:45:02 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-02 11:45:02 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/insurance → 200 (4ms)
+2026-09-02 11:45:02 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-02 11:45:02 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/insurance → 200 (3ms)
+2026-09-02 11:45:24 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/home-loans → 200 (4ms)
+2026-09-02 11:45:24 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/home-loans → 200 (3ms)
+2026-09-02 11:45:31 [http-nio-8080-exec-6] ERROR c.m.config.GlobalExceptionHandler - Unhandled RuntimeException: Could not write JSON: could not initialize proxy [com.myfinance.model.HomeLoan#1] - no Session
+org.springframework.http.converter.HttpMessageNotWritableException: Could not write JSON: could not initialize proxy [com.myfinance.model.HomeLoan#1] - no Session
+	at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.writeInternal(AbstractJackson2HttpMessageConverter.java:492)
+	at org.springframework.http.converter.AbstractGenericHttpMessageConverter.write(AbstractGenericHttpMessageConverter.java:114)
+	at org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor.writeWithMessageConverters(AbstractMessageConverterMethodProcessor.java:297)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor.handleReturnValue(RequestResponseBodyMethodProcessor.java:192)
+	at org.springframework.web.method.support.HandlerMethodReturnValueHandlerComposite.handleReturnValue(HandlerMethodReturnValueHandlerComposite.java:78)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at com.myfinance.config.RequestLoggingConfig$1.doFilterInternal(RequestLoggingConfig.java:30)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.myfinance.security.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1736)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: com.fasterxml.jackson.databind.JsonMappingException: could not initialize proxy [com.myfinance.model.HomeLoan#1] - no Session (through reference chain: java.util.ArrayList[0]->com.myfinance.model.LoanPayment["loan"]->com.myfinance.model.HomeLoan$HibernateProxy$LfVeO1Gr["userId"])
+	at com.fasterxml.jackson.databind.JsonMappingException.wrapWithPath(JsonMappingException.java:402)
+	at com.fasterxml.jackson.databind.JsonMappingException.wrapWithPath(JsonMappingException.java:361)
+	at com.fasterxml.jackson.databind.ser.std.StdSerializer.wrapAndThrow(StdSerializer.java:323)
+	at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:780)
+	at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
+	at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
+	at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
+	at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
+	at com.fasterxml.jackson.databind.ser.std.CollectionSerializer.serializeContents(CollectionSerializer.java:145)
+	at com.fasterxml.jackson.databind.ser.std.CollectionSerializer.serialize(CollectionSerializer.java:107)
+	at com.fasterxml.jackson.databind.ser.std.CollectionSerializer.serialize(CollectionSerializer.java:25)
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:399)
+	at com.fasterxml.jackson.databind.ObjectWriter$Prefetch.serialize(ObjectWriter.java:1568)
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValue(ObjectWriter.java:1061)
+	at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.writeInternal(AbstractJackson2HttpMessageConverter.java:483)
+	... 110 common frames omitted
+Caused by: org.hibernate.LazyInitializationException: could not initialize proxy [com.myfinance.model.HomeLoan#1] - no Session
+	at org.hibernate.proxy.AbstractLazyInitializer.initialize(AbstractLazyInitializer.java:165)
+	at org.hibernate.proxy.AbstractLazyInitializer.getImplementation(AbstractLazyInitializer.java:314)
+	at org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor.intercept(ByteBuddyInterceptor.java:44)
+	at org.hibernate.proxy.ProxyConfiguration$InterceptorDispatcher.intercept(ProxyConfiguration.java:102)
+	at com.myfinance.model.HomeLoan$HibernateProxy$LfVeO1Gr.getUserId(Unknown Source)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:688)
+	at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
+	... 122 common frames omitted
+2026-09-02 11:45:31 [http-nio-8080-exec-6] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/home-loans/1/payments → 400 (15ms)
+2026-09-02 11:45:32 [http-nio-8080-exec-2] ERROR c.m.config.GlobalExceptionHandler - Unhandled RuntimeException: Could not write JSON: could not initialize proxy [com.myfinance.model.HomeLoan#1] - no Session
+org.springframework.http.converter.HttpMessageNotWritableException: Could not write JSON: could not initialize proxy [com.myfinance.model.HomeLoan#1] - no Session
+	at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.writeInternal(AbstractJackson2HttpMessageConverter.java:492)
+	at org.springframework.http.converter.AbstractGenericHttpMessageConverter.write(AbstractGenericHttpMessageConverter.java:114)
+	at org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor.writeWithMessageConverters(AbstractMessageConverterMethodProcessor.java:297)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor.handleReturnValue(RequestResponseBodyMethodProcessor.java:192)
+	at org.springframework.web.method.support.HandlerMethodReturnValueHandlerComposite.handleReturnValue(HandlerMethodReturnValueHandlerComposite.java:78)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at com.myfinance.config.RequestLoggingConfig$1.doFilterInternal(RequestLoggingConfig.java:30)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.myfinance.security.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1736)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: com.fasterxml.jackson.databind.JsonMappingException: could not initialize proxy [com.myfinance.model.HomeLoan#1] - no Session (through reference chain: java.util.ArrayList[0]->com.myfinance.model.LoanPayment["loan"]->com.myfinance.model.HomeLoan$HibernateProxy$LfVeO1Gr["userId"])
+	at com.fasterxml.jackson.databind.JsonMappingException.wrapWithPath(JsonMappingException.java:402)
+	at com.fasterxml.jackson.databind.JsonMappingException.wrapWithPath(JsonMappingException.java:361)
+	at com.fasterxml.jackson.databind.ser.std.StdSerializer.wrapAndThrow(StdSerializer.java:323)
+	at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:780)
+	at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
+	at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:732)
+	at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
+	at com.fasterxml.jackson.databind.ser.BeanSerializer.serialize(BeanSerializer.java:178)
+	at com.fasterxml.jackson.databind.ser.std.CollectionSerializer.serializeContents(CollectionSerializer.java:145)
+	at com.fasterxml.jackson.databind.ser.std.CollectionSerializer.serialize(CollectionSerializer.java:107)
+	at com.fasterxml.jackson.databind.ser.std.CollectionSerializer.serialize(CollectionSerializer.java:25)
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:479)
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:399)
+	at com.fasterxml.jackson.databind.ObjectWriter$Prefetch.serialize(ObjectWriter.java:1568)
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValue(ObjectWriter.java:1061)
+	at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.writeInternal(AbstractJackson2HttpMessageConverter.java:483)
+	... 110 common frames omitted
+Caused by: org.hibernate.LazyInitializationException: could not initialize proxy [com.myfinance.model.HomeLoan#1] - no Session
+	at org.hibernate.proxy.AbstractLazyInitializer.initialize(AbstractLazyInitializer.java:165)
+	at org.hibernate.proxy.AbstractLazyInitializer.getImplementation(AbstractLazyInitializer.java:314)
+	at org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor.intercept(ByteBuddyInterceptor.java:44)
+	at org.hibernate.proxy.ProxyConfiguration$InterceptorDispatcher.intercept(ProxyConfiguration.java:102)
+	at com.myfinance.model.HomeLoan$HibernateProxy$LfVeO1Gr.getUserId(Unknown Source)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at com.fasterxml.jackson.databind.ser.BeanPropertyWriter.serializeAsField(BeanPropertyWriter.java:688)
+	at com.fasterxml.jackson.databind.ser.std.BeanSerializerBase.serializeFields(BeanSerializerBase.java:772)
+	... 122 common frames omitted
+2026-09-02 11:45:32 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/home-loans/1/payments → 400 (4ms)
+2026-09-02 11:45:35 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (2ms)
+2026-09-02 11:45:35 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (4ms)
+2026-09-02 11:45:35 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-09-02 11:45:35 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (5ms)
+2026-09-02 11:45:35 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/allocation → 200 (24ms)
+2026-09-02 11:45:35 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/allocation → 200 (16ms)
+2026-09-02 11:46:11 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/categories → 200 (3ms)
+2026-09-02 11:46:11 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/plans/2026/9 → 204 (3ms)
+2026-09-02 11:46:11 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/categories → 200 (2ms)
+2026-09-02 11:46:11 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/plans/2026/9 → 204 (2ms)
+2026-09-02 11:46:36 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/expenses → 200 (9ms)
+2026-09-02 11:46:37 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/plans/2026/9 → 204 (2ms)
+2026-09-02 11:46:43 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/expenses → 200 (2ms)
+2026-09-02 11:47:08 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/report/2026/9 → 200 (9ms)
+2026-09-02 11:47:09 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/report/2026/9 → 200 (17ms)
+2026-09-02 11:47:13 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/budget/report/2026/9 → 200 (3ms)
+2026-09-02 11:47:14 [http-nio-8080-exec-2] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:47:14 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (2ms)
+2026-09-02 11:47:14 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:47:14 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-02 11:47:14 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (10ms)
+2026-09-02 11:47:14 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:47:14 [http-nio-8080-exec-4] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:47:14 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (8ms)
+2026-09-02 11:47:14 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (8ms)
+2026-09-02 11:47:14 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (12ms)
+2026-09-02 11:47:24 [http-nio-8080-exec-5] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-09-02 11:47:24 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-02 11:47:24 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-02 11:47:24 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (4ms)
+2026-09-02 11:47:24 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-02 11:47:24 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-02 11:47:24 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (3ms)
+2026-09-02 11:47:24 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (51ms)
+2026-09-02 11:47:24 [http-nio-8080-exec-10] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-09-02 11:47:24 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (30ms)
+2026-09-02 11:47:50 [http-nio-8080-exec-4] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:47:50 [http-nio-8080-exec-2] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-09-02 11:47:50 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (6ms)
+2026-09-02 11:47:50 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (6ms)
+2026-09-02 11:47:50 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (8ms)
+2026-09-02 11:47:50 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (7ms)
+2026-09-02 11:47:50 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (10ms)
+2026-09-02 11:47:50 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-02 11:47:50 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:47:50 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-02 11:47:50 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-02 11:47:50 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (7ms)
+2026-09-02 11:47:50 [http-nio-8080-exec-8] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:47:50 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-09-02 11:47:50 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-02 11:47:50 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (47ms)
+2026-09-02 11:47:50 [http-nio-8080-exec-1] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-09-02 11:47:50 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (25ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (5ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (17ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (6ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (2ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (6ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-9] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:47:57 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (4ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (9ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-4] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:47:57 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (6ms)
+2026-09-02 11:47:57 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-02 11:48:07 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (2ms)
+2026-09-02 11:48:07 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (2ms)
+2026-09-02 11:48:07 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (7ms)
+2026-09-02 11:48:07 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (5ms)
+2026-09-02 11:48:07 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (6ms)
+2026-09-02 11:48:07 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (6ms)
+2026-09-02 11:48:15 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-02 11:48:15 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-02 11:48:15 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (1ms)
+2026-09-02 11:48:15 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:48:15 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (6ms)
+2026-09-02 11:48:15 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (9ms)
+2026-09-02 11:48:15 [http-nio-8080-exec-5] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:48:15 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-02 11:48:15 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-02 11:48:15 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-02 11:48:15 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-02 11:48:15 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (5ms)
+2026-09-02 11:48:15 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (8ms)
+2026-09-02 11:48:15 [http-nio-8080-exec-4] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:48:15 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-02 11:48:15 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (4ms)
+2026-09-02 11:48:24 [http-nio-8080-exec-8] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:48:24 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-02 11:48:24 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (3ms)
+2026-09-02 11:48:24 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-02 11:48:24 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-02 11:48:24 [http-nio-8080-exec-5] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:48:24 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:48:24 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (3ms)
+2026-09-02 11:48:24 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-02 11:48:24 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (4ms)
+2026-09-02 11:48:26 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-02 11:48:26 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-02 11:48:26 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-02 11:48:26 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-02 11:48:26 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-02 11:48:26 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (6ms)
+2026-09-02 11:48:26 [http-nio-8080-exec-7] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:48:26 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:48:26 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-02 11:48:26 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-02 11:48:26 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (4ms)
+2026-09-02 11:48:26 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (6ms)
+2026-09-02 11:48:26 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (7ms)
+2026-09-02 11:48:26 [http-nio-8080-exec-3] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:48:26 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (5ms)
+2026-09-02 11:48:26 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (6ms)
+2026-09-02 11:48:29 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-02 11:48:29 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (10ms)
+2026-09-02 11:48:29 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-02 11:48:29 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (6ms)
+2026-09-02 11:48:29 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-02 11:48:29 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (11ms)
+2026-09-02 11:48:29 [http-nio-8080-exec-8] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=1, userId=2
+2026-09-02 11:48:29 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (5ms)
+2026-09-02 11:48:32 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-02 11:48:32 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (1ms)
+2026-09-02 11:48:32 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-02 11:48:32 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:48:32 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-02 11:48:32 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (3ms)
+2026-09-02 11:48:32 [http-nio-8080-exec-5] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=2, userId=2
+2026-09-02 11:48:32 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (2ms)
+2026-09-02 11:48:34 [http-nio-8080-exec-4] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:48:34 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:48:34 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (2ms)
+2026-09-02 11:48:34 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-02 11:48:34 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-02 11:48:34 [http-nio-8080-exec-6] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:48:34 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:48:34 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (3ms)
+2026-09-02 11:48:34 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (4ms)
+2026-09-02 11:48:34 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (5ms)
+2026-09-02 11:48:39 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:48:39 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-02 11:48:39 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-02 11:48:39 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-02 11:48:39 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-02 11:48:39 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (6ms)
+2026-09-02 11:48:39 [http-nio-8080-exec-3] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:48:39 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-02 11:48:39 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-02 11:48:39 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-02 11:48:39 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-02 11:48:39 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-02 11:48:39 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (5ms)
+2026-09-02 11:48:39 [http-nio-8080-exec-5] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:48:39 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (5ms)
+2026-09-02 11:48:39 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (5ms)
+2026-09-02 11:48:45 [http-nio-8080-exec-1] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:48:45 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:48:45 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (3ms)
+2026-09-02 11:48:45 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-02 11:48:45 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (7ms)
+2026-09-02 11:48:45 [http-nio-8080-exec-4] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:48:45 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-02 11:48:45 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (4ms)
+2026-09-02 11:48:45 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (5ms)
+2026-09-02 11:48:45 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-02 11:49:17 [http-nio-8080-exec-5] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-09-02 11:49:17 [http-nio-8080-exec-6] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:49:17 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (2ms)
+2026-09-02 11:49:17 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:49:17 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-02 11:49:17 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (29ms)
+2026-09-02 11:49:17 [http-nio-8080-exec-10] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:49:17 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-02 11:49:17 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (3ms)
+2026-09-02 11:49:17 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (54ms)
+2026-09-02 11:49:17 [http-nio-8080-exec-3] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-09-02 11:49:17 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (23ms)
+2026-09-02 11:51:35 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (6ms)
+2026-09-02 11:51:35 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-02 11:51:48 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-02 11:51:48 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:51:48 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-02 11:51:48 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-02 11:51:48 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (5ms)
+2026-09-02 11:51:48 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (4ms)
+2026-09-02 11:51:48 [http-nio-8080-exec-5] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:51:48 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-02 11:51:48 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-02 11:51:48 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-02 11:51:48 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (4ms)
+2026-09-02 11:51:48 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (1ms)
+2026-09-02 11:51:48 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (5ms)
+2026-09-02 11:51:48 [http-nio-8080-exec-10] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:51:48 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-02 11:51:48 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (4ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (8ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (5ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-6] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:55:34 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (1ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (5ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-5] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 11:55:34 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (3ms)
+2026-09-02 11:55:34 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (3ms)
+2026-09-02 13:04:26 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h8m10s78ms).
+2026-09-02 14:52:28 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h48m1s834ms).
+2026-09-02 16:40:35 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h48m6s880ms).
+2026-09-02 18:05:57 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h25m22s655ms).
+2026-09-02 19:14:43 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h8m45s325ms).
+2026-09-02 22:16:43 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3h2m55ms).
+2026-09-02 22:17:12 [http-nio-8080-exec-4] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-02 22:17:12 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (1ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (8ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-4] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 22:17:25 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (1ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-9] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 22:17:25 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (4ms)
+2026-09-02 22:17:25 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (5ms)
+2026-09-02 22:17:44 [http-nio-8080-exec-5] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-09-02 22:17:44 [http-nio-8080-exec-5] WARN  c.m.controller.AuthController - Login failed for user=mugu
+2026-09-02 22:17:44 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 401 (89ms)
+2026-09-02 22:17:53 [http-nio-8080-exec-1] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-09-02 22:17:53 [http-nio-8080-exec-1] INFO  c.m.controller.AuthController - Login successful for user=mugu
+2026-09-02 22:17:53 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (85ms)
+2026-09-02 22:17:53 [http-nio-8080-exec-10] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 22:17:53 [http-nio-8080-exec-7] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-09-02 22:17:53 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-02 22:17:53 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (2ms)
+2026-09-02 22:17:53 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (4ms)
+2026-09-02 22:17:53 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-02 22:17:53 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (1ms)
+2026-09-02 22:17:53 [http-nio-8080-exec-9] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-02 22:17:53 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (3ms)
+2026-09-02 22:17:54 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (26ms)
+2026-09-02 22:17:54 [http-nio-8080-exec-3] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-09-02 22:17:54 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (20ms)
+2026-09-02 22:18:09 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (2ms)
+2026-09-02 22:18:09 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (2ms)
+2026-09-02 22:18:09 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (5ms)
+2026-09-02 22:18:09 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-09-02 22:18:09 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (3ms)
+2026-09-02 22:18:09 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (5ms)
+2026-09-02 22:18:37 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-02 22:18:37 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-02 22:18:37 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
