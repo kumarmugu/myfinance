@@ -93,4 +93,15 @@ public class TransactionController {
         transactionService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * One-time maintenance: recompute FX-aware realized P/L for the current user's existing SELLs
+     * and re-sync their sold positions. Operates only on the caller's own data (tenant-scoped).
+     */
+    @PostMapping("/recompute-pnl")
+    public ResponseEntity<TransactionService.RecomputeResult> recomputePnl() {
+        Long uid = tenantContext.getCurrentUserId();
+        log.info("Recomputing realized P/L for userId={}", uid);
+        return ResponseEntity.ok(transactionService.recomputeRealizedPnlForUser(uid));
+    }
 }

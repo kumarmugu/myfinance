@@ -423,6 +423,66 @@ class TransactionServiceTest {
 
     @Test
     @WithMockUser(username = "user")
+    void recomputeFixesLegacySellUsingBuyTransactionFxWithoutReSaving() {
+        // Simulate legacy data: a BUY that recorded its purchase FX on the TRANSACTION (1.36) but,
+        // because the holding never captured it, the SELL booked a wrong (fallback) realized P/L.
+        Transaction buy = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, new BigDecimal("5"), new BigDecimal("318.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy", null,
+                "SGD", new BigDecimal("1.36"));
+        // Wipe the holding's captured buy FX to emulate legacy state.
+        Holding h = holdingService.getHolding(asset.getId(), account.getId(), owner.getId()).orElseThrow();
+        h.setAverageBuyFxRate(null);
+        holdingService.save(h);
+
+        Transaction sell = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.SELL, new BigDecimal("5"), new BigDecimal("373.47"),
+                new BigDecimal("7.40"), "USD", LocalDate.of(2024, 6, 1), "Sell", null,
+                "USD", new BigDecimal("1.28"));
+        // Legacy-style: no FX booked because the holding FX was missing at sale time.
+        assertEquals(0, BigDecimal.ZERO.compareTo(sell.getRealizedFxPnl().setScale(2, RoundingMode.HALF_UP)));
+
+        // Recompute from the BUY transactions (source of truth), no re-saving needed.
+        TransactionService.RecomputeResult result = transactionService.recomputeRealizedPnlForUser(testUser.getId());
+        assertEquals(1, result.sellsRecomputed());
+
+        Transaction fixed = transactionRepository.findById(sell.getId()).orElseThrow();
+        assertEquals(0, new BigDecimal("-149.39").compareTo(fixed.getRealizedFxPnl().setScale(2, RoundingMode.HALF_UP)));
+        assertEquals(0, new BigDecimal("220.41").compareTo(fixed.getRealizedPnl().setScale(2, RoundingMode.HALF_UP)));
+
+        // And the sold position reflects the corrected profit.
+        SoldPosition sp = soldPositionRepository.findBySourceTransactionId(sell.getId()).orElseThrow();
+        assertEquals(0, new BigDecimal("220.41").compareTo(sp.getProfit().setScale(2, RoundingMode.HALF_UP)));
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void recomputeIsIdempotent() {
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, new BigDecimal("5"), new BigDecimal("318.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy", null,
+                "SGD", new BigDecimal("1.36"));
+        Transaction sell = transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.SELL, new BigDecimal("5"), new BigDecimal("373.47"),
+                new BigDecimal("7.40"), "USD", LocalDate.of(2024, 6, 1), "Sell", null,
+                "USD", new BigDecimal("1.28"));
+
+        transactionService.recomputeRealizedPnlForUser(testUser.getId());
+        BigDecimal first = transactionRepository.findById(sell.getId()).orElseThrow().getRealizedPnl();
+        transactionService.recomputeRealizedPnlForUser(testUser.getId());
+        BigDecimal second = transactionRepository.findById(sell.getId()).orElseThrow().getRealizedPnl();
+
+        assertEquals(0, first.compareTo(second), "Recompute must be idempotent");
+        // Still exactly one sold position (not duplicated on re-run).
+        assertEquals(1, soldPositionRepository.count());
+    }
+
+    @Test
+    @WithMockUser(username = "user")
     void resavingBuyThenSellRepairsMissingBuyFxOnAClosedPosition() {
         // Mirrors the real repair path: a BUY was originally recorded WITHOUT stamping its FX onto
         // the holding (legacy data), the position was fully sold, so the sell fell back to sellFx and

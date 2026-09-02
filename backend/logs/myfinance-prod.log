@@ -3,3 +3,12 @@
 2026-09-03 00:00:50 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (7ms)
 2026-09-03 00:00:50 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (7ms)
 2026-09-03 00:01:04 [http-nio-8080-exec-6] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/currency-rates/33/refresh → 404 (8ms)
+2026-09-03 00:01:52 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/currency-rates/2/refresh → 404 (2ms)
+2026-09-03 00:01:56 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+2026-09-03 00:01:56 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/currency-rates/refresh-all → 405 (2ms)
+2026-09-03 00:05:14 [http-nio-8080-exec-10] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-09-03 00:05:14 [http-nio-8080-exec-10] WARN  c.m.controller.AuthController - Login failed for user=mugu
+2026-09-03 00:05:14 [http-nio-8080-exec-10] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 401 (199ms)
+2026-09-03 00:06:40 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-03 00:06:40 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-03 00:06:40 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

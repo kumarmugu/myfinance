@@ -185,6 +185,46 @@ public class TransactionService {
                               BigDecimal avgBuyPrice, BigDecimal quantity,
                               BigDecimal investedAmount, BigDecimal soldAmount) {}
 
+    /**
+     * Compute the realized P/L of a SELL in the account currency, split into a stock (price move)
+     * component and an FX component. Shared by the live SELL path and the one-time recompute.
+     *
+     * @param avgBuyFxRate quantity-weighted buy FX rate, or null when unknown. When null we fall
+     *                     back to the sell FX so no phantom FX gain/loss is invented (the whole P/L
+     *                     is then a pure price move in the account currency).
+     */
+    private RealizedPnl computeRealizedPnl(BigDecimal quantity, BigDecimal sellPrice,
+                                           BigDecimal avgBuyPrice, BigDecimal avgBuyFxRate,
+                                           BigDecimal sellFx, BigDecimal fees, String feeCurrency,
+                                           com.myfinance.model.enums.Currency accountCurrency) {
+        BigDecimal avgBuyFx = avgBuyFxRate != null ? avgBuyFxRate : sellFx;
+
+        // Proceeds and cost in the trade (instrument) currency.
+        BigDecimal proceedsTrade = quantity.multiply(sellPrice);
+        BigDecimal costTrade = quantity.multiply(avgBuyPrice);
+
+        // Stock component: valued at the BUY FX rate (so only the price move shows here).
+        BigDecimal stock = proceedsTrade.subtract(costTrade).multiply(avgBuyFx);
+        // FX component: proceeds re-valued at (sellFx − buyFx).
+        BigDecimal fx = proceedsTrade.multiply(sellFx.subtract(avgBuyFx));
+
+        // Fees reduce the realized total (converted into the account currency).
+        BigDecimal feeAcct = BigDecimal.ZERO;
+        if (fees != null && fees.signum() != 0) {
+            // A fee in the account currency needs no conversion; a fee in the trade currency uses the
+            // sell FX rate. (feeCurrency null → assume account currency.)
+            boolean feeInTradeCcy = feeCurrency != null
+                    && accountCurrency != null
+                    && !feeCurrency.equalsIgnoreCase(accountCurrency.name());
+            feeAcct = feeInTradeCcy ? fees.multiply(sellFx) : fees;
+        }
+
+        BigDecimal total = stock.add(fx).subtract(feeAcct);
+        // Fees are booked against the stock component for the split (they're not an FX effect).
+        return new RealizedPnl(total, stock.subtract(feeAcct), fx,
+                avgBuyPrice, quantity, costTrade, proceedsTrade);
+    }
+
     private void updateHolding(Asset asset, Account account, Owner owner, TransactionType type, BigDecimal quantity, BigDecimal pricePerUnit, InvestmentPurpose purpose) {
         updateHolding(asset, account, owner, type, quantity, pricePerUnit, purpose, null, null, null);
     }
@@ -257,40 +297,9 @@ public class TransactionService {
                 h.setInvestedAmount(h.getInvestedAmount().subtract(soldInvestment));
                 holdingService.save(h);
 
-                // ── Realized P/L in the account currency, split into stock and FX components ──
-                BigDecimal sellFx = txFx; // FX rate captured on this SELL (or 1 if same currency)
-                // avgBuyFx: FX rate at which the sold shares were originally bought (quantity-weighted).
-                // When the buy has NO recorded FX rate (older buys, or buys entered without one), we
-                // must NOT default it to 1 — doing so invents a phantom FX gain of proceeds×(sellFx−1)
-                // on the whole position. Instead fall back to the sell FX so the FX component is zero
-                // and the entire realized P/L is treated as a price (stock) move in the account currency.
-                BigDecimal avgBuyFx = h.getAverageBuyFxRate() != null ? h.getAverageBuyFxRate() : sellFx;
-                BigDecimal avgBuyPrice = h.getAverageBuyPrice();
-
-                // Proceeds and cost in the trade (instrument) currency.
-                BigDecimal proceedsTrade = quantity.multiply(pricePerUnit);
-                BigDecimal costTrade = quantity.multiply(avgBuyPrice);
-
-                // Stock component: valued at the BUY FX rate (so only the price move shows here).
-                BigDecimal stock = proceedsTrade.subtract(costTrade).multiply(avgBuyFx);
-                // FX component: proceeds re-valued at (sellFx − buyFx).
-                BigDecimal fx = proceedsTrade.multiply(sellFx.subtract(avgBuyFx));
-
-                // Fees reduce the realized total (converted into the account currency).
-                BigDecimal feeAcct = BigDecimal.ZERO;
-                if (fees != null && fees.signum() != 0) {
-                    // A fee in the account currency needs no conversion; a fee in the trade currency
-                    // uses the sell FX rate. (feeCurrency null → assume account currency.)
-                    boolean feeInTradeCcy = feeCurrency != null
-                            && account.getCurrency() != null
-                            && !feeCurrency.equalsIgnoreCase(account.getCurrency().name());
-                    feeAcct = feeInTradeCcy ? fees.multiply(sellFx) : fees;
-                }
-
-                BigDecimal total = stock.add(fx).subtract(feeAcct);
-                // Fees are booked against the stock component for the split (they're not an FX effect).
-                return new RealizedPnl(total, stock.subtract(feeAcct), fx,
-                        avgBuyPrice, quantity, costTrade, proceedsTrade);
+                // ── Realized P/L in the account currency (stock + FX split) ──
+                return computeRealizedPnl(quantity, pricePerUnit, h.getAverageBuyPrice(),
+                        h.getAverageBuyFxRate(), txFx, fees, feeCurrency, account.getCurrency());
             } else {
                 log.error("Failed to sell: no holding found for assetId={} accountId={} ownerId={}", asset.getId(), account.getId(), owner.getId());
                 throw new RuntimeException("No holding found to sell");
@@ -377,5 +386,78 @@ public class TransactionService {
                 .filter(java.util.Objects::nonNull)
                 .min(LocalDate::compareTo)
                 .orElse(fallback);
+    }
+
+    /** Result of a recompute run, so the caller/UI can report what was fixed. */
+    public record RecomputeResult(int sellsRecomputed, int soldPositionsSynced) {}
+
+    /**
+     * One-time maintenance: recompute the realized P/L (and re-sync the sold positions) for every
+     * existing SELL of a user, using the FX-aware logic. The per-lot average buy price and buy FX
+     * are derived directly from the user's BUY transactions (the source of truth) rather than the
+     * holdings — so this repairs legacy sells whose holding never captured a purchase FX rate.
+     *
+     * <p>The quantity-weighted average buy FX only counts buys that actually recorded a rate; if a
+     * lot has no buy FX at all, the sell falls back to its own sell FX (no invented FX gain/loss).
+     * The method is idempotent: running it again yields the same values. It does NOT modify holding
+     * quantities — only the transactions' realized-P/L fields and their SoldPosition rows.
+     */
+    @Transactional
+    public RecomputeResult recomputeRealizedPnlForUser(Long userId) {
+        // Buys grouped by position key (asset|account|owner), for average price + average buy FX.
+        List<Transaction> all = transactionRepository.findByUserIdOrderByTransactionDateDesc(userId);
+
+        record BuyAgg(BigDecimal qty, BigDecimal cost, BigDecimal fxQty, BigDecimal fxWeighted) {}
+        java.util.Map<String, BuyAgg> buysByPosition = new java.util.HashMap<>();
+        for (Transaction t : all) {
+            if (t.getTransactionType() != TransactionType.BUY) continue;
+            String key = positionKey(t);
+            BuyAgg agg = buysByPosition.getOrDefault(key,
+                    new BuyAgg(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO));
+            BigDecimal q = t.getQuantity();
+            BigDecimal newQty = agg.qty().add(q);
+            BigDecimal newCost = agg.cost().add(q.multiply(t.getPricePerUnit()));
+            BigDecimal newFxQty = agg.fxQty();
+            BigDecimal newFxWeighted = agg.fxWeighted();
+            if (t.getFxRateToBase() != null) {
+                newFxQty = newFxQty.add(q);
+                newFxWeighted = newFxWeighted.add(t.getFxRateToBase().multiply(q));
+            }
+            buysByPosition.put(key, new BuyAgg(newQty, newCost, newFxQty, newFxWeighted));
+        }
+
+        int sellsRecomputed = 0;
+        int soldSynced = 0;
+        for (Transaction sell : all) {
+            if (sell.getTransactionType() != TransactionType.SELL) continue;
+            BuyAgg agg = buysByPosition.get(positionKey(sell));
+            if (agg == null || agg.qty().signum() == 0) {
+                // No buys to price against — leave as-is (can't compute a cost basis).
+                continue;
+            }
+            BigDecimal avgBuyPrice = agg.cost().divide(agg.qty(), 6, RoundingMode.HALF_UP);
+            BigDecimal avgBuyFx = agg.fxQty().signum() > 0
+                    ? agg.fxWeighted().divide(agg.fxQty(), 6, RoundingMode.HALF_UP)
+                    : null; // no buy captured a rate → unknown → sell-fx fallback
+            BigDecimal sellFx = sell.getFxRateToBase() != null ? sell.getFxRateToBase() : BigDecimal.ONE;
+
+            RealizedPnl realized = computeRealizedPnl(
+                    sell.getQuantity(), sell.getPricePerUnit(), avgBuyPrice, avgBuyFx, sellFx,
+                    sell.getFees(), sell.getFeeCurrency(), sell.getAccount().getCurrency());
+
+            sell.setRealizedPnl(realized.total());
+            sell.setRealizedStockPnl(realized.stock());
+            sell.setRealizedFxPnl(realized.fx());
+            transactionRepository.save(sell);
+            syncSoldPosition(sell, realized);
+            sellsRecomputed++;
+            soldSynced++;
+        }
+        log.info("Recomputed realized P/L for userId={}: {} sells, {} sold positions", userId, sellsRecomputed, soldSynced);
+        return new RecomputeResult(sellsRecomputed, soldSynced);
+    }
+
+    private String positionKey(Transaction t) {
+        return t.getAsset().getId() + "|" + t.getAccount().getId() + "|" + t.getOwner().getId();
     }
 }
