@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -81,12 +82,28 @@ public class CurrencyRateController {
 
     // ─── FX Rates (CRUD) ───
 
+    /**
+     * Upsert a rate for a currency pair. We keep exactly ONE row per (user, from, to) — if a
+     * rate for the pair already exists it is updated in place rather than adding a history row.
+     * effectiveDate is set automatically to today; the client no longer supplies it.
+     */
     @PostMapping
     public ResponseEntity<CurrencyRate> create(@RequestBody CurrencyRate rate) {
-        log.info("Creating currency rate: {}→{}, rate={}", rate.getFromCurrency(), rate.getToCurrency(), rate.getRate());
-        rate.setUserId(tenantContext.getCurrentUserId());
-        CurrencyRate saved = repository.save(rate);
-        log.info("Created currency rate id={}", saved.getId());
+        Long uid = tenantContext.getCurrentUserId();
+        String from = norm(rate.getFromCurrency());
+        String to = norm(rate.getToCurrency());
+        log.info("Upserting currency rate: {}→{}, rate={}, spreadPct={}", from, to, rate.getRate(), rate.getSpreadPct());
+
+        CurrencyRate entity = repository.findByUserIdAndFromCurrencyAndToCurrency(uid, from, to)
+                .orElseGet(CurrencyRate::new);
+        entity.setUserId(uid);
+        entity.setFromCurrency(from);
+        entity.setToCurrency(to);
+        entity.setRate(rate.getRate());
+        entity.setSpreadPct(rate.getSpreadPct());
+        entity.setEffectiveDate(LocalDate.now());
+        CurrencyRate saved = repository.save(entity);
+        log.info("Saved currency rate id={}", saved.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
@@ -95,9 +112,12 @@ public class CurrencyRateController {
         log.info("Updating currency rate id={}", id);
         CurrencyRate existing = repository.findById(id).orElseThrow(() -> new RuntimeException("Rate not found"));
         existing.setRate(updated.getRate());
-        existing.setEffectiveDate(updated.getEffectiveDate());
+        existing.setSpreadPct(updated.getSpreadPct());
+        existing.setEffectiveDate(LocalDate.now());
         return repository.save(existing);
     }
+
+    private String norm(String s) { return s == null ? "" : s.trim().toUpperCase(); }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {

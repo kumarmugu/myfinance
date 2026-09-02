@@ -96,18 +96,35 @@ public class CurrencyConversionService {
 
         List<CurrencyRate> rates = currencyRateRepository.findByUserId(userId);
 
-        BigDecimal direct = latestRate(rates, from, base);
-        if (direct != null && direct.compareTo(BigDecimal.ZERO) > 0) {
-            return direct;
+        // Direct from->base: apply the pair's broker spread (effective = mid * (1 - spread%)),
+        // because converting this currency INTO base is a repatriation where the broker haircut applies.
+        CurrencyRate direct = latestRateEntry(rates, from, base);
+        if (direct != null && direct.getRate() != null && direct.getRate().compareTo(BigDecimal.ZERO) > 0) {
+            return applySpread(direct.getRate(), direct.getSpreadPct());
         }
-        BigDecimal inverse = latestRate(rates, base, from);
-        if (inverse != null && inverse.compareTo(BigDecimal.ZERO) > 0) {
-            return BigDecimal.ONE.divide(inverse, 10, RoundingMode.HALF_UP);
+        // Inverse base->from: invert the spread-adjusted rate so the haircut still reduces the base value.
+        CurrencyRate inverse = latestRateEntry(rates, base, from);
+        if (inverse != null && inverse.getRate() != null && inverse.getRate().compareTo(BigDecimal.ZERO) > 0) {
+            BigDecimal effInverse = applySpread(inverse.getRate(), inverse.getSpreadPct());
+            return BigDecimal.ONE.divide(effInverse, 10, RoundingMode.HALF_UP);
         }
 
         log.warn("No FX rate {}->{} (or inverse) for userId={}; summing amount without conversion",
                 from, base, userId);
         return BigDecimal.ONE;
+    }
+
+    /**
+     * Effective conversion rate after the broker spread: {@code rate * (1 - spreadPct/100)}.
+     * Null/zero/negative spread returns the mid-market rate unchanged. A spread >= 100 is
+     * clamped so the factor never goes to zero or negative.
+     */
+    BigDecimal applySpread(BigDecimal rate, BigDecimal spreadPct) {
+        if (rate == null) return null;
+        if (spreadPct == null || spreadPct.compareTo(BigDecimal.ZERO) <= 0) return rate;
+        BigDecimal pct = spreadPct.min(new BigDecimal("99.999"));
+        BigDecimal multiplier = BigDecimal.ONE.subtract(pct.movePointLeft(2)); // 1 - pct/100
+        return rate.multiply(multiplier);
     }
 
     /**
@@ -124,23 +141,26 @@ public class CurrencyConversionService {
         }
         List<CurrencyRate> rates = currencyRateRepository.findByUserId(userId);
 
-        BigDecimal direct = latestRate(rates, base, to);
-        if (direct != null && direct.compareTo(BigDecimal.ZERO) > 0) {
-            return direct;
+        // Mirror factorToBase: base->to is the inverse of the spread-adjusted to->base rate, so the
+        // display toggle shows the same realistic (post-spread) value that feeds net worth.
+        CurrencyRate toBaseRate = latestRateEntry(rates, to, base);
+        if (toBaseRate != null && toBaseRate.getRate() != null && toBaseRate.getRate().compareTo(BigDecimal.ZERO) > 0) {
+            BigDecimal effToBase = applySpread(toBaseRate.getRate(), toBaseRate.getSpreadPct());
+            return BigDecimal.ONE.divide(effToBase, 10, RoundingMode.HALF_UP);
         }
-        BigDecimal inverse = latestRate(rates, to, base);
-        if (inverse != null && inverse.compareTo(BigDecimal.ZERO) > 0) {
-            return BigDecimal.ONE.divide(inverse, 10, RoundingMode.HALF_UP);
+        CurrencyRate baseToRate = latestRateEntry(rates, base, to);
+        if (baseToRate != null && baseToRate.getRate() != null && baseToRate.getRate().compareTo(BigDecimal.ZERO) > 0) {
+            return applySpread(baseToRate.getRate(), baseToRate.getSpreadPct());
         }
         return null;
     }
 
-    private BigDecimal latestRate(List<CurrencyRate> rates, String from, String to) {
+    /** The single stored rate entry for a pair (max effectiveDate for backward compatibility). */
+    private CurrencyRate latestRateEntry(List<CurrencyRate> rates, String from, String to) {
         return rates.stream()
                 .filter(r -> from.equalsIgnoreCase(nz(r.getFromCurrency())) && to.equalsIgnoreCase(nz(r.getToCurrency())))
                 .max(Comparator.comparing(CurrencyRate::getEffectiveDate,
                         Comparator.nullsFirst(Comparator.naturalOrder())))
-                .map(CurrencyRate::getRate)
                 .orElse(null);
     }
 
