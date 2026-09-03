@@ -19,6 +19,9 @@ export default function Portfolio() {
   const [displayCurrency, setDisplayCurrency] = useState<Currency>('SGD');
   const [owners, setOwners] = useState<Owner[]>([]);
   const [filterOwner, setFilterOwner] = useState<number | undefined>();
+  // Holdings-table column filters (client-side). Owner is handled globally, server-side.
+  const [filterAssetId, setFilterAssetId] = useState<string>('');
+  const [filterAccountId, setFilterAccountId] = useState<string>('');
 
   useEffect(() => { getOwners().then(r => setOwners(r.data)).catch(console.error); }, []);
   useEffect(() => { loadData(); }, [filterOwner]);
@@ -38,7 +41,22 @@ export default function Portfolio() {
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
 
-  const holdingsWithValue = holdings.map(h => {
+  // Distinct assets / accounts present in the current holdings, for the filter dropdowns.
+  const assetOptions = Array.from(new Map(holdings.filter(h => h.asset).map(h => [h.asset.id, h.asset])).values())
+    .sort((a, b) => a.symbol.localeCompare(b.symbol));
+  const accountOptions = Array.from(new Map(holdings.filter(h => h.account).map(h => [h.account.id, h.account])).values())
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  // Apply the client-side column filters (owner is already applied server-side).
+  const filteredHoldings = holdings.filter(h => {
+    if (filterAssetId && String(h.asset?.id) !== filterAssetId) return false;
+    if (filterAccountId && String(h.account?.id) !== filterAccountId) return false;
+    return true;
+  });
+  const holdingsFiltersActive = !!(filterAssetId || filterAccountId);
+  const clearHoldingsFilters = () => { setFilterAssetId(''); setFilterAccountId(''); };
+
+  const holdingsWithValue = filteredHoldings.map(h => {
     const currentPrice = h.asset.currentPrice || h.averageBuyPrice;
     const currentValue = h.quantity * currentPrice;
     const gainLoss = currentValue - h.investedAmount;
@@ -119,10 +137,35 @@ export default function Portfolio() {
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="p-4 border-b border-slate-200 flex justify-between items-center">
               <div>
-                <h3 className="font-semibold text-slate-800">All Holdings ({holdings.length})</h3>
+                <h3 className="font-semibold text-slate-800">All Holdings ({filteredHoldings.length})</h3>
                 <p className="text-sm text-slate-500">Total: {formatCurrency(totalValue)} | Invested: {formatCurrency(totalInvested)} | P&L: {formatCurrency(totalValue - totalInvested)}</p>
               </div>
-              <ExportMenu rows={holdings} config={holdingsExportConfig} />
+              <ExportMenu rows={filteredHoldings} config={holdingsExportConfig} />
+            </div>
+            {/* Column filters (owner is the global filter above) */}
+            <div className="px-4 py-3 border-b border-slate-200 bg-slate-50/50 flex flex-wrap items-end gap-3">
+              <div className="w-52">
+                <label className="block text-[11px] font-medium text-slate-500 mb-1">Asset</label>
+                <SearchableSelect
+                  options={[{ value: '', label: 'All Assets' }, ...assetOptions.map(a => ({ value: a.id.toString(), label: `${a.symbol} - ${a.name}` }))]}
+                  value={filterAssetId}
+                  onChange={v => setFilterAssetId(v.toString())}
+                  placeholder="All Assets"
+                />
+              </div>
+              <div className="w-52">
+                <label className="block text-[11px] font-medium text-slate-500 mb-1">Account</label>
+                <SearchableSelect
+                  options={[{ value: '', label: 'All Accounts' }, ...accountOptions.map(a => ({ value: a.id.toString(), label: a.name }))]}
+                  value={filterAccountId}
+                  onChange={v => setFilterAccountId(v.toString())}
+                  placeholder="All Accounts"
+                />
+              </div>
+              {holdingsFiltersActive && (
+                <button onClick={clearHoldingsFilters} className="px-3 py-2 text-sm font-medium text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50">Clear</button>
+              )}
+              <p className="text-[11px] text-slate-400 ml-auto">Showing {filteredHoldings.length} of {holdings.length} holdings</p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
