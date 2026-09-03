@@ -49,6 +49,9 @@ export default function Transactions() {
   const [deletePassword, setDeletePassword] = useState('');
   const [deleteError, setDeleteError] = useState('');
   const [recomputing, setRecomputing] = useState(false);
+  // Client-side pagination: how many of the filtered rows to render (grows via "Show more").
+  const PAGE_SIZE = 100;
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const [form, setForm] = useState<TransactionRequest>({
     assetId: 0, accountId: 0, ownerId: 0, transactionType: 'BUY',
@@ -237,6 +240,13 @@ export default function Transactions() {
   });
 
   const filtersActive = !!(filterType || filterAssetId || filterAccountId || filterPurpose || filterDateFrom || filterDateTo || searchLc);
+
+  // Reset pagination whenever the filtered set changes, so you always start at the top.
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [filterType, filterAssetId, filterAccountId, filterPurpose, filterDateFrom, filterDateTo, searchLc, filterOwner, transactions.length]);
+
+  const visible = filtered.slice(0, visibleCount);
   const clearFilters = () => {
     setFilterType(''); setFilterAssetId(''); setFilterAccountId('');
     setFilterPurpose(''); setFilterDateFrom(''); setFilterDateTo(''); setSearch('');
@@ -436,7 +446,7 @@ export default function Transactions() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {filtered.map(tx => (
+              {visible.map(tx => (
                 <tr key={tx.id} className="hover:bg-slate-50 group">
                   <td className="px-4 py-2.5 text-slate-700 text-xs">{formatDate(tx.transactionDate)}</td>
                   <td className="px-4 py-2.5">
@@ -502,10 +512,18 @@ export default function Transactions() {
                   </td>
                 </tr>
               ))}
-              {filtered.length === 0 && <tr><td colSpan={11} className="px-4 py-12 text-center text-slate-400">{transactions.length === 0 ? 'No transactions yet' : 'No transactions match the filters'}</td></tr>}
+              {filtered.length === 0 && <tr><td colSpan={12} className="px-4 py-12 text-center text-slate-400">{transactions.length === 0 ? 'No transactions yet' : 'No transactions match the filters'}</td></tr>}
             </tbody>
           </table>
         </div>
+        {visible.length < filtered.length && (
+          <div className="p-4 border-t border-slate-200 flex items-center justify-center gap-3">
+            <span className="text-xs text-slate-400">Showing {visible.length} of {filtered.length}</span>
+            <button onClick={() => setVisibleCount(c => c + PAGE_SIZE)} className="px-4 py-2 text-sm font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:bg-indigo-50">
+              Show more
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Delete Confirmation Modal */}
