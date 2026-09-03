@@ -100,6 +100,8 @@ export default function Transactions() {
       purpose: tx.purpose ?? 'LONG_TERM',
     });
     setShowForm(true);
+    // Bring the edit form (top of the page) into view — the Modify button lives down in the table.
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleRecompute = async () => {
