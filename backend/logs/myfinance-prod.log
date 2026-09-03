@@ -192,3 +192,6 @@ Identify and stop the process that's listening on port 8080 or configure this ap
 2026-09-03 10:01:49 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (8ms)
 2026-09-03 10:01:49 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (17ms)
 2026-09-03 10:01:49 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (8ms)
+2026-09-03 10:07:40 [http-nio-8080-exec-8] INFO  c.m.controller.AuthController - Login attempt for user=x
+2026-09-03 10:07:41 [http-nio-8080-exec-8] WARN  c.m.controller.AuthController - Login failed for user=x
+2026-09-03 10:07:41 [http-nio-8080-exec-8] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 401 (122ms)
