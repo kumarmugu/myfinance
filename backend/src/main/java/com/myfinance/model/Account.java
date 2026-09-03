@@ -5,6 +5,7 @@ import com.myfinance.model.enums.Currency;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -35,6 +36,19 @@ public class Account {
     private String accountNumber;
 
     private String description;
+
+    /**
+     * Uninvested cash sitting in this broker/exchange account, in the account's {@link #currency}.
+     * Nullable/zero = no cash. This is the source of truth (the user maintains it); base/display
+     * values are always derived via FX. Counted in Net Worth as the CASH module when
+     * {@link #includeCashInNetWorth} is true and the CASH config toggle is enabled.
+     */
+    @Column(precision = 18, scale = 2)
+    private BigDecimal cashBalance;
+
+    /** Whether this account's cash balance is included in Net Worth. Defaults to true. */
+    @Builder.Default
+    private Boolean includeCashInNetWorth = true;
 
     @Column(updatable = false)
     private LocalDateTime createdAt;

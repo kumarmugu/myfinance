@@ -24,6 +24,10 @@ export interface Account {
   currency: Currency;
   accountNumber: string | null;
   description: string;
+  /** Uninvested cash held in this account, in the account's currency (null = none). */
+  cashBalance: number | null;
+  /** Whether this account's cash balance is counted in Net Worth (default true). */
+  includeCashInNetWorth: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -296,6 +300,7 @@ export const NET_WORTH_MODULE_LABELS: Record<string, string> = {
   PROPERTY: 'Real Estate',
   PRECIOUS_METAL: 'Precious Metals',
   GENERIC_FD: 'Fixed Deposits',
+  CASH: 'Broker Cash',
 };
 
 export const NET_WORTH_MODULE_COLORS: Record<string, string> = {
@@ -303,6 +308,7 @@ export const NET_WORTH_MODULE_COLORS: Record<string, string> = {
   PROPERTY: '#22c55e',
   PRECIOUS_METAL: '#eab308',
   GENERIC_FD: '#94a3b8',
+  CASH: '#14b8a6',
 };
 
 // ─── Insurance ───

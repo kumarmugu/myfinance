@@ -38,6 +38,8 @@ public class AccountService {
         existing.setAccountNumber(updated.getAccountNumber());
         existing.setDescription(updated.getDescription());
         existing.setOwner(updated.getOwner());
+        existing.setCashBalance(updated.getCashBalance());
+        existing.setIncludeCashInNetWorth(updated.getIncludeCashInNetWorth());
         Account saved = accountRepository.save(existing);
         log.info("Updated Account id={}", id);
         return saved;

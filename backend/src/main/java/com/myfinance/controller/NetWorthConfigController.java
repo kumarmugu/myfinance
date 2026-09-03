@@ -30,6 +30,7 @@ public class NetWorthConfigController {
         put("PROPERTY", "Real Estate");
         put("PRECIOUS_METAL", "Precious Metals");
         put("GENERIC_FD", "Fixed Deposits");
+        put("CASH", "Broker Cash");
     }};
 
     @GetMapping

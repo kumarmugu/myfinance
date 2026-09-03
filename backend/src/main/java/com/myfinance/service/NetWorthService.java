@@ -21,6 +21,7 @@ public class NetWorthService {
     private final PropertyRepository propertyRepository;
     private final PreciousMetalRepository preciousMetalRepository;
     private final GenericFixedDepositRepository genericFixedDepositRepository;
+    private final AccountRepository accountRepository;
     private final CurrencyConversionService fx;
 
     // Standalone module config keys (mirror NetWorthConfigController.MODULE_KEYS)
@@ -28,6 +29,7 @@ public class NetWorthService {
     public static final String KEY_PROPERTY = "PROPERTY";
     public static final String KEY_PRECIOUS_METAL = "PRECIOUS_METAL";
     public static final String KEY_GENERIC_FD = "GENERIC_FD";
+    public static final String KEY_CASH = "CASH";
 
     private Set<String> getIncludedTypesForUser(Long userId) {
         List<NetWorthConfig> configs = netWorthConfigRepository.findByUserIdAndIncludeInNetWorthTrue(userId);
@@ -38,6 +40,7 @@ public class NetWorthService {
             all.add(KEY_PROPERTY);
             all.add(KEY_PRECIOUS_METAL);
             all.add(KEY_GENERIC_FD);
+            all.add(KEY_CASH);
             return all;
         }
         return configs.stream().map(NetWorthConfig::getAssetType).collect(Collectors.toSet());
@@ -169,6 +172,17 @@ public class NetWorthService {
                     .map(f -> fx.toBase(f.getPrincipalAmount(), f.getCurrency(), userId))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
             result.put(KEY_GENERIC_FD, total);
+        }
+
+        // Uninvested cash held in broker / exchange / bank accounts, converted to base.
+        // Respects each account's includeCashInNetWorth flag (null treated as included).
+        if (includedTypes.contains(KEY_CASH)) {
+            BigDecimal total = accountRepository.findByUserId(userId).stream()
+                    .filter(a -> a.getCashBalance() != null && a.getCashBalance().compareTo(BigDecimal.ZERO) != 0)
+                    .filter(a -> !Boolean.FALSE.equals(a.getIncludeCashInNetWorth()))
+                    .map(a -> fx.toBase(a.getCashBalance(), a.getCurrency() == null ? null : a.getCurrency().name(), userId))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            result.put(KEY_CASH, total);
         }
 
         return result;

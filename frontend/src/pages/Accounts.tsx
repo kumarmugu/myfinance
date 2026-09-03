@@ -5,6 +5,7 @@ import SearchableSelect from '../components/SearchableSelect';
 import ExportMenu from '../components/ExportMenu';
 import { accountsExportConfig } from '../utils/export/configs';
 import type { Account, AccountType, Currency, Owner, OwnerRelationship } from '../types';
+import { formatCurrency } from '../utils/formatters';
 import { useToast } from '../contexts/ToastContext';
 
 export default function Accounts() {
@@ -19,7 +20,7 @@ export default function Accounts() {
   const [loading, setLoading] = useState(true);
   const { showToast } = useToast();
 
-  const [accForm, setAccForm] = useState({ name: '', accountType: 'BROKER' as AccountType, currency: 'SGD' as Currency, accountNumber: '', description: '', ownerId: 0 });
+  const [accForm, setAccForm] = useState({ name: '', accountType: 'BROKER' as AccountType, currency: 'SGD' as Currency, accountNumber: '', description: '', ownerId: 0, cashBalance: '', includeCashInNetWorth: true });
   const [ownerForm, setOwnerForm] = useState({ name: '', relationship: 'SELF' as OwnerRelationship });
 
   useEffect(() => { loadData(); }, []);
@@ -35,20 +36,25 @@ export default function Accounts() {
   // ─── Account handlers ───
   const handleAccountSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload: any = { ...accForm, owner: accForm.ownerId ? { id: accForm.ownerId } : null };
+    const payload: any = {
+      ...accForm,
+      owner: accForm.ownerId ? { id: accForm.ownerId } : null,
+      cashBalance: accForm.cashBalance.trim() === '' ? null : parseFloat(accForm.cashBalance),
+      includeCashInNetWorth: accForm.includeCashInNetWorth,
+    };
     delete payload.ownerId;
     try {
       if (editingAccount) { await updateAccount(editingAccount.id, payload); }
       else { await createAccount(payload); }
       setShowAccountForm(false); setEditingAccount(null);
-      setAccForm({ name: '', accountType: 'BROKER', currency: 'SGD', accountNumber: '', description: '', ownerId: 0 });
+      setAccForm({ name: '', accountType: 'BROKER', currency: 'SGD', accountNumber: '', description: '', ownerId: 0, cashBalance: '', includeCashInNetWorth: true });
       loadData();
     } catch (err: any) { console.error(err); showToast(err.response?.data?.message || err.message || 'Failed to save account'); }
   };
 
   const startEditAccount = (acc: Account) => {
     setEditingAccount(acc);
-    setAccForm({ name: acc.name, accountType: acc.accountType, currency: acc.currency, accountNumber: acc.accountNumber || '', description: acc.description || '', ownerId: acc.owner?.id || 0 });
+    setAccForm({ name: acc.name, accountType: acc.accountType, currency: acc.currency, accountNumber: acc.accountNumber || '', description: acc.description || '', ownerId: acc.owner?.id || 0, cashBalance: acc.cashBalance != null ? String(acc.cashBalance) : '', includeCashInNetWorth: acc.includeCashInNetWorth !== false });
     setShowAccountForm(true);
   };
 
@@ -124,7 +130,7 @@ export default function Accounts() {
         <>
           <div className="flex justify-end gap-3">
             <ExportMenu rows={accounts} config={accountsExportConfig} />
-            <button onClick={() => { setShowAccountForm(!showAccountForm); setEditingAccount(null); setAccForm({ name: '', accountType: 'BROKER', currency: 'SGD', accountNumber: '', description: '', ownerId: 0 }); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
+            <button onClick={() => { setShowAccountForm(!showAccountForm); setEditingAccount(null); setAccForm({ name: '', accountType: 'BROKER', currency: 'SGD', accountNumber: '', description: '', ownerId: 0, cashBalance: '', includeCashInNetWorth: true }); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
               <Plus size={16} /> New Account
             </button>
           </div>
@@ -147,6 +153,13 @@ export default function Accounts() {
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Owner</label>
                   <SearchableSelect options={[{ value: 0, label: 'Unlinked' }, ...owners.map(o => ({ value: o.id, label: `${o.name} (${o.relationship})`, icon: o.name[0] }))]} value={accForm.ownerId} onChange={v => setAccForm({...accForm, ownerId: Number(v)})} placeholder="Select owner..." /></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1">Description</label><input type="text" value={accForm.description} onChange={e => setAccForm({...accForm, description: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+                <div><label className="block text-sm font-medium text-slate-700 mb-1">Cash Balance ({accForm.currency})</label>
+                  <input type="number" step="any" value={accForm.cashBalance} onChange={e => setAccForm({...accForm, cashBalance: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Uninvested cash in this account" />
+                  <label className="mt-2 flex items-center gap-2 text-xs text-slate-600 cursor-pointer">
+                    <input type="checkbox" checked={accForm.includeCashInNetWorth} onChange={e => setAccForm({...accForm, includeCashInNetWorth: e.target.checked})} className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+                    Include this cash in Net Worth
+                  </label>
+                </div>
                 <div className="flex items-end gap-2">
                   <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">{editingAccount ? 'Update' : 'Save'}</button>
                   <button type="button" onClick={() => { setShowAccountForm(false); setEditingAccount(null); }} className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
@@ -164,6 +177,7 @@ export default function Accounts() {
                     <th className="text-left px-4 py-3 font-medium text-slate-600">Account</th>
                     <th className="text-left px-4 py-3 font-medium text-slate-600">Type</th>
                     <th className="text-left px-4 py-3 font-medium text-slate-600">Currency</th>
+                    <th className="text-right px-4 py-3 font-medium text-slate-600">Cash</th>
                     <th className="text-left px-4 py-3 font-medium text-slate-600">Account No.</th>
                     <th className="text-left px-4 py-3 font-medium text-slate-600">Owner</th>
                     <th className="text-left px-4 py-3 font-medium text-slate-600">Description</th>
@@ -181,6 +195,13 @@ export default function Accounts() {
                       </td>
                       <td className="px-4 py-3"><span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">{acc.accountType}</span></td>
                       <td className="px-4 py-3"><span className="text-xs font-medium text-indigo-600">{acc.currency}</span></td>
+                      <td className="px-4 py-3 text-right">
+                        {acc.cashBalance != null && acc.cashBalance !== 0 ? (
+                          <span className={`text-sm font-medium ${acc.includeCashInNetWorth !== false ? 'text-slate-800' : 'text-slate-400 line-through'}`} title={acc.includeCashInNetWorth !== false ? 'Counted in net worth' : 'Excluded from net worth'}>
+                            {formatCurrency(acc.cashBalance, acc.currency)}
+                          </span>
+                        ) : <span className="text-xs text-slate-400">-</span>}
+                      </td>
                       <td className="px-4 py-3">
                         {acc.accountNumber ? (
                           <div className="flex items-center gap-1.5">
@@ -208,7 +229,7 @@ export default function Accounts() {
                       </td>
                     </tr>
                   ))}
-                  {accounts.length === 0 && <tr><td colSpan={7} className="px-4 py-12 text-center text-slate-400">No accounts</td></tr>}
+                  {accounts.length === 0 && <tr><td colSpan={8} className="px-4 py-12 text-center text-slate-400">No accounts</td></tr>}
                 </tbody>
               </table>
             </div>
