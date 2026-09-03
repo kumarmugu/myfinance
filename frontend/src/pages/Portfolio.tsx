@@ -174,6 +174,7 @@ export default function Portfolio() {
                     <th className="text-left px-4 py-3 font-medium text-slate-600">Asset</th>
                     <th className="text-left px-4 py-3 font-medium text-slate-600">Type</th>
                     <th className="text-left px-4 py-3 font-medium text-slate-600">Account</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Owner</th>
                     <th className="text-left px-4 py-3 font-medium text-slate-600">Purpose</th>
                     <th className="text-right px-4 py-3 font-medium text-slate-600">Qty</th>
                     <th className="text-right px-4 py-3 font-medium text-slate-600">Avg Price</th>
@@ -189,6 +190,7 @@ export default function Portfolio() {
                       <td className="px-4 py-3"><span className="font-medium text-slate-800">{h.asset.symbol}</span><p className="text-xs text-slate-400">{h.asset.name}</p></td>
                       <td className="px-4 py-3"><span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{ASSET_TYPE_LABELS[h.asset.assetType] || h.asset.assetType}</span></td>
                       <td className="px-4 py-3 text-slate-600">{h.account.name}</td>
+                      <td className="px-4 py-3 text-slate-500 text-xs">{h.owner?.name ?? '-'}</td>
                       <td className="px-4 py-3"><span className={`text-[10px] px-1.5 py-0.5 rounded ${h.purpose === 'TRADING' || h.purpose === 'SHORT_TERM' ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-600'}`}>{h.purpose ? h.purpose.replace(/_/g, ' ') : 'LONG TERM'}</span></td>
                       <td className="px-4 py-3 text-right text-slate-700">{h.quantity.toFixed(h.quantity < 1 ? 4 : 2)}</td>
                       <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(h.averageBuyPrice, h.currency)}</td>
