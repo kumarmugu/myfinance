@@ -107,6 +107,35 @@ export default function Transactions() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  /**
+   * Start a SELL pre-filled from a BUY row: same asset/account/owner, quantity capped to what's
+   * still held in that position. This is a UI convenience — the sell is a normal average-cost sell
+   * against the whole position, not tied to this specific lot.
+   */
+  const startSellFrom = (tx: Transaction, heldQty: number) => {
+    setEditingId(null); // always a NEW transaction, never editing the buy
+    const live = assetById.get(tx.asset.id);
+    setForm({
+      assetId: tx.asset.id,
+      accountId: tx.account.id,
+      ownerId: tx.owner.id,
+      transactionType: 'SELL',
+      // Default to the full remaining quantity; the user can lower it for a partial sale.
+      quantity: heldQty,
+      // Suggest the asset's current price if known, else the buy price — user overrides.
+      pricePerUnit: live?.currentPrice ?? tx.pricePerUnit,
+      fees: 0,
+      feeCurrency: tx.feeCurrency ?? undefined,
+      fxRateToBase: tx.fxRateToBase ?? undefined,
+      currency: tx.currency,
+      transactionDate: new Date().toISOString().split('T')[0],
+      notes: '',
+      purpose: tx.purpose ?? 'LONG_TERM',
+    });
+    setShowForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleRecompute = async () => {
     setRecomputing(true);
     try {
@@ -502,6 +531,17 @@ export default function Transactions() {
                   </td>
                   <td className="px-4 py-2.5">
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      {(() => {
+                        // Show a quick "Sell" action on BUY rows that still have shares held.
+                        if (tx.transactionType !== 'BUY') return null;
+                        const held = heldQtyByKey.get(heldQtyKey(tx.asset.id, tx.account.id, tx.owner.id)) ?? 0;
+                        if (held <= 0) return null;
+                        return (
+                          <button onClick={() => startSellFrom(tx, held)} className="text-slate-400 hover:text-red-600" title={`Sell from this position (up to ${held} held)`}>
+                            <ArrowUpCircle size={14} />
+                          </button>
+                        );
+                      })()}
                       <button onClick={() => startEdit(tx)} className="text-slate-400 hover:text-indigo-600" title="Modify transaction">
                         <Pencil size={14} />
                       </button>
