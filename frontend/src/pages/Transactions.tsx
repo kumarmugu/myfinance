@@ -173,6 +173,16 @@ export default function Transactions() {
   });
 
   type BuyStatus = 'OPEN' | 'PARTIAL' | 'CLOSED';
+
+  // Position status of a row, shared by the Status filter, grouping, and row dimming.
+  // BUY: OPEN (all still held) / PARTIAL (some sold) / CLOSED (nothing held). SELL: REALIZED.
+  const rowStatus = (tx: Transaction): 'OPEN' | 'PARTIAL' | 'CLOSED' | 'REALIZED' => {
+    if (tx.transactionType === 'SELL') return 'REALIZED';
+    const held = heldQtyByKey.get(heldQtyKey(tx.asset.id, tx.account.id, tx.owner.id)) ?? 0;
+    if (held <= 0) return 'CLOSED';
+    if (held + 1e-9 < tx.quantity) return 'PARTIAL';
+    return 'OPEN';
+  };
   type Pnl =
     | { kind: 'unrealized'; amount: number; pct: number; currency: string; priceUpdatedAt?: string | null }
     | { kind: 'realized'; amount: number; pct: number; currency: string; stock?: number | null; fx?: number | null }
@@ -262,6 +272,7 @@ export default function Transactions() {
     if (filterPurpose && (tx.purpose ?? '') !== filterPurpose) return false;
     if (filterDateFrom && tx.transactionDate < filterDateFrom) return false;
     if (filterDateTo && tx.transactionDate > filterDateTo) return false;
+    if (filterStatus && rowStatus(tx) !== filterStatus) return false;
     if (searchLc) {
       const hay = [tx.asset?.symbol, tx.asset?.name, tx.account?.name, tx.owner?.name, tx.notes]
         .filter(Boolean).join(' ').toLowerCase();
@@ -270,23 +281,47 @@ export default function Transactions() {
     return true;
   });
 
-  const filtersActive = !!(filterType || filterAssetId || filterAccountId || filterPurpose || filterDateFrom || filterDateTo || searchLc);
+  const filtersActive = !!(filterType || filterAssetId || filterAccountId || filterPurpose || filterDateFrom || filterDateTo || filterStatus || searchLc);
 
   // Reset pagination whenever the filtered set changes, so you always start at the top.
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [filterType, filterAssetId, filterAccountId, filterPurpose, filterDateFrom, filterDateTo, searchLc, filterOwner, transactions.length]);
+  }, [filterType, filterAssetId, filterAccountId, filterPurpose, filterDateFrom, filterDateTo, filterStatus, searchLc, filterOwner, transactions.length]);
 
   const visible = filtered.slice(0, visibleCount);
   const clearFilters = () => {
     setFilterType(''); setFilterAssetId(''); setFilterAccountId('');
-    setFilterPurpose(''); setFilterDateFrom(''); setFilterDateTo(''); setSearch('');
+    setFilterPurpose(''); setFilterDateFrom(''); setFilterDateTo(''); setFilterStatus(''); setSearch('');
   };
 
   const PURPOSE_OPTIONS: [string, string][] = [
     ['LONG_TERM', 'Long Term'], ['TRADING', 'Trading'], ['DIVIDEND_REINVESTMENT', 'Div Reinvest'],
     ['SRS', 'SRS'], ['RETIREMENT', 'Retirement'], ['SHORT_TERM', 'Short Term'],
   ];
+
+  // Group the visible rows by position (asset|account|owner) for the "Group by position" view.
+  // Each group keeps its rows in the current (date-desc) order; groups are ordered by their most
+  // recent transaction so the newest activity floats to the top.
+  const positionGroups = (() => {
+    const map = new Map<string, { key: string; tx0: Transaction; rows: Transaction[] }>();
+    for (const tx of visible) {
+      if (!tx.asset || !tx.account || !tx.owner) continue;
+      const key = `${tx.asset.id}:${tx.account.id}:${tx.owner.id}`;
+      if (!map.has(key)) map.set(key, { key, tx0: tx, rows: [] });
+      map.get(key)!.rows.push(tx);
+    }
+    return Array.from(map.values());
+  })();
+
+  const STATUS_BADGE: Record<string, string> = {
+    OPEN: 'bg-green-50 text-green-700',
+    PARTIAL: 'bg-amber-50 text-amber-700',
+    CLOSED: 'bg-slate-100 text-slate-500',
+    REALIZED: 'bg-slate-100 text-slate-500',
+  };
+  const STATUS_LABEL: Record<string, string> = {
+    OPEN: 'Open', PARTIAL: 'Partially sold', CLOSED: 'Closed', REALIZED: 'Sold',
+  };
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
@@ -355,6 +390,16 @@ export default function Transactions() {
             </select>
           </div>
           <div className="w-36">
+            <label className="block text-[11px] font-medium text-slate-500 mb-1">Status</label>
+            <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className="w-full border border-slate-300 rounded-lg px-2 py-2 text-sm bg-white">
+              <option value="">All</option>
+              <option value="OPEN">Open</option>
+              <option value="PARTIAL">Partially sold</option>
+              <option value="CLOSED">Closed</option>
+              <option value="REALIZED">Sells</option>
+            </select>
+          </div>
+          <div className="w-36">
             <label className="block text-[11px] font-medium text-slate-500 mb-1">From</label>
             <input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)} className="w-full border border-slate-300 rounded-lg px-2 py-2 text-sm" />
           </div>
@@ -370,7 +415,13 @@ export default function Transactions() {
             <button onClick={clearFilters} className="px-3 py-2 text-sm font-medium text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50">Clear</button>
           )}
         </div>
-        <p className="text-[11px] text-slate-400 mt-2">Showing {filtered.length} of {transactions.length} transactions</p>
+        <div className="flex items-center justify-between mt-2">
+          <p className="text-[11px] text-slate-400">Showing {filtered.length} of {transactions.length} transactions</p>
+          <label className="flex items-center gap-2 text-[11px] font-medium text-slate-600 cursor-pointer select-none">
+            <input type="checkbox" checked={groupByPosition} onChange={e => setGroupByPosition(e.target.checked)} className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+            Group by position
+          </label>
+        </div>
       </div>
 
       {/* Transaction Form */}
@@ -477,8 +528,12 @@ export default function Transactions() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {visible.map(tx => (
-                <tr key={tx.id} className="hover:bg-slate-50 group">
+              {(() => {
+                const renderRow = (tx: Transaction) => {
+                  const st = rowStatus(tx);
+                  const dim = tx.transactionType === 'BUY' && st === 'CLOSED';
+                  return (
+                <tr key={tx.id} className={`hover:bg-slate-50 group ${dim ? 'opacity-55' : ''}`}>
                   <td className="px-4 py-2.5 text-slate-700 text-xs">{formatDate(tx.transactionDate)}</td>
                   <td className="px-4 py-2.5">
                     <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${tx.transactionType === 'BUY' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
