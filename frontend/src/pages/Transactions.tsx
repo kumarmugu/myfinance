@@ -40,7 +40,9 @@ export default function Transactions() {
   const [filterPurpose, setFilterPurpose] = useState<string>('');
   const [filterDateFrom, setFilterDateFrom] = useState<string>('');
   const [filterDateTo, setFilterDateTo] = useState<string>('');
+  const [filterStatus, setFilterStatus] = useState<string>(''); // '', OPEN, PARTIAL, CLOSED, REALIZED
   const [search, setSearch] = useState<string>('');
+  const [groupByPosition, setGroupByPosition] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);

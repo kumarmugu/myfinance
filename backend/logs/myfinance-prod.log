@@ -22,3 +22,13 @@
 2026-09-04 23:13:51 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6c9e24c4, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@269e7c66, org.springframework.security.web.context.SecurityContextHolderFilter@3dbf2603, org.springframework.security.web.header.HeaderWriterFilter@56179575, org.springframework.web.filter.CorsFilter@209ccf62, org.springframework.security.web.authentication.logout.LogoutFilter@2d9803b4, com.myfinance.provisioning.ProvisioningTokenFilter@50cbcca7, com.myfinance.security.JwtAuthFilter@18791f7b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3fad151c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@30779b35, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@117eac4a, org.springframework.security.web.session.SessionManagementFilter@5a8314e6, org.springframework.security.web.access.ExceptionTranslationFilter@eddf865, org.springframework.security.web.access.intercept.AuthorizationFilter@7a9f9364]
 2026-09-04 23:13:51 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
 2026-09-04 23:13:51 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 10.108 seconds (process running for 10.448)
+2026-09-04 23:22:49 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-04 23:22:49 [http-nio-8080-exec-1] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-09-04 23:22:49 [http-nio-8080-exec-1] WARN  c.m.controller.AuthController - Login failed for user=mugu
+2026-09-04 23:22:49 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 401 (478ms)
+2026-09-04 23:25:16 [http-nio-8080-exec-2] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-09-04 23:25:17 [http-nio-8080-exec-2] WARN  c.m.controller.AuthController - Login failed for user=mugu
+2026-09-04 23:25:17 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 401 (96ms)
+2026-09-04 23:25:17 [http-nio-8080-exec-4] INFO  c.m.controller.AuthController - Login attempt for user=admin
+2026-09-04 23:25:17 [http-nio-8080-exec-4] WARN  c.m.controller.AuthController - Login failed for user=admin
+2026-09-04 23:25:17 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 401 (98ms)
