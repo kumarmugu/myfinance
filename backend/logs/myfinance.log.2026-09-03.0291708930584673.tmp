@@ -392,3 +392,202 @@
 2026-09-04 22:30:26 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
 2026-09-04 22:30:26 [http-nio-8080-exec-8] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
 2026-09-04 22:30:26 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (4ms)
+2026-09-04 22:54:16 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Retrograde clock change detected (housekeeper delta=29s791ms), soft-evicting connections from pool.
+2026-09-04 22:57:06 [http-nio-8080-exec-3] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-09-04 22:57:06 [http-nio-8080-exec-3] INFO  c.m.controller.AuthController - Login successful for user=mugu
+2026-09-04 22:57:06 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (103ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (12ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Deleting transaction id=182
+2026-09-04 22:57:06 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=182
+2026-09-04 22:57:06 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Deleted Transaction id=182
+2026-09-04 22:57:06 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/182 → 204 (7ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Deleting transaction id=184
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=184
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Deleted Transaction id=184
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/184 → 204 (6ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Deleting transaction id=186
+2026-09-04 22:57:06 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=186
+2026-09-04 22:57:06 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Deleted Transaction id=186
+2026-09-04 22:57:06 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/186 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Deleting transaction id=192
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=192
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Deleted Transaction id=192
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/192 → 204 (5ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Deleting transaction id=194
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=194
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Deleted Transaction id=194
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/194 → 204 (4ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Deleting transaction id=188
+2026-09-04 22:57:06 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=188
+2026-09-04 22:57:06 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Deleted Transaction id=188
+2026-09-04 22:57:06 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/188 → 204 (5ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Deleting transaction id=190
+2026-09-04 22:57:06 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=190
+2026-09-04 22:57:06 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Deleted Transaction id=190
+2026-09-04 22:57:06 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/190 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Deleting transaction id=193
+2026-09-04 22:57:06 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Deleted Transaction id=193
+2026-09-04 22:57:06 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/193 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Deleting transaction id=189
+2026-09-04 22:57:06 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Deleted Transaction id=189
+2026-09-04 22:57:06 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/189 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Deleting transaction id=191
+2026-09-04 22:57:06 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Deleted Transaction id=191
+2026-09-04 22:57:06 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/191 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Deleting transaction id=187
+2026-09-04 22:57:06 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Deleted Transaction id=187
+2026-09-04 22:57:06 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/187 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Deleting transaction id=180
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=180
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Deleted Transaction id=180
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/180 → 204 (4ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Deleting transaction id=170
+2026-09-04 22:57:06 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=170
+2026-09-04 22:57:06 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Deleted Transaction id=170
+2026-09-04 22:57:06 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/170 → 204 (6ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Deleting transaction id=172
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=172
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Deleted Transaction id=172
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/172 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Deleting transaction id=174
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=174
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Deleted Transaction id=174
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/174 → 204 (4ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Deleting transaction id=176
+2026-09-04 22:57:06 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=176
+2026-09-04 22:57:06 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Deleted Transaction id=176
+2026-09-04 22:57:06 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/176 → 204 (4ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Deleting transaction id=178
+2026-09-04 22:57:06 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=178
+2026-09-04 22:57:06 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Deleted Transaction id=178
+2026-09-04 22:57:06 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/178 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Deleting transaction id=164
+2026-09-04 22:57:06 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=164
+2026-09-04 22:57:06 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Deleted Transaction id=164
+2026-09-04 22:57:06 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/164 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Deleting transaction id=166
+2026-09-04 22:57:06 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=166
+2026-09-04 22:57:06 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Deleted Transaction id=166
+2026-09-04 22:57:06 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/166 → 204 (4ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Deleting transaction id=168
+2026-09-04 22:57:06 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=168
+2026-09-04 22:57:06 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Deleted Transaction id=168
+2026-09-04 22:57:06 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/168 → 204 (6ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Deleting transaction id=179
+2026-09-04 22:57:06 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Deleted Transaction id=179
+2026-09-04 22:57:06 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/179 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Deleting transaction id=165
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Deleted Transaction id=165
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/165 → 204 (4ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Deleting transaction id=167
+2026-09-04 22:57:06 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Deleted Transaction id=167
+2026-09-04 22:57:06 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/167 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Deleting transaction id=146
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=146
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Deleted Transaction id=146
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/146 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Deleting transaction id=148
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=148
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Deleted Transaction id=148
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/148 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Deleting transaction id=150
+2026-09-04 22:57:06 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=150
+2026-09-04 22:57:06 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Deleted Transaction id=150
+2026-09-04 22:57:06 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/150 → 204 (4ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Deleting transaction id=152
+2026-09-04 22:57:06 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=152
+2026-09-04 22:57:06 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Deleted Transaction id=152
+2026-09-04 22:57:06 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/152 → 204 (5ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Deleting transaction id=154
+2026-09-04 22:57:06 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=154
+2026-09-04 22:57:06 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Deleted Transaction id=154
+2026-09-04 22:57:06 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/154 → 204 (4ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Deleting transaction id=156
+2026-09-04 22:57:06 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=156
+2026-09-04 22:57:06 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Deleted Transaction id=156
+2026-09-04 22:57:06 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/156 → 204 (5ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Deleting transaction id=158
+2026-09-04 22:57:06 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=158
+2026-09-04 22:57:06 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Deleted Transaction id=158
+2026-09-04 22:57:06 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/158 → 204 (4ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Deleting transaction id=160
+2026-09-04 22:57:06 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=160
+2026-09-04 22:57:06 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Deleted Transaction id=160
+2026-09-04 22:57:06 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/160 → 204 (4ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Deleting transaction id=162
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=162
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Deleted Transaction id=162
+2026-09-04 22:57:06 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/162 → 204 (4ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Deleting transaction id=185
+2026-09-04 22:57:06 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Deleted Transaction id=185
+2026-09-04 22:57:06 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/185 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Deleting transaction id=145
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Deleted Transaction id=145
+2026-09-04 22:57:06 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/145 → 204 (3ms)
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Deleting transaction id=142
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=142
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Deleted Transaction id=142
+2026-09-04 22:57:06 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/142 → 204 (4ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Deleting transaction id=144
+2026-09-04 22:57:07 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=144
+2026-09-04 22:57:07 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Deleted Transaction id=144
+2026-09-04 22:57:07 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/144 → 204 (5ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Deleting transaction id=163
+2026-09-04 22:57:07 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Deleted Transaction id=163
+2026-09-04 22:57:07 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/163 → 204 (4ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Deleting transaction id=183
+2026-09-04 22:57:07 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Deleted Transaction id=183
+2026-09-04 22:57:07 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/183 → 204 (3ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Deleting transaction id=177
+2026-09-04 22:57:07 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Deleted Transaction id=177
+2026-09-04 22:57:07 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/177 → 204 (3ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Deleting transaction id=171
+2026-09-04 22:57:07 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Deleted Transaction id=171
+2026-09-04 22:57:07 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/171 → 204 (3ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Deleting transaction id=175
+2026-09-04 22:57:07 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Deleted Transaction id=175
+2026-09-04 22:57:07 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/175 → 204 (4ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Deleting transaction id=169
+2026-09-04 22:57:07 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Deleted Transaction id=169
+2026-09-04 22:57:07 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/169 → 204 (4ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Deleting transaction id=173
+2026-09-04 22:57:07 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Deleted Transaction id=173
+2026-09-04 22:57:07 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/173 → 204 (3ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Deleting transaction id=143
+2026-09-04 22:57:07 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Deleted Transaction id=143
+2026-09-04 22:57:07 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/143 → 204 (3ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Deleting transaction id=141
+2026-09-04 22:57:07 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Deleted Transaction id=141
+2026-09-04 22:57:07 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/141 → 204 (3ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Deleting transaction id=159
+2026-09-04 22:57:07 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Deleted Transaction id=159
+2026-09-04 22:57:07 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/159 → 204 (3ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Deleting transaction id=157
+2026-09-04 22:57:07 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Deleted Transaction id=157
+2026-09-04 22:57:07 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/157 → 204 (4ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Deleting transaction id=151
+2026-09-04 22:57:07 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Deleted Transaction id=151
+2026-09-04 22:57:07 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/151 → 204 (3ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Deleting transaction id=153
+2026-09-04 22:57:07 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Deleted Transaction id=153
+2026-09-04 22:57:07 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/153 → 204 (4ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Deleting transaction id=155
+2026-09-04 22:57:07 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Deleted Transaction id=155
+2026-09-04 22:57:07 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/155 → 204 (5ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Deleting transaction id=161
+2026-09-04 22:57:07 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Deleted Transaction id=161
+2026-09-04 22:57:07 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/161 → 204 (2ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Deleting transaction id=149
+2026-09-04 22:57:07 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Deleted Transaction id=149
+2026-09-04 22:57:07 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/149 → 204 (3ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Deleting transaction id=181
+2026-09-04 22:57:07 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Deleted Transaction id=181
+2026-09-04 22:57:07 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/181 → 204 (3ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Deleting transaction id=147
+2026-09-04 22:57:07 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Deleted Transaction id=147
+2026-09-04 22:57:07 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/147 → 204 (4ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (6ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-04 22:57:07 [http-nio-8080-exec-8] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-04 22:57:07 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (5ms)
