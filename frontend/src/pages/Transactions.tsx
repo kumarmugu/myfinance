@@ -608,8 +608,39 @@ export default function Transactions() {
                     </div>
                   </td>
                 </tr>
-              ))}
-              {filtered.length === 0 && <tr><td colSpan={12} className="px-4 py-12 text-center text-slate-400">{transactions.length === 0 ? 'No transactions yet' : 'No transactions match the filters'}</td></tr>}
+                  );
+                };
+
+                if (filtered.length === 0) {
+                  return <tr><td colSpan={12} className="px-4 py-12 text-center text-slate-400">{transactions.length === 0 ? 'No transactions yet' : 'No transactions match the filters'}</td></tr>;
+                }
+
+                if (!groupByPosition) {
+                  return visible.map(tx => renderRow(tx));
+                }
+
+                // Grouped by position: a header row per asset/account/owner, then its rows.
+                return positionGroups.map(g => {
+                  const gStatus = rowStatus(g.rows.find(r => r.transactionType === 'BUY') ?? g.rows[0]);
+                  const held = heldQtyByKey.get(heldQtyKey(g.tx0.asset.id, g.tx0.account.id, g.tx0.owner.id)) ?? 0;
+                  return (
+                    <React.Fragment key={g.key}>
+                      <tr className="bg-slate-100/70 border-y border-slate-200">
+                        <td colSpan={12} className="px-4 py-2">
+                          <div className="flex items-center gap-3 flex-wrap">
+                            <span className="font-semibold text-slate-800">{g.tx0.asset.symbol}</span>
+                            <span className="text-xs text-slate-500">{g.tx0.account.name} · {g.tx0.owner.name}</span>
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded ${STATUS_BADGE[gStatus]}`}>{STATUS_LABEL[gStatus]}</span>
+                            <span className="text-[11px] text-slate-500">{held > 0 ? `${held} held` : 'nothing held'}</span>
+                            <span className="text-[11px] text-slate-400 ml-auto">{g.rows.length} txn{g.rows.length === 1 ? '' : 's'}</span>
+                          </div>
+                        </td>
+                      </tr>
+                      {g.rows.map(tx => renderRow(tx))}
+                    </React.Fragment>
+                  );
+                });
+              })()}
             </tbody>
           </table>
         </div>
