@@ -624,7 +624,7 @@ export default function Transactions() {
                   const gStatus = rowStatus(g.rows.find(r => r.transactionType === 'BUY') ?? g.rows[0]);
                   const held = heldQtyByKey.get(heldQtyKey(g.tx0.asset.id, g.tx0.account.id, g.tx0.owner.id)) ?? 0;
                   return (
-                    <React.Fragment key={g.key}>
+                    <Fragment key={g.key}>
                       <tr className="bg-slate-100/70 border-y border-slate-200">
                         <td colSpan={12} className="px-4 py-2">
                           <div className="flex items-center gap-3 flex-wrap">
@@ -637,7 +637,7 @@ export default function Transactions() {
                         </td>
                       </tr>
                       {g.rows.map(tx => renderRow(tx))}
-                    </React.Fragment>
+                    </Fragment>
                   );
                 });
               })()}
