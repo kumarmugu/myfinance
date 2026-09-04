@@ -1,1 +1,394 @@
 2026-09-04 21:53:45 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=22h35m31s308ms).
+2026-09-04 22:10:13 [http-nio-8080-exec-10] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-09-04 22:10:14 [http-nio-8080-exec-10] INFO  c.m.controller.AuthController - Login successful for user=mugu
+2026-09-04 22:10:14 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (137ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (67ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-7] INFO  c.m.c.SoldPositionController - Deleting sold position id=120
+2026-09-04 22:10:14 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/120 → 204 (68ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-5] INFO  c.m.c.SoldPositionController - Deleting sold position id=121
+2026-09-04 22:10:14 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/121 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-1] INFO  c.m.c.SoldPositionController - Deleting sold position id=122
+2026-09-04 22:10:14 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/122 → 204 (3ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-2] INFO  c.m.c.SoldPositionController - Deleting sold position id=125
+2026-09-04 22:10:14 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/125 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-6] INFO  c.m.c.SoldPositionController - Deleting sold position id=126
+2026-09-04 22:10:14 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/126 → 204 (3ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-3] INFO  c.m.c.SoldPositionController - Deleting sold position id=3
+2026-09-04 22:10:14 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/3 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-9] INFO  c.m.c.SoldPositionController - Deleting sold position id=123
+2026-09-04 22:10:14 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/123 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-4] INFO  c.m.c.SoldPositionController - Deleting sold position id=124
+2026-09-04 22:10:14 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/124 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-10] INFO  c.m.c.SoldPositionController - Deleting sold position id=2
+2026-09-04 22:10:14 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/2 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-8] INFO  c.m.c.SoldPositionController - Deleting sold position id=119
+2026-09-04 22:10:14 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/119 → 204 (3ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-7] INFO  c.m.c.SoldPositionController - Deleting sold position id=114
+2026-09-04 22:10:14 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/114 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-5] INFO  c.m.c.SoldPositionController - Deleting sold position id=115
+2026-09-04 22:10:14 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/115 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-1] INFO  c.m.c.SoldPositionController - Deleting sold position id=116
+2026-09-04 22:10:14 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/116 → 204 (5ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-2] INFO  c.m.c.SoldPositionController - Deleting sold position id=117
+2026-09-04 22:10:14 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/117 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-6] INFO  c.m.c.SoldPositionController - Deleting sold position id=118
+2026-09-04 22:10:14 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/118 → 204 (3ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-3] INFO  c.m.c.SoldPositionController - Deleting sold position id=111
+2026-09-04 22:10:14 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/111 → 204 (5ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-9] INFO  c.m.c.SoldPositionController - Deleting sold position id=112
+2026-09-04 22:10:14 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/112 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-4] INFO  c.m.c.SoldPositionController - Deleting sold position id=113
+2026-09-04 22:10:14 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/113 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-10] INFO  c.m.c.SoldPositionController - Deleting sold position id=102
+2026-09-04 22:10:14 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/102 → 204 (3ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-8] INFO  c.m.c.SoldPositionController - Deleting sold position id=103
+2026-09-04 22:10:14 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/103 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-7] INFO  c.m.c.SoldPositionController - Deleting sold position id=104
+2026-09-04 22:10:14 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/104 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-5] INFO  c.m.c.SoldPositionController - Deleting sold position id=105
+2026-09-04 22:10:14 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/105 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-1] INFO  c.m.c.SoldPositionController - Deleting sold position id=106
+2026-09-04 22:10:14 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/106 → 204 (3ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-2] INFO  c.m.c.SoldPositionController - Deleting sold position id=107
+2026-09-04 22:10:14 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/107 → 204 (3ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-6] INFO  c.m.c.SoldPositionController - Deleting sold position id=108
+2026-09-04 22:10:14 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/108 → 204 (3ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-3] INFO  c.m.c.SoldPositionController - Deleting sold position id=109
+2026-09-04 22:10:14 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/109 → 204 (2ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-9] INFO  c.m.c.SoldPositionController - Deleting sold position id=110
+2026-09-04 22:10:14 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/110 → 204 (5ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-4] INFO  c.m.c.SoldPositionController - Deleting sold position id=1
+2026-09-04 22:10:14 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/1 → 204 (2ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-10] INFO  c.m.c.SoldPositionController - Deleting sold position id=100
+2026-09-04 22:10:14 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/100 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-8] INFO  c.m.c.SoldPositionController - Deleting sold position id=101
+2026-09-04 22:10:14 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/sold-positions/101 → 204 (4ms)
+2026-09-04 22:10:14 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-04 22:20:57 [http-nio-8080-exec-5] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-09-04 22:20:57 [http-nio-8080-exec-5] INFO  c.m.controller.AuthController - Login successful for user=mugu
+2026-09-04 22:20:57 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (99ms)
+2026-09-04 22:20:57 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-04 22:20:57 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Creating transaction: assetId=5, type=BUY, quantity=30, price=95.57
+2026-09-04 22:20:57 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=141 type=BUY assetId=5 quantity=30
+2026-09-04 22:20:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=4 assetId=5 quantity=60.00
+2026-09-04 22:20:57 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Created transaction id=141
+2026-09-04 22:20:57 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (24ms)
+2026-09-04 22:20:57 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Creating transaction: assetId=5, type=SELL, quantity=30, price=135
+2026-09-04 22:20:57 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=142 type=SELL assetId=5 quantity=30
+2026-09-04 22:20:57 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=4 assetId=5 quantity=30.00
+2026-09-04 22:20:57 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=142 profit=1341.30
+2026-09-04 22:20:57 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Created transaction id=142
+2026-09-04 22:20:57 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (20ms)
+2026-09-04 22:20:57 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Creating transaction: assetId=5, type=BUY, quantity=20, price=85.27
+2026-09-04 22:20:57 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=143 type=BUY assetId=5 quantity=20
+2026-09-04 22:20:57 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=4 assetId=5 quantity=50.00
+2026-09-04 22:20:57 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Created transaction id=143
+2026-09-04 22:20:57 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (29ms)
+2026-09-04 22:20:57 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Creating transaction: assetId=5, type=SELL, quantity=20, price=135
+2026-09-04 22:20:57 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=144 type=SELL assetId=5 quantity=20
+2026-09-04 22:20:57 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=4 assetId=5 quantity=30.00
+2026-09-04 22:20:57 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=144 profit=934.40
+2026-09-04 22:20:57 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Created transaction id=144
+2026-09-04 22:20:57 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (8ms)
+2026-09-04 22:20:57 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Creating transaction: assetId=5, type=BUY, quantity=50, price=105.05
+2026-09-04 22:20:57 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=145 type=BUY assetId=5 quantity=50
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=4 assetId=5 quantity=80.00
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Created transaction id=145
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (8ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Creating transaction: assetId=5, type=SELL, quantity=50, price=135
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=146 type=SELL assetId=5 quantity=50
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=4 assetId=5 quantity=30.00
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=146 profit=1812.00
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Created transaction id=146
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (11ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=BUY, quantity=6, price=263.69
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=147 type=BUY assetId=3 quantity=6
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=36.00
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Created transaction id=147
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (10ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=SELL, quantity=6, price=300
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Created Transaction id=148 type=SELL assetId=3 quantity=6
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=30.00
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=148 profit=526.32
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Created transaction id=148
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (10ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=BUY, quantity=3, price=260.38
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Created Transaction id=149 type=BUY assetId=3 quantity=3
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=33.00
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Created transaction id=149
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (7ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=SELL, quantity=3, price=300
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Created Transaction id=150 type=SELL assetId=3 quantity=3
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=30.00
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=150 profit=250.05
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Created transaction id=150
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (10ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=BUY, quantity=3, price=247.05
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=151 type=BUY assetId=3 quantity=3
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=33.00
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Created transaction id=151
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (7ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=SELL, quantity=3, price=300
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=152 type=SELL assetId=3 quantity=3
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=30.00
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=152 profit=241.74
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Created transaction id=152
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (8ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=BUY, quantity=3, price=240.38
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=153 type=BUY assetId=3 quantity=3
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=33.00
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Created transaction id=153
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (8ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=SELL, quantity=3, price=300
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=154 type=SELL assetId=3 quantity=3
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=30.00
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=154 profit=236.04
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Created transaction id=154
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (11ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=BUY, quantity=3, price=233.71
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=155 type=BUY assetId=3 quantity=3
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=33.00
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Created transaction id=155
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (8ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=SELL, quantity=3, price=300
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=156 type=SELL assetId=3 quantity=3
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=30.00
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=156 profit=232.65
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Created transaction id=156
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (8ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=BUY, quantity=5, price=230.43
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=157 type=BUY assetId=3 quantity=5
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=35.00
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Created transaction id=157
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (10ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=SELL, quantity=5, price=300
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Created Transaction id=158 type=SELL assetId=3 quantity=5
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=30.00
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=158 profit=382.05
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Created transaction id=158
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (11ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=BUY, quantity=6, price=258.19
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Created Transaction id=159 type=BUY assetId=3 quantity=6
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=36.00
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Created transaction id=159
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (7ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=SELL, quantity=6, price=300
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Created Transaction id=160 type=SELL assetId=3 quantity=6
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=30.00
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=160 profit=423.84
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Created transaction id=160
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (9ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=BUY, quantity=1, price=227.05
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=161 type=BUY assetId=3 quantity=1
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=31.00
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Created transaction id=161
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (10ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=SELL, quantity=1, price=300
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=162 type=SELL assetId=3 quantity=1
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=30.00
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=162 profit=70.72
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Created transaction id=162
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (12ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Creating transaction: assetId=100, type=BUY, quantity=10, price=70.22
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=163 type=BUY assetId=100 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=112 assetId=100 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Created transaction id=163
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (10ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Creating transaction: assetId=100, type=SELL, quantity=10, price=45
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=164 type=SELL assetId=100 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=112 assetId=100 quantity=0.00
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=164 profit=-252.20
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Created transaction id=164
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (9ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Creating transaction: assetId=100, type=BUY, quantity=10, price=30.22
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=165 type=BUY assetId=100 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=112 assetId=100 quantity=10.00
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Created transaction id=165
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (8ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Creating transaction: assetId=100, type=SELL, quantity=10, price=45
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=166 type=SELL assetId=100 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=112 assetId=100 quantity=0.00
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=166 profit=147.80
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Created transaction id=166
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (12ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Creating transaction: assetId=100, type=BUY, quantity=10, price=28.22
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=167 type=BUY assetId=100 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=112 assetId=100 quantity=10.00
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Created transaction id=167
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (11ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Creating transaction: assetId=100, type=SELL, quantity=10, price=45
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Created Transaction id=168 type=SELL assetId=100 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.myfinance.service.HoldingService - Saved Holding id=112 assetId=100 quantity=0.00
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=168 profit=167.80
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Created transaction id=168
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (11ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Creating transaction: assetId=102, type=BUY, quantity=10, price=128.45
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Created Transaction id=169 type=BUY assetId=102 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.myfinance.service.HoldingService - Saved Holding id=113 assetId=102 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Created transaction id=169
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (7ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Creating transaction: assetId=102, type=SELL, quantity=10, price=156.1
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Created Transaction id=170 type=SELL assetId=102 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.myfinance.service.HoldingService - Saved Holding id=113 assetId=102 quantity=0.00
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=170 profit=276.50
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Created transaction id=170
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (12ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Creating transaction: assetId=102, type=BUY, quantity=10, price=122.45
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=171 type=BUY assetId=102 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=113 assetId=102 quantity=10.00
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Created transaction id=171
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (9ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Creating transaction: assetId=102, type=SELL, quantity=10, price=156.1
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=172 type=SELL assetId=102 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=113 assetId=102 quantity=0.00
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=172 profit=336.50
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Created transaction id=172
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (10ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Creating transaction: assetId=8, type=BUY, quantity=10, price=58.22
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=173 type=BUY assetId=8 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=5 assetId=8 quantity=60.00
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Created transaction id=173
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (7ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Creating transaction: assetId=8, type=SELL, quantity=10, price=73
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=174 type=SELL assetId=8 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=5 assetId=8 quantity=50.00
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=174 profit=399.60
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Created transaction id=174
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (10ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Creating transaction: assetId=8, type=BUY, quantity=36, price=58.06
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=175 type=BUY assetId=8 quantity=36
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=5 assetId=8 quantity=86.00
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Created transaction id=175
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (11ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Creating transaction: assetId=8, type=SELL, quantity=36, price=73
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=176 type=SELL assetId=8 quantity=36
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=5 assetId=8 quantity=50.00
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=176 profit=1061.64
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Created transaction id=176
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (9ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Creating transaction: assetId=8, type=BUY, quantity=4, price=55.77
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=177 type=BUY assetId=8 quantity=4
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=5 assetId=8 quantity=54.00
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Created transaction id=177
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (6ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Creating transaction: assetId=8, type=SELL, quantity=4, price=73
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Created Transaction id=178 type=SELL assetId=8 quantity=4
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.myfinance.service.HoldingService - Saved Holding id=5 assetId=8 quantity=50.00
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=178 profit=114.32
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Created transaction id=178
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (11ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=BUY, quantity=16, price=411.25
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Created Transaction id=179 type=BUY assetId=3 quantity=16
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=46.00
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Created transaction id=179
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (9ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=SELL, quantity=16, price=450
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Created Transaction id=180 type=SELL assetId=3 quantity=16
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=3 quantity=30.00
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=180 profit=2518.72
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Created transaction id=180
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (8ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Creating transaction: assetId=101, type=BUY, quantity=2, price=36.25
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=181 type=BUY assetId=101 quantity=2
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=114 assetId=101 quantity=2
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Created transaction id=181
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (7ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Creating transaction: assetId=101, type=SELL, quantity=2, price=14.5
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=182 type=SELL assetId=101 quantity=2
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=114 assetId=101 quantity=0.00
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=182 profit=-43.50
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Created transaction id=182
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (11ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Creating transaction: assetId=101, type=BUY, quantity=6, price=8.99
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=183 type=BUY assetId=101 quantity=6
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=114 assetId=101 quantity=6.00
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Created transaction id=183
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (7ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Creating transaction: assetId=101, type=SELL, quantity=6, price=14.5
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=184 type=SELL assetId=101 quantity=6
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=114 assetId=101 quantity=0.00
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=184 profit=33.06
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Created transaction id=184
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (9ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Creating transaction: assetId=101, type=BUY, quantity=10, price=10.34
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=185 type=BUY assetId=101 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=114 assetId=101 quantity=10.00
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Created transaction id=185
+2026-09-04 22:20:58 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (7ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Creating transaction: assetId=101, type=SELL, quantity=10, price=14.5
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=186 type=SELL assetId=101 quantity=10
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=114 assetId=101 quantity=0.00
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=186 profit=41.60
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Created transaction id=186
+2026-09-04 22:20:58 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (12ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Creating transaction: assetId=8, type=BUY, quantity=30, price=100.15
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=187 type=BUY assetId=8 quantity=30
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=5 assetId=8 quantity=80.00
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.controller.TransactionController - Created transaction id=187
+2026-09-04 22:20:58 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (11ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Creating transaction: assetId=8, type=SELL, quantity=30, price=117
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Created Transaction id=188 type=SELL assetId=8 quantity=30
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.myfinance.service.HoldingService - Saved Holding id=5 assetId=8 quantity=50.00
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=188 profit=1550.40
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.controller.TransactionController - Created transaction id=188
+2026-09-04 22:20:58 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (13ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Creating transaction: assetId=103, type=BUY, quantity=25, price=34.14
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Created Transaction id=189 type=BUY assetId=103 quantity=25
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.myfinance.service.HoldingService - Saved Holding id=115 assetId=103 quantity=25
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Created transaction id=189
+2026-09-04 22:20:58 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (7ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Creating transaction: assetId=103, type=SELL, quantity=25, price=40
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Created Transaction id=190 type=SELL assetId=103 quantity=25
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.myfinance.service.HoldingService - Saved Holding id=115 assetId=103 quantity=0.00
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=190 profit=146.50
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Created transaction id=190
+2026-09-04 22:20:58 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (9ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Creating transaction: assetId=103, type=BUY, quantity=25, price=34.22
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=191 type=BUY assetId=103 quantity=25
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=115 assetId=103 quantity=25.00
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Created transaction id=191
+2026-09-04 22:20:58 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (9ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Creating transaction: assetId=103, type=SELL, quantity=25, price=40
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=192 type=SELL assetId=103 quantity=25
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=115 assetId=103 quantity=0.00
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=192 profit=144.50
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Created transaction id=192
+2026-09-04 22:20:58 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (9ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Creating transaction: assetId=104, type=BUY, quantity=30, price=67.15
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=193 type=BUY assetId=104 quantity=30
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=116 assetId=104 quantity=30
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Created transaction id=193
+2026-09-04 22:20:58 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (8ms)
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Creating transaction: assetId=104, type=SELL, quantity=30, price=73
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=194 type=SELL assetId=104 quantity=30
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=116 assetId=104 quantity=0.00
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=194 profit=175.50
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.controller.TransactionController - Created transaction id=194
+2026-09-04 22:20:58 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (9ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (5ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (10ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-3] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-04 22:21:56 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (24ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (16ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-6] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-04 22:21:56 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (8ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (51ms)
+2026-09-04 22:21:56 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (61ms)
+2026-09-04 22:28:22 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (11ms)
+2026-09-04 22:28:22 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (2ms)
+2026-09-04 22:30:26 [http-nio-8080-exec-4] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-09-04 22:30:26 [http-nio-8080-exec-4] INFO  c.m.controller.AuthController - Login successful for user=mugu
+2026-09-04 22:30:26 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (74ms)
+2026-09-04 22:30:26 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (8ms)
+2026-09-04 22:30:26 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-04 22:30:26 [http-nio-8080-exec-8] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-04 22:30:26 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (4ms)
