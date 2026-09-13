@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Plus, Trash2, Pencil, RefreshCw } from 'lucide-react';
-import { getAssets, createAsset, updateAsset, deleteAsset, refreshAssetPrice, refreshAllAssetPrices } from '../api';
+import { Plus, Trash2, Pencil, RefreshCw, Merge } from 'lucide-react';
+import { getAssets, createAsset, updateAsset, deleteAsset, refreshAssetPrice, refreshAllAssetPrices, mergeDuplicateAssets } from '../api';
 import SearchableSelect from '../components/SearchableSelect';
 import type { Asset, AssetType, Currency } from '../types';
 import { ASSET_TYPE_LABELS } from '../types';
@@ -15,6 +15,7 @@ export default function Assets() {
   const [form, setForm] = useState({ name: '', symbol: '', assetType: 'GROWTH_EQUITY' as AssetType, currency: 'USD' as Currency, exchange: '', description: '', currentPrice: 0 });
   const [refreshingId, setRefreshingId] = useState<number | null>(null);
   const [refreshingAll, setRefreshingAll] = useState(false);
+  const [merging, setMerging] = useState(false);
   const { showToast } = useToast();
 
   useEffect(() => { loadData(); }, []);
@@ -93,6 +94,25 @@ export default function Assets() {
     }
   };
 
+  // Merge import-created "NAME (TICKER)" duplicate assets back into the canonical ticker.
+  const handleMergeDuplicates = async () => {
+    if (!confirm('Merge duplicate assets (e.g. "VANGUARD S&P 500 ETF (VOO)" into "VOO")? Their dividends, transactions and holdings will be repointed to the real ticker.')) return;
+    setMerging(true);
+    try {
+      const { data } = await mergeDuplicateAssets();
+      if (data.assetsMerged === 0) {
+        showToast('No duplicate assets found', 'info');
+      } else {
+        showToast(`Merged ${data.assetsMerged} duplicate${data.assetsMerged === 1 ? '' : 's'} (${data.dividendsRepointed} dividends repointed)`, 'success');
+      }
+      loadData();
+    } catch (err: any) {
+      showToast(err.response?.data?.error || 'Failed to merge duplicates');
+    } finally {
+      setMerging(false);
+    }
+  };
+
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
   return (
@@ -102,6 +122,9 @@ export default function Assets() {
         <div className="flex items-center gap-3">
           <button onClick={handleRefreshAll} disabled={refreshingAll || assets.length === 0} className="flex items-center gap-2 px-4 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed" title="Fetch the latest online prices for all assets">
             <RefreshCw size={16} className={refreshingAll ? 'animate-spin' : ''} /> {refreshingAll ? 'Updating...' : 'Update All Prices'}
+          </button>
+          <button onClick={handleMergeDuplicates} disabled={merging} className="flex items-center gap-2 px-4 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed" title="Merge import-created duplicate assets (e.g. 'VANGUARD S&P 500 ETF (VOO)') into their real ticker">
+            <Merge size={16} className={merging ? 'animate-pulse' : ''} /> {merging ? 'Merging...' : 'Clean Up Duplicates'}
           </button>
           <button onClick={() => { setShowForm(!showForm); setEditing(null); resetForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700"><Plus size={16} /> New Asset</button>
         </div>
