@@ -1048,3 +1048,50 @@
 2026-09-13 13:20:31 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (3ms)
 2026-09-13 13:20:31 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (4ms)
 2026-09-13 13:20:31 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (10ms)
+2026-09-13 13:25:02 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-13 13:25:02 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (5ms)
+2026-09-13 13:25:02 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-13 13:25:02 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (2ms)
+2026-09-13 13:25:10 [http-nio-8080-exec-8] INFO  c.m.c.CurrencyRateController - Refreshed FX rate id=2 USD->SGD = 1.2671
+2026-09-13 13:25:10 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/currency-rates/2/refresh → 200 (270ms)
+2026-09-13 13:25:10 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-13 13:25:10 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (1ms)
+2026-09-13 13:25:23 [http-nio-8080-exec-6] INFO  c.m.c.CurrencyRateController - Refreshed FX rate id=2 USD->SGD = 1.2671
+2026-09-13 13:25:23 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/currency-rates/2/refresh → 200 (33ms)
+2026-09-13 13:25:23 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-13 13:25:23 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (2ms)
+2026-09-13 13:25:34 [http-nio-8080-exec-5] INFO  c.m.c.CurrencyRateController - Updating currency rate id=2
+2026-09-13 13:25:34 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/currency-rates/2 → 200 (41ms)
+2026-09-13 13:25:34 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (2ms)
+2026-09-13 13:25:34 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-13 13:25:46 [http-nio-8080-exec-10] INFO  c.m.c.CurrencyRateController - Updating currency rate id=2
+2026-09-13 13:25:46 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/currency-rates/2 → 200 (3ms)
+2026-09-13 13:25:46 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (2ms)
+2026-09-13 13:25:46 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-13 13:26:06 [http-nio-8080-exec-7] INFO  c.m.c.CurrencyRateController - Updating currency rate id=2
+2026-09-13 13:26:06 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/currency-rates/2 → 200 (3ms)
+2026-09-13 13:26:06 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (2ms)
+2026-09-13 13:26:06 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-13 13:26:53 [http-nio-8080-exec-1] INFO  c.m.c.CurrencyRateController - Updating currency rate id=2
+2026-09-13 13:26:53 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/currency-rates/2 → 200 (3ms)
+2026-09-13 13:26:53 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-13 13:26:53 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (2ms)
+2026-09-13 13:27:29 [http-nio-8080-exec-3] INFO  c.m.c.CurrencyRateController - Upserting currency rate: SGD→USD, rate=0.7, spreadPct=null
+2026-09-13 13:27:29 [http-nio-8080-exec-3] INFO  c.m.c.CurrencyRateController - Saved currency rate id=65
+2026-09-13 13:27:29 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/currency-rates → 201 (4ms)
+2026-09-13 13:27:30 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (11ms)
+2026-09-13 13:27:30 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (12ms)
+2026-09-13 13:27:32 [http-nio-8080-exec-4] INFO  c.m.c.CurrencyRateController - Refreshed FX rate id=65 SGD->USD = 0.7892
+2026-09-13 13:27:32 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/currency-rates/65/refresh → 200 (63ms)
+2026-09-13 13:27:32 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates/currencies → 200 (1ms)
+2026-09-13 13:27:32 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-13 13:27:47 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-13 13:27:47 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (2ms)
+2026-09-13 13:27:47 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-13 13:27:47 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-13 13:27:47 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (41ms)
+2026-09-13 13:27:47 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-13 13:27:47 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (3ms)
+2026-09-13 13:27:47 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-13 13:27:47 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (8ms)
+2026-09-13 13:27:47 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (12ms)

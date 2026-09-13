@@ -1,14 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
 import { Plus, Trash2, Upload } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { getDividends, getDividendSummary, createDividend, deleteDividend, getAccounts, getOwners, importDividends } from '../api';
+import { getDividends, getDividendSummary, createDividend, deleteDividend, getAccounts, getOwners, importDividends, getCurrencyRates } from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import ExportMenu from '../components/ExportMenu';
 import { dividendsExportConfig } from '../utils/export/configs';
-import type { Dividend, Account, Owner, Currency } from '../types';
+import type { Dividend, Account, Owner, Currency, CurrencyRate } from '../types';
 import { useToast } from '../contexts/ToastContext';
 import { useAuth } from '../contexts/AuthContext';
+
+/** Latest rate to convert `from` → `to` from the user's stored FX rates (direct, then inverse). */
+function resolveRate(rates: CurrencyRate[], from: string, to: string): number | null {
+  if (!from || !to) return null;
+  if (from.toUpperCase() === to.toUpperCase()) return 1;
+  const f = from.toUpperCase(), t = to.toUpperCase();
+  const direct = rates.filter(r => r.fromCurrency.toUpperCase() === f && r.toCurrency.toUpperCase() === t)
+    .sort((a, b) => b.effectiveDate.localeCompare(a.effectiveDate))[0];
+  if (direct) return direct.rate;
+  const inverse = rates.filter(r => r.fromCurrency.toUpperCase() === t && r.toCurrency.toUpperCase() === f)
+    .sort((a, b) => b.effectiveDate.localeCompare(a.effectiveDate))[0];
+  if (inverse && inverse.rate) return 1 / inverse.rate;
+  return null;
+}
 
 export default function Dividends() {
   const [dividends, setDividends] = useState<Dividend[]>([]);
@@ -22,6 +36,7 @@ export default function Dividends() {
   const [filterBroker, setFilterBroker] = useState<string>('');
   const [filterYear, setFilterYear] = useState<string>('');
   const [displayCurrency, setDisplayCurrency] = useState<Currency>('SGD');
+  const [fxRates, setFxRates] = useState<CurrencyRate[]>([]);
   const { hasFeature } = useAuth();
   const canImport = hasFeature('DIVIDEND_IMPORT');
   const [showImport, setShowImport] = useState(false);
@@ -43,11 +58,12 @@ export default function Dividends() {
   const loadData = async () => {
     try {
       const ownerId = filterOwner ? Number(filterOwner) : undefined;
-      const [divRes, sumRes, accRes, ownRes] = await Promise.all([getDividends({ ownerId }), getDividendSummary(), getAccounts(), getOwners()]);
+      const [divRes, sumRes, accRes, ownRes, fxRes] = await Promise.all([getDividends({ ownerId }), getDividendSummary(), getAccounts(), getOwners(), getCurrencyRates()]);
       setDividends(divRes.data);
       setSummary(sumRes.data.map(([year, total]: [number, number]) => ({ year, total })));
       setAccounts(accRes.data.filter(a => a.accountType === 'BROKER'));
       setOwners(ownRes.data);
+      setFxRates(fxRes.data);
       if (ownRes.data.length > 0 && form.ownerId === 0) setForm(f => ({ ...f, ownerId: ownRes.data[0].id }));
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
@@ -92,7 +108,11 @@ export default function Dividends() {
     return true;
   });
 
-  const totalDividends = filtered.reduce((s, d) => s + d.amount, 0);
+  // Convert a dividend's amount into the display currency (SGD/USD toggle) via the user's FX rates.
+  // Falls back to the raw amount if no rate is available for the pair.
+  const dispAmount = (d: Dividend) => d.amount * (resolveRate(fxRates, d.currency, displayCurrency) ?? 1);
+
+  const totalDividends = filtered.reduce((s, d) => s + dispAmount(d), 0);
 
   // Render only the first `visibleCount` rows (pagination reset is handled by an effect near the
   // other hooks, above the loading early-return — hooks must not sit after a conditional return).
@@ -100,11 +120,11 @@ export default function Dividends() {
 
   // By broker
   const byBroker: Record<string, number> = {};
-  filtered.forEach(d => { byBroker[d.account.name] = (byBroker[d.account.name] || 0) + d.amount; });
+  filtered.forEach(d => { byBroker[d.account.name] = (byBroker[d.account.name] || 0) + dispAmount(d); });
 
   // By instrument
   const byInstrument: Record<string, number> = {};
-  filtered.forEach(d => { if (d.instrument) byInstrument[d.instrument] = (byInstrument[d.instrument] || 0) + d.amount; });
+  filtered.forEach(d => { if (d.instrument) byInstrument[d.instrument] = (byInstrument[d.instrument] || 0) + dispAmount(d); });
   const instrumentData = Object.entries(byInstrument).sort((a, b) => b[1] - a[1]);
 
   // Available years for filter
@@ -143,7 +163,7 @@ export default function Dividends() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm">
           <p className="text-[11px] text-slate-500 uppercase">Total Dividends</p>
-          <p className="text-lg font-bold text-green-600 mt-1">{formatCurrency(totalDividends)}</p>
+          <p className="text-lg font-bold text-green-600 mt-1">{formatCurrency(totalDividends, displayCurrency)}</p>
         </div>
         <div className="bg-white rounded-lg p-3.5 border border-slate-200 shadow-sm">
           <p className="text-[11px] text-slate-500 uppercase">Records</p>
@@ -153,7 +173,7 @@ export default function Dividends() {
           <p className="text-[11px] text-slate-500 uppercase">By Broker</p>
           <div className="mt-1 space-y-0.5">
             {Object.entries(byBroker).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([name, amt]) => (
-              <div key={name} className="flex justify-between text-xs"><span className="text-slate-600">{name}</span><span className="font-medium text-slate-800">{formatCurrency(amt)}</span></div>
+              <div key={name} className="flex justify-between text-xs"><span className="text-slate-600">{name}</span><span className="font-medium text-slate-800">{formatCurrency(amt, displayCurrency)}</span></div>
             ))}
           </div>
         </div>
@@ -161,7 +181,7 @@ export default function Dividends() {
           <p className="text-[11px] text-slate-500 uppercase">Top Instruments</p>
           <div className="mt-1 space-y-0.5">
             {instrumentData.slice(0, 3).map(([inst, amt]) => (
-              <div key={inst} className="flex justify-between text-xs"><span className="text-slate-600">{inst}</span><span className="font-medium text-slate-800">{formatCurrency(amt)}</span></div>
+              <div key={inst} className="flex justify-between text-xs"><span className="text-slate-600">{inst}</span><span className="font-medium text-slate-800">{formatCurrency(amt, displayCurrency)}</span></div>
             ))}
           </div>
         </div>
@@ -246,7 +266,7 @@ export default function Dividends() {
       <div className="flex items-center gap-3 flex-wrap">
         <div className="w-44"><SearchableSelect options={[{ value: '', label: 'All Brokers' }, ...accounts.map(a => ({ value: a.id.toString(), label: a.name }))]} value={filterBroker} onChange={v => setFilterBroker(v.toString())} placeholder="All Brokers" /></div>
         <div className="w-36"><SearchableSelect options={[{ value: '', label: 'All Years' }, ...years.map(y => ({ value: y.toString(), label: y.toString() }))]} value={filterYear} onChange={v => setFilterYear(v.toString())} placeholder="All Years" /></div>
-        <span className="text-xs text-slate-500">{filtered.length} records | Total: {formatCurrency(totalDividends)}</span>
+        <span className="text-xs text-slate-500">{filtered.length} records | Total: {formatCurrency(totalDividends, displayCurrency)}</span>
       </div>
 
       {/* Table */}
@@ -272,7 +292,7 @@ export default function Dividends() {
                   <td className="px-4 py-2 text-slate-600">{d.account.name}</td>
                   <td className="px-4 py-2 text-slate-500 text-xs">{d.owner?.name || '-'}</td>
                   <td className="px-4 py-2 text-slate-500 text-xs">{d.year}-{d.quarter}</td>
-                  <td className="px-4 py-2 text-right font-medium text-green-600">{formatCurrency(d.amount, d.currency)}</td>
+                  <td className="px-4 py-2 text-right font-medium text-green-600" title={formatCurrency(d.amount, d.currency)}>{formatCurrency(dispAmount(d), displayCurrency)}</td>
                   <td className="px-4 py-2"><button onClick={() => handleDelete(d.id)} className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500"><Trash2 size={14} /></button></td>
                 </tr>
               ))}
@@ -307,7 +327,7 @@ export default function Dividends() {
                 {instrumentData.map(([inst, amt]) => (
                   <tr key={inst} className="hover:bg-slate-50">
                     <td className="px-4 py-2 font-medium text-slate-800">{inst}</td>
-                    <td className="px-4 py-2 text-right text-green-600 font-medium">{formatCurrency(amt)}</td>
+                    <td className="px-4 py-2 text-right text-green-600 font-medium">{formatCurrency(amt, displayCurrency)}</td>
                     <td className="px-4 py-2 text-right text-slate-500">{totalDividends > 0 ? ((amt / totalDividends) * 100).toFixed(1) : 0}%</td>
                   </tr>
                 ))}
