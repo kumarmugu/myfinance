@@ -207,7 +207,10 @@ public class DividendImportService {
             if (!phase.equalsIgnoreCase("Paid")) continue; // skip accruals / non-paid
 
             LocalDate date = parseIsoDate(f[4]);
-            String symbol = f[6] == null ? null : f[6].trim().toUpperCase();
+            // Tiger's Symbol cell is sometimes the bare ticker ("VOO") and sometimes a descriptive
+            // form like "META PLATFORMS, INC. (META)" — extract the ticker in the trailing (...) so
+            // it matches the existing asset instead of creating a duplicate.
+            String symbol = extractTicker(f[6]);
             BigDecimal gross = parseNum(f[10]);
             BigDecimal net = parseNum(f[13]);
             if (net.signum() == 0 && gross.signum() == 0) continue;
@@ -221,6 +224,19 @@ public class DividendImportService {
                     "ORDINARY"));
         }
         return out;
+    }
+
+    /**
+     * Extract the ticker from a symbol cell that may be a bare ticker ("VOO") or a descriptive
+     * form with the ticker in trailing parentheses ("META PLATFORMS, INC. (META)" → "META").
+     */
+    private String extractTicker(String cell) {
+        if (cell == null) return null;
+        String s = cell.trim();
+        if (s.isEmpty()) return null;
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("\\(([A-Za-z0-9.\\-]{1,15})\\)\\s*$").matcher(s);
+        if (m.find()) return m.group(1).toUpperCase();
+        return s.toUpperCase();
     }
 
     /** Pull the last number out of a label like "Fee（Include ADR）: 0.71" → 0.71. */

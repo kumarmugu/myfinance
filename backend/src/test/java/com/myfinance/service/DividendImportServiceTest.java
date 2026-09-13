@@ -97,6 +97,20 @@ class DividendImportServiceTest {
         assertEquals("USD", out.get(0).currency());
     }
 
+    @Test
+    void tigerExtractsTickerFromDescriptiveSymbol() {
+        // Tiger sometimes puts "NAME (TICKER)" in the Symbol column — must resolve to the bare ticker
+        // so it matches the existing asset instead of creating a duplicate.
+        String csv = String.join("\n",
+            "Dividends,,,,Date,Product,Symbol,Dividend Reinvestment Plan,Quantity/Gross Rate,Phase,Cash Dividends,Shares,Fees & Tax,Net Cash Value,Currency",
+            "Dividends,,,DATA,2025-12-23,,\"META PLATFORMS, INC. (META)\",,,Paid,3.30,0,,3.30,USD",
+            "Dividends,,,DATA,2025-12-26,,VANGUARD S&P 500 ETF (VOO),,,Paid,47.11,0,,47.11,USD");
+        List<ParsedDividend> out = svc.parseTiger(csv);
+        assertEquals(2, out.size());
+        assertEquals("META", out.get(0).symbol());
+        assertEquals("VOO", out.get(1).symbol());
+    }
+
     // ─────────────────────────── Saxo ───────────────────────────
 
     @Test

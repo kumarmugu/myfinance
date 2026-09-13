@@ -133,6 +133,18 @@ public class AssetController {
                 "total", assets.size()));
     }
 
+    /**
+     * One-time maintenance: merge duplicate assets (e.g. "META PLATFORMS, INC. (META)" created by an
+     * import) back into the canonical ticker ("META"), repointing dividends/transactions/holdings.
+     * Operates only on the current user's own assets.
+     */
+    @PostMapping("/merge-duplicates")
+    public ResponseEntity<AssetService.MergeResult> mergeDuplicates() {
+        Long uid = tenantContext.getCurrentUserId();
+        log.info("Merging duplicate assets for userId={}", uid);
+        return ResponseEntity.ok(assetService.mergeDuplicateAssets(uid));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.info("Deleting asset id={}", id);
