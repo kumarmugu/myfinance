@@ -200,15 +200,13 @@ export default function Dividends() {
                 placeholder="Select broker..." /></div>
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">File (.csv / .xlsx)</label>
-              {/* Kept in the DOM (not display:none) so Chrome reliably opens the picker on .click(). */}
-              <input ref={fileInputRef} type="file" accept=".csv,.xlsx"
-                style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0 0 0 0)', border: 0 }}
-                onChange={e => { const f = e.target.files?.[0]; if (f) handleImport(f); }} />
-              <button type="button" disabled={importing}
-                onClick={() => fileInputRef.current?.click()}
-                className="w-full px-3 py-2 text-sm font-medium text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 disabled:opacity-50">
-                {importing ? 'Importing…' : 'Choose file…'}
-              </button>
+              {/* A directly-clicked native file input opens the picker reliably in Chrome & Safari
+                  (proxying a hidden input via a button is what Chrome intermittently blocks). */}
+              <input ref={fileInputRef} type="file"
+                accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                disabled={importing}
+                onChange={e => { const f = e.target.files?.[0]; if (f) handleImport(f); }}
+                className="block w-full text-sm text-slate-600 border border-slate-300 rounded-lg cursor-pointer file:mr-3 file:py-2 file:px-3 file:border-0 file:text-sm file:font-medium file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 disabled:opacity-50" />
             </div>
           </div>
           {importing && <p className="text-xs text-indigo-600 mt-3">Importing…</p>}
