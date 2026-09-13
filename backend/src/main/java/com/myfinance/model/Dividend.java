@@ -30,8 +30,21 @@ public class Dividend {
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
 
+    /** Net amount actually received, in {@link #currency} (gross minus withholding tax). */
     @Column(nullable = false)
     private BigDecimal amount;
+
+    /** Gross dividend before withholding tax, in {@link #currency}. Nullable (legacy rows). */
+    private BigDecimal grossAmount;
+
+    /** Withholding tax deducted, in {@link #currency} (e.g. US tax on US dividends). Nullable. */
+    private BigDecimal withholdingTax;
+
+    /** Dividend classification: ORDINARY, RETURN_OF_CAPITAL, BONUS, CAPITAL_GAINS, MIXED. Nullable. */
+    private String dividendType;
+
+    /** FX rate from {@link #currency} into the user's base currency at pay date. Nullable. */
+    private BigDecimal fxRateToBase;
 
     @Enumerated(EnumType.STRING)
     @Builder.Default
