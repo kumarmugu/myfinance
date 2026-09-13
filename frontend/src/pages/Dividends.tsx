@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
-import { Plus, Trash2 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Plus, Trash2, Upload } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { getDividends, getDividendSummary, createDividend, deleteDividend, getAccounts, getOwners } from '../api';
+import { getDividends, getDividendSummary, createDividend, deleteDividend, getAccounts, getOwners, importDividends } from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import ExportMenu from '../components/ExportMenu';
 import { dividendsExportConfig } from '../utils/export/configs';
 import type { Dividend, Account, Owner, Currency } from '../types';
 import { useToast } from '../contexts/ToastContext';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Dividends() {
   const [dividends, setDividends] = useState<Dividend[]>([]);
@@ -21,6 +22,13 @@ export default function Dividends() {
   const [filterBroker, setFilterBroker] = useState<string>('');
   const [filterYear, setFilterYear] = useState<string>('');
   const [displayCurrency, setDisplayCurrency] = useState<Currency>('SGD');
+  const { hasFeature } = useAuth();
+  const canImport = hasFeature('DIVIDEND_IMPORT');
+  const [showImport, setShowImport] = useState(false);
+  const [importAccountId, setImportAccountId] = useState(0);
+  const [importOwnerId, setImportOwnerId] = useState(0);
+  const [importing, setImporting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm] = useState({ accountId: 0, ownerId: 0, instrument: '', amount: 0, currency: 'SGD' as Currency, receivedDate: new Date().toISOString().split('T')[0], year: new Date().getFullYear(), quarter: 'Q1', notes: '' });
 

@@ -25,6 +25,7 @@ const ALL_FEATURES = [
   { key: 'PORTFOLIO', label: 'Portfolio & Transactions' },
   { key: 'CRYPTO', label: 'Crypto' },
   { key: 'DIVIDENDS', label: 'Dividends' },
+  { key: 'DIVIDEND_IMPORT', label: 'Dividend Statement Import' },
   { key: 'CASH_FLOWS', label: 'Cash Flows' },
   { key: 'BANK_SAVINGS', label: 'Bank Savings' },
   { key: 'FIXED_DEPOSITS', label: 'Fixed Deposits' },
@@ -42,13 +43,17 @@ const ALL_FEATURES = [
   { key: 'BUDGET', label: 'Budget & Expenses' },
 ];
 
+// Opt-in features that should NOT be granted to new users by default (admin ticks them explicitly).
+const OPT_IN_FEATURES = new Set(['DIVIDEND_IMPORT']);
+const DEFAULT_FEATURE_KEYS = ALL_FEATURES.map(f => f.key).filter(k => !OPT_IN_FEATURES.has(k));
+
 export default function UserManagement() {
   const [users, setUsers] = useState<AppUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingFeatures, setEditingFeatures] = useState<AppUser | null>(null);
   const [editingCurrency, setEditingCurrency] = useState<AppUser | null>(null);
-  const [form, setForm] = useState({ username: '', email: '', password: '', displayName: '', role: 'USER', enabledFeatures: ALL_FEATURES.map(f => f.key), baseCurrency: DEFAULT_BASE_CURRENCY, displayCurrencies: [...DEFAULT_DISPLAY_CURRENCIES] });
+  const [form, setForm] = useState({ username: '', email: '', password: '', displayName: '', role: 'USER', enabledFeatures: [...DEFAULT_FEATURE_KEYS], baseCurrency: DEFAULT_BASE_CURRENCY, displayCurrencies: [...DEFAULT_DISPLAY_CURRENCIES] });
   const [error, setError] = useState('');
 
   useEffect(() => { loadUsers(); }, []);
@@ -69,7 +74,7 @@ export default function UserManagement() {
         displayCurrencies: form.displayCurrencies.join(','),
       });
       setShowForm(false);
-      setForm({ username: '', email: '', password: '', displayName: '', role: 'USER', enabledFeatures: ALL_FEATURES.map(f => f.key), baseCurrency: DEFAULT_BASE_CURRENCY, displayCurrencies: [...DEFAULT_DISPLAY_CURRENCIES] });
+      setForm({ username: '', email: '', password: '', displayName: '', role: 'USER', enabledFeatures: [...DEFAULT_FEATURE_KEYS], baseCurrency: DEFAULT_BASE_CURRENCY, displayCurrencies: [...DEFAULT_DISPLAY_CURRENCIES] });
       loadUsers();
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to create user');

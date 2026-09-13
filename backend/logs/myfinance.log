@@ -4168,3 +4168,977 @@ java.lang.RuntimeException: Owner is required
 2026-09-13 11:42:51 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2026-09-13 11:42:51 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-6 - Shutdown initiated...
 2026-09-13 11:42:51 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-6 - Shutdown completed.
+2026-09-13 11:50:38 [main] INFO  c.myfinance.security.JwtServiceTest - Starting JwtServiceTest using Java 17.0.20 with PID 56487 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 11:50:38 [main] DEBUG c.myfinance.security.JwtServiceTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-13 11:50:38 [main] INFO  c.myfinance.security.JwtServiceTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-13 11:50:39 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 11:50:39 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 152 ms. Found 36 JPA repository interfaces.
+2026-09-13 11:50:40 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 11:50:40 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-13 11:50:41 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 11:50:41 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 11:50:41 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-13 11:50:41 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-09-13 11:50:41 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-13 11:50:42 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 11:50:44 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 11:50:44 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:50:46 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-13 11:50:49 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 11:50:51 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@73a4b2ce, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@44cf0ca3, org.springframework.security.web.context.SecurityContextHolderFilter@45810720, org.springframework.security.web.header.HeaderWriterFilter@fe5ae39, org.springframework.web.filter.CorsFilter@1bf1d1af, org.springframework.security.web.authentication.logout.LogoutFilter@6cdc0092, com.myfinance.provisioning.ProvisioningTokenFilter@1e006d99, com.myfinance.security.JwtAuthFilter@4d4bad5a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4802646e, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@d06af57, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@47927528, org.springframework.security.web.session.SessionManagementFilter@2e4e40a7, org.springframework.security.web.access.ExceptionTranslationFilter@2e5be4d0, org.springframework.security.web.access.intercept.AuthorizationFilter@7a84acb1]
+2026-09-13 11:50:52 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-13 11:50:52 [main] INFO  c.myfinance.security.JwtServiceTest - Started JwtServiceTest in 15.163 seconds (process running for 22.396)
+2026-09-13 11:50:52 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-13 11:50:54 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:50:54 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-13 11:50:54 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-09-13 11:50:55 [main] DEBUG c.myfinance.security.JwtAuthFilter - JWT authentication failed: malformed
+2026-09-13 11:50:55 [main] DEBUG c.myfinance.security.JwtAuthFilter - Invalid JWT token for user=mugu
+2026-09-13 11:50:55 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.provisioning.ProvisioningControllerTest]: ProvisioningControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-13 11:50:55 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.provisioning.ProvisioningControllerTest
+2026-09-13 11:50:55 [main] INFO  c.m.p.ProvisioningControllerTest - Starting ProvisioningControllerTest using Java 17.0.20 with PID 56487 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 11:50:55 [main] DEBUG c.m.p.ProvisioningControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-13 11:50:55 [main] INFO  c.m.p.ProvisioningControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-13 11:50:56 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 11:50:56 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 115 ms. Found 36 JPA repository interfaces.
+2026-09-13 11:50:57 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 11:50:57 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 11:50:57 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 11:50:57 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2026-09-13 11:50:57 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:testdb user=SA
+2026-09-13 11:50:57 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2026-09-13 11:50:57 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 11:51:00 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 11:51:00 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:51:06 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 11:51:09 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@31b0e04f, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@f3b1c20, org.springframework.security.web.context.SecurityContextHolderFilter@7486217d, org.springframework.security.web.header.HeaderWriterFilter@75acb4a0, org.springframework.web.filter.CorsFilter@44af8963, org.springframework.security.web.authentication.logout.LogoutFilter@55cd6f06, com.myfinance.provisioning.ProvisioningTokenFilter@732fd38e, com.myfinance.security.JwtAuthFilter@20227d15, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@20b3f0b0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@30aa49b2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@44eca24a, org.springframework.security.web.session.SessionManagementFilter@20c009fc, org.springframework.security.web.access.ExceptionTranslationFilter@6156a6e3, org.springframework.security.web.access.intercept.AuthorizationFilter@8c1005c]
+2026-09-13 11:51:10 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-13 11:51:10 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-13 11:51:10 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-13 11:51:10 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-13 11:51:10 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-13 11:51:10 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-13 11:51:10 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 2 ms
+2026-09-13 11:51:10 [main] INFO  c.m.p.ProvisioningControllerTest - Started ProvisioningControllerTest in 15.206 seconds (process running for 40.512)
+2026-09-13 11:51:10 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-13 11:51:11 [main] WARN  c.m.p.ProvisioningTokenFilter - Rejected provisioning request with missing/invalid token from 127.0.0.1
+2026-09-13 11:51:11 [main] INFO  c.m.provisioning.ProvisioningService - Provisioned new finance user id=2 username=saas-customer for email(hash)=e90f7a48
+2026-09-13 11:51:11 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 201 (390ms)
+2026-09-13 11:51:11 [main] INFO  c.m.provisioning.ProvisioningService - Provisioning idempotent hit: existing user id=2 for email(hash)=e90f7a48
+2026-09-13 11:51:11 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 200 (11ms)
+2026-09-13 11:51:11 [main] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/internal/provisioning/users → 404 (21ms)
+2026-09-13 11:51:11 [main] WARN  c.m.config.GlobalExceptionHandler - Validation failed: 1 field error(s)
+2026-09-13 11:51:11 [main] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 400 (27ms)
+2026-09-13 11:51:11 [main] INFO  c.m.provisioning.ProvisioningService - Provisioned new finance user id=3 username=saas-customer for email(hash)=e90f7a48
+2026-09-13 11:51:11 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 201 (95ms)
+2026-09-13 11:51:11 [main] INFO  c.m.provisioning.ProvisioningService - Updated access for user id=3 active=false for email(hash)=e90f7a48
+2026-09-13 11:51:11 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/status → 200 (32ms)
+2026-09-13 11:51:12 [main] INFO  c.m.provisioning.ProvisioningService - Provisioned new finance user id=4 username=saas-customer for email(hash)=e90f7a48
+2026-09-13 11:51:12 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/internal/provisioning/users → 201 (91ms)
+2026-09-13 11:51:12 [main] WARN  c.m.p.ProvisioningTokenFilter - Rejected provisioning request with missing/invalid token from 127.0.0.1
+2026-09-13 11:51:12 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:51:12 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
+2026-09-13 11:51:12 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+2026-09-13 11:51:12 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.HomeLoanControllerTest]: HomeLoanControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-13 11:51:12 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.HomeLoanControllerTest
+2026-09-13 11:51:12 [main] INFO  c.m.c.HomeLoanControllerTest - Starting HomeLoanControllerTest using Java 17.0.20 with PID 56487 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 11:51:12 [main] DEBUG c.m.c.HomeLoanControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-13 11:51:12 [main] INFO  c.m.c.HomeLoanControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-13 11:51:12 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 11:51:12 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 64 ms. Found 36 JPA repository interfaces.
+2026-09-13 11:51:12 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 11:51:12 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 11:51:12 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 11:51:12 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Starting...
+2026-09-13 11:51:12 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Added connection conn20: url=jdbc:h2:mem:testdb user=SA
+2026-09-13 11:51:12 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Start completed.
+2026-09-13 11:51:12 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 11:51:14 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 11:51:14 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:51:16 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 11:51:18 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@d3cdfc7, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1b01dd8b, org.springframework.security.web.context.SecurityContextHolderFilter@28a62cde, org.springframework.security.web.header.HeaderWriterFilter@6025ecbf, org.springframework.web.filter.CorsFilter@38894404, org.springframework.security.web.authentication.logout.LogoutFilter@7fad30c3, com.myfinance.provisioning.ProvisioningTokenFilter@16839926, com.myfinance.security.JwtAuthFilter@32fdae9f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3d59e46c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@72d6a76c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@de57836, org.springframework.security.web.session.SessionManagementFilter@64ce0f06, org.springframework.security.web.access.ExceptionTranslationFilter@12af01, org.springframework.security.web.access.intercept.AuthorizationFilter@4a8feac1]
+2026-09-13 11:51:18 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-13 11:51:18 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-13 11:51:18 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-13 11:51:18 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-13 11:51:18 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-13 11:51:18 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-13 11:51:18 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 2 ms
+2026-09-13 11:51:18 [main] INFO  c.m.c.HomeLoanControllerTest - Started HomeLoanControllerTest in 6.347 seconds (process running for 48.307)
+2026-09-13 11:51:18 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:51:18 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown initiated...
+2026-09-13 11:51:18 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown completed.
+2026-09-13 11:53:55 [main] INFO  c.m.c.TransactionControllerTest - Starting TransactionControllerTest using Java 17.0.20 with PID 57713 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 11:53:55 [main] DEBUG c.m.c.TransactionControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-13 11:53:55 [main] INFO  c.m.c.TransactionControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-13 11:53:57 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 11:53:57 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 151 ms. Found 36 JPA repository interfaces.
+2026-09-13 11:53:58 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 11:53:58 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-13 11:53:58 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 11:53:59 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 11:53:59 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-13 11:53:59 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-09-13 11:53:59 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-13 11:53:59 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 11:54:01 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 11:54:02 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:54:03 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-13 11:54:05 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 11:54:07 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5eae8226, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3a75f9d1, org.springframework.security.web.context.SecurityContextHolderFilter@2e096391, org.springframework.security.web.header.HeaderWriterFilter@73a95ff8, org.springframework.web.filter.CorsFilter@4c38195, org.springframework.security.web.authentication.logout.LogoutFilter@62de0944, com.myfinance.provisioning.ProvisioningTokenFilter@410dcb8b, com.myfinance.security.JwtAuthFilter@7defa01c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2915cb24, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@76fd36c0, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6d041f54, org.springframework.security.web.session.SessionManagementFilter@4d55a54f, org.springframework.security.web.access.ExceptionTranslationFilter@2ae6779a, org.springframework.security.web.access.intercept.AuthorizationFilter@2f78fed]
+2026-09-13 11:54:08 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-13 11:54:09 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-13 11:54:09 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-13 11:54:09 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-13 11:54:09 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-13 11:54:09 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-13 11:54:09 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 3 ms
+2026-09-13 11:54:09 [main] INFO  c.m.c.TransactionControllerTest - Started TransactionControllerTest in 13.869 seconds (process running for 20.785)
+2026-09-13 11:54:09 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-13 11:54:10 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=1, type=BUY, quantity=10, price=50
+2026-09-13 11:54:10 [main] INFO  c.m.service.TransactionService - Created Transaction id=1 type=BUY assetId=1 quantity=10
+2026-09-13 11:54:10 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=1 assetId=1 quantity=10
+2026-09-13 11:54:10 [main] INFO  c.m.controller.TransactionController - Created transaction id=1
+2026-09-13 11:54:10 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (294ms)
+2026-09-13 11:54:10 [main] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-13 11:54:10 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (19ms)
+2026-09-13 11:54:10 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=2, type=BUY, quantity=10, price=400
+2026-09-13 11:54:10 [main] INFO  c.m.service.TransactionService - Created Transaction id=2 type=BUY assetId=2 quantity=10
+2026-09-13 11:54:10 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=2 quantity=10
+2026-09-13 11:54:10 [main] INFO  c.m.controller.TransactionController - Created transaction id=2
+2026-09-13 11:54:10 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (31ms)
+2026-09-13 11:54:11 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=BUY, quantity=5, price=100
+2026-09-13 11:54:11 [main] INFO  c.m.service.TransactionService - Created Transaction id=3 type=BUY assetId=3 quantity=5
+2026-09-13 11:54:11 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=3 assetId=3 quantity=5
+2026-09-13 11:54:11 [main] INFO  c.m.controller.TransactionController - Created transaction id=3
+2026-09-13 11:54:11 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (21ms)
+2026-09-13 11:54:11 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (9ms)
+2026-09-13 11:54:11 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=4, type=BUY, quantity=1, price=100
+2026-09-13 11:54:11 [main] INFO  c.m.service.TransactionService - Created Transaction id=4 type=BUY assetId=4 quantity=1
+2026-09-13 11:54:11 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=4 assetId=4 quantity=1
+2026-09-13 11:54:11 [main] INFO  c.m.controller.TransactionController - Created transaction id=4
+2026-09-13 11:54:11 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (23ms)
+2026-09-13 11:54:11 [main] INFO  c.m.controller.TransactionController - Deleting transaction id=4
+2026-09-13 11:54:11 [main] INFO  c.m.service.TransactionService - Deleted Transaction id=4
+2026-09-13 11:54:11 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/4 → 204 (17ms)
+2026-09-13 11:54:11 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:54:11 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-13 11:54:11 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-09-13 11:54:11 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.AssetControllerTest]: AssetControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-13 11:54:11 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.AssetControllerTest
+2026-09-13 11:54:11 [main] INFO  c.m.controller.AssetControllerTest - Starting AssetControllerTest using Java 17.0.20 with PID 57713 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 11:54:11 [main] DEBUG c.m.controller.AssetControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-13 11:54:11 [main] INFO  c.m.controller.AssetControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-13 11:54:11 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 11:54:11 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 48 ms. Found 36 JPA repository interfaces.
+2026-09-13 11:54:11 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 11:54:11 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 11:54:11 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 11:54:11 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2026-09-13 11:54:11 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:testdb user=SA
+2026-09-13 11:54:11 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2026-09-13 11:54:11 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 11:54:12 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 11:54:12 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:54:13 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 11:54:14 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@526b664a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7586be85, org.springframework.security.web.context.SecurityContextHolderFilter@23f2a5db, org.springframework.security.web.header.HeaderWriterFilter@1a80be8a, org.springframework.web.filter.CorsFilter@d72c30d, org.springframework.security.web.authentication.logout.LogoutFilter@550e588a, com.myfinance.provisioning.ProvisioningTokenFilter@77b0d8ba, com.myfinance.security.JwtAuthFilter@47fdce, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1411f65a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@bfa7ebc, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@11f28957, org.springframework.security.web.session.SessionManagementFilter@4455846f, org.springframework.security.web.access.ExceptionTranslationFilter@484ff36c, org.springframework.security.web.access.intercept.AuthorizationFilter@16614fa3]
+2026-09-13 11:54:15 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-13 11:54:15 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-13 11:54:15 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-13 11:54:15 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-13 11:54:15 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-13 11:54:15 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-13 11:54:15 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 2 ms
+2026-09-13 11:54:15 [main] INFO  c.m.controller.AssetControllerTest - Started AssetControllerTest in 4.168 seconds (process running for 26.997)
+2026-09-13 11:54:15 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-13 11:54:15 [main] INFO  c.m.controller.AssetController - Deleting asset id=1
+2026-09-13 11:54:15 [main] INFO  com.myfinance.service.AssetService - Deleted Asset id=1
+2026-09-13 11:54:15 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/1 → 204 (18ms)
+2026-09-13 11:54:15 [main] INFO  c.m.controller.AssetController - Updating asset id=2
+2026-09-13 11:54:15 [main] INFO  com.myfinance.service.AssetService - Updated Asset id=2 symbol=MOV-T
+2026-09-13 11:54:15 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/2 → 200 (32ms)
+2026-09-13 11:54:15 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets/type/INDEX_FUND → 200 (6ms)
+2026-09-13 11:54:15 [main] INFO  c.m.controller.AssetController - Updating asset id=5
+2026-09-13 11:54:15 [main] INFO  com.myfinance.service.AssetService - Updated Asset id=5 symbol=STB-T
+2026-09-13 11:54:15 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/5 → 200 (9ms)
+2026-09-13 11:54:15 [main] INFO  c.m.controller.AssetController - Updating asset id=6
+2026-09-13 11:54:15 [main] INFO  com.myfinance.service.AssetService - Updated Asset id=6 symbol=OLD-T
+2026-09-13 11:54:15 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/6 → 200 (8ms)
+2026-09-13 11:54:15 [main] INFO  c.m.controller.AssetController - Creating asset: name=Vanguard S&P 500, type=INDEX_FUND
+2026-09-13 11:54:15 [main] INFO  com.myfinance.service.AssetService - Created Asset id=7 symbol=VOO
+2026-09-13 11:54:15 [main] INFO  c.m.controller.AssetController - Created asset id=7
+2026-09-13 11:54:15 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (9ms)
+2026-09-13 11:54:15 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets/types → 200 (2ms)
+2026-09-13 11:54:15 [main] INFO  c.m.controller.AssetController - Updating price for asset id=8, price=123.45
+2026-09-13 11:54:15 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PATCH /api/assets/8/price → 200 (10ms)
+2026-09-13 11:54:15 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets/search → 200 (19ms)
+2026-09-13 11:54:15 [main] INFO  c.m.controller.AssetController - Toggling net-worth for asset id=11, include=false
+2026-09-13 11:54:15 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PATCH /api/assets/11/net-worth → 200 (9ms)
+2026-09-13 11:54:15 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:54:15 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
+2026-09-13 11:54:15 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+2026-09-13 11:54:15 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.service.TransactionServiceTest]: TransactionServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-13 11:54:15 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.service.TransactionServiceTest
+2026-09-13 11:54:15 [main] INFO  c.m.service.TransactionServiceTest - Starting TransactionServiceTest using Java 17.0.20 with PID 57713 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 11:54:15 [main] DEBUG c.m.service.TransactionServiceTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-13 11:54:15 [main] INFO  c.m.service.TransactionServiceTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-13 11:54:16 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 11:54:16 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 40 ms. Found 36 JPA repository interfaces.
+2026-09-13 11:54:16 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 11:54:16 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 11:54:16 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 11:54:16 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Starting...
+2026-09-13 11:54:16 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Added connection conn20: url=jdbc:h2:mem:testdb user=SA
+2026-09-13 11:54:16 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Start completed.
+2026-09-13 11:54:16 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 11:54:16 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 11:54:16 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:54:18 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 11:54:19 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@b4ec106, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7d4288e9, org.springframework.security.web.context.SecurityContextHolderFilter@67cde5f, org.springframework.security.web.header.HeaderWriterFilter@f6898d3, org.springframework.web.filter.CorsFilter@37aab14f, org.springframework.security.web.authentication.logout.LogoutFilter@e6f02a4, com.myfinance.provisioning.ProvisioningTokenFilter@780a272d, com.myfinance.security.JwtAuthFilter@31fd3123, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@e9b140f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@45febb0f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7a256f76, org.springframework.security.web.session.SessionManagementFilter@1617b86d, org.springframework.security.web.access.ExceptionTranslationFilter@3f46e52a, org.springframework.security.web.access.intercept.AuthorizationFilter@6894aad6]
+2026-09-13 11:54:19 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-13 11:54:19 [main] INFO  c.m.service.TransactionServiceTest - Started TransactionServiceTest in 3.882 seconds (process running for 31.442)
+2026-09-13 11:54:19 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-13 11:54:19 [main] INFO  c.m.service.TransactionService - Created Transaction id=1 type=BUY assetId=1 quantity=5
+2026-09-13 11:54:19 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=1 assetId=1 quantity=5
+2026-09-13 11:54:19 [main] INFO  c.m.service.TransactionService - Created Transaction id=2 type=SELL assetId=1 quantity=5
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=1 assetId=1 quantity=0.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=2 profit=347.6080
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Deleted Holding id=1
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=1 quantity=5
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Updated Transaction id=1 type=BUY assetId=1 quantity=5
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=1 quantity=10.00
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=1 quantity=5.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Updated Transaction id=2 type=SELL assetId=1 quantity=5
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=2 profit=220.4080
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=3 type=BUY assetId=2 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=3 assetId=2 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=4 type=SELL assetId=2 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=3 assetId=2 quantity=0.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=4 profit=300.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=5 type=BUY assetId=3 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=4 assetId=3 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Deleted Holding id=4
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=5 assetId=3 quantity=20
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Updated Transaction id=5 type=BUY assetId=3 quantity=20
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=6 type=BUY assetId=4 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=6 assetId=4 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=7 type=SELL assetId=4 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=6 assetId=4 quantity=0.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=7 profit=256.0000
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=8 type=BUY assetId=5 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=7 assetId=5 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=9 type=SELL assetId=5 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=7 assetId=5 quantity=0.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=9 profit=380.0000
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=10 type=BUY assetId=6 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=8 assetId=6 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Deleted Holding id=8
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=9 assetId=6 quantity=12
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Updated Transaction id=10 type=BUY assetId=6 quantity=12
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=11 type=BUY assetId=7 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=10 assetId=7 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=12 type=BUY assetId=9 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=11 assetId=9 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=13 type=BUY assetId=10 quantity=20
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=12 assetId=10 quantity=20
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=14 type=SELL assetId=10 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=12 assetId=10 quantity=10.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=14 profit=300.00
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=12 assetId=10 quantity=20.00
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=12 assetId=10 quantity=30.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Updated Transaction id=14 type=BUY assetId=10 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=14
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=15 type=BUY assetId=11 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=13 assetId=11 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=16 type=BUY assetId=11 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=13 assetId=11 quantity=20.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=17 type=BUY assetId=12 quantity=5
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=14 assetId=12 quantity=5
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=18 type=SELL assetId=12 quantity=5
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=14 assetId=12 quantity=0.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=18 profit=220.4080
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=19 type=BUY assetId=13 quantity=20
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=15 assetId=13 quantity=20
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=20 type=SELL assetId=13 quantity=5
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=15 assetId=13 quantity=15.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=20 profit=100.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=21 type=BUY assetId=14 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=16 assetId=14 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=22 type=BUY assetId=15 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=17 assetId=15 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=23 type=BUY assetId=15 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=17 assetId=15 quantity=20.00
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=17 assetId=15 quantity=10.00
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=17 assetId=15 quantity=20.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Updated Transaction id=23 type=BUY assetId=15 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=24 type=BUY assetId=16 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=18 assetId=16 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=25 type=BUY assetId=17 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=19 assetId=17 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=26 type=BUY assetId=18 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=20 assetId=18 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=27 type=SELL assetId=18 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=20 assetId=18 quantity=0.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=27 profit=300.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=28 type=BUY assetId=19 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=21 assetId=19 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=29 type=SELL assetId=19 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=21 assetId=19 quantity=0.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=29 profit=365.0000
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=30 type=BUY assetId=20 quantity=5
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=22 assetId=20 quantity=5
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=22 assetId=20 quantity=5.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=31 type=SELL assetId=20 quantity=5
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=22 assetId=20 quantity=0.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=31 profit=347.6080
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=31 profit=220.40800000000000
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=32 type=BUY assetId=21 quantity=5
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=23 assetId=21 quantity=5
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=33 type=SELL assetId=21 quantity=5
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=23 assetId=21 quantity=0.00
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=33 profit=220.4080
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=33 profit=220.40800000000000
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=33 profit=220.40800000000000
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=34 type=BUY assetId=22 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=24 assetId=22 quantity=10
+2026-09-13 11:54:20 [main] INFO  c.m.service.TransactionService - Created Transaction id=35 type=SELL assetId=23 quantity=10
+2026-09-13 11:54:20 [main] ERROR c.m.service.TransactionService - Failed to sell: no holding found for assetId=23 accountId=22 ownerId=22
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Created Transaction id=36 type=BUY assetId=24 quantity=5
+2026-09-13 11:54:21 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=25 assetId=24 quantity=5
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Created Transaction id=37 type=SELL assetId=24 quantity=10
+2026-09-13 11:54:21 [main] ERROR c.m.service.TransactionService - Failed to sell: quantity 10 exceeds holding for assetId=24
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Created Transaction id=38 type=BUY assetId=25 quantity=10
+2026-09-13 11:54:21 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=26 assetId=25 quantity=10
+2026-09-13 11:54:21 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=26 assetId=25 quantity=10.00
+2026-09-13 11:54:21 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=26 assetId=25 quantity=10.00
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Recomputed for userId=2: 0 sells, 0 sold positions, 1 holding currencies fixed
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Created Transaction id=39 type=BUY assetId=26 quantity=10
+2026-09-13 11:54:21 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=27 assetId=26 quantity=10
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Created Transaction id=40 type=BUY assetId=27 quantity=20
+2026-09-13 11:54:21 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=28 assetId=27 quantity=20
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Created Transaction id=41 type=SELL assetId=27 quantity=10
+2026-09-13 11:54:21 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=28 assetId=27 quantity=10.00
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=41 profit=300.00
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=41
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Deleted Transaction id=41
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Created Transaction id=42 type=BUY assetId=28 quantity=20
+2026-09-13 11:54:21 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=29 assetId=28 quantity=20
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Created Transaction id=43 type=SELL assetId=28 quantity=10
+2026-09-13 11:54:21 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=29 assetId=28 quantity=10.00
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=43 profit=300.00
+2026-09-13 11:54:21 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=29 assetId=28 quantity=20.00
+2026-09-13 11:54:21 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=29 assetId=28 quantity=10.00
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Updated Transaction id=43 type=SELL assetId=28 quantity=10
+2026-09-13 11:54:21 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=43 profit=500.00
+2026-09-13 11:54:21 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:54:21 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown initiated...
+2026-09-13 11:54:21 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown completed.
+2026-09-13 11:55:10 [main] INFO  c.m.c.TransactionControllerTest - Starting TransactionControllerTest using Java 17.0.20 with PID 58420 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 11:55:10 [main] DEBUG c.m.c.TransactionControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-13 11:55:10 [main] INFO  c.m.c.TransactionControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-13 11:55:11 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 11:55:11 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 152 ms. Found 36 JPA repository interfaces.
+2026-09-13 11:55:13 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 11:55:13 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-13 11:55:13 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 11:55:13 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 11:55:13 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-13 11:55:14 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-09-13 11:55:14 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-13 11:55:14 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 11:55:16 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 11:55:16 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:55:17 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-13 11:55:20 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 11:55:22 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@90d7c52, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@74b2ad8e, org.springframework.security.web.context.SecurityContextHolderFilter@53271bb4, org.springframework.security.web.header.HeaderWriterFilter@6631fa27, org.springframework.web.filter.CorsFilter@675e993e, org.springframework.security.web.authentication.logout.LogoutFilter@40d66634, com.myfinance.provisioning.ProvisioningTokenFilter@5e4ac279, com.myfinance.security.JwtAuthFilter@55ccea19, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2c988de6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@519a0a93, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4d1281d6, org.springframework.security.web.session.SessionManagementFilter@288b8b5b, org.springframework.security.web.access.ExceptionTranslationFilter@43a0c87b, org.springframework.security.web.access.intercept.AuthorizationFilter@31945d63]
+2026-09-13 11:55:23 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-13 11:55:23 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-13 11:55:23 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-13 11:55:23 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-13 11:55:23 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-13 11:55:23 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-13 11:55:23 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 2 ms
+2026-09-13 11:55:23 [main] INFO  c.m.c.TransactionControllerTest - Started TransactionControllerTest in 13.579 seconds (process running for 20.485)
+2026-09-13 11:55:23 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-13 11:55:24 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=1, type=BUY, quantity=10, price=50
+2026-09-13 11:55:24 [main] INFO  c.m.service.TransactionService - Created Transaction id=1 type=BUY assetId=1 quantity=10
+2026-09-13 11:55:24 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=1 assetId=1 quantity=10
+2026-09-13 11:55:24 [main] INFO  c.m.controller.TransactionController - Created transaction id=1
+2026-09-13 11:55:24 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (268ms)
+2026-09-13 11:55:24 [main] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-13 11:55:24 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (28ms)
+2026-09-13 11:55:25 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=2, type=BUY, quantity=10, price=400
+2026-09-13 11:55:25 [main] INFO  c.m.service.TransactionService - Created Transaction id=2 type=BUY assetId=2 quantity=10
+2026-09-13 11:55:25 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=2 quantity=10
+2026-09-13 11:55:25 [main] INFO  c.m.controller.TransactionController - Created transaction id=2
+2026-09-13 11:55:25 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (25ms)
+2026-09-13 11:55:25 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=BUY, quantity=5, price=100
+2026-09-13 11:55:25 [main] INFO  c.m.service.TransactionService - Created Transaction id=3 type=BUY assetId=3 quantity=5
+2026-09-13 11:55:25 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=3 assetId=3 quantity=5
+2026-09-13 11:55:25 [main] INFO  c.m.controller.TransactionController - Created transaction id=3
+2026-09-13 11:55:25 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (22ms)
+2026-09-13 11:55:25 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (10ms)
+2026-09-13 11:55:25 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=4, type=BUY, quantity=1, price=100
+2026-09-13 11:55:25 [main] INFO  c.m.service.TransactionService - Created Transaction id=4 type=BUY assetId=4 quantity=1
+2026-09-13 11:55:25 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=4 assetId=4 quantity=1
+2026-09-13 11:55:25 [main] INFO  c.m.controller.TransactionController - Created transaction id=4
+2026-09-13 11:55:25 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (23ms)
+2026-09-13 11:55:25 [main] INFO  c.m.controller.TransactionController - Deleting transaction id=4
+2026-09-13 11:55:25 [main] INFO  c.m.service.TransactionService - Deleted Transaction id=4
+2026-09-13 11:55:25 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/4 → 204 (14ms)
+2026-09-13 11:55:25 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:55:25 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-13 11:55:25 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-09-13 11:55:25 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.AssetControllerTest]: AssetControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-13 11:55:25 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.AssetControllerTest
+2026-09-13 11:55:25 [main] INFO  c.m.controller.AssetControllerTest - Starting AssetControllerTest using Java 17.0.20 with PID 58420 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 11:55:25 [main] DEBUG c.m.controller.AssetControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-13 11:55:25 [main] INFO  c.m.controller.AssetControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-13 11:55:25 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 11:55:25 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 46 ms. Found 36 JPA repository interfaces.
+2026-09-13 11:55:25 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 11:55:25 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 11:55:25 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 11:55:25 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2026-09-13 11:55:25 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:testdb user=SA
+2026-09-13 11:55:25 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2026-09-13 11:55:25 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 11:55:26 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 11:55:26 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:55:27 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 11:55:28 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4cca35d0, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@51d9891e, org.springframework.security.web.context.SecurityContextHolderFilter@bf7e3a, org.springframework.security.web.header.HeaderWriterFilter@7a91bbdb, org.springframework.web.filter.CorsFilter@48c25521, org.springframework.security.web.authentication.logout.LogoutFilter@33d5cb7c, com.myfinance.provisioning.ProvisioningTokenFilter@22bbde8c, com.myfinance.security.JwtAuthFilter@5f950e11, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4af85036, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3d4065d1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6b113cb1, org.springframework.security.web.session.SessionManagementFilter@1ffd4518, org.springframework.security.web.access.ExceptionTranslationFilter@499063b8, org.springframework.security.web.access.intercept.AuthorizationFilter@5f4d098]
+2026-09-13 11:55:29 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-13 11:55:29 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-13 11:55:29 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-13 11:55:29 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-13 11:55:29 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-13 11:55:29 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-13 11:55:29 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-09-13 11:55:29 [main] INFO  c.m.controller.AssetControllerTest - Started AssetControllerTest in 4.129 seconds (process running for 26.461)
+2026-09-13 11:55:29 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-13 11:55:29 [main] INFO  c.m.controller.AssetController - Deleting asset id=1
+2026-09-13 11:55:29 [main] INFO  com.myfinance.service.AssetService - Deleted Asset id=1
+2026-09-13 11:55:29 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/1 → 204 (19ms)
+2026-09-13 11:55:29 [main] INFO  c.m.controller.AssetController - Updating asset id=2
+2026-09-13 11:55:29 [main] INFO  com.myfinance.service.AssetService - Updated Asset id=2 symbol=MOV-T
+2026-09-13 11:55:29 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/2 → 200 (32ms)
+2026-09-13 11:55:29 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets/type/INDEX_FUND → 200 (6ms)
+2026-09-13 11:55:29 [main] INFO  c.m.controller.AssetController - Updating asset id=5
+2026-09-13 11:55:29 [main] INFO  com.myfinance.service.AssetService - Updated Asset id=5 symbol=STB-T
+2026-09-13 11:55:29 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/5 → 200 (9ms)
+2026-09-13 11:55:29 [main] INFO  c.m.controller.AssetController - Updating asset id=6
+2026-09-13 11:55:29 [main] INFO  com.myfinance.service.AssetService - Updated Asset id=6 symbol=OLD-T
+2026-09-13 11:55:29 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/6 → 200 (9ms)
+2026-09-13 11:55:29 [main] INFO  c.m.controller.AssetController - Creating asset: name=Vanguard S&P 500, type=INDEX_FUND
+2026-09-13 11:55:29 [main] INFO  com.myfinance.service.AssetService - Created Asset id=7 symbol=VOO
+2026-09-13 11:55:29 [main] INFO  c.m.controller.AssetController - Created asset id=7
+2026-09-13 11:55:29 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (9ms)
+2026-09-13 11:55:29 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets/types → 200 (1ms)
+2026-09-13 11:55:29 [main] INFO  c.m.controller.AssetController - Updating price for asset id=8, price=123.45
+2026-09-13 11:55:29 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PATCH /api/assets/8/price → 200 (28ms)
+2026-09-13 11:55:29 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets/search → 200 (18ms)
+2026-09-13 11:55:29 [main] INFO  c.m.controller.AssetController - Toggling net-worth for asset id=11, include=false
+2026-09-13 11:55:29 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PATCH /api/assets/11/net-worth → 200 (11ms)
+2026-09-13 11:55:29 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:55:29 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
+2026-09-13 11:55:29 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+2026-09-13 11:55:29 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.MultiTenantIsolationTest]: MultiTenantIsolationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-13 11:55:29 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.MultiTenantIsolationTest
+2026-09-13 11:55:29 [main] INFO  c.m.c.MultiTenantIsolationTest - Starting MultiTenantIsolationTest using Java 17.0.20 with PID 58420 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 11:55:29 [main] DEBUG c.m.c.MultiTenantIsolationTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-13 11:55:29 [main] INFO  c.m.c.MultiTenantIsolationTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-13 11:55:30 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 11:55:30 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 41 ms. Found 36 JPA repository interfaces.
+2026-09-13 11:55:30 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 11:55:30 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 11:55:30 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 11:55:30 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Starting...
+2026-09-13 11:55:30 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Added connection conn20: url=jdbc:h2:mem:testdb user=SA
+2026-09-13 11:55:30 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Start completed.
+2026-09-13 11:55:30 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 11:55:30 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 11:55:30 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:55:32 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 11:55:33 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@9131349, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@26695244, org.springframework.security.web.context.SecurityContextHolderFilter@7e3f65f7, org.springframework.security.web.header.HeaderWriterFilter@694eddd1, org.springframework.web.filter.CorsFilter@3b57f950, org.springframework.security.web.authentication.logout.LogoutFilter@6df845ba, com.myfinance.provisioning.ProvisioningTokenFilter@59233fb8, com.myfinance.security.JwtAuthFilter@6b5630f5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5de09898, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@42df76a0, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7c97a0f, org.springframework.security.web.session.SessionManagementFilter@8444b95, org.springframework.security.web.access.ExceptionTranslationFilter@6e89aeb6, org.springframework.security.web.access.intercept.AuthorizationFilter@dd63e93]
+2026-09-13 11:55:33 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-13 11:55:33 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-13 11:55:33 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-13 11:55:33 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-13 11:55:33 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-13 11:55:33 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-13 11:55:33 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 0 ms
+2026-09-13 11:55:33 [main] INFO  c.m.c.MultiTenantIsolationTest - Started MultiTenantIsolationTest in 3.848 seconds (process running for 30.852)
+2026-09-13 11:55:33 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-13 11:55:34 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (10ms)
+2026-09-13 11:55:34 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-13 11:55:34 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/tax/summary → 200 (12ms)
+2026-09-13 11:55:34 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/tax → 200 (7ms)
+2026-09-13 11:55:34 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/tax → 200 (4ms)
+2026-09-13 11:55:34 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.service.TransactionServiceTest]: TransactionServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-13 11:55:34 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.service.TransactionServiceTest
+2026-09-13 11:55:34 [main] INFO  c.m.service.TransactionServiceTest - Starting TransactionServiceTest using Java 17.0.20 with PID 58420 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 11:55:34 [main] DEBUG c.m.service.TransactionServiceTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-13 11:55:34 [main] INFO  c.m.service.TransactionServiceTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-13 11:55:34 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 11:55:34 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 42 ms. Found 36 JPA repository interfaces.
+2026-09-13 11:55:34 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 11:55:34 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 11:55:34 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 11:55:34 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Starting...
+2026-09-13 11:55:34 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-4 - Added connection conn30: url=jdbc:h2:mem:testdb user=SA
+2026-09-13 11:55:34 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Start completed.
+2026-09-13 11:55:34 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 11:55:35 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 11:55:35 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:55:36 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 11:55:37 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1d16fae5, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@49266a6b, org.springframework.security.web.context.SecurityContextHolderFilter@4fe77e57, org.springframework.security.web.header.HeaderWriterFilter@31306ad2, org.springframework.web.filter.CorsFilter@7c2a650f, org.springframework.security.web.authentication.logout.LogoutFilter@251e3f4b, com.myfinance.provisioning.ProvisioningTokenFilter@45326243, com.myfinance.security.JwtAuthFilter@532372d, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4d696e71, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7f3dfbf4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4cbf35c0, org.springframework.security.web.session.SessionManagementFilter@6b18ae98, org.springframework.security.web.access.ExceptionTranslationFilter@15e2fddf, org.springframework.security.web.access.intercept.AuthorizationFilter@33707ab0]
+2026-09-13 11:55:37 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-13 11:55:37 [main] INFO  c.m.service.TransactionServiceTest - Started TransactionServiceTest in 3.492 seconds (process running for 34.758)
+2026-09-13 11:55:37 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-13 11:55:37 [main] INFO  c.m.service.TransactionService - Created Transaction id=1 type=BUY assetId=1 quantity=5
+2026-09-13 11:55:37 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=1 assetId=1 quantity=5
+2026-09-13 11:55:37 [main] INFO  c.m.service.TransactionService - Created Transaction id=2 type=SELL assetId=1 quantity=5
+2026-09-13 11:55:37 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=1 assetId=1 quantity=0.00
+2026-09-13 11:55:37 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=2 profit=347.6080
+2026-09-13 11:55:37 [main] INFO  c.myfinance.service.HoldingService - Deleted Holding id=1
+2026-09-13 11:55:37 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=1 quantity=5
+2026-09-13 11:55:37 [main] INFO  c.m.service.TransactionService - Updated Transaction id=1 type=BUY assetId=1 quantity=5
+2026-09-13 11:55:37 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=1 quantity=10.00
+2026-09-13 11:55:37 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=1 quantity=5.00
+2026-09-13 11:55:37 [main] INFO  c.m.service.TransactionService - Updated Transaction id=2 type=SELL assetId=1 quantity=5
+2026-09-13 11:55:37 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=2 profit=220.4080
+2026-09-13 11:55:37 [main] INFO  c.m.service.TransactionService - Created Transaction id=3 type=BUY assetId=2 quantity=10
+2026-09-13 11:55:37 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=3 assetId=2 quantity=10
+2026-09-13 11:55:37 [main] INFO  c.m.service.TransactionService - Created Transaction id=4 type=SELL assetId=2 quantity=10
+2026-09-13 11:55:37 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=3 assetId=2 quantity=0.00
+2026-09-13 11:55:37 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=4 profit=300.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=5 type=BUY assetId=3 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=4 assetId=3 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Deleted Holding id=4
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=5 assetId=3 quantity=20
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Updated Transaction id=5 type=BUY assetId=3 quantity=20
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=6 type=BUY assetId=4 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=6 assetId=4 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=7 type=SELL assetId=4 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=6 assetId=4 quantity=0.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=7 profit=256.0000
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=8 type=BUY assetId=5 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=7 assetId=5 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=9 type=SELL assetId=5 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=7 assetId=5 quantity=0.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=9 profit=380.0000
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=10 type=BUY assetId=6 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=8 assetId=6 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Deleted Holding id=8
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=9 assetId=6 quantity=12
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Updated Transaction id=10 type=BUY assetId=6 quantity=12
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=11 type=BUY assetId=7 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=10 assetId=7 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=12 type=BUY assetId=9 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=11 assetId=9 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=13 type=BUY assetId=10 quantity=20
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=12 assetId=10 quantity=20
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=14 type=SELL assetId=10 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=12 assetId=10 quantity=10.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=14 profit=300.00
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=12 assetId=10 quantity=20.00
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=12 assetId=10 quantity=30.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Updated Transaction id=14 type=BUY assetId=10 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=14
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=15 type=BUY assetId=11 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=13 assetId=11 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=16 type=BUY assetId=11 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=13 assetId=11 quantity=20.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=17 type=BUY assetId=12 quantity=5
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=14 assetId=12 quantity=5
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=18 type=SELL assetId=12 quantity=5
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=14 assetId=12 quantity=0.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=18 profit=220.4080
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=19 type=BUY assetId=13 quantity=20
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=15 assetId=13 quantity=20
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=20 type=SELL assetId=13 quantity=5
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=15 assetId=13 quantity=15.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=20 profit=100.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=21 type=BUY assetId=14 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=16 assetId=14 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=22 type=BUY assetId=15 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=17 assetId=15 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=23 type=BUY assetId=15 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=17 assetId=15 quantity=20.00
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=17 assetId=15 quantity=10.00
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=17 assetId=15 quantity=20.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Updated Transaction id=23 type=BUY assetId=15 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=24 type=BUY assetId=16 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=18 assetId=16 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=25 type=BUY assetId=17 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=19 assetId=17 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=26 type=BUY assetId=18 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=20 assetId=18 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=27 type=SELL assetId=18 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=20 assetId=18 quantity=0.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=27 profit=300.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=28 type=BUY assetId=19 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=21 assetId=19 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=29 type=SELL assetId=19 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=21 assetId=19 quantity=0.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=29 profit=365.0000
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=30 type=BUY assetId=20 quantity=5
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=22 assetId=20 quantity=5
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=22 assetId=20 quantity=5.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=31 type=SELL assetId=20 quantity=5
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=22 assetId=20 quantity=0.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=31 profit=347.6080
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=31 profit=220.40800000000000
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=32 type=BUY assetId=21 quantity=5
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=23 assetId=21 quantity=5
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=33 type=SELL assetId=21 quantity=5
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=23 assetId=21 quantity=0.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=33 profit=220.4080
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=33 profit=220.40800000000000
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=33 profit=220.40800000000000
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=34 type=BUY assetId=22 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=24 assetId=22 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=35 type=SELL assetId=23 quantity=10
+2026-09-13 11:55:38 [main] ERROR c.m.service.TransactionService - Failed to sell: no holding found for assetId=23 accountId=22 ownerId=22
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=36 type=BUY assetId=24 quantity=5
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=25 assetId=24 quantity=5
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=37 type=SELL assetId=24 quantity=10
+2026-09-13 11:55:38 [main] ERROR c.m.service.TransactionService - Failed to sell: quantity 10 exceeds holding for assetId=24
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=38 type=BUY assetId=25 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=26 assetId=25 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=26 assetId=25 quantity=10.00
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=26 assetId=25 quantity=10.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Recomputed for userId=2: 0 sells, 0 sold positions, 1 holding currencies fixed
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=39 type=BUY assetId=26 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=27 assetId=26 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=40 type=BUY assetId=27 quantity=20
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=28 assetId=27 quantity=20
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=41 type=SELL assetId=27 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=28 assetId=27 quantity=10.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=41 profit=300.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=41
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Deleted Transaction id=41
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=42 type=BUY assetId=28 quantity=20
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=29 assetId=28 quantity=20
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Created Transaction id=43 type=SELL assetId=28 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=29 assetId=28 quantity=10.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=43 profit=300.00
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=29 assetId=28 quantity=20.00
+2026-09-13 11:55:38 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=29 assetId=28 quantity=10.00
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Updated Transaction id=43 type=SELL assetId=28 quantity=10
+2026-09-13 11:55:38 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=43 profit=500.00
+2026-09-13 11:55:39 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:55:39 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown initiated...
+2026-09-13 11:55:39 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown completed.
+2026-09-13 11:55:39 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:55:39 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown initiated...
+2026-09-13 11:55:39 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown completed.
+2026-09-13 11:56:00 [main] INFO  c.m.c.TransactionControllerTest - Starting TransactionControllerTest using Java 17.0.20 with PID 58905 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 11:56:00 [main] DEBUG c.m.c.TransactionControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-13 11:56:00 [main] INFO  c.m.c.TransactionControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-13 11:56:02 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 11:56:02 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 187 ms. Found 36 JPA repository interfaces.
+2026-09-13 11:56:03 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 11:56:04 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-13 11:56:04 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 11:56:04 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 11:56:04 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-13 11:56:05 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-09-13 11:56:05 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-13 11:56:05 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 11:56:08 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 11:56:08 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:56:09 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-13 11:56:12 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 11:56:14 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2f4c9a05, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4fd47883, org.springframework.security.web.context.SecurityContextHolderFilter@4edca1e5, org.springframework.security.web.header.HeaderWriterFilter@6bc46097, org.springframework.web.filter.CorsFilter@5fc1fe49, org.springframework.security.web.authentication.logout.LogoutFilter@14e84269, com.myfinance.provisioning.ProvisioningTokenFilter@e2a4c4e, com.myfinance.security.JwtAuthFilter@316d4a18, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@39f303a9, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@62305a46, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@378cd260, org.springframework.security.web.session.SessionManagementFilter@50ea14f, org.springframework.security.web.access.ExceptionTranslationFilter@60786bcf, org.springframework.security.web.access.intercept.AuthorizationFilter@12d05aba]
+2026-09-13 11:56:15 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-13 11:56:15 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-13 11:56:15 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-13 11:56:15 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-13 11:56:15 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-13 11:56:15 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-13 11:56:15 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-09-13 11:56:15 [main] INFO  c.m.c.TransactionControllerTest - Started TransactionControllerTest in 15.308 seconds (process running for 22.426)
+2026-09-13 11:56:15 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-13 11:56:16 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=1, type=BUY, quantity=10, price=50
+2026-09-13 11:56:16 [main] INFO  c.m.service.TransactionService - Created Transaction id=1 type=BUY assetId=1 quantity=10
+2026-09-13 11:56:16 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=1 assetId=1 quantity=10
+2026-09-13 11:56:16 [main] INFO  c.m.controller.TransactionController - Created transaction id=1
+2026-09-13 11:56:17 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (322ms)
+2026-09-13 11:56:17 [main] DEBUG c.m.controller.HoldingController - Fetching active holdings, ownerId=null, userId=2
+2026-09-13 11:56:17 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (20ms)
+2026-09-13 11:56:17 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=2, type=BUY, quantity=10, price=400
+2026-09-13 11:56:17 [main] INFO  c.m.service.TransactionService - Created Transaction id=2 type=BUY assetId=2 quantity=10
+2026-09-13 11:56:17 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=2 quantity=10
+2026-09-13 11:56:17 [main] INFO  c.m.controller.TransactionController - Created transaction id=2
+2026-09-13 11:56:17 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (31ms)
+2026-09-13 11:56:17 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=3, type=BUY, quantity=5, price=100
+2026-09-13 11:56:17 [main] INFO  c.m.service.TransactionService - Created Transaction id=3 type=BUY assetId=3 quantity=5
+2026-09-13 11:56:17 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=3 assetId=3 quantity=5
+2026-09-13 11:56:17 [main] INFO  c.m.controller.TransactionController - Created transaction id=3
+2026-09-13 11:56:17 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (26ms)
+2026-09-13 11:56:17 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (12ms)
+2026-09-13 11:56:17 [main] INFO  c.m.controller.TransactionController - Creating transaction: assetId=4, type=BUY, quantity=1, price=100
+2026-09-13 11:56:17 [main] INFO  c.m.service.TransactionService - Created Transaction id=4 type=BUY assetId=4 quantity=1
+2026-09-13 11:56:17 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=4 assetId=4 quantity=1
+2026-09-13 11:56:17 [main] INFO  c.m.controller.TransactionController - Created transaction id=4
+2026-09-13 11:56:17 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions → 201 (30ms)
+2026-09-13 11:56:17 [main] INFO  c.m.controller.TransactionController - Deleting transaction id=4
+2026-09-13 11:56:17 [main] INFO  c.m.service.TransactionService - Deleted Transaction id=4
+2026-09-13 11:56:17 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/transactions/4 → 204 (16ms)
+2026-09-13 11:56:17 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:56:17 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-13 11:56:17 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-09-13 11:56:17 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.AssetControllerTest]: AssetControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-13 11:56:17 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.AssetControllerTest
+2026-09-13 11:56:17 [main] INFO  c.m.controller.AssetControllerTest - Starting AssetControllerTest using Java 17.0.20 with PID 58905 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 11:56:17 [main] DEBUG c.m.controller.AssetControllerTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-13 11:56:17 [main] INFO  c.m.controller.AssetControllerTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-13 11:56:17 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 11:56:17 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 56 ms. Found 36 JPA repository interfaces.
+2026-09-13 11:56:18 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 11:56:18 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 11:56:18 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 11:56:18 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2026-09-13 11:56:18 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:testdb user=SA
+2026-09-13 11:56:18 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2026-09-13 11:56:18 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 11:56:18 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 11:56:19 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:56:21 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 11:56:22 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5e83bdc0, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@53a05799, org.springframework.security.web.context.SecurityContextHolderFilter@450e4b40, org.springframework.security.web.header.HeaderWriterFilter@4d5023f5, org.springframework.web.filter.CorsFilter@49d5aad5, org.springframework.security.web.authentication.logout.LogoutFilter@2e546f56, com.myfinance.provisioning.ProvisioningTokenFilter@588646b6, com.myfinance.security.JwtAuthFilter@201dd007, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2bfd68e4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@67feb9e5, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5c613fc3, org.springframework.security.web.session.SessionManagementFilter@13ff110, org.springframework.security.web.access.ExceptionTranslationFilter@b6cae33, org.springframework.security.web.access.intercept.AuthorizationFilter@7c8d3591]
+2026-09-13 11:56:22 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-13 11:56:22 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-13 11:56:22 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-13 11:56:22 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-13 11:56:22 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-13 11:56:22 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-13 11:56:22 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 3 ms
+2026-09-13 11:56:22 [main] INFO  c.m.controller.AssetControllerTest - Started AssetControllerTest in 5.424 seconds (process running for 29.883)
+2026-09-13 11:56:23 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-13 11:56:23 [main] INFO  c.m.controller.AssetController - Deleting asset id=1
+2026-09-13 11:56:23 [main] INFO  com.myfinance.service.AssetService - Deleted Asset id=1
+2026-09-13 11:56:23 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/1 → 204 (33ms)
+2026-09-13 11:56:23 [main] INFO  c.m.controller.AssetController - Updating asset id=2
+2026-09-13 11:56:23 [main] INFO  com.myfinance.service.AssetService - Updated Asset id=2 symbol=MOV-T
+2026-09-13 11:56:23 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/2 → 200 (50ms)
+2026-09-13 11:56:23 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets/type/INDEX_FUND → 200 (6ms)
+2026-09-13 11:56:23 [main] INFO  c.m.controller.AssetController - Updating asset id=5
+2026-09-13 11:56:23 [main] INFO  com.myfinance.service.AssetService - Updated Asset id=5 symbol=STB-T
+2026-09-13 11:56:23 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/5 → 200 (14ms)
+2026-09-13 11:56:23 [main] INFO  c.m.controller.AssetController - Updating asset id=6
+2026-09-13 11:56:23 [main] INFO  com.myfinance.service.AssetService - Updated Asset id=6 symbol=OLD-T
+2026-09-13 11:56:23 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/6 → 200 (14ms)
+2026-09-13 11:56:23 [main] INFO  c.m.controller.AssetController - Creating asset: name=Vanguard S&P 500, type=INDEX_FUND
+2026-09-13 11:56:23 [main] INFO  com.myfinance.service.AssetService - Created Asset id=7 symbol=VOO
+2026-09-13 11:56:23 [main] INFO  c.m.controller.AssetController - Created asset id=7
+2026-09-13 11:56:23 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets → 201 (18ms)
+2026-09-13 11:56:23 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets/types → 200 (1ms)
+2026-09-13 11:56:23 [main] INFO  c.m.controller.AssetController - Updating price for asset id=8, price=123.45
+2026-09-13 11:56:23 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PATCH /api/assets/8/price → 200 (11ms)
+2026-09-13 11:56:23 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets/search → 200 (24ms)
+2026-09-13 11:56:23 [main] INFO  c.m.controller.AssetController - Toggling net-worth for asset id=11, include=false
+2026-09-13 11:56:23 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] PATCH /api/assets/11/net-worth → 200 (7ms)
+2026-09-13 11:56:23 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:56:23 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
+2026-09-13 11:56:23 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+2026-09-13 11:56:23 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.controller.MultiTenantIsolationTest]: MultiTenantIsolationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-13 11:56:23 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.controller.MultiTenantIsolationTest
+2026-09-13 11:56:23 [main] INFO  c.m.c.MultiTenantIsolationTest - Starting MultiTenantIsolationTest using Java 17.0.20 with PID 58905 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 11:56:23 [main] DEBUG c.m.c.MultiTenantIsolationTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-13 11:56:23 [main] INFO  c.m.c.MultiTenantIsolationTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-13 11:56:23 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 11:56:23 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 66 ms. Found 36 JPA repository interfaces.
+2026-09-13 11:56:24 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 11:56:24 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 11:56:24 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 11:56:24 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Starting...
+2026-09-13 11:56:24 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Added connection conn20: url=jdbc:h2:mem:testdb user=SA
+2026-09-13 11:56:24 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Start completed.
+2026-09-13 11:56:24 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 11:56:24 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 11:56:24 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:56:26 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 11:56:28 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4a4896b5, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@55de8436, org.springframework.security.web.context.SecurityContextHolderFilter@1e01346d, org.springframework.security.web.header.HeaderWriterFilter@4b501472, org.springframework.web.filter.CorsFilter@336f9d2b, org.springframework.security.web.authentication.logout.LogoutFilter@651f42c8, com.myfinance.provisioning.ProvisioningTokenFilter@64dbb059, com.myfinance.security.JwtAuthFilter@69446998, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@402cbc5d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@b94d3ae, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5d629649, org.springframework.security.web.session.SessionManagementFilter@35b98fc7, org.springframework.security.web.access.ExceptionTranslationFilter@67373888, org.springframework.security.web.access.intercept.AuthorizationFilter@6d506661]
+2026-09-13 11:56:28 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-13 11:56:28 [main] DEBUG c.m.p.ProvisioningTokenFilter - Filter 'provisioningTokenFilter' configured for use
+2026-09-13 11:56:28 [main] DEBUG c.myfinance.security.JwtAuthFilter - Filter 'jwtAuthFilter' configured for use
+2026-09-13 11:56:28 [main] DEBUG c.m.config.RequestLoggingConfig$1 - Filter 'requestLoggingFilter' configured for use
+2026-09-13 11:56:28 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+2026-09-13 11:56:28 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-09-13 11:56:28 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 2 ms
+2026-09-13 11:56:28 [main] INFO  c.m.c.MultiTenantIsolationTest - Started MultiTenantIsolationTest in 5.014 seconds (process running for 35.558)
+2026-09-13 11:56:28 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-13 11:56:28 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (11ms)
+2026-09-13 11:56:28 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (5ms)
+2026-09-13 11:56:29 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/tax/summary → 200 (17ms)
+2026-09-13 11:56:29 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/tax → 200 (16ms)
+2026-09-13 11:56:29 [main] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/tax → 200 (9ms)
+2026-09-13 11:56:29 [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.myfinance.service.TransactionServiceTest]: TransactionServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-09-13 11:56:29 [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.myfinance.MyFinanceApplication for test class com.myfinance.service.TransactionServiceTest
+2026-09-13 11:56:29 [main] INFO  c.m.service.TransactionServiceTest - Starting TransactionServiceTest using Java 17.0.20 with PID 58905 (started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 11:56:29 [main] DEBUG c.m.service.TransactionServiceTest - Running with Spring Boot v3.2.5, Spring v6.1.6
+2026-09-13 11:56:29 [main] INFO  c.m.service.TransactionServiceTest - No active profile set, falling back to 1 default profile: "default"
+2026-09-13 11:56:29 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 11:56:29 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 36 ms. Found 36 JPA repository interfaces.
+2026-09-13 11:56:29 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 11:56:29 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 11:56:29 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 11:56:29 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Starting...
+2026-09-13 11:56:29 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-4 - Added connection conn30: url=jdbc:h2:mem:testdb user=SA
+2026-09-13 11:56:29 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Start completed.
+2026-09-13 11:56:29 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 11:56:30 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 11:56:30 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:56:31 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 11:56:32 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7b4fc407, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@162b7a6, org.springframework.security.web.context.SecurityContextHolderFilter@30e2f9c8, org.springframework.security.web.header.HeaderWriterFilter@67d84435, org.springframework.web.filter.CorsFilter@1dd9b456, org.springframework.security.web.authentication.logout.LogoutFilter@3f48a3f3, com.myfinance.provisioning.ProvisioningTokenFilter@3ee93078, com.myfinance.security.JwtAuthFilter@5198ef58, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5e0b486a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7bd75672, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6d053ae0, org.springframework.security.web.session.SessionManagementFilter@196f5319, org.springframework.security.web.access.ExceptionTranslationFilter@7483408e, org.springframework.security.web.access.intercept.AuthorizationFilter@7aa151bc]
+2026-09-13 11:56:32 [main] INFO  o.s.b.a.h.H2ConsoleAutoConfiguration - H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-09-13 11:56:32 [main] INFO  c.m.service.TransactionServiceTest - Started TransactionServiceTest in 3.701 seconds (process running for 39.82)
+2026-09-13 11:56:32 [main] INFO  c.m.config.AdminUserInitializer - Admin user created (admin / admin123) — change password immediately!
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=1 type=BUY assetId=1 quantity=5
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=1 assetId=1 quantity=5
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=2 type=SELL assetId=1 quantity=5
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=1 assetId=1 quantity=0.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=2 profit=347.6080
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Deleted Holding id=1
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=1 quantity=5
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Updated Transaction id=1 type=BUY assetId=1 quantity=5
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=1 quantity=10.00
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=2 assetId=1 quantity=5.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Updated Transaction id=2 type=SELL assetId=1 quantity=5
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=2 profit=220.4080
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=3 type=BUY assetId=2 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=3 assetId=2 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=4 type=SELL assetId=2 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=3 assetId=2 quantity=0.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=4 profit=300.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=5 type=BUY assetId=3 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=4 assetId=3 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Deleted Holding id=4
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=5 assetId=3 quantity=20
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Updated Transaction id=5 type=BUY assetId=3 quantity=20
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=6 type=BUY assetId=4 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=6 assetId=4 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=7 type=SELL assetId=4 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=6 assetId=4 quantity=0.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=7 profit=256.0000
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=8 type=BUY assetId=5 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=7 assetId=5 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=9 type=SELL assetId=5 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=7 assetId=5 quantity=0.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=9 profit=380.0000
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=10 type=BUY assetId=6 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=8 assetId=6 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Deleted Holding id=8
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=9 assetId=6 quantity=12
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Updated Transaction id=10 type=BUY assetId=6 quantity=12
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=11 type=BUY assetId=7 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=10 assetId=7 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=12 type=BUY assetId=9 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=11 assetId=9 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=13 type=BUY assetId=10 quantity=20
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=12 assetId=10 quantity=20
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=14 type=SELL assetId=10 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=12 assetId=10 quantity=10.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=14 profit=300.00
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=12 assetId=10 quantity=20.00
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=12 assetId=10 quantity=30.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Updated Transaction id=14 type=BUY assetId=10 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=14
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=15 type=BUY assetId=11 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=13 assetId=11 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=16 type=BUY assetId=11 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=13 assetId=11 quantity=20.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=17 type=BUY assetId=12 quantity=5
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=14 assetId=12 quantity=5
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=18 type=SELL assetId=12 quantity=5
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=14 assetId=12 quantity=0.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=18 profit=220.4080
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=19 type=BUY assetId=13 quantity=20
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=15 assetId=13 quantity=20
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=20 type=SELL assetId=13 quantity=5
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=15 assetId=13 quantity=15.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=20 profit=100.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=21 type=BUY assetId=14 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=16 assetId=14 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=22 type=BUY assetId=15 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=17 assetId=15 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=23 type=BUY assetId=15 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=17 assetId=15 quantity=20.00
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=17 assetId=15 quantity=10.00
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=17 assetId=15 quantity=20.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Updated Transaction id=23 type=BUY assetId=15 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=24 type=BUY assetId=16 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=18 assetId=16 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=25 type=BUY assetId=17 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=19 assetId=17 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=26 type=BUY assetId=18 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=20 assetId=18 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=27 type=SELL assetId=18 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=20 assetId=18 quantity=0.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=27 profit=300.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=28 type=BUY assetId=19 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=21 assetId=19 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=29 type=SELL assetId=19 quantity=10
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=21 assetId=19 quantity=0.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=29 profit=365.0000
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=30 type=BUY assetId=20 quantity=5
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=22 assetId=20 quantity=5
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=22 assetId=20 quantity=5.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Created Transaction id=31 type=SELL assetId=20 quantity=5
+2026-09-13 11:56:33 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=22 assetId=20 quantity=0.00
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=31 profit=347.6080
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=31 profit=220.40800000000000
+2026-09-13 11:56:33 [main] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Created Transaction id=32 type=BUY assetId=21 quantity=5
+2026-09-13 11:56:34 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=23 assetId=21 quantity=5
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Created Transaction id=33 type=SELL assetId=21 quantity=5
+2026-09-13 11:56:34 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=23 assetId=21 quantity=0.00
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=33 profit=220.4080
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=33 profit=220.40800000000000
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=33 profit=220.40800000000000
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Created Transaction id=34 type=BUY assetId=22 quantity=10
+2026-09-13 11:56:34 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=24 assetId=22 quantity=10
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Created Transaction id=35 type=SELL assetId=23 quantity=10
+2026-09-13 11:56:34 [main] ERROR c.m.service.TransactionService - Failed to sell: no holding found for assetId=23 accountId=22 ownerId=22
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Created Transaction id=36 type=BUY assetId=24 quantity=5
+2026-09-13 11:56:34 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=25 assetId=24 quantity=5
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Created Transaction id=37 type=SELL assetId=24 quantity=10
+2026-09-13 11:56:34 [main] ERROR c.m.service.TransactionService - Failed to sell: quantity 10 exceeds holding for assetId=24
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Created Transaction id=38 type=BUY assetId=25 quantity=10
+2026-09-13 11:56:34 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=26 assetId=25 quantity=10
+2026-09-13 11:56:34 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=26 assetId=25 quantity=10.00
+2026-09-13 11:56:34 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=26 assetId=25 quantity=10.00
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Recomputed for userId=2: 0 sells, 0 sold positions, 1 holding currencies fixed
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Created Transaction id=39 type=BUY assetId=26 quantity=10
+2026-09-13 11:56:34 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=27 assetId=26 quantity=10
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Created Transaction id=40 type=BUY assetId=27 quantity=20
+2026-09-13 11:56:34 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=28 assetId=27 quantity=20
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Created Transaction id=41 type=SELL assetId=27 quantity=10
+2026-09-13 11:56:34 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=28 assetId=27 quantity=10.00
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=41 profit=300.00
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Removed SoldPosition for transactionId=41
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Deleted Transaction id=41
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Created Transaction id=42 type=BUY assetId=28 quantity=20
+2026-09-13 11:56:34 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=29 assetId=28 quantity=20
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Created Transaction id=43 type=SELL assetId=28 quantity=10
+2026-09-13 11:56:34 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=29 assetId=28 quantity=10.00
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=43 profit=300.00
+2026-09-13 11:56:34 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=29 assetId=28 quantity=20.00
+2026-09-13 11:56:34 [main] INFO  c.myfinance.service.HoldingService - Saved Holding id=29 assetId=28 quantity=10.00
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Updated Transaction id=43 type=SELL assetId=28 quantity=10
+2026-09-13 11:56:34 [main] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=43 profit=500.00
+2026-09-13 11:56:34 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:56:34 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown initiated...
+2026-09-13 11:56:34 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Shutdown completed.
+2026-09-13 11:56:34 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 11:56:34 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown initiated...
+2026-09-13 11:56:34 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown completed.

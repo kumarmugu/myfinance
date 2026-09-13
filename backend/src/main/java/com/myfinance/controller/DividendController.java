@@ -1,7 +1,13 @@
 package com.myfinance.controller;
 
+import com.myfinance.model.AppUser;
+import com.myfinance.model.Account;
 import com.myfinance.model.Dividend;
+import com.myfinance.model.Owner;
+import com.myfinance.repository.AccountRepository;
+import com.myfinance.repository.OwnerRepository;
 import com.myfinance.security.TenantContext;
+import com.myfinance.service.DividendImportService;
 import com.myfinance.service.DividendService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -18,7 +26,13 @@ import java.util.List;
 @Slf4j
 public class DividendController {
     private final DividendService dividendService;
+    private final DividendImportService dividendImportService;
+    private final AccountRepository accountRepository;
+    private final OwnerRepository ownerRepository;
     private final TenantContext tenantContext;
+
+    /** Per-user feature key that unlocks the statement-import endpoint. */
+    private static final String IMPORT_FEATURE = "DIVIDEND_IMPORT";
 
     @GetMapping
     public List<Dividend> getAll(
@@ -52,5 +66,59 @@ public class DividendController {
         log.info("Deleting dividend id={}", id);
         dividendService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Import a broker dividend statement (IBKR CSV or Saxo XLSX) for the current user.
+     * Gated behind the per-user {@code DIVIDEND_IMPORT} feature — callers without it get 403.
+     * The format is auto-detected from the file name/extension unless given explicitly.
+     */
+    @PostMapping("/import")
+    public ResponseEntity<DividendImportService.ImportResult> importStatement(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam Long accountId,
+            @RequestParam Long ownerId,
+            @RequestParam(required = false) String format) {
+
+        AppUser user = tenantContext.getCurrentUser();
+        if (user == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        if (!hasImportFeature(user)) {
+            log.warn("User {} attempted dividend import without the {} feature", user.getUsername(), IMPORT_FEATURE);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Dividend import is not enabled for your account");
+        }
+
+        // Resolve account & owner, enforcing tenant ownership.
+        Account account = accountRepository.findById(accountId)
+                .filter(a -> user.getId().equals(a.getUserId()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid account"));
+        Owner owner = ownerRepository.findById(ownerId)
+                .filter(o -> user.getId().equals(o.getUserId()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid owner"));
+
+        DividendImportService.Format fmt = detectFormat(format, file.getOriginalFilename());
+        try {
+            var result = dividendImportService.importFile(file.getBytes(), fmt, user.getId(), account, owner);
+            log.info("Imported {} dividends ({} assets created) for user {}", result.imported(), result.assetsCreated(), user.getUsername());
+            return ResponseEntity.ok(result);
+        } catch (java.io.IOException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not read the uploaded file");
+        }
+    }
+
+    private boolean hasImportFeature(AppUser user) {
+        String csv = user.getEnabledFeatures();
+        if (csv == null || csv.isBlank()) return true; // empty = all features enabled (project convention)
+        for (String f : csv.split(",")) if (IMPORT_FEATURE.equals(f.trim())) return true;
+        return false;
+    }
+
+    private DividendImportService.Format detectFormat(String explicit, String filename) {
+        if (explicit != null) {
+            try { return DividendImportService.Format.valueOf(explicit.trim().toUpperCase()); }
+            catch (IllegalArgumentException ignored) { /* fall through to auto-detect */ }
+        }
+        String name = filename == null ? "" : filename.toLowerCase();
+        if (name.endsWith(".xlsx") || name.contains("saxo")) return DividendImportService.Format.SAXO_XLSX;
+        return DividendImportService.Format.IBKR_CSV;
     }
 }

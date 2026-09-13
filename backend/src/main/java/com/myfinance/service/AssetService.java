@@ -2,6 +2,7 @@ package com.myfinance.service;
 
 import com.myfinance.config.ReferenceConstraintException;
 import com.myfinance.model.Asset;
+import com.myfinance.model.Holding;
 import com.myfinance.model.enums.AssetType;
 import com.myfinance.repository.AssetRepository;
 import com.myfinance.repository.DividendRepository;
@@ -45,10 +46,26 @@ public class AssetService {
         // Only refresh priceUpdatedAt when the price value genuinely changes, so an unrelated
         // edit (e.g. renaming the asset) doesn't make a stale price look freshly updated.
         applyPriceChange(existing, updated.getCurrentPrice());
+        boolean currencyChanged = existing.getCurrency() != updated.getCurrency();
         existing.setCurrency(updated.getCurrency());
         existing.setExchange(updated.getExchange());
         existing.setDescription(updated.getDescription());
         Asset saved = assetRepository.save(existing);
+        // The asset's currency is the instrument's source of truth. When it changes, cascade it to
+        // every holding of this asset so the Portfolio never shows a holding in a stale currency
+        // (the holding stores its own copy, historically seeded from the broker account's default).
+        if (currencyChanged && saved.getCurrency() != null) {
+            List<Holding> holdings = holdingRepository.findByAssetId(id);
+            for (Holding h : holdings) {
+                if (h.getCurrency() != saved.getCurrency()) {
+                    h.setCurrency(saved.getCurrency());
+                    holdingRepository.save(h);
+                }
+            }
+            if (!holdings.isEmpty()) {
+                log.info("Cascaded currency {} from Asset id={} to {} holding(s)", saved.getCurrency(), id, holdings.size());
+            }
+        }
         log.info("Updated Asset id={} symbol={}", id, saved.getSymbol());
         return saved;
     }

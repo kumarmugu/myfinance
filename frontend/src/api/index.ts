@@ -104,6 +104,16 @@ export const getDividends = (params?: { ownerId?: number; accountId?: number; ye
 export const getDividendSummary = () => api.get<Array<[number, number]>>('/dividends/summary');
 export const createDividend = (div: Partial<Dividend>) => api.post<Dividend>('/dividends', div);
 export const deleteDividend = (id: number) => api.delete(`/dividends/${id}`);
+// Import a broker dividend statement (IBKR CSV / Saxo XLSX). Gated by the DIVIDEND_IMPORT feature.
+export const importDividends = (file: File, accountId: number, ownerId: number) => {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('accountId', String(accountId));
+  fd.append('ownerId', String(ownerId));
+  return api.post<{ imported: number; assetsCreated: number }>('/dividends/import', fd, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};
 
 // ─── Fixed Deposits ───
 export const getFixedDeposits = (params?: { holderId?: number; bankId?: number; status?: string }) => api.get<FixedDeposit[]>('/fixed-deposits', { params });

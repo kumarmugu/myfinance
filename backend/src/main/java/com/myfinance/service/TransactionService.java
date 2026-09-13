@@ -272,6 +272,10 @@ public class TransactionService {
                 h.setInvestedAmount(newInvested);
                 h.setAverageBuyFxRate(newAvgFx);
                 if (purpose != null) h.setPurpose(purpose);
+                // Keep the holding's currency in sync with the asset (the instrument's own currency
+                // is the source of truth). This self-heals any legacy holding that was persisted with
+                // a stale currency (e.g. the account's default) before the asset currency was set.
+                if (asset.getCurrency() != null) h.setCurrency(asset.getCurrency());
                 holdingService.save(h);
             } else {
                 holdingService.save(Holding.builder()
