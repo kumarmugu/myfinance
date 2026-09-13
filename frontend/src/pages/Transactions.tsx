@@ -81,7 +81,11 @@ export default function Transactions() {
       // would make the backend fall back to the account currency and mislabel a USD trade.
       const asset = assets.find(a => a.id === form.assetId);
       const acct = accounts.find(a => a.id === form.accountId);
-      const payload = { ...form, currency: form.currency || asset?.currency || acct?.currency };
+      const tradeCcy = form.currency || asset?.currency || acct?.currency;
+      // A same-currency trade needs no FX conversion — force the rate to undefined so a stale value
+      // from a prior cross-currency edit can't inflate the cost basis (which shows as a phantom loss).
+      const sameCcy = !!tradeCcy && !!acct?.currency && tradeCcy.toUpperCase() === acct.currency.toUpperCase();
+      const payload = { ...form, currency: tradeCcy, fxRateToBase: sameCcy ? undefined : form.fxRateToBase };
       if (editingId != null) {
         await updateTransaction(editingId, payload);
         showToast('Transaction updated', 'success');
