@@ -18,6 +18,7 @@ public class HoldingService {
 
     public List<Holding> getActiveHoldings() { return holdingRepository.findActiveHoldings(); }
     public List<Holding> getActiveByUserId(Long userId) { return holdingRepository.findActiveHoldingsByUserId(userId); }
+    public List<Holding> getAllByUserId(Long userId) { return holdingRepository.findByUserId(userId); }
     public List<Holding> getActiveByOwner(Long ownerId) { return holdingRepository.findActiveHoldingsByOwner(ownerId); }
     public List<Holding> getByAccount(Long accountId) { return holdingRepository.findByAccountId(accountId); }
     public List<Holding> getByAccountForUser(Long userId, Long accountId) { return holdingRepository.findActiveByUserIdAndAccountId(userId, accountId); }

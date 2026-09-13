@@ -459,6 +459,26 @@ class TransactionServiceTest {
 
     @Test
     @WithMockUser(username = "user")
+    void recomputeFixesHoldingCurrencyToMatchAsset() {
+        // A USD asset bought via the (USD test) account, but the holding got the wrong currency
+        // stamped (legacy: broker/account currency). Recompute must relabel it to the asset's USD.
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy");
+        Holding h = holdingService.getHolding(asset.getId(), account.getId(), owner.getId()).orElseThrow();
+        h.setCurrency(Currency.SGD); // simulate the legacy mislabel
+        holdingService.save(h);
+
+        TransactionService.RecomputeResult result = transactionService.recomputeRealizedPnlForUser(testUser.getId());
+
+        assertEquals(1, result.holdingsCurrencyFixed());
+        Holding fixed = holdingService.getHolding(asset.getId(), account.getId(), owner.getId()).orElseThrow();
+        assertEquals(Currency.USD, fixed.getCurrency(), "Holding currency must match the asset's currency");
+    }
+
+    @Test
+    @WithMockUser(username = "user")
     void recomputeIsIdempotent() {
         transactionService.create(
                 asset.getId(), account.getId(), owner.getId(),

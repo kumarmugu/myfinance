@@ -13,6 +13,7 @@ import java.util.Optional;
 @Repository
 public interface HoldingRepository extends JpaRepository<Holding, Long> {
     Optional<Holding> findByAssetIdAndAccountIdAndOwnerId(Long assetId, Long accountId, Long ownerId);
+    List<Holding> findByUserId(Long userId);
     List<Holding> findByAccountId(Long accountId);
     List<Holding> findByOwnerId(Long ownerId);
     List<Holding> findByAssetId(Long assetId);

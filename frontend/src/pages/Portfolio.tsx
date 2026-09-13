@@ -1,14 +1,28 @@
 import { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
-import { getActiveHoldings, getSoldPositions, getShortTermTrades, getOwners } from '../api';
+import { getActiveHoldings, getSoldPositions, getShortTermTrades, getOwners, getCurrencyRates } from '../api';
 import { formatCurrency, formatPercent } from '../utils/formatters';
 import ExportMenu from '../components/ExportMenu';
 import SearchableSelect from '../components/SearchableSelect';
 import { holdingsExportConfig, soldPositionsExportConfig } from '../utils/export/configs';
-import type { Holding, SoldPosition, Currency, Owner } from '../types';
+import type { Holding, SoldPosition, Currency, Owner, CurrencyRate } from '../types';
 import { ASSET_TYPE_LABELS, ASSET_TYPE_COLORS } from '../types';
 
 type Tab = 'holdings' | 'sold' | 'shortTerm';
+
+/** Latest rate to convert `from` → `to` from the user's stored FX rates (direct, then inverse). */
+function resolveRate(rates: CurrencyRate[], from: string, to: string): number | null {
+  if (!from || !to) return null;
+  if (from.toUpperCase() === to.toUpperCase()) return 1;
+  const f = from.toUpperCase(), t = to.toUpperCase();
+  const direct = rates.filter(r => r.fromCurrency.toUpperCase() === f && r.toCurrency.toUpperCase() === t)
+    .sort((a, b) => b.effectiveDate.localeCompare(a.effectiveDate))[0];
+  if (direct) return direct.rate;
+  const inverse = rates.filter(r => r.fromCurrency.toUpperCase() === t && r.toCurrency.toUpperCase() === f)
+    .sort((a, b) => b.effectiveDate.localeCompare(a.effectiveDate))[0];
+  if (inverse && inverse.rate) return 1 / inverse.rate;
+  return null;
+}
 
 export default function Portfolio() {
   const [tab, setTab] = useState<Tab>('holdings');
@@ -18,6 +32,7 @@ export default function Portfolio() {
   const [loading, setLoading] = useState(true);
   const [displayCurrency, setDisplayCurrency] = useState<Currency>('SGD');
   const [owners, setOwners] = useState<Owner[]>([]);
+  const [fxRates, setFxRates] = useState<CurrencyRate[]>([]);
   const [filterOwner, setFilterOwner] = useState<number | undefined>();
   // Holdings-table column filters (client-side). Owner is handled globally, server-side.
   const [filterAssetId, setFilterAssetId] = useState<string>('');
@@ -38,9 +53,10 @@ export default function Portfolio() {
     try {
       // Holdings & sold positions filter server-side by owner; short-term trades have no owner
       // param on the API, so they're filtered client-side below.
-      const [hRes, sRes, stRes] = await Promise.all([getActiveHoldings(filterOwner), getSoldPositions(filterOwner), getShortTermTrades()]);
+      const [hRes, sRes, stRes, fxRes] = await Promise.all([getActiveHoldings(filterOwner), getSoldPositions(filterOwner), getShortTermTrades(), getCurrencyRates()]);
       setHoldings(hRes.data);
       setSold(sRes.data);
+      setFxRates(fxRes.data);
       setShortTerm(filterOwner ? stRes.data.filter(sp => sp.owner?.id === filterOwner) : stRes.data);
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
@@ -69,11 +85,27 @@ export default function Portfolio() {
     const currentValue = h.quantity * currentPrice;
     const gainLoss = currentValue - h.investedAmount;
     const pct = h.investedAmount > 0 ? (gainLoss / h.investedAmount) * 100 : 0;
-    return { ...h, currentValue, gainLoss, pct, currentPrice };
+    // Convert money fields to the display currency (SGD/USD toggle) when a rate is available.
+    // If no rate exists, fall back to showing the holding's own currency, unconverted.
+    const rate = resolveRate(fxRates, h.currency, displayCurrency);
+    const dispCurrency = rate != null ? displayCurrency : h.currency;
+    const r = rate ?? 1;
+    return {
+      ...h,
+      currentPrice,
+      dispCurrency,
+      dispAvgPrice: h.averageBuyPrice * r,
+      dispCurrentPrice: currentPrice * r,
+      dispInvested: h.investedAmount * r,
+      currentValue: currentValue * r,
+      gainLoss: gainLoss * r,
+      pct,
+    };
   });
 
+  // Totals in the display currency (currentValue & dispInvested are already converted per row).
   const totalValue = holdingsWithValue.reduce((s, h) => s + h.currentValue, 0);
-  const totalInvested = holdingsWithValue.reduce((s, h) => s + h.investedAmount, 0);
+  const totalInvested = holdingsWithValue.reduce((s, h) => s + h.dispInvested, 0);
 
   // Sort a copy of the computed holdings by the active column/direction.
   const sortedHoldings = [...holdingsWithValue].sort((a, b) => {
@@ -85,9 +117,9 @@ export default function Portfolio() {
       case 'account': av = a.account?.name ?? ''; bv = b.account?.name ?? ''; break;
       case 'owner': av = a.owner?.name ?? ''; bv = b.owner?.name ?? ''; break;
       case 'quantity': av = a.quantity; bv = b.quantity; break;
-      case 'averageBuyPrice': av = a.averageBuyPrice; bv = b.averageBuyPrice; break;
-      case 'currentPrice': av = a.currentPrice; bv = b.currentPrice; break;
-      case 'investedAmount': av = a.investedAmount; bv = b.investedAmount; break;
+      case 'averageBuyPrice': av = a.dispAvgPrice; bv = b.dispAvgPrice; break;
+      case 'currentPrice': av = a.dispCurrentPrice; bv = b.dispCurrentPrice; break;
+      case 'investedAmount': av = a.dispInvested; bv = b.dispInvested; break;
       case 'gainLoss': av = a.gainLoss; bv = b.gainLoss; break;
       case 'currentValue':
       default: av = a.currentValue; bv = b.currentValue; break;
@@ -153,7 +185,7 @@ export default function Portfolio() {
               <ResponsiveContainer width="100%" height={260}>
                 <PieChart><Pie data={pieData} cx="50%" cy="50%" innerRadius={50} outerRadius={90} dataKey="value" label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`} labelLine={false}>
                   {pieData.map((e, i) => <Cell key={i} fill={e.color} />)}
-                </Pie><Tooltip formatter={(v) => formatCurrency(v as number)} /></PieChart>
+                </Pie><Tooltip formatter={(v) => formatCurrency(v as number, displayCurrency)} /></PieChart>
               </ResponsiveContainer>
             </div>
             <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
@@ -161,7 +193,7 @@ export default function Portfolio() {
               <ResponsiveContainer width="100%" height={260}>
                 <PieChart><Pie data={accountPieData} cx="50%" cy="50%" innerRadius={50} outerRadius={90} dataKey="value" label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`} labelLine={false}>
                   {accountPieData.map((e, i) => <Cell key={i} fill={e.color} />)}
-                </Pie><Tooltip formatter={(v) => formatCurrency(v as number)} /></PieChart>
+                </Pie><Tooltip formatter={(v) => formatCurrency(v as number, displayCurrency)} /></PieChart>
               </ResponsiveContainer>
             </div>
             <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
@@ -171,7 +203,7 @@ export default function Portfolio() {
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                   <XAxis type="number" tickFormatter={v => `$${(v/1000).toFixed(0)}K`} stroke="#94a3b8" fontSize={12} />
                   <YAxis type="category" dataKey="name" stroke="#94a3b8" fontSize={11} width={60} />
-                  <Tooltip formatter={(v) => formatCurrency(v as number, 'USD')} />
+                  <Tooltip formatter={(v) => formatCurrency(v as number, displayCurrency)} />
                   <Bar dataKey="value" fill="#6366f1" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -183,7 +215,7 @@ export default function Portfolio() {
             <div className="p-4 border-b border-slate-200 flex justify-between items-center">
               <div>
                 <h3 className="font-semibold text-slate-800">All Holdings ({filteredHoldings.length})</h3>
-                <p className="text-sm text-slate-500">Total: {formatCurrency(totalValue)} | Invested: {formatCurrency(totalInvested)} | P&L: {formatCurrency(totalValue - totalInvested)}</p>
+                <p className="text-sm text-slate-500">Total: {formatCurrency(totalValue, displayCurrency)} | Invested: {formatCurrency(totalInvested, displayCurrency)} | P&L: {formatCurrency(totalValue - totalInvested, displayCurrency)}</p>
               </div>
               <ExportMenu rows={filteredHoldings} config={holdingsExportConfig} />
             </div>
@@ -249,12 +281,12 @@ export default function Portfolio() {
                       <td className="px-4 py-3 text-slate-500 text-xs">{h.owner?.name ?? '-'}</td>
                       <td className="px-4 py-3"><span className={`text-[10px] px-1.5 py-0.5 rounded ${h.purpose === 'TRADING' || h.purpose === 'SHORT_TERM' ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-600'}`}>{h.purpose ? h.purpose.replace(/_/g, ' ') : 'LONG TERM'}</span></td>
                       <td className="px-4 py-3 text-right text-slate-700">{h.quantity.toFixed(h.quantity < 1 ? 4 : 2)}</td>
-                      <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(h.averageBuyPrice, h.currency)}</td>
-                      <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(h.currentPrice, h.currency)}</td>
-                      <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(h.investedAmount, h.currency)}</td>
-                      <td className="px-4 py-3 text-right font-medium text-slate-800">{formatCurrency(h.currentValue, h.currency)}</td>
+                      <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(h.dispAvgPrice, h.dispCurrency)}</td>
+                      <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(h.dispCurrentPrice, h.dispCurrency)}</td>
+                      <td className="px-4 py-3 text-right text-slate-700">{formatCurrency(h.dispInvested, h.dispCurrency)}</td>
+                      <td className="px-4 py-3 text-right font-medium text-slate-800">{formatCurrency(h.currentValue, h.dispCurrency)}</td>
                       <td className="px-4 py-3 text-right">
-                        <span className={`font-medium ${h.gainLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(h.gainLoss, h.currency)}</span>
+                        <span className={`font-medium ${h.gainLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(h.gainLoss, h.dispCurrency)}</span>
                         <p className={`text-xs ${h.pct >= 0 ? 'text-green-500' : 'text-red-500'}`}>{formatPercent(h.pct)}</p>
                       </td>
                     </tr>

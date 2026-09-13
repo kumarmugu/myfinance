@@ -389,7 +389,7 @@ public class TransactionService {
     }
 
     /** Result of a recompute run, so the caller/UI can report what was fixed. */
-    public record RecomputeResult(int sellsRecomputed, int soldPositionsSynced) {}
+    public record RecomputeResult(int sellsRecomputed, int soldPositionsSynced, int holdingsCurrencyFixed) {}
 
     /**
      * One-time maintenance: recompute the realized P/L (and re-sync the sold positions) for every
@@ -453,8 +453,22 @@ public class TransactionService {
             sellsRecomputed++;
             soldSynced++;
         }
-        log.info("Recomputed realized P/L for userId={}: {} sells, {} sold positions", userId, sellsRecomputed, soldSynced);
-        return new RecomputeResult(sellsRecomputed, soldSynced);
+        // Repair mislabeled holding currency: a Holding must carry the ASSET's (instrument) currency,
+        // not the broker account's. Older code stamped the account currency (e.g. a USD stock held in
+        // an SGD Saxo account showed SGD). Label-only fix — amounts are untouched.
+        int currencyFixed = 0;
+        for (Holding h : holdingService.getAllByUserId(userId)) {
+            var assetCcy = h.getAsset() != null ? h.getAsset().getCurrency() : null;
+            if (assetCcy != null && h.getCurrency() != assetCcy) {
+                h.setCurrency(assetCcy);
+                holdingService.save(h);
+                currencyFixed++;
+            }
+        }
+
+        log.info("Recomputed for userId={}: {} sells, {} sold positions, {} holding currencies fixed",
+                userId, sellsRecomputed, soldSynced, currencyFixed);
+        return new RecomputeResult(sellsRecomputed, soldSynced, currencyFixed);
     }
 
     private String positionKey(Transaction t) {
