@@ -186,7 +186,9 @@ export default function Dividends() {
               <SearchableSelect options={[{ value: 0, label: 'Select broker...' }, ...accounts.map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))]} value={importAccountId} onChange={v => setImportAccountId(Number(v))} placeholder="Select broker..." /></div>
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">File (.csv / .xlsx)</label>
-              <input ref={fileInputRef} type="file" accept=".csv,.xlsx" className="hidden"
+              {/* Kept in the DOM (not display:none) so Chrome reliably opens the picker on .click(). */}
+              <input ref={fileInputRef} type="file" accept=".csv,.xlsx"
+                style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0 0 0 0)', border: 0 }}
                 onChange={e => { const f = e.target.files?.[0]; if (f) handleImport(f); }} />
               <button type="button" disabled={importing}
                 onClick={() => fileInputRef.current?.click()}
