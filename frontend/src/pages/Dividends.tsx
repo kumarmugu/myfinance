@@ -37,6 +37,8 @@ export default function Dividends() {
 
   useEffect(() => { getOwners().then(r => setOwners(r.data)).catch(console.error); }, []);
   useEffect(() => { loadData(); }, [filterOwner]);
+  // Reset the records table to the first page whenever the filters change.
+  useEffect(() => { setVisibleCount(PAGE_SIZE); }, [filterBroker, filterYear, filterOwner]);
 
   const loadData = async () => {
     try {
@@ -92,8 +94,8 @@ export default function Dividends() {
 
   const totalDividends = filtered.reduce((s, d) => s + d.amount, 0);
 
-  // Reset pagination when the filtered set changes; render only the first `visibleCount` rows.
-  useEffect(() => { setVisibleCount(PAGE_SIZE); }, [filterBroker, filterYear, filterOwner, dividends.length]);
+  // Render only the first `visibleCount` rows (pagination reset is handled by an effect near the
+  // other hooks, above the loading early-return — hooks must not sit after a conditional return).
   const visible = filtered.slice(0, visibleCount);
 
   // By broker
