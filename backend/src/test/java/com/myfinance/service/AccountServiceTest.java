@@ -13,6 +13,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -201,5 +202,67 @@ class AccountServiceTest {
 
         List<Account> all = accountService.getAllAccounts();
         assertEquals(2, all.size());
+    }
+
+    @Test
+    void reassignMovesOwnersPositionsAndLeavesOtherOwnersUntouched() {
+        Owner other = ownerRepository.save(Owner.builder().name("Other").relationship(OwnerRelationship.SPOUSE)
+                .userId(testUser.getId()).build());
+        Account from = accountRepository.save(Account.builder().name("Shared").accountType(AccountType.BROKER)
+                .currency(Currency.USD).owner(owner).userId(testUser.getId()).build());
+        Account to = accountRepository.save(Account.builder().name("Target").accountType(AccountType.BROKER)
+                .currency(Currency.SGD).owner(other).userId(testUser.getId()).build());
+        Asset asset = assetRepository.save(Asset.builder().name("A").symbol("AAA")
+                .assetType(AssetType.GROWTH_EQUITY).currency(Currency.USD).userId(testUser.getId()).build());
+
+        // 'other' owner's holding + transaction sit on the shared account and should move.
+        holdingRepository.save(Holding.builder().asset(asset).account(from).owner(other)
+                .quantity(BigDecimal.TEN).averageBuyPrice(new BigDecimal("100")).investedAmount(new BigDecimal("1000"))
+                .currency(Currency.USD).userId(testUser.getId()).build());
+        transactionRepository.save(Transaction.builder().asset(asset).account(from).owner(other)
+                .transactionType(TransactionType.BUY).quantity(BigDecimal.TEN).pricePerUnit(new BigDecimal("100"))
+                .totalAmount(new BigDecimal("1000")).fees(BigDecimal.ZERO).currency(Currency.USD)
+                .transactionDate(LocalDate.of(2024, 1, 1)).userId(testUser.getId()).build());
+        // The account owner's own holding must NOT move.
+        holdingRepository.save(Holding.builder().asset(asset).account(from).owner(owner)
+                .quantity(BigDecimal.ONE).averageBuyPrice(new BigDecimal("50")).investedAmount(new BigDecimal("50"))
+                .currency(Currency.USD).userId(testUser.getId()).build());
+
+        AccountService.ReassignResult r = accountService.reassignOwnerPositions(
+                testUser.getId(), from.getId(), to.getId(), other.getId());
+
+        assertEquals(1, r.transactionsMoved());
+        assertEquals(1, r.holdingsMoved());
+        assertEquals(0, r.holdingsMerged());
+        assertEquals(1, holdingRepository.findByAccountId(to.getId()).size(), "other's holding moved to target");
+        assertEquals(1, holdingRepository.findByAccountId(from.getId()).size(), "account owner's holding stayed");
+    }
+
+    @Test
+    void reassignMergesIntoExistingTargetHolding() {
+        Account from = accountRepository.save(Account.builder().name("From").accountType(AccountType.BROKER)
+                .currency(Currency.USD).owner(owner).userId(testUser.getId()).build());
+        Account to = accountRepository.save(Account.builder().name("To").accountType(AccountType.BROKER)
+                .currency(Currency.USD).owner(owner).userId(testUser.getId()).build());
+        Asset asset = assetRepository.save(Asset.builder().name("A").symbol("AAA")
+                .assetType(AssetType.GROWTH_EQUITY).currency(Currency.USD).userId(testUser.getId()).build());
+
+        // Same asset+owner already held in the target: 10 @ 100 there, 10 @ 200 on the source.
+        holdingRepository.save(Holding.builder().asset(asset).account(to).owner(owner)
+                .quantity(BigDecimal.TEN).averageBuyPrice(new BigDecimal("100")).investedAmount(new BigDecimal("1000"))
+                .currency(Currency.USD).userId(testUser.getId()).build());
+        holdingRepository.save(Holding.builder().asset(asset).account(from).owner(owner)
+                .quantity(BigDecimal.TEN).averageBuyPrice(new BigDecimal("200")).investedAmount(new BigDecimal("2000"))
+                .currency(Currency.USD).userId(testUser.getId()).build());
+
+        AccountService.ReassignResult r = accountService.reassignOwnerPositions(
+                testUser.getId(), from.getId(), to.getId(), owner.getId());
+
+        assertEquals(1, r.holdingsMerged());
+        assertEquals(0, holdingRepository.findByAccountId(from.getId()).size(), "source holding removed");
+        Holding merged = holdingRepository.findByAssetIdAndAccountIdAndOwnerId(asset.getId(), to.getId(), owner.getId()).orElseThrow();
+        assertEquals(0, new BigDecimal("20").compareTo(merged.getQuantity()), "quantities add");
+        assertEquals(0, new BigDecimal("3000").compareTo(merged.getInvestedAmount()), "invested adds");
+        assertEquals(0, new BigDecimal("150").compareTo(merged.getAverageBuyPrice().setScale(0, RoundingMode.HALF_UP)), "weighted avg price");
     }
 }

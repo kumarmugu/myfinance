@@ -20,7 +20,11 @@ import java.util.List;
 public class AccountController {
     private final AccountService accountService;
     private final com.myfinance.repository.AccountRepository accountRepository;
+    private final com.myfinance.service.TransactionService transactionService;
     private final TenantContext tenantContext;
+
+    /** Request to move one owner's positions from one account to another. */
+    public record ReassignRequest(Long fromAccountId, Long toAccountId, Long ownerId) {}
 
     @GetMapping
     public List<Account> getAll() { return accountRepository.findByUserId(tenantContext.getCurrentUserId()); }
@@ -54,5 +58,20 @@ public class AccountController {
         log.info("Deleting account id={}", id);
         accountService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Maintenance: move one owner's positions from one account to another (both must belong to the
+     * caller). Repoints transactions/holdings/sold positions/dividends, then recomputes realized P/L
+     * so sold positions and buy-FX stay consistent.
+     */
+    @PostMapping("/reassign")
+    public AccountService.ReassignResult reassign(@RequestBody ReassignRequest req) {
+        Long uid = tenantContext.getCurrentUserId();
+        log.info("Reassign request: from={} to={} owner={} userId={}", req.fromAccountId(), req.toAccountId(), req.ownerId(), uid);
+        AccountService.ReassignResult result =
+                accountService.reassignOwnerPositions(uid, req.fromAccountId(), req.toAccountId(), req.ownerId());
+        transactionService.recomputeRealizedPnlForUser(uid);
+        return result;
     }
 }
