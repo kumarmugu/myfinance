@@ -186,9 +186,13 @@ export default function Dividends() {
               <SearchableSelect options={[{ value: 0, label: 'Select broker...' }, ...accounts.map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))]} value={importAccountId} onChange={v => setImportAccountId(Number(v))} placeholder="Select broker..." /></div>
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">File (.csv / .xlsx)</label>
-              <input ref={fileInputRef} type="file" accept=".csv,.xlsx" disabled={importing}
-                onChange={e => { const f = e.target.files?.[0]; if (f) handleImport(f); }}
-                className="w-full text-sm file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+              <input ref={fileInputRef} type="file" accept=".csv,.xlsx" className="hidden"
+                onChange={e => { const f = e.target.files?.[0]; if (f) handleImport(f); }} />
+              <button type="button" disabled={importing}
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full px-3 py-2 text-sm font-medium text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 disabled:opacity-50">
+                {importing ? 'Importing…' : 'Choose file…'}
+              </button>
             </div>
           </div>
           {importing && <p className="text-xs text-indigo-600 mt-3">Importing…</p>}
