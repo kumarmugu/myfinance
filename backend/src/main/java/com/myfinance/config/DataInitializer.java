@@ -27,7 +27,7 @@ public class DataInitializer implements CommandLineRunner {
     private final CurrencyRateRepository currencyRateRepository;
     private final AllocationTargetRepository allocationTargetRepository;
     private final FixedDepositRepository fixedDepositRepository;
-    private final DividendRepository dividendRepository;
+    private 9final DividendRepository dividendRepository;
     private final SoldPositionRepository soldPositionRepository;
     private final AccountDepositRepository accountDepositRepository;
     private final NetWorthSnapshotRepository netWorthSnapshotRepository;

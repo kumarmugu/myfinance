@@ -2125,3 +2125,54 @@
 2026-09-13 22:35:56 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
 2026-09-13 22:35:56 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (6ms)
 2026-09-13 22:35:56 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (10ms)
+2026-09-13 22:36:58 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 22:36:58 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-13 22:36:58 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-09-13 22:37:05 [main] INFO  com.myfinance.MyFinanceApplication - Starting MyFinanceApplication using Java 17.0.20 with PID 27338 (/Users/mugu/Documents/Projects/myfinance/backend/target/classes started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-13 22:37:05 [main] INFO  com.myfinance.MyFinanceApplication - The following 1 profile is active: "prod"
+2026-09-13 22:37:06 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-13 22:37:06 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 153 ms. Found 36 JPA repository interfaces.
+2026-09-13 22:37:07 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-09-13 22:37:07 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-13 22:37:07 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-09-13 22:37:07 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-13 22:37:07 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2150 ms
+2026-09-13 22:37:08 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-13 22:37:08 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-13 22:37:08 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-13 22:37:08 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-13 22:37:08 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-13 22:37:08 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data-prod/myfinance user=SA
+2026-09-13 22:37:08 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-13 22:37:08 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-13 22:37:10 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-13 22:37:10 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-13 22:37:11 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-13 22:37:15 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-13 22:37:17 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6700ec4e, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@138dec8a, org.springframework.security.web.context.SecurityContextHolderFilter@13b9da00, org.springframework.security.web.header.HeaderWriterFilter@5a8314e6, org.springframework.web.filter.CorsFilter@6387fb09, org.springframework.security.web.authentication.logout.LogoutFilter@fb7cc8f, com.myfinance.provisioning.ProvisioningTokenFilter@3cc9632d, com.myfinance.security.JwtAuthFilter@77095c8c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@79b49b1d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4d425872, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3b626720, org.springframework.security.web.session.SessionManagementFilter@d3346f7, org.springframework.security.web.access.ExceptionTranslationFilter@79a4865e, org.springframework.security.web.access.intercept.AuthorizationFilter@60c2071d]
+2026-09-13 22:37:17 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2026-09-13 22:37:17 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 12.816 seconds (process running for 13.28)
+2026-09-13 22:37:18 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-13 22:37:18 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-13 22:37:18 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (8ms)
+2026-09-13 22:42:49 [http-nio-8080-exec-2] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-09-13 22:42:50 [http-nio-8080-exec-2] INFO  c.m.controller.AuthController - Login successful for user=mugu
+2026-09-13 22:42:50 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (484ms)
+2026-09-13 22:42:58 [http-nio-8080-exec-4] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-09-13 22:42:58 [http-nio-8080-exec-4] INFO  c.m.controller.AuthController - Login successful for user=mugu
+2026-09-13 22:42:58 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (106ms)
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.m.controller.AccountController - Reassign request: from=1 to=10 owner=2 userId=2
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.AccountService - Reassigned owner 2 positions from account 1 to 10 for userId=2: 12 txns, 4 holdings (0 merged), 0 sold, 0 dividends
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=68 profit=220.40800000000000
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=1 assetId=1 quantity=60.00
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=3 assetId=3 quantity=37.00
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=5 assetId=5 quantity=49.00
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=7 assetId=7 quantity=65.00
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=8 assetId=8 quantity=21.00
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=9 assetId=9 quantity=7.00
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=10 assetId=10 quantity=8.00
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=67 assetId=11 quantity=20.00
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=68 assetId=12 quantity=3.00
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=69 assetId=65 quantity=0.00
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed, 10 buy-FX backfilled
+2026-09-13 22:42:58 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/accounts/reassign → 200 (213ms)
