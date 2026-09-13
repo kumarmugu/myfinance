@@ -48,9 +48,10 @@ public class DividendImportService {
 
     private final AssetService assetService;
     private final DividendService dividendService;
+    private final com.myfinance.repository.DividendRepository dividendRepository;
 
     /** Outcome of an import run, surfaced to the UI. */
-    public record ImportResult(int imported, int assetsCreated) {}
+    public record ImportResult(int imported, int skipped, int assetsCreated) {}
 
     /** A single parsed dividend, before it is linked to an asset and persisted. */
     public record ParsedDividend(LocalDate payDate, String symbol, String currency,
@@ -65,9 +66,27 @@ public class DividendImportService {
             case SAXO_XLSX -> parseSaxo(content);
         };
 
+        // De-duplicate against what's already stored, so re-importing the same file is idempotent.
+        // Key = date | instrument | accountId | ownerId | amount. We use a COUNT multiset so genuine
+        // same-day duplicates in a statement (e.g. two identical return-of-capital rows) still import
+        // the correct number of times rather than being over-skipped.
+        Map<String, Integer> existing = new HashMap<>();
+        for (Dividend d : dividendRepository.findByUserIdOrderByReceivedDateDesc(userId)) {
+            existing.merge(dedupeKey(d.getReceivedDate() == null ? null : d.getReceivedDate().toString(),
+                    d.getInstrument(), account.getId(), owner.getId(), d.getAmount()), 1, Integer::sum);
+        }
+
         int[] assetsCreated = {0};
-        int imported = 0;
+        int imported = 0, skipped = 0;
         for (ParsedDividend d : parsed) {
+            String key = dedupeKey(d.payDate() == null ? null : d.payDate().toString(),
+                    d.symbol(), account.getId(), owner.getId(), d.net());
+            Integer already = existing.get(key);
+            if (already != null && already > 0) {
+                existing.put(key, already - 1); // consume one existing match → skip this row
+                skipped++;
+                continue;
+            }
             Asset asset = (d.symbol() != null && !d.symbol().isBlank())
                     ? findOrCreateAsset(d.symbol(), d.currency(), userId, assetsCreated)
                     : null;
@@ -90,9 +109,16 @@ public class DividendImportService {
             dividendService.create(div);
             imported++;
         }
-        log.info("Dividend import ({}) for userId={}: imported={} assetsCreated={}",
-                format, userId, imported, assetsCreated[0]);
-        return new ImportResult(imported, assetsCreated[0]);
+        log.info("Dividend import ({}) for userId={}: imported={} skipped={} assetsCreated={}",
+                format, userId, imported, skipped, assetsCreated[0]);
+        return new ImportResult(imported, skipped, assetsCreated[0]);
+    }
+
+    /** Normalized dedupe key. Amount compared at 2dp so trivial scale differences still match. */
+    private String dedupeKey(String date, String instrument, Long accountId, Long ownerId, BigDecimal amount) {
+        String amt = amount == null ? "" : amount.setScale(2, java.math.RoundingMode.HALF_UP).toPlainString();
+        String inst = instrument == null ? "" : instrument.trim().toUpperCase();
+        return (date == null ? "" : date) + "|" + inst + "|" + accountId + "|" + ownerId + "|" + amt;
     }
 
     private Currency parseCurrency(String code) {

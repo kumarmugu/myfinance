@@ -110,7 +110,7 @@ export const importDividends = (file: File, accountId: number, ownerId: number) 
   fd.append('file', file);
   fd.append('accountId', String(accountId));
   fd.append('ownerId', String(ownerId));
-  return api.post<{ imported: number; assetsCreated: number }>('/dividends/import', fd, {
+  return api.post<{ imported: number; skipped: number; assetsCreated: number }>('/dividends/import', fd, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };

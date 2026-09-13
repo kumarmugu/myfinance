@@ -71,7 +71,7 @@ export default function Dividends() {
     setImporting(true);
     try {
       const { data } = await importDividends(file, importAccountId, importOwnerId);
-      showToast(`Imported ${data.imported} dividend${data.imported === 1 ? '' : 's'}${data.assetsCreated ? ` (${data.assetsCreated} new asset${data.assetsCreated === 1 ? '' : 's'})` : ''}`, 'success');
+      showToast(`Imported ${data.imported} dividend${data.imported === 1 ? '' : 's'}${data.skipped ? `, skipped ${data.skipped} duplicate${data.skipped === 1 ? '' : 's'}` : ''}${data.assetsCreated ? ` (${data.assetsCreated} new asset${data.assetsCreated === 1 ? '' : 's'})` : ''}`, 'success');
       setShowImport(false);
       loadData();
     } catch (err) {

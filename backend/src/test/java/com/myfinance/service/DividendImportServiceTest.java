@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class DividendImportServiceTest {
 
-    private final DividendImportService svc = new DividendImportService(null, null);
+    private final DividendImportService svc = new DividendImportService(null, null, null);
 
     // ─────────────────────────── IBKR ───────────────────────────
 
