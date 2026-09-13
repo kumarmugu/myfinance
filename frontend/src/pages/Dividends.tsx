@@ -29,6 +29,9 @@ export default function Dividends() {
   const [importOwnerId, setImportOwnerId] = useState(0);
   const [importing, setImporting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // Client-side pagination for the records table.
+  const PAGE_SIZE = 100;
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const [form, setForm] = useState({ accountId: 0, ownerId: 0, instrument: '', amount: 0, currency: 'SGD' as Currency, receivedDate: new Date().toISOString().split('T')[0], year: new Date().getFullYear(), quarter: 'Q1', notes: '' });
 
@@ -88,6 +91,10 @@ export default function Dividends() {
   });
 
   const totalDividends = filtered.reduce((s, d) => s + d.amount, 0);
+
+  // Reset pagination when the filtered set changes; render only the first `visibleCount` rows.
+  useEffect(() => { setVisibleCount(PAGE_SIZE); }, [filterBroker, filterYear, filterOwner, dividends.length]);
+  const visible = filtered.slice(0, visibleCount);
 
   // By broker
   const byBroker: Record<string, number> = {};
@@ -253,7 +260,7 @@ export default function Dividends() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {filtered.map(d => (
+              {visible.map(d => (
                 <tr key={d.id} className="hover:bg-slate-50 group">
                   <td className="px-4 py-2 text-slate-700 text-xs">{formatDate(d.receivedDate)}</td>
                   <td className="px-4 py-2 font-medium text-slate-800">{d.instrument || d.asset?.symbol || '-'}</td>
@@ -268,6 +275,14 @@ export default function Dividends() {
             </tbody>
           </table>
         </div>
+        {visible.length < filtered.length && (
+          <div className="p-4 border-t border-slate-200 flex items-center justify-center gap-3">
+            <span className="text-xs text-slate-400">Showing {visible.length} of {filtered.length}</span>
+            <button onClick={() => setVisibleCount(c => c + PAGE_SIZE)} className="px-4 py-2 text-sm font-medium text-indigo-600 border border-indigo-200 rounded-lg hover:bg-indigo-50">
+              Show more
+            </button>
+          </div>
+        )}
       </div>
 
       {/* By Instrument Summary */}
