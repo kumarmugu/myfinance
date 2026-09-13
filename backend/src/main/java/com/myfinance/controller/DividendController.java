@@ -95,7 +95,12 @@ public class DividendController {
                 .filter(o -> user.getId().equals(o.getUserId()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid owner"));
 
-        DividendImportService.Format fmt = detectFormat(format, file.getOriginalFilename());
+        DividendImportService.Format fmt;
+        try {
+            fmt = detectFormat(format, file.getOriginalFilename(), file.getBytes());
+        } catch (java.io.IOException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not read the uploaded file");
+        }
         try {
             var result = dividendImportService.importFile(file.getBytes(), fmt, user.getId(), account, owner);
             log.info("Imported {} dividends ({} assets created) for user {}", result.imported(), result.assetsCreated(), user.getUsername());
@@ -112,13 +117,18 @@ public class DividendController {
         return false;
     }
 
-    private DividendImportService.Format detectFormat(String explicit, String filename) {
+    private DividendImportService.Format detectFormat(String explicit, String filename, byte[] content) {
         if (explicit != null) {
             try { return DividendImportService.Format.valueOf(explicit.trim().toUpperCase()); }
             catch (IllegalArgumentException ignored) { /* fall through to auto-detect */ }
         }
         String name = filename == null ? "" : filename.toLowerCase();
         if (name.endsWith(".xlsx") || name.contains("saxo")) return DividendImportService.Format.SAXO_XLSX;
+        // Both IBKR and Tiger are .csv — sniff the header to tell them apart.
+        String head = new String(content, 0, Math.min(content.length, 2000), java.nio.charset.StandardCharsets.UTF_8);
+        if (head.contains("Activity Statement") || head.startsWith("Statement") || name.contains("statement")) {
+            return DividendImportService.Format.TIGER_CSV;
+        }
         return DividendImportService.Format.IBKR_CSV;
     }
 }

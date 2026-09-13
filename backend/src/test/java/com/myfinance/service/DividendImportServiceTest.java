@@ -75,6 +75,28 @@ class DividendImportServiceTest {
         assertEquals("RETURN_OF_CAPITAL", svc.parseIbkr(csv).get(0).type());
     }
 
+    // ─────────────────────────── Tiger ───────────────────────────
+
+    @Test
+    void tigerImportsPaidDividendsAndSkipsAccrualsAndOtherSections() {
+        String csv = String.join("\n",
+            "Activity Statement,,,,2022-01-01 - 2022-12-31",
+            "Cash Report,,Currency: USD,HEADER_DATA,Dividends,23.38,23.38",
+            "Deposits & Withdrawals,,,DATA,2022-02-23,Deposit,2000.00,SGD",
+            "Dividends,,,,Date,Product,Symbol,Dividend Reinvestment Plan,Quantity/Gross Rate,Phase,Cash Dividends,Shares,Fees & Tax,Net Cash Value,Currency",
+            "Dividends,,,DATA,2022-03-29,,VOO,,,Paid,1.37,0,,1.37,USD",
+            "Dividends,,,DATA,2022-05-12,,AAPL,,,Paid,1.15,0,,1.15,USD",
+            "Dividends,,,DATA,2022-12-22,,TQQQ,,Quantity: 24,Dividend Accruals Increase,2.35,0,Fee（Include ADR）: 0.71,1.64,USD",
+            "Dividends,,,TOTAL,,,Total(In Base),,,Accruals/Paid,,,,1.64/23.38,USD");
+        List<ParsedDividend> out = svc.parseTiger(csv);
+
+        assertEquals(2, out.size(), "only Paid dividend rows import; accrual + other sections skipped");
+        assertTrue(out.stream().anyMatch(d -> d.symbol().equals("VOO") && d.net().compareTo(new BigDecimal("1.37")) == 0));
+        assertTrue(out.stream().anyMatch(d -> d.symbol().equals("AAPL") && d.net().compareTo(new BigDecimal("1.15")) == 0));
+        assertTrue(out.stream().noneMatch(d -> d.symbol().equals("TQQQ")), "accrual row must be skipped");
+        assertEquals("USD", out.get(0).currency());
+    }
+
     // ─────────────────────────── Saxo ───────────────────────────
 
     @Test

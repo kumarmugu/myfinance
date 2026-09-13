@@ -57,13 +57,14 @@ public class DividendImportService {
     public record ParsedDividend(LocalDate payDate, String symbol, String currency,
                                  BigDecimal net, BigDecimal gross, BigDecimal tax, String type) {}
 
-    public enum Format { IBKR_CSV, SAXO_XLSX }
+    public enum Format { IBKR_CSV, SAXO_XLSX, TIGER_CSV }
 
     @Transactional
     public ImportResult importFile(byte[] content, Format format, Long userId, Account account, Owner owner) {
         List<ParsedDividend> parsed = switch (format) {
             case IBKR_CSV -> parseIbkr(new String(content, java.nio.charset.StandardCharsets.UTF_8));
             case SAXO_XLSX -> parseSaxo(content);
+            case TIGER_CSV -> parseTiger(new String(content, java.nio.charset.StandardCharsets.UTF_8));
         };
 
         // De-duplicate against what's already stored, so re-importing the same file is idempotent.
@@ -183,6 +184,79 @@ public class DividendImportService {
     /** US names carry a "US Tax" row and are USD; SG-listed names settle in SGD. */
     private String inferIbkrCurrency(String description) {
         return description != null && description.contains("USD") ? "USD" : "SGD";
+    }
+
+    // ─────────────────────────── Tiger Activity Statement CSV ───────────────────────────
+
+    /**
+     * Tiger "Activity Statement" CSV — a multi-section report. Dividend rows live in the section
+     * whose first column is "Dividends" with column[3]="DATA". Columns (0-based):
+     * 4=Date, 6=Symbol, 9=Phase, 10=Cash Dividends (gross), 12=Fees & Tax (label like
+     * "Fee（Include ADR）: 0.71"), 13=Net Cash Value (net), 14=Currency.
+     *
+     * <p>Only rows in phase "Paid" are imported — "Dividend Accruals Increase" rows are accruals
+     * not yet received, so they're skipped (matching the statement's paid vs accrued split).
+     */
+    List<ParsedDividend> parseTiger(String csv) {
+        List<ParsedDividend> out = new ArrayList<>();
+        for (String line : splitLinesKeepingQuotedNewlines(csv)) {
+            String[] f = splitCsv(line);
+            if (f.length < 15 || !"Dividends".equals(f[0]) || !"DATA".equals(f[3])) continue;
+
+            String phase = f[9] == null ? "" : f[9].trim();
+            if (!phase.equalsIgnoreCase("Paid")) continue; // skip accruals / non-paid
+
+            LocalDate date = parseIsoDate(f[4]);
+            String symbol = f[6] == null ? null : f[6].trim().toUpperCase();
+            BigDecimal gross = parseNum(f[10]);
+            BigDecimal net = parseNum(f[13]);
+            if (net.signum() == 0 && gross.signum() == 0) continue;
+            // "Fees & Tax" is a label like "Fee（Include ADR）: 0.71" — pull the trailing number.
+            BigDecimal fee = extractTrailingNumber(f[12]);
+            String currency = (f[14] == null || f[14].isBlank()) ? "USD" : f[14].trim().toUpperCase();
+
+            out.add(new ParsedDividend(date, symbol, currency, net,
+                    gross.signum() == 0 ? null : gross,
+                    (fee == null || fee.signum() == 0) ? null : fee.abs(),
+                    "ORDINARY"));
+        }
+        return out;
+    }
+
+    /** Pull the last number out of a label like "Fee（Include ADR）: 0.71" → 0.71. */
+    private BigDecimal extractTrailingNumber(String s) {
+        if (s == null) return null;
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("(-?[0-9]+(?:\\.[0-9]+)?)").matcher(s);
+        BigDecimal last = null;
+        while (m.find()) last = new BigDecimal(m.group(1));
+        return last;
+    }
+
+    private LocalDate parseIsoDate(String s) {
+        if (s == null || s.isBlank()) return null;
+        try { return LocalDate.parse(s.trim(), DateTimeFormatter.ISO_LOCAL_DATE); }
+        catch (Exception e) { return null; }
+    }
+
+    /**
+     * Split into logical CSV lines while keeping quoted fields that contain embedded newlines
+     * on one line (Tiger wraps some cells, e.g. trade times, across physical lines).
+     */
+    private List<String> splitLinesKeepingQuotedNewlines(String csv) {
+        List<String> lines = new ArrayList<>();
+        StringBuilder cur = new StringBuilder();
+        boolean inQuotes = false;
+        for (int i = 0; i < csv.length(); i++) {
+            char c = csv.charAt(i);
+            if (c == '"') inQuotes = !inQuotes;
+            if ((c == '\n' || c == '\r') && !inQuotes) {
+                if (cur.length() > 0) { lines.add(cur.toString()); cur.setLength(0); }
+            } else {
+                cur.append(c);
+            }
+        }
+        if (cur.length() > 0) lines.add(cur.toString());
+        return lines;
     }
 
     // ─────────────────────────── Saxo XLSX ───────────────────────────
