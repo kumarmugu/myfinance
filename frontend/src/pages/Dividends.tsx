@@ -190,9 +190,14 @@ export default function Dividends() {
           <p className="text-xs text-slate-500 mb-4">Upload an IBKR "Transaction History" CSV or a Saxo "Share Dividends" XLSX. Only dividend rows are imported (net after withholding tax); buys, deposits, interest and reversals are skipped. Missing assets are created automatically.</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner *</label>
-              <SearchableSelect options={[{ value: 0, label: 'Select owner...' }, ...owners.map(o => ({ value: o.id, label: o.name }))]} value={importOwnerId} onChange={v => setImportOwnerId(Number(v))} placeholder="Select owner..." /></div>
+              <SearchableSelect options={[{ value: 0, label: 'Select owner...' }, ...owners.map(o => ({ value: o.id, label: o.name }))]} value={importOwnerId} onChange={v => { setImportOwnerId(Number(v)); setImportAccountId(0); }} placeholder="Select owner..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Broker account *</label>
-              <SearchableSelect options={[{ value: 0, label: 'Select broker...' }, ...accounts.map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))]} value={importAccountId} onChange={v => setImportAccountId(Number(v))} placeholder="Select broker..." /></div>
+              <SearchableSelect
+                options={[{ value: 0, label: importOwnerId ? 'Select broker...' : 'Select an owner first' },
+                  ...accounts.filter(a => !importOwnerId || a.owner?.id === importOwnerId).map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))]}
+                value={importAccountId}
+                onChange={v => setImportAccountId(Number(v))}
+                placeholder="Select broker..." /></div>
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">File (.csv / .xlsx)</label>
               {/* Kept in the DOM (not display:none) so Chrome reliably opens the picker on .click(). */}
