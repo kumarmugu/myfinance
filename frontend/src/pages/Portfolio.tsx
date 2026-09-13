@@ -90,6 +90,27 @@ export default function Portfolio() {
     const rate = resolveRate(fxRates, h.currency, displayCurrency);
     const dispCurrency = rate != null ? displayCurrency : h.currency;
     const r = rate ?? 1;
+
+    // ── FX P/L: the currency effect on the current value, in the display currency. ──
+    // It's the difference between valuing the position at today's FX rate vs the rate paid at
+    // purchase: qty * currentPrice * (todayRate - purchaseRate). Only meaningful when the holding's
+    // currency differs from the display currency AND we know the purchase rate.
+    //   - purchaseRate to the display ccy: if display == account ccy, it's averageBuyFxRate
+    //     (stored trade->account rate); if display == holding ccy, there's no FX (rate 1).
+    let fxPnl = 0;
+    let fxPnlKnown = false;
+    if (rate != null && h.currency.toUpperCase() !== displayCurrency.toUpperCase()) {
+      const acctCcy = h.account?.currency;
+      let purchaseRate: number | null = null;
+      if (acctCcy && acctCcy.toUpperCase() === displayCurrency.toUpperCase()) {
+        purchaseRate = h.averageBuyFxRate ?? null; // stored trade->account(display) rate at purchase
+      }
+      if (purchaseRate != null && purchaseRate > 0) {
+        fxPnl = h.quantity * currentPrice * (r - purchaseRate);
+        fxPnlKnown = true;
+      }
+    }
+
     return {
       ...h,
       currentPrice,
@@ -100,6 +121,8 @@ export default function Portfolio() {
       currentValue: currentValue * r,
       gainLoss: gainLoss * r,
       pct,
+      fxPnl,
+      fxPnlKnown,
     };
   });
 
@@ -267,6 +290,7 @@ export default function Portfolio() {
                           <H k="investedAmount" label="Invested" align="right" />
                           <H k="currentValue" label="Value" align="right" />
                           <H k="gainLoss" label="P&L" align="right" />
+                          <th className="text-right px-4 py-3 font-medium text-slate-600" title="Currency gain/loss on the current value vs the FX rate at purchase">FX P/L</th>
                         </>
                       );
                     })()}
@@ -288,6 +312,11 @@ export default function Portfolio() {
                       <td className="px-4 py-3 text-right">
                         <span className={`font-medium ${h.gainLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(h.gainLoss, h.dispCurrency)}</span>
                         <p className={`text-xs ${h.pct >= 0 ? 'text-green-500' : 'text-red-500'}`}>{formatPercent(h.pct)}</p>
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        {h.fxPnlKnown
+                          ? <span className={`font-medium ${h.fxPnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(h.fxPnl, h.dispCurrency)}</span>
+                          : <span className="text-slate-300" title="No purchase FX rate recorded — run Recompute P/L on the Transactions page or add the buy's FX rate">—</span>}
                       </td>
                     </tr>
                   ))}

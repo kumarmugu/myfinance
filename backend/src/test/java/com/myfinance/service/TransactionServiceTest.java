@@ -479,6 +479,31 @@ class TransactionServiceTest {
 
     @Test
     @WithMockUser(username = "user")
+    void recomputeBackfillsMissingBuyFxRateFromTransactions() {
+        // A cross-currency BUY (USD trade settled via SGD) recorded a purchase FX rate of 1.34.
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("100.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 1), "Buy", null,
+                "SGD", new BigDecimal("1.34"));
+        // Simulate a legacy holding whose purchase FX was never captured.
+        Holding h = holdingService.getHolding(asset.getId(), account.getId(), owner.getId()).orElseThrow();
+        h.setAverageBuyFxRate(null);
+        holdingService.save(h);
+
+        TransactionService.RecomputeResult result = transactionService.recomputeRealizedPnlForUser(testUser.getId());
+
+        assertEquals(1, result.holdingsBuyFxBackfilled(), "the missing purchase FX rate is backfilled");
+        Holding fixed = holdingService.getHolding(asset.getId(), account.getId(), owner.getId()).orElseThrow();
+        assertEquals(0, new BigDecimal("1.34").compareTo(fixed.getAverageBuyFxRate()),
+                "backfilled from the buy transaction's fxRateToBase");
+
+        // Idempotent: a second run finds nothing to backfill.
+        assertEquals(0, transactionService.recomputeRealizedPnlForUser(testUser.getId()).holdingsBuyFxBackfilled());
+    }
+
+    @Test
+    @WithMockUser(username = "user")
     void recomputeIsIdempotent() {
         transactionService.create(
                 asset.getId(), account.getId(), owner.getId(),

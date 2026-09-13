@@ -393,7 +393,8 @@ public class TransactionService {
     }
 
     /** Result of a recompute run, so the caller/UI can report what was fixed. */
-    public record RecomputeResult(int sellsRecomputed, int soldPositionsSynced, int holdingsCurrencyFixed) {}
+    public record RecomputeResult(int sellsRecomputed, int soldPositionsSynced, int holdingsCurrencyFixed,
+                                  int holdingsBuyFxBackfilled) {}
 
     /**
      * One-time maintenance: recompute the realized P/L (and re-sync the sold positions) for every
@@ -461,21 +462,39 @@ public class TransactionService {
         // not the broker account's. Older code stamped the account currency (e.g. a USD stock held in
         // an SGD Saxo account showed SGD). Label-only fix — amounts are untouched.
         int currencyFixed = 0;
+        int buyFxBackfilled = 0;
         for (Holding h : holdingService.getAllByUserId(userId)) {
+            boolean dirty = false;
             var assetCcy = h.getAsset() != null ? h.getAsset().getCurrency() : null;
             if (assetCcy != null && h.getCurrency() != assetCcy) {
                 h.setCurrency(assetCcy);
-                holdingService.save(h);
+                dirty = true;
                 currencyFixed++;
             }
+            // Backfill the purchase FX rate from the BUYs that make up this holding, when it's not
+            // already set. This is what the "FX P/L" column needs to value the cost at the rate paid.
+            // Only fill when we actually have a buy-derived rate; never overwrite an existing value.
+            if (h.getAverageBuyFxRate() == null) {
+                BuyAgg agg = buysByPosition.get(holdingPositionKey(h));
+                if (agg != null && agg.fxQty().signum() > 0) {
+                    h.setAverageBuyFxRate(agg.fxWeighted().divide(agg.fxQty(), 6, RoundingMode.HALF_UP));
+                    dirty = true;
+                    buyFxBackfilled++;
+                }
+            }
+            if (dirty) holdingService.save(h);
         }
 
-        log.info("Recomputed for userId={}: {} sells, {} sold positions, {} holding currencies fixed",
-                userId, sellsRecomputed, soldSynced, currencyFixed);
-        return new RecomputeResult(sellsRecomputed, soldSynced, currencyFixed);
+        log.info("Recomputed for userId={}: {} sells, {} sold positions, {} holding currencies fixed, {} buy-FX backfilled",
+                userId, sellsRecomputed, soldSynced, currencyFixed, buyFxBackfilled);
+        return new RecomputeResult(sellsRecomputed, soldSynced, currencyFixed, buyFxBackfilled);
     }
 
     private String positionKey(Transaction t) {
         return t.getAsset().getId() + "|" + t.getAccount().getId() + "|" + t.getOwner().getId();
+    }
+
+    private String holdingPositionKey(Holding h) {
+        return h.getAsset().getId() + "|" + h.getAccount().getId() + "|" + h.getOwner().getId();
     }
 }

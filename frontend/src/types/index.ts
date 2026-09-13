@@ -94,6 +94,8 @@ export interface Holding {
   quantity: number;
   averageBuyPrice: number;
   investedAmount: number;
+  /** Quantity-weighted trade->account FX rate at purchase; null when unknown (same-ccy or legacy). */
+  averageBuyFxRate: number | null;
   currency: Currency;
   purpose: InvestmentPurpose | null;
   updatedAt: string;
