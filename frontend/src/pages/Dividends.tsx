@@ -60,6 +60,24 @@ export default function Dividends() {
 
   const handleDelete = async (id: number) => { if (confirm('Delete?')) { await deleteDividend(id); loadData(); } };
 
+  const handleImport = async (file: File) => {
+    if (!importAccountId) { showToast('Select a broker to import into', 'error'); return; }
+    if (!importOwnerId) { showToast('Select an owner to import into', 'error'); return; }
+    setImporting(true);
+    try {
+      const { data } = await importDividends(file, importAccountId, importOwnerId);
+      showToast(`Imported ${data.imported} dividend${data.imported === 1 ? '' : 's'}${data.assetsCreated ? ` (${data.assetsCreated} new asset${data.assetsCreated === 1 ? '' : 's'})` : ''}`, 'success');
+      setShowImport(false);
+      loadData();
+    } catch (err) {
+      console.error(err);
+      showToast('Import failed — check the file format', 'error');
+    } finally {
+      setImporting(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
   // Filters
@@ -101,6 +119,11 @@ export default function Dividends() {
             <button onClick={() => setDisplayCurrency('USD')} className={`px-3 py-1.5 text-xs font-medium transition-colors ${displayCurrency === 'USD' ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>USD</button>
           </div>
           <ExportMenu rows={filtered} config={dividendsExportConfig} />
+          {canImport && (
+            <button onClick={() => setShowImport(v => !v)} className="flex items-center gap-2 px-4 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">
+              <Upload size={16} /> Import
+            </button>
+          )}
           <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
             <Plus size={16} /> Record Dividend
           </button>
@@ -148,6 +171,27 @@ export default function Dividends() {
               <Bar dataKey="total" fill="#10b981" radius={[4, 4, 0, 0]} name="Dividend" />
             </BarChart>
           </ResponsiveContainer>
+        </div>
+      )}
+
+      {/* Import panel (feature-gated) */}
+      {canImport && showImport && (
+        <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+          <h3 className="text-base font-semibold text-slate-800 mb-1">Import Dividend Statement</h3>
+          <p className="text-xs text-slate-500 mb-4">Upload an IBKR "Transaction History" CSV or a Saxo "Share Dividends" XLSX. Only dividend rows are imported (net after withholding tax); buys, deposits, interest and reversals are skipped. Missing assets are created automatically.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner *</label>
+              <SearchableSelect options={[{ value: 0, label: 'Select owner...' }, ...owners.map(o => ({ value: o.id, label: o.name }))]} value={importOwnerId} onChange={v => setImportOwnerId(Number(v))} placeholder="Select owner..." /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Broker account *</label>
+              <SearchableSelect options={[{ value: 0, label: 'Select broker...' }, ...accounts.map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))]} value={importAccountId} onChange={v => setImportAccountId(Number(v))} placeholder="Select broker..." /></div>
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1">File (.csv / .xlsx)</label>
+              <input ref={fileInputRef} type="file" accept=".csv,.xlsx" disabled={importing}
+                onChange={e => { const f = e.target.files?.[0]; if (f) handleImport(f); }}
+                className="w-full text-sm file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+            </div>
+          </div>
+          {importing && <p className="text-xs text-indigo-600 mt-3">Importing…</p>}
         </div>
       )}
 
