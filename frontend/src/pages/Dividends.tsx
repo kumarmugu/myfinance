@@ -108,6 +108,14 @@ export default function Dividends() {
     return true;
   });
 
+  // Broker dropdown label: several accounts can share a name (e.g. two "Tiger" accounts owned by
+  // different people). When that happens, append the owner so the options are distinguishable —
+  // otherwise the dropdown looks broken because identical entries filter to different data.
+  const brokerLabel = (a: Account) => {
+    const dupName = accounts.filter(x => x.name === a.name).length > 1;
+    return dupName && a.owner ? `${a.name} (${a.owner.name})` : a.name;
+  };
+
   // Convert a dividend's amount into the display currency (SGD/USD toggle) via the user's FX rates.
   // Falls back to the raw amount if no rate is available for the pair.
   const dispAmount = (d: Dividend) => d.amount * (resolveRate(fxRates, d.currency, displayCurrency) ?? 1);
@@ -118,9 +126,9 @@ export default function Dividends() {
   // other hooks, above the loading early-return — hooks must not sit after a conditional return).
   const visible = filtered.slice(0, visibleCount);
 
-  // By broker
+  // By broker (disambiguate accounts that share a name so totals aren't merged across owners)
   const byBroker: Record<string, number> = {};
-  filtered.forEach(d => { byBroker[d.account.name] = (byBroker[d.account.name] || 0) + dispAmount(d); });
+  filtered.forEach(d => { const k = brokerLabel(d.account); byBroker[k] = (byBroker[k] || 0) + dispAmount(d); });
 
   // By instrument
   const byInstrument: Record<string, number> = {};
@@ -239,9 +247,14 @@ export default function Dividends() {
           <h3 className="text-base font-semibold text-slate-800 mb-4">Record Dividend</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner</label>
-              <SearchableSelect options={[{ value: 0, label: 'Unassigned' }, ...owners.map(o => ({ value: o.id, label: o.name }))]} value={form.ownerId} onChange={v => setForm({...form, ownerId: Number(v)})} placeholder="Select owner..." /></div>
+              <SearchableSelect options={[{ value: 0, label: 'Unassigned' }, ...owners.map(o => ({ value: o.id, label: o.name }))]} value={form.ownerId} onChange={v => {
+                const oid = Number(v);
+                // Clear the broker if it doesn't belong to the newly-selected owner.
+                const keep = accounts.find(a => a.id === form.accountId)?.owner?.id === oid;
+                setForm({ ...form, ownerId: oid, accountId: keep ? form.accountId : 0 });
+              }} placeholder="Select owner..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Broker *</label>
-              <SearchableSelect options={accounts.map(a => ({ value: a.id, label: a.name }))} value={form.accountId} onChange={v => setForm({...form, accountId: Number(v)})} placeholder="Select broker..." /></div>
+              <SearchableSelect options={accounts.filter(a => !form.ownerId || a.owner?.id === form.ownerId).map(a => ({ value: a.id, label: brokerLabel(a) }))} value={form.accountId} onChange={v => setForm({...form, accountId: Number(v)})} placeholder={form.ownerId ? 'Select broker...' : 'Select an owner first'} /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Instrument *</label>
               <input type="text" value={form.instrument} onChange={e => setForm({...form, instrument: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="e.g. VOO, D05" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Amount *</label>
@@ -264,7 +277,7 @@ export default function Dividends() {
 
       {/* Filters */}
       <div className="flex items-center gap-3 flex-wrap">
-        <div className="w-44"><SearchableSelect options={[{ value: '', label: 'All Brokers' }, ...accounts.map(a => ({ value: a.id.toString(), label: a.name }))]} value={filterBroker} onChange={v => setFilterBroker(v.toString())} placeholder="All Brokers" /></div>
+        <div className="w-44"><SearchableSelect options={[{ value: '', label: 'All Brokers' }, ...accounts.map(a => ({ value: a.id.toString(), label: brokerLabel(a) }))]} value={filterBroker} onChange={v => setFilterBroker(v.toString())} placeholder="All Brokers" /></div>
         <div className="w-36"><SearchableSelect options={[{ value: '', label: 'All Years' }, ...years.map(y => ({ value: y.toString(), label: y.toString() }))]} value={filterYear} onChange={v => setFilterYear(v.toString())} placeholder="All Years" /></div>
         <span className="text-xs text-slate-500">{filtered.length} records | Total: {formatCurrency(totalDividends, displayCurrency)}</span>
       </div>

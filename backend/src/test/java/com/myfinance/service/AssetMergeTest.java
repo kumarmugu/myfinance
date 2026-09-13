@@ -76,4 +76,41 @@ class AssetMergeTest {
         assertEquals(0, assetService.mergeDuplicateAssets(userId).assetsMerged(), "idempotent");
         assertEquals(1, assetRepository.findByUserId(userId).size());
     }
+
+    @Test
+    void removesParenthesizedDuplicateDividendKeepingBareTicker() {
+        Asset qqq = assetRepository.save(Asset.builder().userId(userId).name("Invesco QQQ").symbol("QQQ")
+                .assetType(AssetType.GROWTH_EQUITY).currency(Currency.USD).build());
+        // Two rows for the same payout: one descriptive (import artifact), one bare ticker.
+        dividendRepository.save(Dividend.builder().userId(userId).asset(qqq).account(account).owner(owner)
+                .amount(new BigDecimal("3.61")).currency(Currency.USD).receivedDate(LocalDate.of(2026, 7, 10))
+                .instrument("INVESCO QQQ (QQQ)").build());
+        dividendRepository.save(Dividend.builder().userId(userId).asset(qqq).account(account).owner(owner)
+                .amount(new BigDecimal("3.61")).currency(Currency.USD).receivedDate(LocalDate.of(2026, 7, 10))
+                .instrument("QQQ").build());
+
+        AssetService.MergeResult r = assetService.mergeDuplicateAssets(userId);
+
+        assertEquals(1, r.duplicateDividendsRemoved(), "the parenthesized artifact row is removed");
+        var remaining = dividendRepository.findByAssetId(qqq.getId());
+        assertEquals(1, remaining.size(), "one dividend kept");
+        assertEquals("QQQ", remaining.get(0).getInstrument(), "the bare-ticker row is kept");
+    }
+
+    @Test
+    void keepsGenuineSameDayDuplicateDividends() {
+        Asset me8u = assetRepository.save(Asset.builder().userId(userId).name("Mapletree").symbol("ME8U")
+                .assetType(AssetType.REIT).currency(Currency.USD).build());
+        // Two identical rows (same instrument) = a real same-day double payout; must NOT be removed.
+        for (int i = 0; i < 2; i++) {
+            dividendRepository.save(Dividend.builder().userId(userId).asset(me8u).account(account).owner(owner)
+                    .amount(new BigDecimal("2.97")).currency(Currency.USD).receivedDate(LocalDate.of(2025, 6, 13))
+                    .instrument("ME8U").build());
+        }
+
+        AssetService.MergeResult r = assetService.mergeDuplicateAssets(userId);
+
+        assertEquals(0, r.duplicateDividendsRemoved(), "identical same-day dividends are left alone");
+        assertEquals(2, dividendRepository.findByAssetId(me8u.getId()).size(), "both kept");
+    }
 }

@@ -55,11 +55,12 @@ export default function Transactions() {
   const PAGE_SIZE = 100;
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
-  const [form, setForm] = useState<TransactionRequest>({
+  const emptyForm = (): TransactionRequest => ({
     assetId: 0, accountId: 0, ownerId: 0, transactionType: 'BUY',
     quantity: 0, pricePerUnit: 0, fees: 0, feeCurrency: undefined, fxRateToBase: undefined,
-    transactionDate: new Date().toISOString().split('T')[0], notes: '', purpose: 'LONG_TERM',
+    currency: undefined, transactionDate: new Date().toISOString().split('T')[0], notes: '', purpose: 'LONG_TERM',
   });
+  const [form, setForm] = useState<TransactionRequest>(emptyForm());
 
   useEffect(() => { loadData(); }, [filterOwner]);
 
@@ -75,11 +76,17 @@ export default function Transactions() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // Resolve the trade currency if the user didn't override it: prefer the instrument's own
+      // currency (what the price is quoted in), then the account's. Never leave it null, which
+      // would make the backend fall back to the account currency and mislabel a USD trade.
+      const asset = assets.find(a => a.id === form.assetId);
+      const acct = accounts.find(a => a.id === form.accountId);
+      const payload = { ...form, currency: form.currency || asset?.currency || acct?.currency };
       if (editingId != null) {
-        await updateTransaction(editingId, form);
+        await updateTransaction(editingId, payload);
         showToast('Transaction updated', 'success');
       } else {
-        await createTransaction(form);
+        await createTransaction(payload);
         showToast('Transaction saved', 'success');
       }
       setShowForm(false); setEditingId(null); loadData();
@@ -347,7 +354,7 @@ export default function Transactions() {
           <button onClick={handleRecompute} disabled={recomputing} title="Recompute FX-aware realized P/L for your existing sells (one-time fix for older trades)" className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 disabled:opacity-50">
             <RefreshCw size={16} className={recomputing ? 'animate-spin' : ''} /> {recomputing ? 'Recomputing...' : 'Recompute P/L'}
           </button>
-          <button onClick={() => { if (showForm) { setShowForm(false); setEditingId(null); } else { setEditingId(null); setShowForm(true); } }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
+          <button onClick={() => { if (showForm) { setShowForm(false); setEditingId(null); } else { setEditingId(null); setForm({ ...emptyForm(), ownerId: owners[0]?.id ?? 0 }); setShowForm(true); } }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
             <Plus size={16} /> New Transaction
           </button>
         </div>
@@ -430,11 +437,15 @@ export default function Transactions() {
           <h3 className="text-base font-semibold text-slate-800 mb-4">{editingId != null ? 'Modify Transaction' : 'Add Transaction'}</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner</label>
-              <SearchableSelect options={owners.map(o => ({ value: o.id, label: o.name }))} value={form.ownerId} onChange={v => setForm({...form, ownerId: v})} placeholder="Select owner..." /></div>
+              <SearchableSelect options={owners.map(o => ({ value: o.id, label: o.name }))} value={form.ownerId} onChange={v => {
+                // Clear the account if it doesn't belong to the newly-selected owner.
+                const keep = accounts.find(a => a.id === form.accountId)?.owner?.id === v;
+                setForm({ ...form, ownerId: v as number, accountId: keep ? form.accountId : 0 });
+              }} placeholder="Select owner..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Asset</label>
               <SearchableSelect options={assets.map(a => ({ value: a.id, label: `${a.symbol} - ${a.name}` }))} value={form.assetId} onChange={v => setForm({...form, assetId: v})} placeholder="Search asset..." /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Account</label>
-              <SearchableSelect options={accounts.map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))} value={form.accountId} onChange={v => setForm({...form, accountId: v})} placeholder="Select account..." /></div>
+              <SearchableSelect options={accounts.filter(a => !form.ownerId || a.owner?.id === form.ownerId).map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))} value={form.accountId} onChange={v => setForm({...form, accountId: v})} placeholder={form.ownerId ? 'Select account...' : 'Select an owner first'} /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Type</label>
               <div className="flex rounded-lg overflow-hidden border border-slate-300">
                 <button type="button" onClick={() => setForm({...form, transactionType: 'BUY'})} className={`flex-1 py-2 text-sm font-medium transition-colors ${form.transactionType === 'BUY' ? 'bg-green-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`}>Buy</button>
@@ -444,6 +455,21 @@ export default function Transactions() {
               <input type="number" step="any" value={form.quantity || ''} onChange={e => setForm({...form, quantity: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Price per Unit</label>
               <input type="number" step="any" value={form.pricePerUnit || ''} onChange={e => setForm({...form, pricePerUnit: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" required /></div>
+            {(() => {
+              // Trade currency = the currency the price is quoted in. Defaults to the selected
+              // asset's (instrument) currency — e.g. a VOO price of 571 is in USD. Capturing it
+              // explicitly stops a USD-priced trade being stored in the account's currency.
+              const asset = assets.find(a => a.id === form.assetId);
+              const acct = accounts.find(a => a.id === form.accountId);
+              const effective = form.currency || asset?.currency || acct?.currency || 'SGD';
+              const opts = Array.from(new Set([asset?.currency, acct?.currency, 'SGD', 'USD', 'EUR', 'GBP', 'HKD']
+                .filter(Boolean) as string[]));
+              return (
+                <div><label className="block text-xs font-medium text-slate-600 mb-1">Trade Currency</label>
+                  <SearchableSelect options={opts.map(c => ({ value: c, label: c }))} value={effective}
+                    onChange={v => setForm({ ...form, currency: String(v) })} placeholder="Currency" /></div>
+              );
+            })()}
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Date</label>
               <input type="date" value={form.transactionDate} onChange={e => setForm({...form, transactionDate: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500" required /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Fees</label>

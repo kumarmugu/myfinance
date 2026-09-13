@@ -94,7 +94,8 @@ public class AssetService {
     }
 
     /** Result of a duplicate-asset merge, so the caller can report what was cleaned up. */
-    public record MergeResult(int assetsMerged, int dividendsRepointed, int transactionsRepointed, int holdingsRepointed) {}
+    public record MergeResult(int assetsMerged, int dividendsRepointed, int transactionsRepointed,
+                              int holdingsRepointed, int duplicateDividendsRemoved) {}
 
     /**
      * Merge duplicate assets created by imports back into the canonical asset. A duplicate is one
@@ -127,7 +128,43 @@ public class AssetService {
             log.info("Merged duplicate asset id={} symbol='{}' into canonical id={} ({})",
                     dup.getId(), dup.getSymbol(), canonical.getId(), ticker);
         }
-        return new MergeResult(merged, divs, txns, holds);
+
+        int divsRemoved = removeDuplicateDividends(userId);
+        return new MergeResult(merged, divs, txns, holds, divsRemoved);
+    }
+
+    /**
+     * Remove duplicate dividend rows created by importing the same payout twice under different
+     * instrument spellings (e.g. "INVESCO QQQ (QQQ)" then "QQQ"). Within a group of rows sharing
+     * (asset, account, owner, date, amount), extras are deleted ONLY when they carry a descriptive
+     * "NAME (TICKER)" instrument — the import artifact — keeping the plain-ticker row. Groups whose
+     * rows all share the same instrument (a genuine same-day double payout) are left untouched.
+     */
+    private int removeDuplicateDividends(Long userId) {
+        var all = dividendRepository.findByUserIdOrderByReceivedDateDesc(userId);
+        java.util.Map<String, java.util.List<com.myfinance.model.Dividend>> groups = new java.util.HashMap<>();
+        for (var d : all) {
+            String key = (d.getAsset() != null ? d.getAsset().getId() : "0") + "|"
+                    + (d.getAccount() != null ? d.getAccount().getId() : "0") + "|"
+                    + (d.getOwner() != null ? d.getOwner().getId() : "0") + "|"
+                    + (d.getReceivedDate() != null ? d.getReceivedDate() : "") + "|"
+                    + (d.getAmount() != null ? d.getAmount().setScale(2, java.math.RoundingMode.HALF_UP).toPlainString() : "");
+            groups.computeIfAbsent(key, k -> new java.util.ArrayList<>()).add(d);
+        }
+        int removed = 0;
+        for (var group : groups.values()) {
+            if (group.size() < 2) continue;
+            // Only delete descriptive "NAME (TICKER)" rows, and only when a plain-ticker twin exists
+            // to keep. Plain-ticker rows are never deleted, so a genuine same-day double payout (two
+            // identical instruments) is preserved intact.
+            boolean anyPlain = group.stream().anyMatch(d -> tickerInParens(d.getInstrument()) == null);
+            if (!anyPlain) continue; // no bare-ticker survivor → treat as genuine, leave alone
+            for (var d : group) {
+                if (tickerInParens(d.getInstrument()) != null) { dividendRepository.delete(d); removed++; }
+            }
+        }
+        if (removed > 0) log.info("Removed {} duplicate dividend rows for userId={}", removed, userId);
+        return removed;
     }
 
     /** Return the ticker inside trailing parentheses of a symbol, e.g. "Foo (BAR)" → "BAR", else null. */

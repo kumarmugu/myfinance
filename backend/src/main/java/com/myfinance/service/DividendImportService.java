@@ -115,10 +115,13 @@ public class DividendImportService {
         return new ImportResult(imported, skipped, assetsCreated[0]);
     }
 
-    /** Normalized dedupe key. Amount compared at 2dp so trivial scale differences still match. */
+    /**
+     * Normalized dedupe key. Amount compared at 2dp; the instrument is reduced to its ticker so a
+     * descriptive form ("INVESCO QQQ (QQQ)") and the bare ticker ("QQQ") collide and dedupe.
+     */
     private String dedupeKey(String date, String instrument, Long accountId, Long ownerId, BigDecimal amount) {
         String amt = amount == null ? "" : amount.setScale(2, java.math.RoundingMode.HALF_UP).toPlainString();
-        String inst = instrument == null ? "" : instrument.trim().toUpperCase();
+        String inst = instrument == null ? "" : (extractTicker(instrument) == null ? "" : extractTicker(instrument));
         return (date == null ? "" : date) + "|" + inst + "|" + accountId + "|" + ownerId + "|" + amt;
     }
 

@@ -70,7 +70,7 @@ export const refreshAllAssetPrices = () => api.post<{ updated: number; skipped: 
 export const toggleAssetNetWorth = (id: number, include: boolean) => api.patch<Asset>(`/assets/${id}/net-worth?include=${include}`);
 export const deleteAsset = (id: number) => api.delete(`/assets/${id}`);
 // Merge import-created "NAME (TICKER)" duplicate assets back into the canonical ticker.
-export const mergeDuplicateAssets = () => api.post<{ assetsMerged: number; dividendsRepointed: number; transactionsRepointed: number; holdingsRepointed: number }>(`/assets/merge-duplicates`);
+export const mergeDuplicateAssets = () => api.post<{ assetsMerged: number; dividendsRepointed: number; transactionsRepointed: number; holdingsRepointed: number; duplicateDividendsRemoved: number }>(`/assets/merge-duplicates`);
 
 // ─── Dashboard ───
 export const getDashboardSummary = (ownerId?: number) => api.get<DashboardSummary>('/dashboard/summary', { params: { ownerId } });

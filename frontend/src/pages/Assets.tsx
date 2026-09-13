@@ -100,10 +100,15 @@ export default function Assets() {
     setMerging(true);
     try {
       const { data } = await mergeDuplicateAssets();
-      if (data.assetsMerged === 0) {
-        showToast('No duplicate assets found', 'info');
+      const dd = data.duplicateDividendsRemoved;
+      if (data.assetsMerged === 0 && dd === 0) {
+        showToast('No duplicates found', 'info');
       } else {
-        showToast(`Merged ${data.assetsMerged} duplicate${data.assetsMerged === 1 ? '' : 's'} (${data.dividendsRepointed} dividends repointed)`, 'success');
+        const parts: string[] = [];
+        if (data.assetsMerged) parts.push(`merged ${data.assetsMerged} asset${data.assetsMerged === 1 ? '' : 's'}`);
+        if (data.dividendsRepointed) parts.push(`${data.dividendsRepointed} dividends repointed`);
+        if (dd) parts.push(`removed ${dd} duplicate dividend${dd === 1 ? '' : 's'}`);
+        showToast(`Cleaned up: ${parts.join(', ')}`, 'success');
       }
       loadData();
     } catch (err: any) {
