@@ -56,6 +56,28 @@ class DividendImportIntegrationTest {
                 .currency(Currency.SGD).owner(owner).userId(user.getId()).build());
     }
 
+    private static final String TIGER_CSV = String.join("\n",
+        "Activity Statement,,,,2022-01-01 - 2022-12-31",
+        "Dividends,,,,Date,Product,Symbol,Dividend Reinvestment Plan,Quantity/Gross Rate,Phase,Cash Dividends,Shares,Fees & Tax,Net Cash Value,Currency",
+        "Dividends,,,DATA,2022-03-29,,VOO,,,Paid,1.37,0,,1.37,USD",
+        "Dividends,,,DATA,2022-05-12,,AAPL,,,Paid,1.15,0,,1.15,USD",
+        "Dividends,,,DATA,2022-12-22,,TQQQ,,Quantity: 24,Dividend Accruals Increase,2.35,0,Fee: 0.71,1.64,USD");
+
+    @Test
+    @WithMockUser(username = "user")
+    void reimportingSameTigerFileSkipsDuplicates() {
+        var first = importService.importFile(TIGER_CSV.getBytes(StandardCharsets.UTF_8),
+                DividendImportService.Format.TIGER_CSV, user.getId(), account, owner);
+        assertEquals(2, first.imported());   // 2 Paid; TQQQ accrual excluded
+        assertEquals(0, first.skipped());
+
+        var second = importService.importFile(TIGER_CSV.getBytes(StandardCharsets.UTF_8),
+                DividendImportService.Format.TIGER_CSV, user.getId(), account, owner);
+        assertEquals(0, second.imported(), "re-import must create nothing");
+        assertEquals(2, second.skipped(), "both Paid rows recognised as duplicates");
+        assertEquals(2, dividendRepository.findByUserIdOrderByReceivedDateDesc(user.getId()).size());
+    }
+
     @Test
     @WithMockUser(username = "user")
     void reimportingSameFileSkipsDuplicates() {

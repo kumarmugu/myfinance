@@ -877,3 +877,29 @@
 2026-09-13 12:59:54 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (2ms)
 2026-09-13 12:59:54 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (6ms)
 2026-09-13 12:59:54 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (11ms)
+2026-09-13 13:04:47 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
+2026-09-13 13:04:47 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-13 13:04:47 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-13 13:04:47 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (6ms)
+2026-09-13 13:04:47 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (22ms)
+2026-09-13 13:06:06 [http-nio-8080-exec-7] INFO  c.m.service.DividendImportService - Dividend import (IBKR_CSV) for userId=2: imported=0 assetsCreated=0
+2026-09-13 13:06:06 [http-nio-8080-exec-7] INFO  c.m.controller.DividendController - Imported 0 dividends (0 assets created) for user mugu
+2026-09-13 13:06:06 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/import → 200 (22ms)
+2026-09-13 13:06:06 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-13 13:06:06 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-13 13:06:06 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (5ms)
+2026-09-13 13:06:06 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (40ms)
+2026-09-13 13:06:38 [http-nio-8080-exec-2] INFO  c.m.service.DividendImportService - Dividend import (IBKR_CSV) for userId=2: imported=0 assetsCreated=0
+2026-09-13 13:06:38 [http-nio-8080-exec-2] INFO  c.m.controller.DividendController - Imported 0 dividends (0 assets created) for user mugu
+2026-09-13 13:06:38 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/import → 200 (24ms)
+2026-09-13 13:06:38 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (6ms)
+2026-09-13 13:06:38 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (6ms)
+2026-09-13 13:06:38 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-13 13:06:38 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (41ms)
+2026-09-13 13:06:51 [http-nio-8080-exec-7] INFO  c.m.service.DividendImportService - Dividend import (IBKR_CSV) for userId=2: imported=0 assetsCreated=0
+2026-09-13 13:06:51 [http-nio-8080-exec-7] INFO  c.m.controller.DividendController - Imported 0 dividends (0 assets created) for user mugu
+2026-09-13 13:06:51 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/import → 200 (12ms)
+2026-09-13 13:06:51 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-13 13:06:51 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-13 13:06:51 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (3ms)
+2026-09-13 13:06:51 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (33ms)
