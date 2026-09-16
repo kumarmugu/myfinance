@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-09-02T15:44:44Z",
+  "timestamp": "2026-09-13T14:44:05Z",
   "summary": {
-    "total": 225,
-    "passed": 178,
-    "failed": 47,
-    "suites": 59
+    "total": 492,
+    "passed": 492,
+    "failed": 0,
+    "suites": 62
   },
   "coverage": {
-    "backend": 84.3,
-    "frontend": 58.34
+    "backend": 83.2,
+    "frontend": 57.5
   },
   "suites": [
     {
@@ -18,7 +18,7 @@
         {
           "name": "shouldHandleValidationException",
           "status": "pass",
-          "duration": "149ms"
+          "duration": "104ms"
         },
         {
           "name": "shouldHandleReferenceConstraintException",
@@ -28,7 +28,7 @@
         {
           "name": "shouldHandleRuntimeException",
           "status": "pass",
-          "duration": "10ms"
+          "duration": "6ms"
         }
       ]
     },
@@ -37,9 +37,24 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "42ms"
+          "name": "shouldGetAccountsByType",
+          "status": "pass",
+          "duration": "73ms"
+        },
+        {
+          "name": "shouldCreateAccount",
+          "status": "pass",
+          "duration": "16ms"
+        },
+        {
+          "name": "shouldUpdateAccount",
+          "status": "pass",
+          "duration": "13ms"
+        },
+        {
+          "name": "shouldPreventDeleteWhenReferenced",
+          "status": "pass",
+          "duration": "15ms"
         }
       ]
     },
@@ -48,9 +63,54 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "42ms"
+          "name": "shouldDeleteAssetWithNoReferences",
+          "status": "pass",
+          "duration": "75ms"
+        },
+        {
+          "name": "changingPriceViaUpdateShouldRefreshPriceUpdatedAt",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldFilterByType",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "nonPriceUpdateShouldNotChangePriceUpdatedAt",
+          "status": "pass",
+          "duration": "13ms"
+        },
+        {
+          "name": "shouldUpdateAsset",
+          "status": "pass",
+          "duration": "13ms"
+        },
+        {
+          "name": "shouldCreateAsset",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldGetAssetTypes",
+          "status": "pass",
+          "duration": "8ms"
+        },
+        {
+          "name": "updatePriceShouldStampPriceUpdatedAt",
+          "status": "pass",
+          "duration": "15ms"
+        },
+        {
+          "name": "shouldSearchAssets",
+          "status": "pass",
+          "duration": "19ms"
+        },
+        {
+          "name": "shouldToggleNetWorth",
+          "status": "pass",
+          "duration": "13ms"
         }
       ]
     },
@@ -59,9 +119,39 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "40ms"
+          "name": "shouldReturnEmptyWhenNoMatchingFilters",
+          "status": "pass",
+          "duration": "86ms"
+        },
+        {
+          "name": "shouldReturn403ForNonAdmin",
+          "status": "pass",
+          "duration": "8ms"
+        },
+        {
+          "name": "shouldFilterByAction",
+          "status": "pass",
+          "duration": "9ms"
+        },
+        {
+          "name": "shouldFilterByEntity",
+          "status": "pass",
+          "duration": "9ms"
+        },
+        {
+          "name": "shouldReturnAuditLogsForAdmin",
+          "status": "pass",
+          "duration": "14ms"
+        },
+        {
+          "name": "shouldSupportPagination",
+          "status": "pass",
+          "duration": "13ms"
+        },
+        {
+          "name": "shouldFilterByDateRange",
+          "status": "pass",
+          "duration": "12ms"
         }
       ]
     },
@@ -70,9 +160,79 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "38ms"
+          "name": "shouldRejectResetPasswordWithInvalidToken",
+          "status": "pass",
+          "duration": "70ms"
+        },
+        {
+          "name": "shouldChangePasswordWithCorrectCurrent",
+          "status": "pass",
+          "duration": "202ms"
+        },
+        {
+          "name": "shouldReturn401ForUnauthenticatedMe",
+          "status": "pass",
+          "duration": "4ms"
+        },
+        {
+          "name": "shouldGetCurrentUser",
+          "status": "pass",
+          "duration": "5ms"
+        },
+        {
+          "name": "shouldRejectLoginWithNonexistentUser",
+          "status": "pass",
+          "duration": "129ms"
+        },
+        {
+          "name": "shouldRejectResetPasswordWithExpiredToken",
+          "status": "pass",
+          "duration": "6ms"
+        },
+        {
+          "name": "shouldLoginWithValidCredentials",
+          "status": "pass",
+          "duration": "71ms"
+        },
+        {
+          "name": "shouldRejectChangePasswordWithWrongCurrent",
+          "status": "pass",
+          "duration": "64ms"
+        },
+        {
+          "name": "shouldHandleForgotPasswordWithValidEmail",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "shouldVerifyCorrectPassword",
+          "status": "pass",
+          "duration": "68ms"
+        },
+        {
+          "name": "shouldRejectIncorrectPassword",
+          "status": "pass",
+          "duration": "66ms"
+        },
+        {
+          "name": "shouldRejectSelfRegistration",
+          "status": "pass",
+          "duration": "8ms"
+        },
+        {
+          "name": "shouldRejectLoginWithInvalidPassword",
+          "status": "pass",
+          "duration": "67ms"
+        },
+        {
+          "name": "shouldResetPasswordWithValidToken",
+          "status": "pass",
+          "duration": "68ms"
+        },
+        {
+          "name": "shouldHandleForgotPasswordWithInvalidEmail",
+          "status": "pass",
+          "duration": "5ms"
         }
       ]
     },
@@ -81,9 +241,34 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "46ms"
+          "name": "shouldGetCurrentUser",
+          "status": "pass",
+          "duration": "69ms"
+        },
+        {
+          "name": "shouldLoginSuccessfully",
+          "status": "pass",
+          "duration": "135ms"
+        },
+        {
+          "name": "shouldChangePassword",
+          "status": "pass",
+          "duration": "373ms"
+        },
+        {
+          "name": "shouldRejectInvalidPassword",
+          "status": "pass",
+          "duration": "80ms"
+        },
+        {
+          "name": "shouldRejectSelfRegistration",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "shouldRejectWrongCurrentPassword",
+          "status": "pass",
+          "duration": "90ms"
         }
       ]
     },
@@ -92,9 +277,34 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "77ms"
+          "name": "shouldFilterByOwner",
+          "status": "pass",
+          "duration": "90ms"
+        },
+        {
+          "name": "shouldListByUser",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldRejectCreateWithoutOwner",
+          "status": "pass",
+          "duration": "25ms"
+        },
+        {
+          "name": "shouldToggleNetWorth",
+          "status": "pass",
+          "duration": "29ms"
+        },
+        {
+          "name": "shouldGetSummary",
+          "status": "pass",
+          "duration": "22ms"
+        },
+        {
+          "name": "shouldCreateBankSavings",
+          "status": "pass",
+          "duration": "19ms"
         }
       ]
     },
@@ -103,9 +313,24 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "59ms"
+          "name": "shouldRefreshLastUpdatedOnUpdate",
+          "status": "pass",
+          "duration": "90ms"
+        },
+        {
+          "name": "shouldUpdateBankSavings",
+          "status": "pass",
+          "duration": "19ms"
+        },
+        {
+          "name": "shouldUpdateBalance",
+          "status": "pass",
+          "duration": "22ms"
+        },
+        {
+          "name": "shouldSetLastUpdatedOnCreate",
+          "status": "pass",
+          "duration": "18ms"
         }
       ]
     },
@@ -114,9 +339,34 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "47ms"
+          "name": "shouldDelete",
+          "status": "pass",
+          "duration": "79ms"
+        },
+        {
+          "name": "shouldUpdate",
+          "status": "pass",
+          "duration": "22ms"
+        },
+        {
+          "name": "shouldGetSummaryForHeldOnly",
+          "status": "pass",
+          "duration": "20ms"
+        },
+        {
+          "name": "shouldCreateBond",
+          "status": "pass",
+          "duration": "16ms"
+        },
+        {
+          "name": "shouldGetById",
+          "status": "pass",
+          "duration": "12ms"
+        },
+        {
+          "name": "shouldListAllOrderedByMaturity",
+          "status": "pass",
+          "duration": "14ms"
         }
       ]
     },
@@ -125,9 +375,109 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "39ms"
+          "name": "shouldAddIncomeEntry",
+          "status": "pass",
+          "duration": "89ms"
+        },
+        {
+          "name": "shouldReturnAnnualReport",
+          "status": "pass",
+          "duration": "29ms"
+        },
+        {
+          "name": "shouldRejectDuplicateCategoryName",
+          "status": "pass",
+          "duration": "16ms"
+        },
+        {
+          "name": "shouldReturnMonthlyReport",
+          "status": "pass",
+          "duration": "14ms"
+        },
+        {
+          "name": "shouldGetSpecificPlan",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldUpdateExistingPlan",
+          "status": "pass",
+          "duration": "15ms"
+        },
+        {
+          "name": "shouldUpdateCategory",
+          "status": "pass",
+          "duration": "12ms"
+        },
+        {
+          "name": "shouldReturnNoContentForMissingPlan",
+          "status": "pass",
+          "duration": "8ms"
+        },
+        {
+          "name": "shouldReturnDefaultCategories",
+          "status": "pass",
+          "duration": "16ms"
+        },
+        {
+          "name": "shouldSoftDeleteCategory",
+          "status": "pass",
+          "duration": "13ms"
+        },
+        {
+          "name": "shouldUpdateIncome",
+          "status": "pass",
+          "duration": "13ms"
+        },
+        {
+          "name": "shouldDeleteIncome",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldListIncomesByPlan",
+          "status": "pass",
+          "duration": "12ms"
+        },
+        {
+          "name": "shouldAddAllocation",
+          "status": "pass",
+          "duration": "13ms"
+        },
+        {
+          "name": "shouldDetectOverBudget",
+          "status": "pass",
+          "duration": "14ms"
+        },
+        {
+          "name": "shouldDeleteAllocation",
+          "status": "pass",
+          "duration": "12ms"
+        },
+        {
+          "name": "shouldUpdateAllocation",
+          "status": "pass",
+          "duration": "13ms"
+        },
+        {
+          "name": "shouldListPlans",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldCreateBudgetPlan",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldCreateCustomCategory",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldListAllocationsByPlan",
+          "status": "pass",
+          "duration": "11ms"
         }
       ]
     },
@@ -136,9 +486,34 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "38ms"
+          "name": "shouldUpdateRate",
+          "status": "pass",
+          "duration": "79ms"
+        },
+        {
+          "name": "shouldCreateCurrencyRate",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldDeleteRate",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "shouldListAllRates",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "shouldGetAvailableCurrencies",
+          "status": "pass",
+          "duration": "25ms"
+        },
+        {
+          "name": "shouldSupportCustomCurrencyCodes",
+          "status": "pass",
+          "duration": "12ms"
         }
       ]
     },
@@ -147,9 +522,24 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "37ms"
+          "name": "changingDisplayCurrencyNeverMutatesStoredValue",
+          "status": "pass",
+          "duration": "84ms"
+        },
+        {
+          "name": "netWorthUsesConfiguredBaseCurrency",
+          "status": "pass",
+          "duration": "20ms"
+        },
+        {
+          "name": "nonAdminCannotSetCurrencySettings",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "adminCanSetCurrencySettings",
+          "status": "pass",
+          "duration": "13ms"
         }
       ]
     },
@@ -158,9 +548,24 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "41ms"
+          "name": "shouldGetNetWorthHistory",
+          "status": "pass",
+          "duration": "69ms"
+        },
+        {
+          "name": "shouldTakeSnapshot",
+          "status": "pass",
+          "duration": "14ms"
+        },
+        {
+          "name": "shouldGetAllocation",
+          "status": "pass",
+          "duration": "9ms"
+        },
+        {
+          "name": "shouldGetDashboardSummary",
+          "status": "pass",
+          "duration": "16ms"
         }
       ]
     },
@@ -169,9 +574,19 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "52ms"
+          "name": "shouldCreateDividend",
+          "status": "pass",
+          "duration": "112ms"
+        },
+        {
+          "name": "shouldDeleteDividend",
+          "status": "pass",
+          "duration": "28ms"
+        },
+        {
+          "name": "shouldGetDividendSummary",
+          "status": "pass",
+          "duration": "34ms"
         }
       ]
     },
@@ -180,9 +595,14 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "43ms"
+          "name": "shouldFilterByOwner",
+          "status": "pass",
+          "duration": "79ms"
+        },
+        {
+          "name": "shouldFilterByAccount",
+          "status": "pass",
+          "duration": "21ms"
         }
       ]
     },
@@ -191,9 +611,34 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "34ms"
+          "name": "shouldAppearInMonthlyReportCategoryTotals",
+          "status": "pass",
+          "duration": "101ms"
+        },
+        {
+          "name": "shouldListAllExpenses",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldCreateExpense",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldUpdateExpense",
+          "status": "pass",
+          "duration": "16ms"
+        },
+        {
+          "name": "shouldDeleteExpense",
+          "status": "pass",
+          "duration": "17ms"
+        },
+        {
+          "name": "shouldFilterByYearAndMonth",
+          "status": "pass",
+          "duration": "13ms"
         }
       ]
     },
@@ -202,9 +647,49 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "43ms"
+          "name": "unauthenticatedCannotReadHoldings",
+          "status": "pass",
+          "duration": "137ms"
+        },
+        {
+          "name": "userBSeesOnlyOwnTransactions",
+          "status": "pass",
+          "duration": "36ms"
+        },
+        {
+          "name": "dividendsExportDatasetIsTenantIsolated",
+          "status": "pass",
+          "duration": "32ms"
+        },
+        {
+          "name": "unauthenticatedCannotReadTransactions",
+          "status": "pass",
+          "duration": "25ms"
+        },
+        {
+          "name": "accountsExportDatasetIsTenantIsolated",
+          "status": "pass",
+          "duration": "29ms"
+        },
+        {
+          "name": "holdingsExportDatasetIsTenantIsolated",
+          "status": "pass",
+          "duration": "30ms"
+        },
+        {
+          "name": "transactionsExportDatasetIsCompleteAndTenantIsolated",
+          "status": "pass",
+          "duration": "30ms"
+        },
+        {
+          "name": "unauthenticatedCannotReadAccounts",
+          "status": "pass",
+          "duration": "23ms"
+        },
+        {
+          "name": "unauthenticatedCannotReadDividends",
+          "status": "pass",
+          "duration": "25ms"
         }
       ]
     },
@@ -213,9 +698,84 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "56ms"
+          "name": "shouldListAllFixedDeposits",
+          "status": "pass",
+          "duration": "79ms"
+        },
+        {
+          "name": "shouldGetRequiresUpdateDeposits",
+          "status": "pass",
+          "duration": "23ms"
+        },
+        {
+          "name": "shouldCreateHolder",
+          "status": "pass",
+          "duration": "20ms"
+        },
+        {
+          "name": "shouldFilterByBank",
+          "status": "pass",
+          "duration": "19ms"
+        },
+        {
+          "name": "shouldCreateFixedDeposit",
+          "status": "pass",
+          "duration": "26ms"
+        },
+        {
+          "name": "shouldGetMaturingDeposits",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldFilterByHolder",
+          "status": "pass",
+          "duration": "19ms"
+        },
+        {
+          "name": "shouldCreateBank",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldFilterByStatus",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldDeleteFixedDeposit",
+          "status": "pass",
+          "duration": "21ms"
+        },
+        {
+          "name": "shouldUpdateFixedDeposit",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldGetFixedDepositById",
+          "status": "pass",
+          "duration": "15ms"
+        },
+        {
+          "name": "shouldToggleNetWorthInclusion",
+          "status": "pass",
+          "duration": "20ms"
+        },
+        {
+          "name": "shouldListHolders",
+          "status": "pass",
+          "duration": "14ms"
+        },
+        {
+          "name": "shouldGetSummary",
+          "status": "pass",
+          "duration": "21ms"
+        },
+        {
+          "name": "shouldListBanks",
+          "status": "pass",
+          "duration": "14ms"
         }
       ]
     },
@@ -224,9 +784,29 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "52ms"
+          "name": "shouldCreateFdWithAutoCalculatedInterest",
+          "status": "pass",
+          "duration": "78ms"
+        },
+        {
+          "name": "shouldCreateFdWithExplicitInterest",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "shouldDeleteFd",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldListFds",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "shouldUpdateAndRecalculateInterest",
+          "status": "pass",
+          "duration": "13ms"
         }
       ]
     },
@@ -235,9 +815,24 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "98ms"
+          "name": "shouldSoftDelete",
+          "status": "pass",
+          "duration": "127ms"
+        },
+        {
+          "name": "shouldUpdateHomeLoan",
+          "status": "pass",
+          "duration": "48ms"
+        },
+        {
+          "name": "shouldCreateHomeLoan",
+          "status": "pass",
+          "duration": "22ms"
+        },
+        {
+          "name": "shouldListActiveLoans",
+          "status": "pass",
+          "duration": "15ms"
         }
       ]
     },
@@ -246,9 +841,59 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "49ms"
+          "name": "shouldCreateMultipleBonusEntriesAndVerifyOrder",
+          "status": "pass",
+          "duration": "109ms"
+        },
+        {
+          "name": "shouldCreatePolicy",
+          "status": "pass",
+          "duration": "16ms"
+        },
+        {
+          "name": "shouldGetBonusEntries",
+          "status": "pass",
+          "duration": "20ms"
+        },
+        {
+          "name": "shouldCreateBonusEntry",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldUpdatePolicy",
+          "status": "pass",
+          "duration": "22ms"
+        },
+        {
+          "name": "shouldFilterByOwnerId",
+          "status": "pass",
+          "duration": "23ms"
+        },
+        {
+          "name": "shouldDeleteBonusEntry",
+          "status": "pass",
+          "duration": "73ms"
+        },
+        {
+          "name": "shouldCreateWholeLifePolicy",
+          "status": "pass",
+          "duration": "15ms"
+        },
+        {
+          "name": "shouldCreatePolicyWithDifferentCurrency",
+          "status": "pass",
+          "duration": "34ms"
+        },
+        {
+          "name": "shouldListActivePolicies",
+          "status": "pass",
+          "duration": "12ms"
+        },
+        {
+          "name": "shouldSoftDeletePolicy",
+          "status": "pass",
+          "duration": "20ms"
         }
       ]
     },
@@ -257,9 +902,29 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "39ms"
+          "name": "userB_shouldOnlySeeOwnOwners",
+          "status": "pass",
+          "duration": "132ms"
+        },
+        {
+          "name": "userA_shouldOnlySeeOwnOwners",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "userA_taxSummary_shouldOnlyIncludeOwnData",
+          "status": "pass",
+          "duration": "14ms"
+        },
+        {
+          "name": "userB_shouldNotSeeAsTaxRecords",
+          "status": "pass",
+          "duration": "13ms"
+        },
+        {
+          "name": "userA_shouldNotSeeBsTaxRecords",
+          "status": "pass",
+          "duration": "12ms"
         }
       ]
     },
@@ -268,9 +933,34 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "51ms"
+          "name": "moduleToggleOffExcludesEntireModule",
+          "status": "pass",
+          "duration": "93ms"
+        },
+        {
+          "name": "foreignCurrencySavingIsConverted",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "configEndpointAutoCreatesModuleKeys",
+          "status": "pass",
+          "duration": "33ms"
+        },
+        {
+          "name": "bankSavingsIncludedInNetWorth",
+          "status": "pass",
+          "duration": "17ms"
+        },
+        {
+          "name": "propertyContributesEquityValueMinusLoan",
+          "status": "pass",
+          "duration": "14ms"
+        },
+        {
+          "name": "perRecordFlagExcludesFromNetWorth",
+          "status": "pass",
+          "duration": "13ms"
         }
       ]
     },
@@ -279,9 +969,24 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "46ms"
+          "name": "shouldBatchUpdate",
+          "status": "pass",
+          "duration": "91ms"
+        },
+        {
+          "name": "shouldReturnIncludedTypes",
+          "status": "pass",
+          "duration": "16ms"
+        },
+        {
+          "name": "shouldAutoCreateConfigsForAllAssetTypes",
+          "status": "pass",
+          "duration": "14ms"
+        },
+        {
+          "name": "shouldToggleInclusionOff",
+          "status": "pass",
+          "duration": "20ms"
         }
       ]
     },
@@ -290,9 +995,29 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "40ms"
+          "name": "shouldSupportAllRelationships",
+          "status": "pass",
+          "duration": "98ms"
+        },
+        {
+          "name": "shouldUpdateOwner",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "shouldCreateOwner",
+          "status": "pass",
+          "duration": "8ms"
+        },
+        {
+          "name": "shouldGetAllOwners",
+          "status": "pass",
+          "duration": "9ms"
+        },
+        {
+          "name": "shouldDeleteOwnerWithNoReferences",
+          "status": "pass",
+          "duration": "11ms"
         }
       ]
     },
@@ -301,9 +1026,54 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "44ms"
+          "name": "shouldCreateDeposit",
+          "status": "pass",
+          "duration": "79ms"
+        },
+        {
+          "name": "shouldGetDeposits",
+          "status": "pass",
+          "duration": "15ms"
+        },
+        {
+          "name": "shouldCreateDepositWithUSDCurrency",
+          "status": "pass",
+          "duration": "15ms"
+        },
+        {
+          "name": "shouldDeleteDeposit",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldFilterAllocationByOwnerId",
+          "status": "pass",
+          "duration": "27ms"
+        },
+        {
+          "name": "shouldGetAllocationWithTargets",
+          "status": "pass",
+          "duration": "22ms"
+        },
+        {
+          "name": "shouldGetAllocation",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldFilterDepositsByAccountId",
+          "status": "pass",
+          "duration": "14ms"
+        },
+        {
+          "name": "shouldCreateWithdrawal",
+          "status": "pass",
+          "duration": "16ms"
+        },
+        {
+          "name": "shouldUpdateAllocationTargets",
+          "status": "pass",
+          "duration": "18ms"
         }
       ]
     },
@@ -312,9 +1082,39 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "48ms"
+          "name": "shouldDelete",
+          "status": "pass",
+          "duration": "78ms"
+        },
+        {
+          "name": "shouldUpdate",
+          "status": "pass",
+          "duration": "15ms"
+        },
+        {
+          "name": "shouldCreateSilver",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "shouldCreateGold",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "shouldListAll",
+          "status": "pass",
+          "duration": "8ms"
+        },
+        {
+          "name": "shouldFilterByMetalType",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldGetSummaryForHeldItemsOnly",
+          "status": "pass",
+          "duration": "13ms"
         }
       ]
     },
@@ -323,9 +1123,34 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "43ms"
+          "name": "shouldUpdateProperty",
+          "status": "pass",
+          "duration": "97ms"
+        },
+        {
+          "name": "shouldCreateProperty",
+          "status": "pass",
+          "duration": "17ms"
+        },
+        {
+          "name": "shouldExcludeSoldPropertyFromSummary",
+          "status": "pass",
+          "duration": "25ms"
+        },
+        {
+          "name": "shouldListProperties",
+          "status": "pass",
+          "duration": "13ms"
+        },
+        {
+          "name": "shouldDeleteProperty",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldGetSummary",
+          "status": "pass",
+          "duration": "19ms"
         }
       ]
     },
@@ -334,9 +1159,64 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "37ms"
+          "name": "shouldCreateSRSContribution",
+          "status": "pass",
+          "duration": "73ms"
+        },
+        {
+          "name": "shouldCreateEmployerContribution",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "shouldDeleteEntry",
+          "status": "pass",
+          "duration": "15ms"
+        },
+        {
+          "name": "shouldUpdateEntry",
+          "status": "pass",
+          "duration": "13ms"
+        },
+        {
+          "name": "shouldFilterByFundType",
+          "status": "pass",
+          "duration": "19ms"
+        },
+        {
+          "name": "shouldCreateCPFContribution",
+          "status": "pass",
+          "duration": "12ms"
+        },
+        {
+          "name": "shouldListAllEntries",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldFilterByOwnerId",
+          "status": "pass",
+          "duration": "13ms"
+        },
+        {
+          "name": "shouldCreateWithdrawal",
+          "status": "pass",
+          "duration": "13ms"
+        },
+        {
+          "name": "shouldAutoPopulateYearAndMonth",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldCreateInterestEntry",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldGetSummary",
+          "status": "pass",
+          "duration": "13ms"
         }
       ]
     },
@@ -345,9 +1225,49 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "37ms"
+          "name": "summaryIsBasedOnNetTakeHome",
+          "status": "pass",
+          "duration": "78ms"
+        },
+        {
+          "name": "shouldReturnSummary",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "legacyRecordWithoutBreakdownUsesAmountAsTakeHome",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "shouldFilterByYear",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldPersistCurrencyAndSchemeContributions",
+          "status": "pass",
+          "duration": "15ms"
+        },
+        {
+          "name": "shouldUpdateSalary",
+          "status": "pass",
+          "duration": "17ms"
+        },
+        {
+          "name": "shouldDeleteSalary",
+          "status": "pass",
+          "duration": "9ms"
+        },
+        {
+          "name": "shouldCreateSalaryRecord",
+          "status": "pass",
+          "duration": "9ms"
+        },
+        {
+          "name": "shouldCreateBonusRecord",
+          "status": "pass",
+          "duration": "10ms"
         }
       ]
     },
@@ -356,9 +1276,29 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "39ms"
+          "name": "shouldFilterByOwner",
+          "status": "pass",
+          "duration": "72ms"
+        },
+        {
+          "name": "shouldCreateSoldPosition",
+          "status": "pass",
+          "duration": "16ms"
+        },
+        {
+          "name": "shouldListSoldPositions",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "shouldDeleteSoldPosition",
+          "status": "pass",
+          "duration": "13ms"
+        },
+        {
+          "name": "shouldGetShortTermTrades",
+          "status": "pass",
+          "duration": "11ms"
         }
       ]
     },
@@ -367,9 +1307,29 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "50ms"
+          "name": "shouldGetTaxById",
+          "status": "pass",
+          "duration": "76ms"
+        },
+        {
+          "name": "shouldDeleteTaxRecord",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldUpdateTaxRecord",
+          "status": "pass",
+          "duration": "12ms"
+        },
+        {
+          "name": "shouldGetTaxSummary",
+          "status": "pass",
+          "duration": "16ms"
+        },
+        {
+          "name": "shouldCreateTaxRecord",
+          "status": "pass",
+          "duration": "17ms"
         }
       ]
     },
@@ -378,9 +1338,24 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "52ms"
+          "name": "shouldCreateHoldingOnBuy",
+          "status": "pass",
+          "duration": "119ms"
+        },
+        {
+          "name": "shouldCreateBuyTransaction",
+          "status": "pass",
+          "duration": "34ms"
+        },
+        {
+          "name": "shouldListTransactions",
+          "status": "pass",
+          "duration": "45ms"
+        },
+        {
+          "name": "shouldDeleteTransaction",
+          "status": "pass",
+          "duration": "51ms"
         }
       ]
     },
@@ -389,9 +1364,49 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "44ms"
+          "name": "shouldCreateNewUser",
+          "status": "pass",
+          "duration": "162ms"
+        },
+        {
+          "name": "shouldListAllUsersForAdmin",
+          "status": "pass",
+          "duration": "18ms"
+        },
+        {
+          "name": "shouldReturn403ForNonAdminCreateUser",
+          "status": "pass",
+          "duration": "21ms"
+        },
+        {
+          "name": "shouldRejectDuplicateUsername",
+          "status": "pass",
+          "duration": "24ms"
+        },
+        {
+          "name": "shouldUpdateUserRole",
+          "status": "pass",
+          "duration": "35ms"
+        },
+        {
+          "name": "shouldReturn403ForNonAdminToggleActive",
+          "status": "pass",
+          "duration": "14ms"
+        },
+        {
+          "name": "shouldReturn403ForNonAdminListUsers",
+          "status": "pass",
+          "duration": "10ms"
+        },
+        {
+          "name": "shouldToggleUserActiveStatus",
+          "status": "pass",
+          "duration": "19ms"
+        },
+        {
+          "name": "shouldReturn403ForNonAdminUpdateRole",
+          "status": "pass",
+          "duration": "9ms"
         }
       ]
     },
@@ -400,9 +1415,24 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "47ms"
+          "name": "shouldUpdateWorkExperience",
+          "status": "pass",
+          "duration": "84ms"
+        },
+        {
+          "name": "shouldCreateWorkExperience",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldDeleteWorkExperience",
+          "status": "pass",
+          "duration": "11ms"
+        },
+        {
+          "name": "shouldListSortedByDate",
+          "status": "pass",
+          "duration": "11ms"
         }
       ]
     },
@@ -411,9 +1441,39 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "137ms"
+          "name": "shouldRejectWhenTokenInvalid",
+          "status": "pass",
+          "duration": "223ms"
+        },
+        {
+          "name": "shouldBeIdempotentOnRepeatProvisioning",
+          "status": "pass",
+          "duration": "507ms"
+        },
+        {
+          "name": "shouldReturn404ForStatusOfUnknownEmail",
+          "status": "pass",
+          "duration": "66ms"
+        },
+        {
+          "name": "shouldValidateEmailFormat",
+          "status": "pass",
+          "duration": "33ms"
+        },
+        {
+          "name": "shouldUpdateAccessStatus",
+          "status": "pass",
+          "duration": "113ms"
+        },
+        {
+          "name": "shouldProvisionUserWithValidToken",
+          "status": "pass",
+          "duration": "88ms"
+        },
+        {
+          "name": "shouldRejectWhenTokenMissing",
+          "status": "pass",
+          "duration": "12ms"
         }
       ]
     },
@@ -424,27 +1484,27 @@
         {
           "name": "shouldSwallowExceptionFromMalformedToken",
           "status": "pass",
-          "duration": "2184ms"
+          "duration": "956ms"
         },
         {
           "name": "shouldNotAuthenticateWithInvalidToken",
           "status": "pass",
-          "duration": "17ms"
+          "duration": "8ms"
         },
         {
           "name": "shouldAuthenticateWithValidToken",
           "status": "pass",
-          "duration": "18ms"
+          "duration": "8ms"
         },
         {
           "name": "shouldSkipWhenHeaderDoesNotStartWithBearer",
           "status": "pass",
-          "duration": "7ms"
+          "duration": "5ms"
         },
         {
           "name": "shouldSkipWhenNoAuthorizationHeader",
           "status": "pass",
-          "duration": "8ms"
+          "duration": "4ms"
         }
       ]
     },
@@ -454,53 +1514,53 @@
       "tests": [
         {
           "name": "shouldExtractRole",
-          "status": "fail",
-          "duration": "3ms"
+          "status": "pass",
+          "duration": "818ms"
         },
         {
           "name": "shouldExtractUserId",
-          "status": "fail",
-          "duration": "1ms"
+          "status": "pass",
+          "duration": "9ms"
         },
         {
           "name": "shouldExtractUsername",
-          "status": "fail",
-          "duration": "1ms"
+          "status": "pass",
+          "duration": "9ms"
         },
         {
           "name": "shouldGenerateUniqueTokensForSameUser",
-          "status": "fail",
-          "duration": "0ms"
+          "status": "pass",
+          "duration": "9ms"
         },
         {
           "name": "shouldRejectExpiredToken",
-          "status": "fail",
-          "duration": "1ms"
+          "status": "pass",
+          "duration": "7ms"
         },
         {
           "name": "shouldExtractMultipleClaims",
-          "status": "fail",
-          "duration": "2ms"
+          "status": "pass",
+          "duration": "6ms"
         },
         {
           "name": "shouldGenerateToken",
-          "status": "fail",
-          "duration": "0ms"
+          "status": "pass",
+          "duration": "6ms"
         },
         {
           "name": "shouldRejectTokenForDifferentUser",
-          "status": "fail",
-          "duration": "0ms"
+          "status": "pass",
+          "duration": "6ms"
         },
         {
           "name": "shouldValidateToken",
-          "status": "fail",
-          "duration": "1ms"
+          "status": "pass",
+          "duration": "6ms"
         },
         {
           "name": "shouldRejectMalformedToken",
-          "status": "fail",
-          "duration": "1ms"
+          "status": "pass",
+          "duration": "4ms"
         }
       ]
     },
@@ -509,9 +1569,85 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
-          "duration": "24ms"
+          "name": "shouldGetAccountsByType",
+          "status": "pass",
+          "duration": "70ms"
+        },
+        {
+          "name": "shouldDeleteAccountWithNoReferences",
+          "status": "pass",
+          "duration": "9ms"
+        },
+        {
+          "name": "shouldGetAccountById",
+          "status": "pass",
+          "duration": "6ms"
+        },
+        {
+          "name": "shouldThrowWhenAccountNotFound",
+          "status": "pass",
+          "duration": "6ms"
+        },
+        {
+          "name": "shouldCreateAccount",
+          "status": "pass",
+          "duration": "5ms"
+        },
+        {
+          "name": "shouldUpdateAccount",
+          "status": "pass",
+          "duration": "8ms"
+        },
+        {
+          "name": "shouldThrowReferenceConstraintExceptionWhenAccountHasTransactions",
+          "status": "pass",
+          "duration": "12ms"
+        },
+        {
+          "name": "shouldGetAllAccounts",
+          "status": "pass",
+          "duration": "9ms"
+        },
+        {
+          "name": "reassignMovesOwnersPositionsAndLeavesOtherOwnersUntouched",
+          "status": "pass",
+          "duration": "17ms"
+        },
+        {
+          "name": "reassignMergesIntoExistingTargetHolding",
+          "status": "pass",
+          "duration": "16ms"
+        },
+        {
+          "name": "shouldThrowReferenceConstraintExceptionWhenAccountHasHoldings",
+          "status": "pass",
+          "duration": "11ms"
+        }
+      ]
+    },
+    {
+      "name": "AssetMergeTest",
+      "type": "backend",
+      "tests": [
+        {
+          "name": "removesParenthesizedDuplicateDividendKeepingBareTicker",
+          "status": "pass",
+          "duration": "16ms"
+        },
+        {
+          "name": "leavesGenuineAssetsUntouchedAndIsIdempotent",
+          "status": "pass",
+          "duration": "9ms"
+        },
+        {
+          "name": "keepsGenuineSameDayDuplicateDividends",
+          "status": "pass",
+          "duration": "9ms"
+        },
+        {
+          "name": "mergesDescriptiveDuplicateIntoCanonicalTickerAndRepointsDividends",
+          "status": "pass",
+          "duration": "14ms"
         }
       ]
     },
@@ -520,54 +1656,136 @@
       "type": "backend",
       "tests": [
         {
+          "name": "spreadAppliedThroughInverseRate",
+          "status": "pass",
+          "duration": "382ms"
+        },
+        {
+          "name": "zeroOrNullSpreadUsesMidMarket",
+          "status": "pass",
+          "duration": "1ms"
+        },
+        {
           "name": "factorFromBaseUsesDirectSgdToTarget",
           "status": "pass",
-          "duration": "642ms"
+          "duration": "2ms"
         },
         {
           "name": "usesInverseRateWhenOnlyReverseExists",
           "status": "pass",
-          "duration": "5ms"
+          "duration": "1ms"
+        },
+        {
+          "name": "applySpreadHelperReturnsRateWhenSpreadNull",
+          "status": "pass",
+          "duration": "1ms"
+        },
+        {
+          "name": "appliesSpreadToDirectRate",
+          "status": "pass",
+          "duration": "1ms"
         },
         {
           "name": "factorFromBaseUsesInverseWhenOnlyTargetToSgdExists",
           "status": "pass",
-          "duration": "3ms"
+          "duration": "1ms"
         },
         {
           "name": "usesDirectRateToBase",
           "status": "pass",
-          "duration": "6ms"
+          "duration": "1ms"
         },
         {
           "name": "picksLatestRateByEffectiveDate",
           "status": "pass",
-          "duration": "4ms"
+          "duration": "1ms"
         },
         {
           "name": "factorFromBaseIsOneForBaseCurrency",
           "status": "pass",
-          "duration": "3ms"
+          "duration": "1ms"
         },
         {
           "name": "factorFromBaseReturnsNullWhenNoRate",
           "status": "pass",
-          "duration": "3ms"
+          "duration": "1ms"
         },
         {
           "name": "fallsBackToOneWhenNoRate",
           "status": "pass",
-          "duration": "4ms"
+          "duration": "2ms"
         },
         {
           "name": "baseCurrencyConvertsAsIdentity",
           "status": "pass",
-          "duration": "4ms"
+          "duration": "1ms"
         },
         {
           "name": "nullOrBlankCurrencyTreatedAsBase",
           "status": "pass",
+          "duration": "1ms"
+        },
+        {
+          "name": "applySpreadHelperClampsAtHundred",
+          "status": "pass",
           "duration": "3ms"
+        }
+      ]
+    },
+    {
+      "name": "DividendImportIntegrationTest",
+      "type": "backend",
+      "tests": [
+        {
+          "name": "reimportingSameTigerFileSkipsDuplicates",
+          "status": "pass",
+          "duration": "73ms"
+        },
+        {
+          "name": "reimportingSameFileSkipsDuplicates",
+          "status": "pass",
+          "duration": "11ms"
+        }
+      ]
+    },
+    {
+      "name": "DividendImportServiceTest",
+      "type": "backend",
+      "tests": [
+        {
+          "name": "ibkrNetsUsTaxIntoUsDividendAndKeepsCurrencyUsd",
+          "status": "pass",
+          "duration": "1ms"
+        },
+        {
+          "name": "saxoImportsBookedSgdAndSkipsReversalPair",
+          "status": "pass",
+          "duration": "17ms"
+        },
+        {
+          "name": "ibkrExcludesNonDividendRows",
+          "status": "pass",
+          "duration": "0ms"
+        },
+        {
+          "name": "tigerExtractsTickerFromDescriptiveSymbol",
+          "status": "pass",
+          "duration": "0ms"
+        },
+        {
+          "name": "tigerImportsPaidDividendsAndSkipsAccrualsAndOtherSections",
+          "status": "pass",
+          "duration": "1ms"
+        },
+        {
+          "name": "ibkrSgDividendHasNoTaxAndSgdCurrency",
+          "status": "pass",
+          "duration": "0ms"
+        },
+        {
+          "name": "ibkrClassifiesReturnOfCapital",
+          "status": "pass",
+          "duration": "0ms"
         }
       ]
     },
@@ -578,27 +1796,27 @@
         {
           "name": "parsesStooqCloseFromCsv",
           "status": "pass",
-          "duration": "1ms"
+          "duration": "0ms"
         },
         {
           "name": "parsesYahooRegularMarketPrice",
           "status": "pass",
-          "duration": "48ms"
+          "duration": "1ms"
         },
         {
           "name": "stooqReturnsEmptyForMalformedOrEmptyBody",
           "status": "pass",
-          "duration": "1ms"
+          "duration": "0ms"
         },
         {
           "name": "stooqReturnsEmptyForNotQuotedSymbol",
           "status": "pass",
-          "duration": "1ms"
+          "duration": "0ms"
         },
         {
           "name": "yahooReturnsEmptyForNoResult",
           "status": "pass",
-          "duration": "6ms"
+          "duration": "3ms"
         },
         {
           "name": "mapsYahooSymbolByExchange",
@@ -624,7 +1842,7 @@
         {
           "name": "scanThrowsWhenUnavailable",
           "status": "pass",
-          "duration": "2ms"
+          "duration": "1ms"
         },
         {
           "name": "handlesThousandsSeparators",
@@ -639,12 +1857,12 @@
         {
           "name": "keywordMatchMapsToCategory",
           "status": "pass",
-          "duration": "3ms"
+          "duration": "1ms"
         },
         {
           "name": "returnsNullWhenNoDate",
           "status": "pass",
-          "duration": "2ms"
+          "duration": "1ms"
         },
         {
           "name": "skipsNumericHeaderLines",
@@ -654,12 +1872,12 @@
         {
           "name": "parsesSlashDate",
           "status": "pass",
-          "duration": "4ms"
+          "duration": "1ms"
         },
         {
           "name": "directCategoryNameMatchWins",
           "status": "pass",
-          "duration": "2ms"
+          "duration": "1ms"
         },
         {
           "name": "returnsNullWhenNoAmount",
@@ -669,47 +1887,47 @@
         {
           "name": "detectsCurrencyCode",
           "status": "pass",
-          "duration": "2ms"
+          "duration": "1ms"
         },
         {
           "name": "returnsNullForUnknownCurrency",
           "status": "pass",
-          "duration": "3ms"
+          "duration": "1ms"
         },
         {
           "name": "returnsNullWhenNoCategoriesExist",
           "status": "pass",
-          "duration": "2ms"
+          "duration": "1ms"
         },
         {
           "name": "notAvailableWhenTessdataPathUnset",
           "status": "pass",
-          "duration": "3ms"
+          "duration": "2ms"
         },
         {
           "name": "fallsBackToLargestAmountWhenNoTotalKeyword",
           "status": "pass",
-          "duration": "1ms"
+          "duration": "0ms"
         },
         {
           "name": "usesFirstAlphabeticLineAsMerchant",
           "status": "pass",
-          "duration": "2ms"
+          "duration": "1ms"
         },
         {
           "name": "parsesIsoDate",
           "status": "pass",
-          "duration": "2ms"
+          "duration": "1ms"
         },
         {
           "name": "ignoresFutureDates",
           "status": "pass",
-          "duration": "8ms"
+          "duration": "3ms"
         },
         {
           "name": "ignoresSubtotalWhenTotalPresent",
           "status": "pass",
-          "duration": "2ms"
+          "duration": "1ms"
         },
         {
           "name": "picksTotalLineOverOtherAmounts",
@@ -723,60 +1941,144 @@
       "type": "backend",
       "tests": [
         {
-          "name": "",
-          "status": "fail",
+          "name": "resavingBuyThenSellRepairsMissingBuyFxOnAClosedPosition",
+          "status": "pass",
+          "duration": "104ms"
+        },
+        {
+          "name": "sellCreatesSoldPositionWithRealizedProfit",
+          "status": "pass",
+          "duration": "27ms"
+        },
+        {
+          "name": "updateBuyForStockSplitDoublesQuantityHalvesPrice",
+          "status": "pass",
+          "duration": "23ms"
+        },
+        {
+          "name": "buyWithoutFxRateDoesNotInventFxGainOnSell",
+          "status": "pass",
+          "duration": "30ms"
+        },
+        {
+          "name": "realizedPnlSplitsStockAndFxForCrossCurrencySell",
+          "status": "pass",
+          "duration": "24ms"
+        },
+        {
+          "name": "updateBuyRecalculatesHolding",
+          "status": "pass",
+          "duration": "22ms"
+        },
+        {
+          "name": "buyDoesNotCreateSoldPosition",
+          "status": "pass",
+          "duration": "20ms"
+        },
+        {
+          "name": "holdingPreservesInvestmentCurrencyNotBrokerCurrency",
+          "status": "pass",
           "duration": "21ms"
-        }
-      ]
-    },
-    {
-      "name": "ToastContext",
-      "type": "frontend",
-      "tests": [
-        {
-          "name": "provides empty toasts initially",
-          "status": "pass",
-          "duration": "73.29365299999972ms"
         },
         {
-          "name": "shows error toast",
+          "name": "editingSellIntoBuyRemovesSoldPosition",
           "status": "pass",
-          "duration": "40.249807000000146ms"
+          "duration": "32ms"
         },
         {
-          "name": "shows success toast",
+          "name": "shouldAveragePriceOnMultipleBuys",
           "status": "pass",
-          "duration": "13.947164000000157ms"
+          "duration": "23ms"
         },
         {
-          "name": "shows info toast",
+          "name": "realizedPnlForCrossCurrencySellWhenBaseWeakened",
           "status": "pass",
-          "duration": "4.872244000000137ms"
+          "duration": "18ms"
         },
         {
-          "name": "supports multiple simultaneous toasts",
+          "name": "shouldReduceHoldingOnSell",
           "status": "pass",
-          "duration": "12.260991999999987ms"
+          "duration": "19ms"
         },
         {
-          "name": "removes toast manually",
+          "name": "shouldCreateHoldingOnBuy",
           "status": "pass",
-          "duration": "15.92014300000028ms"
+          "duration": "16ms"
         },
         {
-          "name": "auto-dismisses after 4 seconds",
+          "name": "updateOnlyAffectsTheEditedLotWhenMultipleBuysExist",
           "status": "pass",
-          "duration": "7.100434999999834ms"
+          "duration": "28ms"
         },
         {
-          "name": "defaults to error type when no type specified",
+          "name": "shouldCalculateFeesInTotalAmount",
           "status": "pass",
-          "duration": "3.155714999999873ms"
+          "duration": "13ms"
         },
         {
-          "name": "throws error when used outside provider",
+          "name": "buyLeavesRealizedPnlNull",
           "status": "pass",
-          "duration": "11.113474000000224ms"
+          "duration": "14ms"
+        },
+        {
+          "name": "realizedPnlSameCurrencyHasNoFxComponent",
+          "status": "pass",
+          "duration": "17ms"
+        },
+        {
+          "name": "realizedPnlSubtractsSellFee",
+          "status": "pass",
+          "duration": "19ms"
+        },
+        {
+          "name": "recomputeFixesLegacySellUsingBuyTransactionFxWithoutReSaving",
+          "status": "pass",
+          "duration": "38ms"
+        },
+        {
+          "name": "recomputeIsIdempotent",
+          "status": "pass",
+          "duration": "44ms"
+        },
+        {
+          "name": "defaultsFeeCurrencyAndFxRateToNullForPlainBuy",
+          "status": "pass",
+          "duration": "17ms"
+        },
+        {
+          "name": "shouldThrowWhenSellingWithoutHolding",
+          "status": "pass",
+          "duration": "22ms"
+        },
+        {
+          "name": "shouldThrowWhenSellingMoreThanHeld",
+          "status": "pass",
+          "duration": "19ms"
+        },
+        {
+          "name": "recomputeFixesHoldingCurrencyToMatchAsset",
+          "status": "pass",
+          "duration": "23ms"
+        },
+        {
+          "name": "recomputeBackfillsMissingBuyFxRateFromTransactions",
+          "status": "pass",
+          "duration": "23ms"
+        },
+        {
+          "name": "storesFeeCurrencyAndPurchaseFxRateForCrossCurrencyBuy",
+          "status": "pass",
+          "duration": "15ms"
+        },
+        {
+          "name": "deletingSellRemovesSoldPosition",
+          "status": "pass",
+          "duration": "22ms"
+        },
+        {
+          "name": "editingSellUpdatesTheSameSoldPositionInPlace",
+          "status": "pass",
+          "duration": "29ms"
         }
       ]
     },
@@ -787,57 +2089,57 @@
         {
           "name": "renders an Export button",
           "status": "pass",
-          "duration": "199.41981100000066ms"
+          "duration": "149.35926300000028ms"
         },
         {
           "name": "opens the menu and shows CSV, Excel and PDF options",
           "status": "pass",
-          "duration": "142.66153500000019ms"
+          "duration": "56.018355000000156ms"
         },
         {
           "name": "triggers CSV export with rows and config",
           "status": "pass",
-          "duration": "44.20585300000039ms"
+          "duration": "68.63322400000015ms"
         },
         {
           "name": "triggers Excel export",
           "status": "pass",
-          "duration": "52.58865799999967ms"
+          "duration": "29.85692199999994ms"
         },
         {
           "name": "triggers PDF export and passes subtitle when provided",
           "status": "pass",
-          "duration": "24.087384000000384ms"
+          "duration": "14.604235999999673ms"
         },
         {
           "name": "shows a success toast on successful export",
           "status": "pass",
-          "duration": "87.4768839999997ms"
+          "duration": "73.97927299999992ms"
         },
         {
           "name": "shows an error toast (no stack trace) on failure",
           "status": "pass",
-          "duration": "33.30806699999994ms"
+          "duration": "54.23265999999967ms"
         },
         {
           "name": "disables the control and shows guidance when the dataset is empty",
           "status": "pass",
-          "duration": "3.8919880000003104ms"
+          "duration": "3.413322000000335ms"
         },
         {
           "name": "does not run a second export while one is in flight (duplicate-click guard)",
           "status": "pass",
-          "duration": "77.8574609999996ms"
+          "duration": "63.812868999999864ms"
         },
         {
           "name": "supports keyboard navigation to open and move within the menu",
           "status": "pass",
-          "duration": "59.67096499999934ms"
+          "duration": "16.499583000000257ms"
         },
         {
           "name": "closes the menu on Escape",
           "status": "pass",
-          "duration": "31.84452599999986ms"
+          "duration": "28.88336500000014ms"
         }
       ]
     },
@@ -848,37 +2150,37 @@
         {
           "name": "renders with placeholder when no value selected",
           "status": "pass",
-          "duration": "134.16811499999994ms"
+          "duration": "145.1688640000002ms"
         },
         {
           "name": "shows selected value label",
           "status": "pass",
-          "duration": "2.7871679999998378ms"
+          "duration": "38.45344799999975ms"
         },
         {
           "name": "opens dropdown on click",
           "status": "pass",
-          "duration": "77.38643900000034ms"
+          "duration": "94.47519899999998ms"
         },
         {
           "name": "filters options by search text",
           "status": "pass",
-          "duration": "55.49854899999991ms"
+          "duration": "12.393023999999969ms"
         },
         {
           "name": "calls onChange when option is selected",
           "status": "pass",
-          "duration": "68.19401800000014ms"
+          "duration": "18.578588999999738ms"
         },
         {
           "name": "shows \"No results\" when search matches nothing",
           "status": "pass",
-          "duration": "26.542917999999645ms"
+          "duration": "33.57125099999985ms"
         },
         {
           "name": "respects disabled prop",
           "status": "pass",
-          "duration": "16.028671999999915ms"
+          "duration": "3.2820339999998396ms"
         }
       ]
     },
@@ -889,37 +2191,88 @@
         {
           "name": "renders nothing when no toasts",
           "status": "pass",
-          "duration": "133.7181230000001ms"
+          "duration": "45.76750200000015ms"
         },
         {
           "name": "renders error toast with correct styling",
           "status": "pass",
-          "duration": "111.03374200000007ms"
+          "duration": "71.35685700000022ms"
         },
         {
           "name": "renders success toast with correct styling",
           "status": "pass",
-          "duration": "6.487176999999974ms"
+          "duration": "26.118880999999874ms"
         },
         {
           "name": "renders info toast with correct styling",
           "status": "pass",
-          "duration": "39.00425099999984ms"
+          "duration": "19.652068999999756ms"
         },
         {
           "name": "dismisses toast on X button click",
           "status": "pass",
-          "duration": "35.94100299999991ms"
+          "duration": "12.018899000000147ms"
         },
         {
           "name": "renders multiple toasts stacked",
           "status": "pass",
-          "duration": "22.547536000000036ms"
+          "duration": "69.98914999999988ms"
         },
         {
           "name": "preserves newlines in messages",
           "status": "pass",
-          "duration": "5.779519000000164ms"
+          "duration": "5.403726000000006ms"
+        }
+      ]
+    },
+    {
+      "name": "ToastContext",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "provides empty toasts initially",
+          "status": "pass",
+          "duration": "66.74190199999975ms"
+        },
+        {
+          "name": "shows error toast",
+          "status": "pass",
+          "duration": "67.75840199999993ms"
+        },
+        {
+          "name": "shows success toast",
+          "status": "pass",
+          "duration": "6.1975320000001375ms"
+        },
+        {
+          "name": "shows info toast",
+          "status": "pass",
+          "duration": "4.096013999999741ms"
+        },
+        {
+          "name": "supports multiple simultaneous toasts",
+          "status": "pass",
+          "duration": "26.458532000000105ms"
+        },
+        {
+          "name": "removes toast manually",
+          "status": "pass",
+          "duration": "5.174637999999959ms"
+        },
+        {
+          "name": "auto-dismisses after 4 seconds",
+          "status": "pass",
+          "duration": "5.059131999999863ms"
+        },
+        {
+          "name": "defaults to error type when no type specified",
+          "status": "pass",
+          "duration": "16.76972799999976ms"
+        },
+        {
+          "name": "throws error when used outside provider",
+          "status": "pass",
+          "duration": "25.973997000000054ms"
         }
       ]
     },
@@ -930,57 +2283,57 @@
         {
           "name": "exports owner CRUD functions",
           "status": "pass",
-          "duration": "3.139445999999907ms"
+          "duration": "2.831367ms"
         },
         {
           "name": "exports account CRUD functions",
           "status": "pass",
-          "duration": "0.5022019999998975ms"
+          "duration": "0.4492929999998978ms"
         },
         {
           "name": "exports asset functions",
           "status": "pass",
-          "duration": "0.4585540000000492ms"
+          "duration": "0.4372690000000148ms"
         },
         {
           "name": "exports transaction functions",
           "status": "pass",
-          "duration": "0.34550100000001294ms"
+          "duration": "0.31317300000000614ms"
         },
         {
           "name": "exports currency rate functions",
           "status": "pass",
-          "duration": "0.45964600000002065ms"
+          "duration": "0.42271899999991547ms"
         },
         {
           "name": "exports tax functions",
           "status": "pass",
-          "duration": "0.45925499999998465ms"
+          "duration": "0.4326899999998659ms"
         },
         {
           "name": "exports work experience functions",
           "status": "pass",
-          "duration": "0.47416599999996834ms"
+          "duration": "0.4477569999999105ms"
         },
         {
           "name": "exports salary functions",
           "status": "pass",
-          "duration": "0.4544909999999618ms"
+          "duration": "0.43971299999998337ms"
         },
         {
           "name": "exports retirement fund functions",
           "status": "pass",
-          "duration": "0.5053680000000895ms"
+          "duration": "0.366064999999935ms"
         },
         {
           "name": "exports home loan functions",
           "status": "pass",
-          "duration": "0.5900240000000849ms"
+          "duration": "0.532408999999916ms"
         },
         {
           "name": "exports insurance bonus functions",
           "status": "pass",
-          "duration": "0.3885600000000977ms"
+          "duration": "0.3611620000001494ms"
         }
       ]
     },
@@ -991,17 +2344,17 @@
         {
           "name": "ASSET_TYPE_LABELS has all expected types",
           "status": "pass",
-          "duration": "3.1681610000000546ms"
+          "duration": "3.0693069999999807ms"
         },
         {
           "name": "ASSET_TYPE_COLORS has colors for all types in labels",
           "status": "pass",
-          "duration": "3.339780000000019ms"
+          "duration": "3.048479000000043ms"
         },
         {
           "name": "has 16 asset types",
           "status": "pass",
-          "duration": "0.24724600000013197ms"
+          "duration": "0.19315600000004451ms"
         }
       ]
     },
@@ -1012,52 +2365,52 @@
         {
           "name": "renders page title and description",
           "status": "pass",
-          "duration": "241.53946799999994ms"
+          "duration": "187.8193540000002ms"
         },
         {
           "name": "loads and displays audit entries",
           "status": "pass",
-          "duration": "221.916921ms"
+          "duration": "203.89267299999983ms"
         },
         {
           "name": "displays action badges with correct labels",
           "status": "pass",
-          "duration": "78.46778200000017ms"
+          "duration": "12.43264900000031ms"
         },
         {
           "name": "shows total entries count",
           "status": "pass",
-          "duration": "86.76781600000004ms"
+          "duration": "49.993981000000076ms"
         },
         {
           "name": "renders filter controls",
           "status": "pass",
-          "duration": "14.658760999999686ms"
+          "duration": "16.155515000000378ms"
         },
         {
           "name": "calls API with action filter",
           "status": "pass",
-          "duration": "131.10833700000012ms"
+          "duration": "74.67618999999968ms"
         },
         {
           "name": "calls API with entity filter",
           "status": "pass",
-          "duration": "111.91435600000023ms"
+          "duration": "89.95807400000012ms"
         },
         {
           "name": "clears all filters",
           "status": "pass",
-          "duration": "105.82808999999997ms"
+          "duration": "73.29097700000011ms"
         },
         {
           "name": "shows empty state when no entries",
           "status": "pass",
-          "duration": "62.1834889999991ms"
+          "duration": "16.505169000000024ms"
         },
         {
           "name": "shows loading spinner initially",
           "status": "pass",
-          "duration": "81.11127000000033ms"
+          "duration": "6.116453000000092ms"
         }
       ]
     },
@@ -1068,42 +2421,42 @@
         {
           "name": "renders page title and description",
           "status": "pass",
-          "duration": "375.97654200000034ms"
+          "duration": "344.37785399999984ms"
         },
         {
           "name": "renders all four tabs",
           "status": "pass",
-          "duration": "51.01297900000009ms"
+          "duration": "46.31325000000015ms"
         },
         {
           "name": "shows plan tab summary cards by default",
           "status": "pass",
-          "duration": "63.353038999999626ms"
+          "duration": "83.8222039999996ms"
         },
         {
           "name": "switches to Categories tab and shows category management",
           "status": "pass",
-          "duration": "181.56586799999968ms"
+          "duration": "136.01277299999992ms"
         },
         {
           "name": "adds a new category",
           "status": "pass",
-          "duration": "211.2270269999999ms"
+          "duration": "113.72460300000012ms"
         },
         {
           "name": "switches to Expenses tab",
           "status": "pass",
-          "duration": "120.47963700000037ms"
+          "duration": "122.58375800000022ms"
         },
         {
           "name": "switches to Report tab and shows empty state",
           "status": "pass",
-          "duration": "49.28268200000002ms"
+          "duration": "43.115740999999616ms"
         },
         {
           "name": "has month and year selectors",
           "status": "pass",
-          "duration": "11.286243000000468ms"
+          "duration": "9.653892999999698ms"
         }
       ]
     },
@@ -1114,12 +2467,12 @@
         {
           "name": "shows the Export button on the transactions table",
           "status": "pass",
-          "duration": "514.2022079999997ms"
+          "duration": "392.64849200000026ms"
         },
         {
           "name": "exports the complete loaded dataset with ALL columns, including UI-hidden ones",
           "status": "pass",
-          "duration": "195.57401600000048ms"
+          "duration": "167.8879390000002ms"
         }
       ]
     },
@@ -1130,67 +2483,67 @@
         {
           "name": "renders the guide title, search box and progress",
           "status": "pass",
-          "duration": "522.2445670000002ms"
+          "duration": "342.293725ms"
         },
         {
           "name": "renders all section titles in the navigation",
           "status": "pass",
-          "duration": "200.48027700000011ms"
+          "duration": "168.30992300000025ms"
         },
         {
           "name": "shows the Welcome page content by default",
           "status": "pass",
-          "duration": "237.56528099999923ms"
+          "duration": "169.1661979999999ms"
         },
         {
           "name": "navigates to another page when a nav item is clicked",
           "status": "pass",
-          "duration": "447.04842499999995ms"
+          "duration": "303.39604599999984ms"
         },
         {
           "name": "expands a collapsed section and opens one of its pages",
           "status": "pass",
-          "duration": "315.87809599999946ms"
+          "duration": "323.08318599999984ms"
         },
         {
           "name": "searches and shows matching results",
           "status": "pass",
-          "duration": "142.35495300000002ms"
+          "duration": "117.05685499999981ms"
         },
         {
           "name": "search with no match shows an empty message",
           "status": "pass",
-          "duration": "187.36049999999977ms"
+          "duration": "93.2177999999999ms"
         },
         {
           "name": "opens a related in-guide page via a related chip",
           "status": "pass",
-          "duration": "137.8784829999995ms"
+          "duration": "152.0149720000004ms"
         },
         {
           "name": "navigates to an app route when a related route chip is clicked",
           "status": "pass",
-          "duration": "190.22264199999972ms"
+          "duration": "131.33318800000052ms"
         },
         {
           "name": "marks a page as done and updates progress + persists",
           "status": "pass",
-          "duration": "219.1648240000004ms"
+          "duration": "175.86885799999982ms"
         },
         {
           "name": "renders a screenshot placeholder (no src) with accessible label",
           "status": "pass",
-          "duration": "63.96496399999978ms"
+          "duration": "44.44714400000066ms"
         },
         {
           "name": "hides pages whose feature is disabled",
           "status": "pass",
-          "duration": "80.75446000000011ms"
+          "duration": "62.43384900000001ms"
         },
         {
           "name": "every content page has the required author fields",
           "status": "pass",
-          "duration": "9.443739000000278ms"
+          "duration": "6.177298999999948ms"
         }
       ]
     },
@@ -1201,47 +2554,47 @@
         {
           "name": "transactions config exports columns the UI hides (ID, fees, currency, createdAt)",
           "status": "pass",
-          "duration": "3.7620469999997113ms"
+          "duration": "3.7894309999999223ms"
         },
         {
           "name": "transactions export preserves original currency + amount (no conversion)",
           "status": "pass",
-          "duration": "4.726830999999947ms"
+          "duration": "3.0280139999999847ms"
         },
         {
           "name": "accounts config EXCLUDES the sensitive account number",
           "status": "pass",
-          "duration": "1.409943000000112ms"
+          "duration": "19.870535000000018ms"
         },
         {
           "name": "accounts export does not leak an account number even if present on the object",
           "status": "pass",
-          "duration": "0.43202000000019325ms"
+          "duration": "0.6743160000000898ms"
         },
         {
           "name": "dividends and holdings configs include hidden columns (id, currency)",
           "status": "pass",
-          "duration": "0.4635880000000725ms"
+          "duration": "0.514891999999918ms"
         },
         {
           "name": "every column has a header and accessor",
           "status": "pass",
-          "duration": "3.402577000000292ms"
+          "duration": "6.638661000000184ms"
         },
         {
           "name": "bank savings, generic FD, SL FD exclude account numbers; insurance excludes policy number",
           "status": "pass",
-          "duration": "0.8470510000001923ms"
+          "duration": "0.8603450000000521ms"
         },
         {
           "name": "salary/work-experience/property/metals/tax configs include hidden columns (id, notes)",
           "status": "pass",
-          "duration": "1.2692010000000664ms"
+          "duration": "8.077947999999878ms"
         },
         {
           "name": "every additional config column has a header and accessor",
           "status": "pass",
-          "duration": "22.788622000000032ms"
+          "duration": "9.2560390000001ms"
         }
       ]
     },
@@ -1252,67 +2605,67 @@
         {
           "name": "leaves plain values unquoted",
           "status": "pass",
-          "duration": "38.14970499999981ms"
+          "duration": "2.7651559999999336ms"
         },
         {
           "name": "quotes fields containing commas",
           "status": "pass",
-          "duration": "4.278330000000096ms"
+          "duration": "0.309011000000055ms"
         },
         {
           "name": "escapes and quotes embedded double-quotes",
           "status": "pass",
-          "duration": "0.24022599999989325ms"
+          "duration": "0.18624100000010912ms"
         },
         {
           "name": "quotes fields containing newlines",
           "status": "pass",
-          "duration": "0.22255900000027395ms"
+          "duration": "0.22225400000002082ms"
         },
         {
           "name": "defuses formula injection with a leading quote",
           "status": "pass",
-          "duration": "0.3016689999999471ms"
+          "duration": "0.4553929999999582ms"
         },
         {
           "name": "includes a header row",
           "status": "pass",
-          "duration": "6.255723000000216ms"
+          "duration": "2.5847060000000965ms"
         },
         {
           "name": "preserves original currency amounts without conversion or truncation",
           "status": "pass",
-          "duration": "0.5127699999998185ms"
+          "duration": "0.5384740000001784ms"
         },
         {
           "name": "escapes commas, quotes, and newlines correctly",
           "status": "pass",
-          "duration": "0.43059500000026674ms"
+          "duration": "0.5794779999998809ms"
         },
         {
           "name": "handles null values as empty fields",
           "status": "pass",
-          "duration": "0.261482999999771ms"
+          "duration": "0.27498099999979786ms"
         },
         {
           "name": "supports unicode content",
           "status": "pass",
-          "duration": "0.23884999999972933ms"
+          "duration": "0.22022999999990134ms"
         },
         {
           "name": "formats dates consistently as YYYY-MM-DD",
           "status": "pass",
-          "duration": "0.28194500000017797ms"
+          "duration": "0.25873699999988276ms"
         },
         {
           "name": "handles a large dataset without truncation",
           "status": "pass",
-          "duration": "88.51120700000001ms"
+          "duration": "71.19027800000003ms"
         },
         {
           "name": "prepends a UTF-8 BOM",
           "status": "pass",
-          "duration": "0.9634399999999914ms"
+          "duration": "1.041456000000153ms"
         }
       ]
     },
@@ -1323,42 +2676,42 @@
         {
           "name": "creates a worksheet with a readable name",
           "status": "pass",
-          "duration": "358.9569969999998ms"
+          "duration": "286.2946860000002ms"
         },
         {
           "name": "writes all columns as headers",
           "status": "pass",
-          "duration": "201.50699699999996ms"
+          "duration": "95.0825249999998ms"
         },
         {
           "name": "keeps numeric and currency values numeric",
           "status": "pass",
-          "duration": "53.3489969999996ms"
+          "duration": "40.11497999999983ms"
         },
         {
           "name": "keeps dates as Date objects (date-compatible)",
           "status": "pass",
-          "duration": "108.63807900000029ms"
+          "duration": "94.73679700000002ms"
         },
         {
           "name": "renders booleans as Yes/No and null as empty",
           "status": "pass",
-          "duration": "68.22115100000019ms"
+          "duration": "40.757718999999724ms"
         },
         {
           "name": "preserves unicode",
           "status": "pass",
-          "duration": "50.7579810000002ms"
+          "duration": "81.81018899999981ms"
         },
         {
           "name": "freezes the header row",
           "status": "pass",
-          "duration": "44.72116399999959ms"
+          "duration": "47.03091799999993ms"
         },
         {
           "name": "handles a large dataset",
           "status": "pass",
-          "duration": "1742.9473609999995ms"
+          "duration": "1249.1832320000003ms"
         }
       ]
     },
@@ -1369,22 +2722,22 @@
         {
           "name": "downloads a CSV with a dated filename",
           "status": "pass",
-          "duration": "5.645934000000125ms"
+          "duration": "5.2529749999998785ms"
         },
         {
           "name": "downloads an Excel file with .xlsx extension",
           "status": "pass",
-          "duration": "212.69247600000017ms"
+          "duration": "183.21853899999996ms"
         },
         {
           "name": "downloads a PDF with .pdf extension",
           "status": "pass",
-          "duration": "170.65019800000027ms"
+          "duration": "115.71599700000024ms"
         },
         {
           "name": "rejects an unsupported format",
           "status": "pass",
-          "duration": "6.46741800000018ms"
+          "duration": "10.740158999999949ms"
         }
       ]
     },
@@ -1395,67 +2748,67 @@
         {
           "name": "parses numbers and numeric strings",
           "status": "pass",
-          "duration": "7.834039999999732ms"
+          "duration": "2.869670000000042ms"
         },
         {
           "name": "returns undefined for null/empty/non-numeric",
           "status": "pass",
-          "duration": "0.8949560000000929ms"
+          "duration": "0.4079750000000786ms"
         },
         {
           "name": "formats a date-only string as YYYY-MM-DD",
           "status": "pass",
-          "duration": "7.135684999999739ms"
+          "duration": "1.4931159999998727ms"
         },
         {
           "name": "formats an ISO datetime to just the date",
           "status": "pass",
-          "duration": "0.39862300000004325ms"
+          "duration": "0.21474000000011984ms"
         },
         {
           "name": "returns empty string for empty input",
           "status": "pass",
-          "duration": "0.4740670000001046ms"
+          "duration": "0.2214289999999437ms"
         },
         {
           "name": "formats to YYYY-MM-DD HH:mm:ss",
           "status": "pass",
-          "duration": "0.3601659999999356ms"
+          "duration": "0.25145099999986087ms"
         },
         {
           "name": "parses valid values and rejects invalid",
           "status": "pass",
-          "duration": "1.0209219999997003ms"
+          "duration": "0.42893499999991036ms"
         },
         {
           "name": "handles null/undefined/empty consistently as empty string",
           "status": "pass",
-          "duration": "1.294521999999688ms"
+          "duration": "0.3370469999999841ms"
         },
         {
           "name": "renders booleans as Yes/No",
           "status": "pass",
-          "duration": "0.26862500000015643ms"
+          "duration": "0.2133720000001631ms"
         },
         {
           "name": "keeps full numeric precision without truncation or separators",
           "status": "pass",
-          "duration": "0.2408810000001722ms"
+          "duration": "0.22191600000019207ms"
         },
         {
           "name": "preserves unicode strings",
           "status": "pass",
-          "duration": "0.17511400000012145ms"
+          "duration": "0.17160899999998946ms"
         },
         {
           "name": "builds entity_YYYY-MM-DD.ext",
           "status": "pass",
-          "duration": "0.6036370000001625ms"
+          "duration": "0.5751190000000861ms"
         },
         {
           "name": "sanitizes unsafe characters",
           "status": "pass",
-          "duration": "0.21071200000005774ms"
+          "duration": "0.2049930000000586ms"
         }
       ]
     },
@@ -1466,27 +2819,27 @@
         {
           "name": "produces a PDF blob",
           "status": "pass",
-          "duration": "38.23796200000015ms"
+          "duration": "40.46748600000001ms"
         },
         {
           "name": "generates a non-trivial document for wide tables with many columns",
           "status": "pass",
-          "duration": "16.980301999999938ms"
+          "duration": "7.572091ms"
         },
         {
           "name": "handles multi-page (large) datasets and long text",
           "status": "pass",
-          "duration": "1949.7008790000004ms"
+          "duration": "1541.9012869999997ms"
         },
         {
           "name": "handles empty datasets (header only)",
           "status": "pass",
-          "duration": "5.043936000000031ms"
+          "duration": "5.586174000000028ms"
         },
         {
           "name": "accepts a subtitle without throwing",
           "status": "pass",
-          "duration": "2.09460399999989ms"
+          "duration": "1.9578480000000127ms"
         }
       ]
     }
