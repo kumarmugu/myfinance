@@ -32,8 +32,10 @@ public class DividendController {
     private final OwnerRepository ownerRepository;
     private final TenantContext tenantContext;
 
-    /** Per-user feature key that unlocks the statement-import endpoint. */
+    /** Per-user feature key that unlocks the file-based statement-import endpoint. */
     private static final String IMPORT_FEATURE = "DIVIDEND_IMPORT";
+    /** Per-user feature key that unlocks live IBKR pulls (Flex Web Service). */
+    private static final String IBKR_FEATURE = "IBKR_SYNC";
 
     /**
      * Request to fetch dividends directly from IBKR via the Flex Web Service. The {@code token} and
@@ -126,9 +128,9 @@ public class DividendController {
     public ResponseEntity<DividendImportService.ImportResult> fetchFromIbkr(@RequestBody IbkrFlexRequest req) {
         AppUser user = tenantContext.getCurrentUser();
         if (user == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-        if (!hasImportFeature(user)) {
-            log.warn("User {} attempted IBKR Flex fetch without the {} feature", user.getUsername(), IMPORT_FEATURE);
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Dividend import is not enabled for your account");
+        if (!hasFeature(user, IBKR_FEATURE)) {
+            log.warn("User {} attempted IBKR Flex fetch without the {} feature", user.getUsername(), IBKR_FEATURE);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "IBKR sync is not enabled for your account");
         }
         if (req.token() == null || req.token().isBlank() || req.queryId() == null || req.queryId().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "IBKR Flex token and Query ID are required");
@@ -153,10 +155,13 @@ public class DividendController {
         }
     }
 
-    private boolean hasImportFeature(AppUser user) {
+    private boolean hasImportFeature(AppUser user) { return hasFeature(user, IMPORT_FEATURE); }
+
+    /** True if the user has the given feature (empty CSV = all features enabled, per convention). */
+    private boolean hasFeature(AppUser user, String key) {
         String csv = user.getEnabledFeatures();
-        if (csv == null || csv.isBlank()) return true; // empty = all features enabled (project convention)
-        for (String f : csv.split(",")) if (IMPORT_FEATURE.equals(f.trim())) return true;
+        if (csv == null || csv.isBlank()) return true;
+        for (String f : csv.split(",")) if (key.equals(f.trim())) return true;
         return false;
     }
 

@@ -22,6 +22,17 @@ import java.util.List;
 public class TransactionController {
     private final TransactionService transactionService;
     private final TenantContext tenantContext;
+    private final com.myfinance.service.IbkrFlexService ibkrFlexService;
+    private final com.myfinance.service.IbkrSyncService ibkrSyncService;
+    private final com.myfinance.repository.AccountRepository accountRepository;
+    private final com.myfinance.repository.OwnerRepository ownerRepository;
+
+    private static final String IBKR_FEATURE = "IBKR_SYNC";
+
+    /** Request for the IBKR trade sync. Token/queryId are used per-request and never stored. */
+    public record IbkrSyncRequest(String token, String queryId, Long accountId, Long ownerId,
+                                  String mode, LocalDate from, LocalDate to,
+                                  java.util.List<String> approvedMismatchTradeIds) {}
 
     @GetMapping
     public List<Transaction> getAll(@RequestParam(required = false) Long ownerId) {
@@ -103,5 +114,70 @@ public class TransactionController {
         Long uid = tenantContext.getCurrentUserId();
         log.info("Recomputing realized P/L for userId={}", uid);
         return ResponseEntity.ok(transactionService.recomputeRealizedPnlForUser(uid));
+    }
+
+    /**
+     * Preview an IBKR trade sync: fetch the Flex statement and classify each trade (new / duplicate
+     * / mismatch) without writing anything. Gated by the IBKR_SYNC feature. Token never stored/logged.
+     */
+    @PostMapping("/ibkr-sync/preview")
+    public com.myfinance.service.IbkrSyncService.SyncPreview ibkrSyncPreview(@RequestBody IbkrSyncRequest req) {
+        var ctx = resolve(req);
+        String xml = ibkrFlexService.fetchStatementXml(req.token(), req.queryId());
+        var range = dateRange(req);
+        return ibkrSyncService.preview(xml, ctx.userId, ctx.account, ctx.owner, range[0], range[1]);
+    }
+
+    /**
+     * Apply an IBKR trade sync: insert new trades and overwrite only the approved mismatches, then
+     * recompute realized P/L. Gated by IBKR_SYNC. Token never stored/logged.
+     */
+    @PostMapping("/ibkr-sync/apply")
+    public com.myfinance.service.IbkrSyncService.SyncResult ibkrSyncApply(@RequestBody IbkrSyncRequest req) {
+        var ctx = resolve(req);
+        String xml = ibkrFlexService.fetchStatementXml(req.token(), req.queryId());
+        var range = dateRange(req);
+        java.util.Set<String> approved = req.approvedMismatchTradeIds() == null
+                ? java.util.Set.of() : new java.util.HashSet<>(req.approvedMismatchTradeIds());
+        try {
+            return ibkrSyncService.apply(xml, ctx.userId, ctx.account, ctx.owner, range[0], range[1], approved);
+        } catch (RuntimeException e) {
+            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    /** Resolved, tenant-checked sync context. */
+    private record SyncCtx(Long userId, com.myfinance.model.Account account, com.myfinance.model.Owner owner) {}
+
+    private SyncCtx resolve(IbkrSyncRequest req) {
+        com.myfinance.model.AppUser user = tenantContext.getCurrentUser();
+        if (user == null) throw new org.springframework.web.server.ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        if (!hasFeature(user, IBKR_FEATURE)) {
+            log.warn("User {} attempted IBKR trade sync without the {} feature", user.getUsername(), IBKR_FEATURE);
+            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.FORBIDDEN, "IBKR sync is not enabled for your account");
+        }
+        if (req.token() == null || req.token().isBlank() || req.queryId() == null || req.queryId().isBlank()) {
+            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, "IBKR Flex token and Query ID are required");
+        }
+        com.myfinance.model.Account account = accountRepository.findById(req.accountId())
+                .filter(a -> user.getId().equals(a.getUserId()))
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid account"));
+        com.myfinance.model.Owner owner = ownerRepository.findById(req.ownerId())
+                .filter(o -> user.getId().equals(o.getUserId()))
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid owner"));
+        return new SyncCtx(user.getId(), account, owner);
+    }
+
+    /** ALL mode → no bounds; RANGE mode → the supplied from/to (either may be null = open-ended). */
+    private LocalDate[] dateRange(IbkrSyncRequest req) {
+        boolean range = req.mode() != null && req.mode().equalsIgnoreCase("RANGE");
+        return range ? new LocalDate[]{req.from(), req.to()} : new LocalDate[]{null, null};
+    }
+
+    private boolean hasFeature(com.myfinance.model.AppUser user, String key) {
+        String csv = user.getEnabledFeatures();
+        if (csv == null || csv.isBlank()) return true;
+        for (String f : csv.split(",")) if (key.equals(f.trim())) return true;
+        return false;
     }
 }

@@ -16,7 +16,7 @@ vi.mock('../api', () => ({
 }));
 
 vi.mock('../contexts/AuthContext', () => ({
-  useAuth: () => ({ verifyPassword: vi.fn().mockResolvedValue(true) }),
+  useAuth: () => ({ verifyPassword: vi.fn().mockResolvedValue(true), hasFeature: () => false }),
 }));
 
 // Spy on the shared export entry point (keep the rest of the module real).

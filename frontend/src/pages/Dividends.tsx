@@ -38,14 +38,17 @@ export default function Dividends() {
   const [displayCurrency, setDisplayCurrency] = useState<Currency>('SGD');
   const [fxRates, setFxRates] = useState<CurrencyRate[]>([]);
   const { hasFeature } = useAuth();
-  const canImport = hasFeature('DIVIDEND_IMPORT');
+  const canImportFile = hasFeature('DIVIDEND_IMPORT');
+  const canIbkr = hasFeature('IBKR_SYNC');
+  const canImport = canImportFile || canIbkr; // the panel shows if either capability is enabled
   const [showImport, setShowImport] = useState(false);
   const [importAccountId, setImportAccountId] = useState(0);
   const [importOwnerId, setImportOwnerId] = useState(0);
   const [importing, setImporting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   // IBKR Flex fetch: token + query id are held only in component state for the request, never stored.
-  const [importMode, setImportMode] = useState<'file' | 'ibkr'>('file');
+  // Default to whichever capability is available (file import if present, else IBKR).
+  const [importMode, setImportMode] = useState<'file' | 'ibkr'>(canImportFile ? 'file' : 'ibkr');
   const [ibkrToken, setIbkrToken] = useState('');
   const [ibkrQueryId, setIbkrQueryId] = useState('');
   // Client-side pagination for the records table.
@@ -240,13 +243,17 @@ export default function Dividends() {
           <h3 className="text-base font-semibold text-slate-800 mb-1">Import Dividends</h3>
           <p className="text-xs text-slate-500 mb-3">Only dividend rows are imported (net after withholding tax); buys, deposits, interest and reversals are skipped. Missing assets are created automatically, and re-running skips duplicates.</p>
 
-          {/* Mode toggle: upload a file, or fetch straight from IBKR via the Flex Web Service. */}
-          <div className="inline-flex rounded-lg border border-slate-200 p-0.5 mb-4 bg-slate-50">
-            <button type="button" onClick={() => setImportMode('file')}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md ${importMode === 'file' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>Upload file</button>
-            <button type="button" onClick={() => setImportMode('ibkr')}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md ${importMode === 'ibkr' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>Fetch from IBKR</button>
-          </div>
+          {/* Mode toggle: upload a file (DIVIDEND_IMPORT) and/or fetch from IBKR (IBKR_SYNC). Each
+              button appears only when its feature is enabled; the IBKR option also needs the chosen
+              owner to actually have an IBKR account. */}
+          {canImportFile && canIbkr && (
+            <div className="inline-flex rounded-lg border border-slate-200 p-0.5 mb-4 bg-slate-50">
+              <button type="button" onClick={() => setImportMode('file')}
+                className={`px-3 py-1.5 text-xs font-medium rounded-md ${importMode === 'file' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>Upload file</button>
+              <button type="button" onClick={() => setImportMode('ibkr')}
+                className={`px-3 py-1.5 text-xs font-medium rounded-md ${importMode === 'ibkr' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>Fetch from IBKR</button>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner *</label>

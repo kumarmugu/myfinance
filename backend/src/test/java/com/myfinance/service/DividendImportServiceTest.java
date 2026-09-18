@@ -186,4 +186,43 @@ class DividendImportServiceTest {
     private String esc(String s) {
         return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
     }
+
+    // ─────────────────────────── IBKR Flex XML dividends ───────────────────────────
+
+    @Test
+    void flexNetsWithholdingIntoDividendBySymbolDateCurrency() {
+        String xml = """
+            <FlexQueryResponse><FlexStatements><FlexStatement><CashTransactions>
+              <CashTransaction type="Dividends" symbol="AAPL" currency="USD" reportDate="20240815"
+                               amount="6.91" description="AAPL Cash Dividend USD 0.27 (Ordinary Dividend)"/>
+              <CashTransaction type="Withholding Tax" symbol="AAPL" currency="USD" reportDate="20240815"
+                               amount="-2.07" description="AAPL US Tax"/>
+              <CashTransaction type="Broker Interest Paid" symbol="" currency="USD" reportDate="20240815"
+                               amount="-0.10" description="Interest"/>
+            </CashTransactions></FlexStatement></FlexStatements></FlexQueryResponse>
+            """;
+        var out = svc.parseFlexXml(xml);
+        assertEquals(1, out.size(), "one dividend; interest ignored");
+        var d = out.get(0);
+        assertEquals("AAPL", d.symbol());
+        assertEquals("USD", d.currency());
+        assertEquals(0, new BigDecimal("4.84").compareTo(d.net().setScale(2, RoundingMode.HALF_UP)), "gross 6.91 - tax 2.07");
+        assertEquals(0, new BigDecimal("6.91").compareTo(d.gross()));
+        assertEquals(0, new BigDecimal("2.07").compareTo(d.tax()));
+    }
+
+    @Test
+    void flexDividendWithNoTaxHasNullTax() {
+        String xml = """
+            <FlexQueryResponse><FlexStatements><FlexStatement><CashTransactions>
+              <CashTransaction type="Dividends" symbol="O39" currency="SGD" reportDate="20240828"
+                               amount="47.00" description="O39 Cash Dividend SGD 0.47 (Ordinary Dividend)"/>
+            </CashTransactions></FlexStatement></FlexStatements></FlexQueryResponse>
+            """;
+        var out = svc.parseFlexXml(xml);
+        assertEquals(1, out.size());
+        assertEquals("SGD", out.get(0).currency());
+        assertEquals(0, new BigDecimal("47.00").compareTo(out.get(0).net()));
+        assertNull(out.get(0).tax());
+    }
 }

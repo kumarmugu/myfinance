@@ -1,6 +1,7 @@
 import { useEffect, useState, Fragment } from 'react';
 import { Plus, Trash2, Pencil, ArrowUpCircle, ArrowDownCircle, Lock, RefreshCw } from 'lucide-react';
-import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates, getActiveHoldings, recomputeRealizedPnl } from '../api';
+import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates, getActiveHoldings, recomputeRealizedPnl, previewIbkrSync, applyIbkrSync } from '../api';
+import type { IbkrSyncPreview, IbkrSyncBody } from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import { formatCurrency, formatDate, formatPercent } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
@@ -24,8 +25,9 @@ function resolveRate(rates: CurrencyRate[], from: string, to: string): number | 
 }
 
 export default function Transactions() {
-  const { verifyPassword } = useAuth();
+  const { verifyPassword, hasFeature } = useAuth();
   const { showToast } = useToast();
+  const canIbkrSync = hasFeature('IBKR_SYNC');
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [assets, setAssets] = useState<Asset[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -51,6 +53,18 @@ export default function Transactions() {
   const [deletePassword, setDeletePassword] = useState('');
   const [deleteError, setDeleteError] = useState('');
   const [recomputing, setRecomputing] = useState(false);
+  // IBKR trade sync: token/queryId held only in state for the request, never persisted.
+  const [showIbkr, setShowIbkr] = useState(false);
+  const [ibkrToken, setIbkrToken] = useState('');
+  const [ibkrQueryId, setIbkrQueryId] = useState('');
+  const [ibkrOwnerId, setIbkrOwnerId] = useState(0);
+  const [ibkrAccountId, setIbkrAccountId] = useState(0);
+  const [ibkrMode, setIbkrMode] = useState<'ALL' | 'RANGE'>('ALL');
+  const [ibkrFrom, setIbkrFrom] = useState('');
+  const [ibkrTo, setIbkrTo] = useState('');
+  const [ibkrBusy, setIbkrBusy] = useState(false);
+  const [ibkrPreview, setIbkrPreview] = useState<IbkrSyncPreview | null>(null);
+  const [approvedMismatches, setApprovedMismatches] = useState<Set<string>>(new Set());
   // Client-side pagination: how many of the filtered rows to render (grows via "Show more").
   const PAGE_SIZE = 100;
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -161,6 +175,62 @@ export default function Transactions() {
     } finally {
       setRecomputing(false);
     }
+  };
+
+  // The IBKR sync button/panel only makes sense when the selected owner actually has an IBKR account.
+  const ibkrAccountsForOwner = (ownerId: number) =>
+    accounts.filter(a => a.accountType === 'BROKER' && (a.owner?.id === ownerId)
+      && a.name.toUpperCase().includes('IBKR'));
+  const anyOwnerHasIbkr = accounts.some(a => a.accountType === 'BROKER' && a.name.toUpperCase().includes('IBKR'));
+
+  const ibkrBody = (): IbkrSyncBody => ({
+    token: ibkrToken.trim(), queryId: ibkrQueryId.trim(), accountId: ibkrAccountId, ownerId: ibkrOwnerId,
+    mode: ibkrMode, from: ibkrMode === 'RANGE' && ibkrFrom ? ibkrFrom : null, to: ibkrMode === 'RANGE' && ibkrTo ? ibkrTo : null,
+  });
+
+  const handleIbkrPreview = async () => {
+    if (!ibkrOwnerId || !ibkrAccountId) { showToast('Select the owner and IBKR account', 'error'); return; }
+    if (!ibkrToken.trim() || !ibkrQueryId.trim()) { showToast('Enter your IBKR Flex token and Query ID', 'error'); return; }
+    setIbkrBusy(true); setIbkrPreview(null); setApprovedMismatches(new Set());
+    try {
+      const { data } = await previewIbkrSync(ibkrBody());
+      setIbkrPreview(data);
+      if (data.newTrades.length === 0 && data.mismatches.length === 0) {
+        showToast(`Nothing new to import (${data.duplicates.length} already present)`, 'info');
+      }
+    } catch (err: any) {
+      console.error(err);
+      showToast(err?.response?.data?.message || 'IBKR preview failed — check the token and Query ID', 'error');
+    } finally {
+      setIbkrBusy(false);
+    }
+  };
+
+  const handleIbkrApply = async () => {
+    if (!ibkrPreview) return;
+    setIbkrBusy(true);
+    try {
+      const { data } = await applyIbkrSync({ ...ibkrBody(), approvedMismatchTradeIds: Array.from(approvedMismatches) });
+      showToast(`Imported ${data.inserted} trade${data.inserted === 1 ? '' : 's'}${data.updated ? `, updated ${data.updated}` : ''}${data.assetsCreated ? ` (${data.assetsCreated} new asset${data.assetsCreated === 1 ? '' : 's'})` : ''}`, 'success');
+      setIbkrToken(''); // drop the token as soon as we're done
+      setIbkrPreview(null);
+      setShowIbkr(false);
+      loadData();
+    } catch (err: any) {
+      console.error(err);
+      showToast(err?.response?.data?.message || 'IBKR sync failed', 'error');
+    } finally {
+      setIbkrBusy(false);
+    }
+  };
+
+  const toggleApprove = (tradeId: string | null) => {
+    if (!tradeId) return;
+    setApprovedMismatches(prev => {
+      const next = new Set(prev);
+      if (next.has(tradeId)) next.delete(tradeId); else next.add(tradeId);
+      return next;
+    });
   };
 
   const confirmDelete = async () => {
@@ -358,6 +428,11 @@ export default function Transactions() {
           <button onClick={handleRecompute} disabled={recomputing} title="Recompute FX-aware realized P/L for your existing sells (one-time fix for older trades)" className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 disabled:opacity-50">
             <RefreshCw size={16} className={recomputing ? 'animate-spin' : ''} /> {recomputing ? 'Recomputing...' : 'Recompute P/L'}
           </button>
+          {canIbkrSync && anyOwnerHasIbkr && (
+            <button onClick={() => { setShowIbkr(v => !v); setIbkrPreview(null); }} title="Sync trades from Interactive Brokers (Flex Web Service)" className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">
+              <RefreshCw size={16} /> Sync IBKR
+            </button>
+          )}
           <button onClick={() => { if (showForm) { setShowForm(false); setEditingId(null); } else { setEditingId(null); setForm({ ...emptyForm(), ownerId: owners[0]?.id ?? 0 }); setShowForm(true); } }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
             <Plus size={16} /> New Transaction
           </button>
@@ -436,6 +511,98 @@ export default function Transactions() {
       </div>
 
       {/* Transaction Form */}
+      {canIbkrSync && anyOwnerHasIbkr && showIbkr && (
+        <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+          <h3 className="text-base font-semibold text-slate-800 mb-1">Sync trades from IBKR</h3>
+          <p className="text-xs text-slate-500 mb-4">Pulls stock/ETF buys &amp; sells from your IBKR Activity Flex statement. Options, forex and futures are skipped. Nothing is written until you review the preview and confirm. Your token is used only for this request and never stored.</p>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner *</label>
+              <SearchableSelect options={[{ value: 0, label: 'Select owner...' }, ...owners.filter(o => ibkrAccountsForOwner(o.id).length > 0).map(o => ({ value: o.id, label: o.name }))]}
+                value={ibkrOwnerId} onChange={v => { setIbkrOwnerId(Number(v)); setIbkrAccountId(0); }} placeholder="Select owner..." /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">IBKR account *</label>
+              <SearchableSelect options={[{ value: 0, label: ibkrOwnerId ? 'Select account...' : 'Select an owner first' }, ...ibkrAccountsForOwner(ibkrOwnerId).map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))]}
+                value={ibkrAccountId} onChange={v => setIbkrAccountId(Number(v))} placeholder="Select account..." /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">IBKR Flex token *</label>
+              <input type="password" autoComplete="off" value={ibkrToken} onChange={e => setIbkrToken(e.target.value)} placeholder="Flex Web Service token" disabled={ibkrBusy}
+                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Flex Query ID *</label>
+              <input type="text" inputMode="numeric" value={ibkrQueryId} onChange={e => setIbkrQueryId(e.target.value)} placeholder="e.g. 123456" disabled={ibkrBusy}
+                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
+          </div>
+          <div className="flex flex-wrap items-end gap-4 mt-4">
+            <div className="inline-flex rounded-lg border border-slate-200 p-0.5 bg-slate-50">
+              <button type="button" onClick={() => setIbkrMode('ALL')} className={`px-3 py-1.5 text-xs font-medium rounded-md ${ibkrMode === 'ALL' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>All history</button>
+              <button type="button" onClick={() => setIbkrMode('RANGE')} className={`px-3 py-1.5 text-xs font-medium rounded-md ${ibkrMode === 'RANGE' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>Date range</button>
+            </div>
+            {ibkrMode === 'RANGE' && (
+              <>
+                <div><label className="block text-xs font-medium text-slate-600 mb-1">From</label>
+                  <input type="date" value={ibkrFrom} onChange={e => setIbkrFrom(e.target.value)} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+                <div><label className="block text-xs font-medium text-slate-600 mb-1">To</label>
+                  <input type="date" value={ibkrTo} onChange={e => setIbkrTo(e.target.value)} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+              </>
+            )}
+            <button type="button" onClick={handleIbkrPreview} disabled={ibkrBusy}
+              className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50">
+              {ibkrBusy ? 'Working…' : 'Preview'}</button>
+          </div>
+
+          {ibkrPreview && (
+            <div className="mt-5 border-t border-slate-100 pt-4">
+              <div className="flex flex-wrap gap-4 text-xs text-slate-600 mb-3">
+                <span className="font-medium text-green-700">{ibkrPreview.newTrades.length} new</span>
+                <span>{ibkrPreview.duplicates.length} already present</span>
+                <span className={ibkrPreview.mismatches.length ? 'text-amber-600 font-medium' : ''}>{ibkrPreview.mismatches.length} mismatch</span>
+                <span>{ibkrPreview.skippedNonStock.length} skipped (options/forex)</span>
+                {ibkrPreview.corporateActions.length > 0 && <span>{ibkrPreview.corporateActions.length} corporate actions</span>}
+                {ibkrPreview.needsReview.length > 0 && <span className="text-amber-600">{ibkrPreview.needsReview.length} need review</span>}
+              </div>
+
+              {ibkrPreview.newTrades.length > 0 && (
+                <div className="mb-3">
+                  <p className="text-xs font-semibold text-slate-700 mb-1">New trades to import</p>
+                  <div className="max-h-40 overflow-y-auto text-xs border border-slate-100 rounded-lg">
+                    {ibkrPreview.newTrades.map((t, i) => (
+                      <div key={i} className="flex justify-between px-3 py-1.5 border-b border-slate-50 last:border-0">
+                        <span>{t.tradeDate} · {t.type} {t.symbol}</span>
+                        <span className="text-slate-500">{t.quantity} @ {t.price} {t.currency}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {ibkrPreview.mismatches.length > 0 && (
+                <div className="mb-3">
+                  <p className="text-xs font-semibold text-amber-700 mb-1">Mismatches — tick to overwrite your record with IBKR's values</p>
+                  <div className="max-h-40 overflow-y-auto text-xs border border-amber-100 rounded-lg">
+                    {ibkrPreview.mismatches.map((t, i) => (
+                      <label key={i} className="flex items-center gap-2 px-3 py-1.5 border-b border-amber-50 last:border-0 cursor-pointer">
+                        <input type="checkbox" checked={t.tradeId ? approvedMismatches.has(t.tradeId) : false}
+                          disabled={!t.tradeId} onChange={() => toggleApprove(t.tradeId)} />
+                        <span className="flex-1">{t.tradeDate} · {t.type} {t.symbol}</span>
+                        <span className="text-amber-600">{t.mismatchDetail}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {ibkrPreview.needsReview.length > 0 && (
+                <div className="mb-3 text-xs text-amber-700">
+                  <p className="font-semibold mb-1">Corporate actions needing manual review</p>
+                  <ul className="list-disc pl-5 space-y-0.5">{ibkrPreview.needsReview.map((s, i) => <li key={i}>{s}</li>)}</ul>
+                </div>
+              )}
+
+              <button type="button" onClick={handleIbkrApply} disabled={ibkrBusy || (ibkrPreview.newTrades.length === 0 && approvedMismatches.size === 0)}
+                className="mt-1 px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 disabled:opacity-50">
+                {ibkrBusy ? 'Importing…' : `Import ${ibkrPreview.newTrades.length} new${approvedMismatches.size ? ` + overwrite ${approvedMismatches.size}` : ''}`}</button>
+            </div>
+          )}
+        </div>
+      )}
+
       {showForm && (
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
           <h3 className="text-base font-semibold text-slate-800 mb-4">{editingId != null ? 'Modify Transaction' : 'Add Transaction'}</h3>

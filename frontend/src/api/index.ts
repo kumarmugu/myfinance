@@ -90,6 +90,26 @@ export const deleteTransaction = (id: number) => api.delete(`/transactions/${id}
 // One-time maintenance: recompute FX-aware realized P/L for the user's existing sells.
 export const recomputeRealizedPnl = () => api.post<{ sellsRecomputed: number; soldPositionsSynced: number; holdingsCurrencyFixed: number; holdingsBuyFxBackfilled: number }>('/transactions/recompute-pnl');
 
+// ─── IBKR trade sync (Flex Web Service). Token/queryId sent only for the request; never stored. ───
+export interface IbkrTradePlan {
+  tradeId: string | null; symbol: string; type: string; quantity: number; price: number;
+  currency: string; tradeDate: string; classification: 'NEW' | 'DUPLICATE' | 'MISMATCH';
+  existingTransactionId: number | null; mismatchDetail: string | null;
+}
+export interface IbkrSyncPreview {
+  newTrades: IbkrTradePlan[]; duplicates: IbkrTradePlan[]; mismatches: IbkrTradePlan[];
+  skippedNonStock: string[]; corporateActions: string[]; needsReview: string[];
+}
+export interface IbkrSyncBody {
+  token: string; queryId: string; accountId: number; ownerId: number;
+  mode: 'ALL' | 'RANGE'; from?: string | null; to?: string | null;
+  approvedMismatchTradeIds?: string[];
+}
+export const previewIbkrSync = (body: IbkrSyncBody) =>
+  api.post<IbkrSyncPreview>('/transactions/ibkr-sync/preview', body);
+export const applyIbkrSync = (body: IbkrSyncBody) =>
+  api.post<{ inserted: number; updated: number; skipped: number; assetsCreated: number }>('/transactions/ibkr-sync/apply', body);
+
 // ─── Holdings ───
 export const getActiveHoldings = (ownerId?: number) => api.get<Holding[]>('/holdings', { params: { ownerId } });
 export const getHoldingsByAccount = (accountId: number) => api.get<Holding[]>(`/holdings/account/${accountId}`);

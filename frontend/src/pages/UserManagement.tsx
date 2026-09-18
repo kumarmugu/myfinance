@@ -26,6 +26,7 @@ const ALL_FEATURES = [
   { key: 'CRYPTO', label: 'Crypto' },
   { key: 'DIVIDENDS', label: 'Dividends' },
   { key: 'DIVIDEND_IMPORT', label: 'Dividend Statement Import' },
+  { key: 'IBKR_SYNC', label: 'IBKR Sync (live)' },
   { key: 'CASH_FLOWS', label: 'Cash Flows' },
   { key: 'BANK_SAVINGS', label: 'Bank Savings' },
   { key: 'FIXED_DEPOSITS', label: 'Fixed Deposits' },
@@ -44,7 +45,7 @@ const ALL_FEATURES = [
 ];
 
 // Opt-in features that should NOT be granted to new users by default (admin ticks them explicitly).
-const OPT_IN_FEATURES = new Set(['DIVIDEND_IMPORT']);
+const OPT_IN_FEATURES = new Set(['DIVIDEND_IMPORT', 'IBKR_SYNC']);
 const DEFAULT_FEATURE_KEYS = ALL_FEATURES.map(f => f.key).filter(k => !OPT_IN_FEATURES.has(k));
 
 export default function UserManagement() {

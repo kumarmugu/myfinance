@@ -88,6 +88,14 @@ public class Transaction {
     @Enumerated(EnumType.STRING)
     private InvestmentPurpose purpose;
 
+    /**
+     * Identifier of the source record when this transaction was synced from an external broker
+     * (e.g. the IBKR Flex {@code tradeID}). Lets a re-sync recognise already-imported trades and
+     * skip them. Nullable: manually-entered transactions have none. Additive/prod-safe.
+     */
+    @Column(length = 64)
+    private String externalId;
+
     @Column(updatable = false)
     private LocalDateTime createdAt;
 

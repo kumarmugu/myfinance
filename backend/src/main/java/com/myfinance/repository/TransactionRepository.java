@@ -33,4 +33,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query("SELECT t FROM Transaction t WHERE t.userId = :userId AND t.transactionDate >= :startDate ORDER BY t.transactionDate DESC")
     List<Transaction> findRecentByUser(@Param("userId") Long userId, @Param("startDate") LocalDate startDate);
+
+    // ── External-sync (IBKR Flex) support ──
+    boolean existsByUserIdAndExternalId(Long userId, String externalId);
+    java.util.Optional<Transaction> findByUserIdAndExternalId(Long userId, String externalId);
 }
