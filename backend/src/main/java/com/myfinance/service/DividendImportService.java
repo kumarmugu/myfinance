@@ -66,8 +66,19 @@ public class DividendImportService {
             case SAXO_XLSX -> parseSaxo(content);
             case TIGER_CSV -> parseTiger(new String(content, java.nio.charset.StandardCharsets.UTF_8));
         };
+        return persist(parsed, userId, account, owner, format == Format.IBKR_CSV ? "IBKR" : format == Format.SAXO_XLSX ? "Saxo" : "Tiger");
+    }
 
-        // De-duplicate against what's already stored, so re-importing the same file is idempotent.
+    /**
+     * Persist already-parsed dividend rows for the current user, de-duplicating against what's
+     * stored (so re-running is idempotent) and auto-creating any missing assets. Shared by the
+     * file importer and the IBKR Flex fetch so both apply identical dedupe/asset rules.
+     *
+     * @param source short label used in the row's notes (e.g. "IBKR", "IBKR Flex").
+     */
+    @Transactional
+    public ImportResult persist(List<ParsedDividend> parsed, Long userId, Account account, Owner owner, String source) {
+        // De-duplicate against what's already stored, so re-importing the same data is idempotent.
         // Key = date | instrument | accountId | ownerId | amount. We use a COUNT multiset so genuine
         // same-day duplicates in a statement (e.g. two identical return-of-capital rows) still import
         // the correct number of times rather than being over-skipped.
@@ -105,13 +116,13 @@ public class DividendImportService {
                     .year(d.payDate() != null ? d.payDate().getYear() : null)
                     .quarter(d.payDate() != null ? "Q" + ((d.payDate().getMonthValue() - 1) / 3 + 1) : null)
                     .instrument(d.symbol())
-                    .notes("Imported from " + (format == Format.IBKR_CSV ? "IBKR" : "Saxo") + " statement")
+                    .notes("Imported from " + source + " statement")
                     .build();
             dividendService.create(div);
             imported++;
         }
         log.info("Dividend import ({}) for userId={}: imported={} skipped={} assetsCreated={}",
-                format, userId, imported, skipped, assetsCreated[0]);
+                source, userId, imported, skipped, assetsCreated[0]);
         return new ImportResult(imported, skipped, assetsCreated[0]);
     }
 
@@ -146,6 +157,103 @@ public class DividendImportService {
             createdCounter[0]++;
             return saved;
         });
+    }
+
+    // ─────────────────────────── IBKR Flex XML ───────────────────────────
+
+    /**
+     * Parse an IBKR Flex "Activity" statement XML into net dividend rows. Flex reports dividends as
+     * {@code <CashTransaction>} elements: {@code type="Dividends"} carries the gross amount and
+     * {@code type="Withholding Tax"} the (negative) tax. We net the tax into the dividend by
+     * matching on symbol + pay date + currency, mirroring the IBKR-CSV logic.
+     *
+     * <p>Parsed with the JDK StAX reader (no external XML deps). Robust to attribute order and to
+     * the {@code <FlexQueryResponse>} vs {@code <FlexStatements>} wrappers Flex uses.
+     */
+    public List<ParsedDividend> parseFlexXml(String xml) {
+        // key = symbol|payDate|currency
+        Map<String, BigDecimal> grossByKey = new HashMap<>();
+        Map<String, BigDecimal> taxByKey = new HashMap<>();
+        Map<String, String[]> metaByKey = new HashMap<>(); // key -> [symbol, date, currency, description]
+        // Preserve first-seen order so the output is stable/testable.
+        List<String> order = new ArrayList<>();
+
+        try {
+            XMLStreamReader r = XMLInputFactory.newInstance().createXMLStreamReader(new ByteArrayInputStream(
+                    xml.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+            while (r.hasNext()) {
+                if (r.next() != XMLStreamReader.START_ELEMENT) continue;
+                if (!"CashTransaction".equals(r.getLocalName())) continue;
+
+                String type = attr(r, "type");
+                if (type == null) continue;
+                String symbol = firstNonBlank(attr(r, "symbol"), attr(r, "underlyingSymbol"));
+                String date = firstNonBlank(attr(r, "reportDate"), attr(r, "settleDate"), attr(r, "dateTime"));
+                String currency = attr(r, "currency");
+                String description = attr(r, "description");
+                BigDecimal amount = parseNum(attr(r, "amount"));
+                LocalDate payDate = parseFlexDate(date);
+                if (symbol == null || payDate == null) continue;
+                String key = symbol.trim().toUpperCase() + "|" + payDate + "|" + (currency == null ? "" : currency.trim().toUpperCase());
+
+                String t = type.toLowerCase();
+                if (t.contains("withholding")) {
+                    taxByKey.merge(key, amount, BigDecimal::add); // amount is negative
+                } else if (t.contains("dividend") || t.contains("payment in lieu")) {
+                    grossByKey.merge(key, amount, BigDecimal::add);
+                    if (!metaByKey.containsKey(key)) {
+                        metaByKey.put(key, new String[]{symbol.trim().toUpperCase(), payDate.toString(),
+                                currency == null ? "USD" : currency.trim().toUpperCase(), description});
+                        order.add(key);
+                    }
+                } else {
+                    continue; // interest, fees, deposits, etc. are not dividends
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse IBKR Flex XML: " + e.getMessage(), e);
+        }
+
+        List<ParsedDividend> out = new ArrayList<>();
+        for (String key : order) {
+            BigDecimal gross = grossByKey.getOrDefault(key, BigDecimal.ZERO);
+            if (gross.signum() == 0) continue;                       // reversal-netted or tax-only
+            BigDecimal tax = taxByKey.getOrDefault(key, BigDecimal.ZERO); // <= 0
+            BigDecimal net = gross.add(tax);
+            String[] m = metaByKey.get(key);
+            out.add(new ParsedDividend(LocalDate.parse(m[1]), m[0], m[2], net,
+                    gross, tax.signum() == 0 ? null : tax.abs(), classifyType(m[3])));
+        }
+        return out;
+    }
+
+    /** Persist dividends fetched from an IBKR Flex statement (reuses the shared dedupe/asset logic). */
+    @Transactional
+    public ImportResult importFlex(String xml, Long userId, Account account, Owner owner) {
+        return persist(parseFlexXml(xml), userId, account, owner, "IBKR Flex");
+    }
+
+    private String attr(XMLStreamReader r, String name) {
+        String v = r.getAttributeValue(null, name);
+        return (v == null || v.isBlank()) ? null : v;
+    }
+
+    private String firstNonBlank(String... vals) {
+        for (String v : vals) if (v != null && !v.isBlank()) return v;
+        return null;
+    }
+
+    /** Flex dates are usually yyyyMMdd or yyyy-MM-dd; sometimes with a trailing time. */
+    private LocalDate parseFlexDate(String s) {
+        if (s == null) return null;
+        String d = s.trim();
+        int sp = d.indexOf(' ');
+        if (sp > 0) d = d.substring(0, sp);
+        if (d.contains(";")) d = d.substring(0, d.indexOf(';'));
+        try {
+            if (d.matches("\\d{8}")) return LocalDate.parse(d, DateTimeFormatter.BASIC_ISO_DATE);
+            return LocalDate.parse(d, DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (Exception e) { return null; }
     }
 
     // ─────────────────────────── IBKR CSV ───────────────────────────

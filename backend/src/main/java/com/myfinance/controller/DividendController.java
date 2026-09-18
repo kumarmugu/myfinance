@@ -27,12 +27,19 @@ import java.util.List;
 public class DividendController {
     private final DividendService dividendService;
     private final DividendImportService dividendImportService;
+    private final com.myfinance.service.IbkrFlexService ibkrFlexService;
     private final AccountRepository accountRepository;
     private final OwnerRepository ownerRepository;
     private final TenantContext tenantContext;
 
     /** Per-user feature key that unlocks the statement-import endpoint. */
     private static final String IMPORT_FEATURE = "DIVIDEND_IMPORT";
+
+    /**
+     * Request to fetch dividends directly from IBKR via the Flex Web Service. The {@code token} and
+     * {@code queryId} are entered by the user per-request and are NOT stored anywhere.
+     */
+    public record IbkrFlexRequest(String token, String queryId, Long accountId, Long ownerId) {}
 
     @GetMapping
     public List<Dividend> getAll(
@@ -107,6 +114,42 @@ public class DividendController {
             return ResponseEntity.ok(result);
         } catch (java.io.IOException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not read the uploaded file");
+        }
+    }
+
+    /**
+     * Fetch dividends directly from IBKR using the Flex Web Service. Same feature gate and tenant
+     * checks as the file import. The Flex token/queryId are used only for this call and are never
+     * stored or logged.
+     */
+    @PostMapping("/fetch-ibkr")
+    public ResponseEntity<DividendImportService.ImportResult> fetchFromIbkr(@RequestBody IbkrFlexRequest req) {
+        AppUser user = tenantContext.getCurrentUser();
+        if (user == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        if (!hasImportFeature(user)) {
+            log.warn("User {} attempted IBKR Flex fetch without the {} feature", user.getUsername(), IMPORT_FEATURE);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Dividend import is not enabled for your account");
+        }
+        if (req.token() == null || req.token().isBlank() || req.queryId() == null || req.queryId().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "IBKR Flex token and Query ID are required");
+        }
+
+        Account account = accountRepository.findById(req.accountId())
+                .filter(a -> user.getId().equals(a.getUserId()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid account"));
+        Owner owner = ownerRepository.findById(req.ownerId())
+                .filter(o -> user.getId().equals(o.getUserId()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid owner"));
+
+        // Note: never log the token. Only the resulting counts / reference code are logged.
+        try {
+            String xml = ibkrFlexService.fetchStatementXml(req.token(), req.queryId());
+            var result = dividendImportService.importFlex(xml, user.getId(), account, owner);
+            log.info("IBKR Flex fetch imported {} dividends ({} assets created) for user {}",
+                    result.imported(), result.assetsCreated(), user.getUsername());
+            return ResponseEntity.ok(result);
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 

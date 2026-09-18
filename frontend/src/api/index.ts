@@ -116,6 +116,11 @@ export const importDividends = (file: File, accountId: number, ownerId: number) 
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
+// Fetch dividends directly from IBKR via the Flex Web Service. Token + queryId are sent only for
+// this request and are never stored. Gated by the DIVIDEND_IMPORT feature.
+export const fetchIbkrDividends = (token: string, queryId: string, accountId: number, ownerId: number) =>
+  api.post<{ imported: number; skipped: number; assetsCreated: number }>('/dividends/fetch-ibkr',
+    { token, queryId, accountId, ownerId });
 
 // ─── Fixed Deposits ───
 export const getFixedDeposits = (params?: { holderId?: number; bankId?: number; status?: string }) => api.get<FixedDeposit[]>('/fixed-deposits', { params });

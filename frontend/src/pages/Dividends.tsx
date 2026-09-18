@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Plus, Trash2, Upload } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { getDividends, getDividendSummary, createDividend, deleteDividend, getAccounts, getOwners, importDividends, getCurrencyRates } from '../api';
+import { getDividends, getDividendSummary, createDividend, deleteDividend, getAccounts, getOwners, importDividends, fetchIbkrDividends, getCurrencyRates } from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import ExportMenu from '../components/ExportMenu';
@@ -44,6 +44,10 @@ export default function Dividends() {
   const [importOwnerId, setImportOwnerId] = useState(0);
   const [importing, setImporting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // IBKR Flex fetch: token + query id are held only in component state for the request, never stored.
+  const [importMode, setImportMode] = useState<'file' | 'ibkr'>('file');
+  const [ibkrToken, setIbkrToken] = useState('');
+  const [ibkrQueryId, setIbkrQueryId] = useState('');
   // Client-side pagination for the records table.
   const PAGE_SIZE = 100;
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -96,6 +100,25 @@ export default function Dividends() {
     } finally {
       setImporting(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handleIbkrFetch = async () => {
+    if (!importOwnerId) { showToast('Select an owner to import into', 'error'); return; }
+    if (!importAccountId) { showToast('Select a broker to import into', 'error'); return; }
+    if (!ibkrToken.trim() || !ibkrQueryId.trim()) { showToast('Enter your IBKR Flex token and Query ID', 'error'); return; }
+    setImporting(true);
+    try {
+      const { data } = await fetchIbkrDividends(ibkrToken.trim(), ibkrQueryId.trim(), importAccountId, importOwnerId);
+      showToast(`Fetched ${data.imported} dividend${data.imported === 1 ? '' : 's'}${data.skipped ? `, skipped ${data.skipped} duplicate${data.skipped === 1 ? '' : 's'}` : ''}${data.assetsCreated ? ` (${data.assetsCreated} new asset${data.assetsCreated === 1 ? '' : 's'})` : ''}`, 'success');
+      setIbkrToken(''); // clear the token from memory as soon as we're done
+      setShowImport(false);
+      loadData();
+    } catch (err: any) {
+      console.error(err);
+      showToast(err?.response?.data?.message || 'IBKR fetch failed — check the token and Query ID', 'error');
+    } finally {
+      setImporting(false);
     }
   };
 
@@ -214,8 +237,17 @@ export default function Dividends() {
       {/* Import panel (feature-gated) */}
       {canImport && showImport && (
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-          <h3 className="text-base font-semibold text-slate-800 mb-1">Import Dividend Statement</h3>
-          <p className="text-xs text-slate-500 mb-4">Upload an IBKR "Transaction History" CSV or a Saxo "Share Dividends" XLSX. Only dividend rows are imported (net after withholding tax); buys, deposits, interest and reversals are skipped. Missing assets are created automatically.</p>
+          <h3 className="text-base font-semibold text-slate-800 mb-1">Import Dividends</h3>
+          <p className="text-xs text-slate-500 mb-3">Only dividend rows are imported (net after withholding tax); buys, deposits, interest and reversals are skipped. Missing assets are created automatically, and re-running skips duplicates.</p>
+
+          {/* Mode toggle: upload a file, or fetch straight from IBKR via the Flex Web Service. */}
+          <div className="inline-flex rounded-lg border border-slate-200 p-0.5 mb-4 bg-slate-50">
+            <button type="button" onClick={() => setImportMode('file')}
+              className={`px-3 py-1.5 text-xs font-medium rounded-md ${importMode === 'file' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>Upload file</button>
+            <button type="button" onClick={() => setImportMode('ibkr')}
+              className={`px-3 py-1.5 text-xs font-medium rounded-md ${importMode === 'ibkr' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>Fetch from IBKR</button>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner *</label>
               <SearchableSelect options={[{ value: 0, label: 'Select owner...' }, ...owners.map(o => ({ value: o.id, label: o.name }))]} value={importOwnerId} onChange={v => { setImportOwnerId(Number(v)); setImportAccountId(0); }} placeholder="Select owner..." /></div>
@@ -226,18 +258,40 @@ export default function Dividends() {
                 value={importAccountId}
                 onChange={v => setImportAccountId(Number(v))}
                 placeholder="Select broker..." /></div>
-            <div>
-              <label className="block text-xs font-medium text-slate-600 mb-1">File (.csv / .xlsx)</label>
-              {/* A directly-clicked native file input opens the picker reliably in Chrome & Safari
-                  (proxying a hidden input via a button is what Chrome intermittently blocks). */}
-              <input ref={fileInputRef} type="file"
-                accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                disabled={importing}
-                onChange={e => { const f = e.target.files?.[0]; if (f) handleImport(f); }}
-                className="block w-full text-sm text-slate-600 border border-slate-300 rounded-lg cursor-pointer file:mr-3 file:py-2 file:px-3 file:border-0 file:text-sm file:font-medium file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 disabled:opacity-50" />
-            </div>
+            {importMode === 'file' && (
+              <div>
+                <label className="block text-xs font-medium text-slate-600 mb-1">File (.csv / .xlsx)</label>
+                {/* A directly-clicked native file input opens the picker reliably in Chrome & Safari
+                    (proxying a hidden input via a button is what Chrome intermittently blocks). */}
+                <input ref={fileInputRef} type="file"
+                  accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                  disabled={importing}
+                  onChange={e => { const f = e.target.files?.[0]; if (f) handleImport(f); }}
+                  className="block w-full text-sm text-slate-600 border border-slate-300 rounded-lg cursor-pointer file:mr-3 file:py-2 file:px-3 file:border-0 file:text-sm file:font-medium file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 disabled:opacity-50" />
+              </div>
+            )}
           </div>
-          {importing && <p className="text-xs text-indigo-600 mt-3">Importing…</p>}
+
+          {importMode === 'ibkr' && (
+            <div className="mt-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div><label className="block text-xs font-medium text-slate-600 mb-1">IBKR Flex token *</label>
+                  <input type="password" autoComplete="off" value={ibkrToken} onChange={e => setIbkrToken(e.target.value)}
+                    placeholder="Flex Web Service token" disabled={importing}
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
+                <div><label className="block text-xs font-medium text-slate-600 mb-1">Flex Query ID *</label>
+                  <input type="text" inputMode="numeric" value={ibkrQueryId} onChange={e => setIbkrQueryId(e.target.value)}
+                    placeholder="e.g. 123456" disabled={importing}
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
+              </div>
+              <p className="text-[11px] text-slate-400 mt-2">Enable the Flex Web Service in IBKR Client Portal (Settings → Reporting) and create an Activity Flex Query that includes dividends. Your token is used only for this fetch and is never stored.</p>
+              <button type="button" onClick={handleIbkrFetch} disabled={importing}
+                className="mt-3 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50">
+                {importing ? 'Fetching…' : 'Fetch dividends'}</button>
+            </div>
+          )}
+
+          {importing && importMode === 'file' && <p className="text-xs text-indigo-600 mt-3">Importing…</p>}
         </div>
       )}
 
