@@ -24,13 +24,18 @@ public class TransactionController {
     private final TenantContext tenantContext;
     private final com.myfinance.service.IbkrFlexService ibkrFlexService;
     private final com.myfinance.service.IbkrSyncService ibkrSyncService;
+    private final com.myfinance.service.TigerSyncService tigerSyncService;
     private final com.myfinance.repository.AccountRepository accountRepository;
     private final com.myfinance.repository.OwnerRepository ownerRepository;
     private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
     private final com.myfinance.service.BrokerCredentialService brokerCredentialService;
 
-    /** Request for the IBKR trade sync. Credentials come from the account's stored config, not here. */
-    public record IbkrSyncRequest(Long accountId, Long ownerId,
+    /**
+     * Request for a live broker trade sync. Credentials come from the account's stored config, not
+     * here. {@code broker} selects the integration (IBKR / TIGER); null defaults to IBKR for
+     * backward compatibility with older clients.
+     */
+    public record IbkrSyncRequest(Long accountId, Long ownerId, String broker,
                                   String mode, LocalDate from, LocalDate to,
                                   java.util.List<String> approvedMismatchTradeIds) {}
 
@@ -176,26 +181,50 @@ public class TransactionController {
     @PostMapping("/ibkr-sync/preview")
     public com.myfinance.service.IbkrSyncService.SyncPreview ibkrSyncPreview(@RequestBody IbkrSyncRequest req) {
         var ctx = resolveCtx(req.accountId(), req.ownerId());
-        String xml = fetchIbkrStatement(ctx.userId, ctx.account.getId());
         var range = dateRange(req);
-        return ibkrSyncService.preview(xml, ctx.userId, ctx.account, ctx.owner, range[0], range[1]);
+        try {
+            if (brokerOf(req) == com.myfinance.model.enums.Broker.TIGER) {
+                return tigerSyncService.preview(ctx.userId, ctx.account, ctx.owner, range[0], range[1]);
+            }
+            String xml = fetchIbkrStatement(ctx.userId, ctx.account.getId());
+            return ibkrSyncService.preview(xml, ctx.userId, ctx.account, ctx.owner, range[0], range[1]);
+        } catch (org.springframework.web.server.ResponseStatusException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     /**
-     * Apply an IBKR trade sync: insert new trades and overwrite only the approved mismatches, then
-     * recompute realized P/L. Gated by BROKER_SYNC. Uses the account's stored Flex credential.
+     * Apply a live broker trade sync: insert new trades and overwrite only the approved mismatches,
+     * then recompute realized P/L. Gated by BROKER_SYNC. Uses the account's stored credential.
      */
     @PostMapping("/ibkr-sync/apply")
     public com.myfinance.service.IbkrSyncService.SyncResult ibkrSyncApply(@RequestBody IbkrSyncRequest req) {
         var ctx = resolveCtx(req.accountId(), req.ownerId());
-        String xml = fetchIbkrStatement(ctx.userId, ctx.account.getId());
         var range = dateRange(req);
         java.util.Set<String> approved = req.approvedMismatchTradeIds() == null
                 ? java.util.Set.of() : new java.util.HashSet<>(req.approvedMismatchTradeIds());
         try {
+            if (brokerOf(req) == com.myfinance.model.enums.Broker.TIGER) {
+                return tigerSyncService.apply(ctx.userId, ctx.account, ctx.owner, range[0], range[1], approved);
+            }
+            String xml = fetchIbkrStatement(ctx.userId, ctx.account.getId());
             return ibkrSyncService.apply(xml, ctx.userId, ctx.account, ctx.owner, range[0], range[1], approved);
+        } catch (org.springframework.web.server.ResponseStatusException e) {
+            throw e;
         } catch (RuntimeException e) {
             throw new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    /** Resolve the requested broker; unknown/blank defaults to IBKR (back-compat with older clients). */
+    private com.myfinance.model.enums.Broker brokerOf(IbkrSyncRequest req) {
+        if (req.broker() == null || req.broker().isBlank()) return com.myfinance.model.enums.Broker.IBKR;
+        try {
+            return com.myfinance.model.enums.Broker.valueOf(req.broker().trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return com.myfinance.model.enums.Broker.IBKR;
         }
     }
 

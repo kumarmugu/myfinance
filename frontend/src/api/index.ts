@@ -102,6 +102,7 @@ export interface IbkrSyncPreview {
 }
 export interface IbkrSyncBody {
   accountId: number; ownerId: number;
+  broker?: 'IBKR' | 'TIGER'; // omitted → backend defaults to IBKR
   mode: 'ALL' | 'RANGE'; from?: string | null; to?: string | null;
   approvedMismatchTradeIds?: string[];
 }

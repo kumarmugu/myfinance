@@ -53,6 +53,7 @@ public class IbkrSyncService {
     private final TransactionService transactionService;
     private final TransactionRepository transactionRepository;
     private final IbkrTradeParser tradeParser;
+    private final SaxoTradeParser saxoTradeParser;
 
     private static final BigDecimal QTY_TOL = new BigDecimal("0.0001");
     private static final BigDecimal PRICE_TOL = new BigDecimal("0.01");
@@ -81,10 +82,17 @@ public class IbkrSyncService {
         return previewTrades(tradeParser.parse(xml), userId, account, owner, from, to);
     }
 
-    /** Preview from an uploaded trades file (Flex XML or IBKR Transaction History CSV). */
+    /** Preview from an uploaded trades file (Saxo XLSX, IBKR Flex XML, or IBKR Transaction History CSV). */
     public SyncPreview previewFile(byte[] content, Long userId, Account account, Owner owner,
                                    LocalDate from, LocalDate to) {
-        return previewTrades(tradeParser.parseFile(content), userId, account, owner, from, to);
+        return previewTrades(parseTradeFile(content), userId, account, owner, from, to);
+    }
+
+    /** Auto-detect the uploaded trades file: a Saxo XLSX (ZIP) vs an IBKR Flex XML / Transaction History CSV. */
+    private IbkrTradeParser.FlexTrades parseTradeFile(byte[] content) {
+        return SaxoTradeParser.looksLikeXlsx(content)
+                ? saxoTradeParser.parse(content)
+                : tradeParser.parseFile(content);
     }
 
     /** Shared preview over already-parsed trades — used by both the live fetch and file upload. */
@@ -183,11 +191,11 @@ public class IbkrSyncService {
         return applyTrades(tradeParser.parse(xml), userId, account, owner, from, to, approvedMismatchTradeIds);
     }
 
-    /** Apply from an uploaded trades file (Flex XML or IBKR Transaction History CSV). */
+    /** Apply from an uploaded trades file (Saxo XLSX, IBKR Flex XML, or IBKR Transaction History CSV). */
     @Transactional
     public SyncResult applyFile(byte[] content, Long userId, Account account, Owner owner,
                                 LocalDate from, LocalDate to, Set<String> approvedMismatchTradeIds) {
-        return applyTrades(tradeParser.parseFile(content), userId, account, owner, from, to, approvedMismatchTradeIds);
+        return applyTrades(parseTradeFile(content), userId, account, owner, from, to, approvedMismatchTradeIds);
     }
 
     /** Shared apply over already-parsed trades — used by both the live fetch and file upload. */

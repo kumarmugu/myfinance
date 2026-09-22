@@ -54,10 +54,9 @@ export default function Transactions() {
   const [deletePassword, setDeletePassword] = useState('');
   const [deleteError, setDeleteError] = useState('');
   const [recomputing, setRecomputing] = useState(false);
-  // IBKR trade sync: token/queryId held only in state for the request, never persisted.
+  // Broker trade sync: live fetch uses stored credentials (configured on the Account page).
   const [showIbkr, setShowIbkr] = useState(false);
-  const [ibkrToken, setIbkrToken] = useState('');
-  const [ibkrQueryId, setIbkrQueryId] = useState('');
+  const [ibkrBrokerKind, setIbkrBrokerKind] = useState<'IBKR' | 'TIGER'>('IBKR');
   const [ibkrOwnerId, setIbkrOwnerId] = useState(0);
   const [ibkrAccountId, setIbkrAccountId] = useState(0);
   const [ibkrMode, setIbkrMode] = useState<'ALL' | 'RANGE'>('ALL');
@@ -188,20 +187,18 @@ export default function Transactions() {
     }
   };
 
-  // The IBKR sync button/panel only makes sense when the selected owner actually has an IBKR account.
+  // Broker sync (live fetch or file import) applies to any broker account the owner holds.
   const ibkrAccountsForOwner = (ownerId: number) =>
-    accounts.filter(a => a.accountType === 'BROKER' && (a.owner?.id === ownerId)
-      && a.name.toUpperCase().includes('IBKR'));
-  const anyOwnerHasIbkr = accounts.some(a => a.accountType === 'BROKER' && a.name.toUpperCase().includes('IBKR'));
+    accounts.filter(a => a.accountType === 'BROKER' && (a.owner?.id === ownerId));
+  const anyOwnerHasIbkr = accounts.some(a => a.accountType === 'BROKER');
 
   const ibkrBody = (): IbkrSyncBody => ({
-    token: ibkrToken.trim(), queryId: ibkrQueryId.trim(), accountId: ibkrAccountId, ownerId: ibkrOwnerId,
+    accountId: ibkrAccountId, ownerId: ibkrOwnerId, broker: ibkrBrokerKind,
     mode: ibkrMode, from: ibkrMode === 'RANGE' && ibkrFrom ? ibkrFrom : null, to: ibkrMode === 'RANGE' && ibkrTo ? ibkrTo : null,
   });
 
   const handleIbkrPreview = async () => {
-    if (!ibkrOwnerId || !ibkrAccountId) { showToast('Select the owner and IBKR account', 'error'); return; }
-    if (ibkrSource === 'live' && (!ibkrToken.trim() || !ibkrQueryId.trim())) { showToast('Enter your IBKR Flex token and Query ID', 'error'); return; }
+    if (!ibkrOwnerId || !ibkrAccountId) { showToast('Select the owner and account', 'error'); return; }
     if (ibkrSource === 'file' && !ibkrFile) { showToast('Choose a trades file to import', 'error'); return; }
     setIbkrBusy(true); setIbkrPreview(null); setApprovedMismatches(new Set());
     try {
@@ -229,7 +226,6 @@ export default function Transactions() {
         ? await applyIbkrSync({ ...ibkrBody(), approvedMismatchTradeIds: approved })
         : await applyTradeImport(ibkrFile!, ibkrAccountId, ibkrOwnerId, approved);
       showToast(`Imported ${data.inserted} trade${data.inserted === 1 ? '' : 's'}${data.updated ? `, updated ${data.updated}` : ''}${data.assetsCreated ? ` (${data.assetsCreated} new asset${data.assetsCreated === 1 ? '' : 's'})` : ''}`, 'success');
-      setIbkrToken(''); // drop the token as soon as we're done
       setIbkrFile(null);
       setIbkrPreview(null);
       setShowIbkr(false);
@@ -474,8 +470,8 @@ export default function Transactions() {
             <RefreshCw size={16} className={recomputing ? 'animate-spin' : ''} /> {recomputing ? 'Recomputing...' : 'Recompute P/L'}
           </button>
           {canIbkrSync && anyOwnerHasIbkr && (
-            <button onClick={() => { setShowIbkr(v => !v); setIbkrPreview(null); }} title="Sync trades from Interactive Brokers (Flex Web Service)" className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">
-              <RefreshCw size={16} /> Sync IBKR
+            <button onClick={() => { setShowIbkr(v => !v); setIbkrPreview(null); }} title="Sync trades from your broker (live fetch or file import)" className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">
+              <RefreshCw size={16} /> Sync broker
             </button>
           )}
           <button onClick={() => { setShowBulk(v => !v); setBulkPreview(null); }} title="Bulk delete transactions for an owner + account" className="flex items-center gap-2 px-3 py-2 bg-white text-red-600 border border-red-200 rounded-lg text-sm font-medium hover:bg-red-50">
@@ -594,7 +590,7 @@ export default function Transactions() {
 
       {canIbkrSync && anyOwnerHasIbkr && showIbkr && (
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-          <h3 className="text-base font-semibold text-slate-800 mb-1">Sync trades from IBKR</h3>
+          <h3 className="text-base font-semibold text-slate-800 mb-1">Sync trades from your broker</h3>
           <p className="text-xs text-slate-500 mb-3">Imports stock/ETF buys &amp; sells; options, forex and futures are skipped. Nothing is written until you review the preview and confirm. Duplicates are detected and skipped; you approve any value mismatches to correct existing records.</p>
 
           {/* Source toggle: live Flex fetch, or upload a saved Flex XML / Transaction History CSV. */}
@@ -607,21 +603,26 @@ export default function Transactions() {
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner *</label>
               <SearchableSelect options={[{ value: 0, label: 'Select owner...' }, ...owners.filter(o => ibkrAccountsForOwner(o.id).length > 0).map(o => ({ value: o.id, label: o.name }))]}
                 value={ibkrOwnerId} onChange={v => { setIbkrOwnerId(Number(v)); setIbkrAccountId(0); }} placeholder="Select owner..." /></div>
-            <div><label className="block text-xs font-medium text-slate-600 mb-1">IBKR account *</label>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Broker account *</label>
               <SearchableSelect options={[{ value: 0, label: ibkrOwnerId ? 'Select account...' : 'Select an owner first' }, ...ibkrAccountsForOwner(ibkrOwnerId).map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))]}
                 value={ibkrAccountId} onChange={v => setIbkrAccountId(Number(v))} placeholder="Select account..." /></div>
             {ibkrSource === 'live' ? (
               <>
-                <div><label className="block text-xs font-medium text-slate-600 mb-1">IBKR Flex token *</label>
-                  <input type="password" autoComplete="off" value={ibkrToken} onChange={e => setIbkrToken(e.target.value)} placeholder="Flex Web Service token" disabled={ibkrBusy}
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
-                <div><label className="block text-xs font-medium text-slate-600 mb-1">Flex Query ID *</label>
-                  <input type="text" inputMode="numeric" value={ibkrQueryId} onChange={e => setIbkrQueryId(e.target.value)} placeholder="e.g. 123456" disabled={ibkrBusy}
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
+                <div><label className="block text-xs font-medium text-slate-600 mb-1">Broker</label>
+                  <div className="flex rounded-lg overflow-hidden border border-slate-300">
+                    {(['IBKR', 'TIGER'] as const).map(b => (
+                      <button key={b} type="button" onClick={() => { setIbkrBrokerKind(b); setIbkrPreview(null); }} disabled={ibkrBusy}
+                        className={`flex-1 py-2 text-sm font-medium transition-colors disabled:opacity-50 ${ibkrBrokerKind === b ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`}>
+                        {b === 'IBKR' ? 'IBKR' : 'Tiger'}</button>
+                    ))}
+                  </div></div>
+                <div className="flex items-end">
+                  <p className="text-[11px] text-slate-400">Live fetch uses the {ibkrBrokerKind === 'IBKR' ? 'IBKR Flex' : 'Tiger'} credentials saved for this account on the Account page (Broker integrations). If none are set, you'll be prompted to configure them there.</p>
+                </div>
               </>
             ) : (
-              <div className="md:col-span-2"><label className="block text-xs font-medium text-slate-600 mb-1">Trades file (.xml / .csv) *</label>
-                <input type="file" accept=".xml,.csv,text/csv,text/xml,application/xml" disabled={ibkrBusy}
+              <div className="md:col-span-2"><label className="block text-xs font-medium text-slate-600 mb-1">Trades file (.xlsx / .xml / .csv) *</label>
+                <input type="file" accept=".xlsx,.xml,.csv,text/csv,text/xml,application/xml,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" disabled={ibkrBusy}
                   onChange={e => { setIbkrFile(e.target.files?.[0] ?? null); setIbkrPreview(null); }}
                   className="block w-full text-sm text-slate-600 border border-slate-300 rounded-lg cursor-pointer file:mr-3 file:py-2 file:px-3 file:border-0 file:text-sm file:font-medium file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 disabled:opacity-50" /></div>
             )}

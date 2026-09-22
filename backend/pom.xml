@@ -91,6 +91,13 @@
             <version>5.11.0</version>
         </dependency>
 
+        <!-- Tiger Brokers Open API SDK (RSA-signed REST client for live trade/dividend sync) -->
+        <dependency>
+            <groupId>io.github.tigerbrokers</groupId>
+            <artifactId>openapi-java-sdk</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

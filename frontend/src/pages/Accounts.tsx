@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react';
-import { Plus, Trash2, Building2, TrendingUp, Bitcoin, Pencil, Eye, EyeOff, Users, UserPlus } from 'lucide-react';
-import { getAccounts, createAccount, updateAccount, deleteAccount, getOwners, createOwner, updateOwner, deleteOwner } from '../api';
+import { Plus, Trash2, Building2, TrendingUp, Bitcoin, Pencil, Eye, EyeOff, Users, UserPlus, KeyRound, ShieldCheck, ShieldAlert } from 'lucide-react';
+import { getAccounts, createAccount, updateAccount, deleteAccount, getOwners, createOwner, updateOwner, deleteOwner,
+  getBrokerCredentials, saveBrokerCredential, deleteBrokerCredential } from '../api';
+import type { BrokerKind, BrokerCredentialStatus } from '../api';
 import SearchableSelect from '../components/SearchableSelect';
 import ExportMenu from '../components/ExportMenu';
 import { accountsExportConfig } from '../utils/export/configs';
 import type { Account, AccountType, Currency, Owner, OwnerRelationship } from '../types';
-import { formatCurrency } from '../utils/formatters';
+import { formatCurrency, formatDate } from '../utils/formatters';
 import { useToast } from '../contexts/ToastContext';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Accounts() {
+  const { hasFeature } = useAuth();
+  const canBrokerSync = hasFeature('BROKER_SYNC') || hasFeature('IBKR_SYNC'); // IBKR_SYNC kept for back-compat
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [owners, setOwners] = useState<Owner[]>([]);
-  const [tab, setTab] = useState<'accounts' | 'owners'>('accounts');
+  const [tab, setTab] = useState<'accounts' | 'owners' | 'brokers'>('accounts');
   const [showAccountForm, setShowAccountForm] = useState(false);
   const [showOwnerForm, setShowOwnerForm] = useState(false);
   const [editingAccount, setEditingAccount] = useState<Account | null>(null);
@@ -23,15 +28,91 @@ export default function Accounts() {
   const [accForm, setAccForm] = useState({ name: '', accountType: 'BROKER' as AccountType, currency: 'SGD' as Currency, accountNumber: '', description: '', ownerId: 0, cashBalance: '', includeCashInNetWorth: true });
   const [ownerForm, setOwnerForm] = useState({ name: '', relationship: 'SELF' as OwnerRelationship });
 
+  // ─── Broker integrations (stored, encrypted credentials) ───
+  const [creds, setCreds] = useState<BrokerCredentialStatus[]>([]);
+  const [encryptionEnabled, setEncryptionEnabled] = useState(true);
+  const [credBroker, setCredBroker] = useState<BrokerKind>('IBKR');
+  const [credOwnerId, setCredOwnerId] = useState(0);
+  const [credAccountId, setCredAccountId] = useState(0);
+  const [credMeta1, setCredMeta1] = useState(''); // IBKR Query ID / Tiger ID
+  const [credMeta2, setCredMeta2] = useState(''); // Tiger account
+  const [credSecret1, setCredSecret1] = useState(''); // Flex token / RSA private key (write-only)
+  const [credSaving, setCredSaving] = useState(false);
+  const [editingCredId, setEditingCredId] = useState<number | null>(null);
+
   useEffect(() => { loadData(); }, []);
 
   const loadData = async () => {
     try {
-      const [accRes, ownRes] = await Promise.all([getAccounts(), getOwners()]);
+      const calls: [Promise<any>, Promise<any>, Promise<any>?] = [getAccounts(), getOwners()];
+      if (canBrokerSync) calls[2] = getBrokerCredentials();
+      const [accRes, ownRes, credRes] = await Promise.all(calls as any);
       setAccounts(accRes.data.filter((a: Account) => a.accountType !== 'BANK')); setOwners(ownRes.data);
+      if (credRes) { setCreds(credRes.data.credentials); setEncryptionEnabled(credRes.data.encryptionEnabled); }
     } catch (err) { console.error(err); }
     finally { setLoading(false); }
   };
+
+  // Broker accounts belonging to the chosen owner (credentials are per account).
+  const brokerAccountsForOwner = (ownerId: number) =>
+    accounts.filter(a => a.accountType === 'BROKER' && a.owner?.id === ownerId);
+
+  const resetCredForm = () => {
+    setCredBroker('IBKR'); setCredOwnerId(0); setCredAccountId(0);
+    setCredMeta1(''); setCredMeta2(''); setCredSecret1(''); setEditingCredId(null);
+  };
+
+  const startEditCred = (c: BrokerCredentialStatus) => {
+    setEditingCredId(c.id);
+    setCredBroker(c.broker);
+    setCredOwnerId(c.ownerId ?? 0);
+    setCredAccountId(c.accountId ?? 0);
+    setCredMeta1(c.meta1 ?? '');
+    setCredMeta2('');   // meta2 (Tiger account) is not returned in status; re-enter if changing
+    setCredSecret1(''); // secrets are never returned; blank keeps the existing one
+  };
+
+  const handleCredSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!credOwnerId || !credAccountId) { showToast('Select the owner and broker account', 'error'); return; }
+    const isNew = editingCredId === null;
+    // On create, require the primary secret; on edit a blank secret keeps the stored one.
+    if (isNew && !credSecret1.trim()) {
+      showToast(credBroker === 'IBKR' ? 'Enter the Flex token' : 'Enter the private key', 'error'); return;
+    }
+    setCredSaving(true);
+    try {
+      await saveBrokerCredential({
+        broker: credBroker, ownerId: credOwnerId, accountId: credAccountId,
+        meta1: credMeta1.trim() || undefined,
+        meta2: credMeta2.trim() || undefined,
+        secret1: credSecret1.trim() || undefined,
+      });
+      showToast('Broker credentials saved', 'success');
+      resetCredForm();
+      loadData();
+    } catch (err: any) {
+      console.error(err);
+      showToast(err.response?.data?.message || 'Failed to save credentials', 'error');
+    } finally { setCredSaving(false); }
+  };
+
+  const handleCredDelete = async (c: BrokerCredentialStatus) => {
+    if (!c.accountId) return;
+    if (!confirm(`Remove the ${c.broker} credentials for this account?`)) return;
+    try {
+      await deleteBrokerCredential(c.broker, c.accountId);
+      showToast('Credentials removed', 'success');
+      if (editingCredId === c.id) resetCredForm();
+      loadData();
+    } catch (err: any) {
+      console.error(err);
+      showToast(err.response?.data?.message || 'Failed to remove credentials', 'error');
+    }
+  };
+
+  const ownerName = (id: number | null) => owners.find(o => o.id === id)?.name ?? '—';
+  const accountName = (id: number | null) => accounts.find(a => a.id === id)?.name ?? `#${id ?? '—'}`;
 
   // ─── Account handlers ───
   const handleAccountSubmit = async (e: React.FormEvent) => {
@@ -123,6 +204,11 @@ export default function Accounts() {
         <button onClick={() => setTab('owners')} className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${tab === 'owners' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600'}`}>
           <Users size={15} /> Owners ({owners.length})
         </button>
+        {canBrokerSync && (
+          <button onClick={() => setTab('brokers')} className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${tab === 'brokers' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600'}`}>
+            <KeyRound size={15} /> Broker integrations ({creds.length})
+          </button>
+        )}
       </div>
 
       {/* ═══════ ACCOUNTS TAB ═══════ */}
@@ -303,6 +389,118 @@ export default function Accounts() {
                     );
                   })}
                   {owners.length === 0 && <tr><td colSpan={4} className="px-4 py-12 text-center text-slate-400">No owners</td></tr>}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ═══════ BROKER INTEGRATIONS TAB ═══════ */}
+      {tab === 'brokers' && canBrokerSync && (
+        <>
+          {/* Encryption status banner */}
+          <div className={`flex items-start gap-2 rounded-lg border px-4 py-3 text-sm ${encryptionEnabled ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-amber-200 bg-amber-50 text-amber-800'}`}>
+            {encryptionEnabled ? <ShieldCheck size={16} className="mt-0.5 shrink-0" /> : <ShieldAlert size={16} className="mt-0.5 shrink-0" />}
+            <div>
+              {encryptionEnabled
+                ? <span>Credentials are encrypted at rest (AES-256-GCM). Secret values are write-only — they are never shown or returned after saving.</span>
+                : <span>Encryption key is not configured. Set <code className="font-mono">CREDENTIAL_MASTER_KEY</code> before saving credentials so secrets are never stored as plain text.</span>}
+            </div>
+          </div>
+
+          {/* Add / edit credential form */}
+          <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+            <h3 className="text-base font-semibold text-slate-800 mb-1">{editingCredId ? 'Update broker credentials' : 'Add broker credentials'}</h3>
+            <p className="text-xs text-slate-500 mb-4">Configure a broker once per account. These are used by the live sync on the Transactions and Dividends pages.</p>
+            <form onSubmit={handleCredSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div><label className="block text-xs font-medium text-slate-600 mb-1">Broker *</label>
+                  <div className="flex rounded-lg overflow-hidden border border-slate-300">
+                    {(['IBKR', 'TIGER'] as BrokerKind[]).map(b => (
+                      <button key={b} type="button" onClick={() => setCredBroker(b)} disabled={editingCredId !== null}
+                        className={`flex-1 py-2 text-sm font-medium transition-colors disabled:opacity-50 ${credBroker === b ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-50'}`}>
+                        {b === 'IBKR' ? 'Interactive Brokers' : 'Tiger'}</button>
+                    ))}
+                  </div></div>
+                <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner *</label>
+                  <SearchableSelect options={[{ value: 0, label: 'Select owner...' }, ...owners.filter(o => brokerAccountsForOwner(o.id).length > 0).map(o => ({ value: o.id, label: o.name }))]}
+                    value={credOwnerId} onChange={v => { setCredOwnerId(Number(v)); setCredAccountId(0); }} placeholder="Select owner..." /></div>
+                <div><label className="block text-xs font-medium text-slate-600 mb-1">Broker account *</label>
+                  <SearchableSelect options={[{ value: 0, label: credOwnerId ? 'Select account...' : 'Select an owner first' }, ...brokerAccountsForOwner(credOwnerId).map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))]}
+                    value={credAccountId} onChange={v => setCredAccountId(Number(v))} placeholder="Select account..." /></div>
+              </div>
+
+              {credBroker === 'IBKR' ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div><label className="block text-xs font-medium text-slate-600 mb-1">Flex Query ID</label>
+                    <input type="text" inputMode="numeric" autoComplete="off" value={credMeta1} onChange={e => setCredMeta1(e.target.value)} placeholder="e.g. 123456" disabled={credSaving}
+                      className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
+                  <div><label className="block text-xs font-medium text-slate-600 mb-1">Flex Web Service token {editingCredId ? '' : '*'}</label>
+                    <input type="password" autoComplete="new-password" value={credSecret1} onChange={e => setCredSecret1(e.target.value)} placeholder={editingCredId ? 'Leave blank to keep the saved token' : 'Flex Web Service token'} disabled={credSaving}
+                      className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div><label className="block text-xs font-medium text-slate-600 mb-1">Tiger ID</label>
+                    <input type="text" autoComplete="off" value={credMeta1} onChange={e => setCredMeta1(e.target.value)} placeholder="Your Tiger developer ID" disabled={credSaving}
+                      className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
+                  <div><label className="block text-xs font-medium text-slate-600 mb-1">Tiger account</label>
+                    <input type="text" autoComplete="off" value={credMeta2} onChange={e => setCredMeta2(e.target.value)} placeholder="Trading account no." disabled={credSaving}
+                      className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
+                  <div><label className="block text-xs font-medium text-slate-600 mb-1">RSA private key {editingCredId ? '' : '*'}</label>
+                    <textarea rows={1} autoComplete="off" value={credSecret1} onChange={e => setCredSecret1(e.target.value)} placeholder={editingCredId ? 'Leave blank to keep the saved key' : '-----BEGIN PRIVATE KEY-----'} disabled={credSaving}
+                      className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm font-mono focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
+                </div>
+              )}
+
+              <div className="flex items-center gap-2">
+                <button type="submit" disabled={credSaving} className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50">
+                  {credSaving ? 'Saving…' : editingCredId ? 'Update credentials' : 'Save credentials'}</button>
+                {editingCredId !== null && (
+                  <button type="button" onClick={resetCredForm} disabled={credSaving} className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-sm font-medium disabled:opacity-50">Cancel</button>
+                )}
+              </div>
+            </form>
+          </div>
+
+          {/* Configured credentials table */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-slate-50 border-b border-slate-200">
+                  <tr>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Broker</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Owner</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Account</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Reference</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Secret</th>
+                    <th className="text-left px-4 py-3 font-medium text-slate-600">Updated</th>
+                    <th className="px-4 py-3 w-20"></th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {creds.map(c => (
+                    <tr key={c.id} className="hover:bg-slate-50 group">
+                      <td className="px-4 py-3"><span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 font-medium">{c.broker}</span></td>
+                      <td className="px-4 py-3 text-xs text-slate-700">{ownerName(c.ownerId)}</td>
+                      <td className="px-4 py-3 text-xs text-slate-700">{accountName(c.accountId)}</td>
+                      <td className="px-4 py-3 text-xs text-slate-500">{c.meta1 ? (c.broker === 'IBKR' ? `Query ID ${c.meta1}` : `Tiger ID ${c.meta1}`) : '—'}</td>
+                      <td className="px-4 py-3">
+                        {c.secret1Set
+                          ? <span className="inline-flex items-center gap-1 text-xs text-emerald-700"><ShieldCheck size={12} /> Configured ••••</span>
+                          : <span className="text-xs text-amber-600">Not set</span>}
+                      </td>
+                      <td className="px-4 py-3 text-xs text-slate-500">{c.updatedAt ? formatDate(c.updatedAt) : '—'}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button onClick={() => startEditCred(c)} className="p-1 text-slate-400 hover:text-indigo-600" title="Edit"><Pencil size={13} /></button>
+                          <button onClick={() => handleCredDelete(c)} className="p-1 text-slate-400 hover:text-red-500" title="Remove"><Trash2 size={13} /></button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                  {creds.length === 0 && <tr><td colSpan={7} className="px-4 py-12 text-center text-slate-400">No broker credentials configured</td></tr>}
                 </tbody>
               </table>
             </div>

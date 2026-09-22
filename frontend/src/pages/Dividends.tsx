@@ -49,8 +49,6 @@ export default function Dividends() {
   // IBKR Flex fetch: token + query id are held only in component state for the request, never stored.
   // Default to whichever capability is available (file import if present, else IBKR).
   const [importMode, setImportMode] = useState<'file' | 'ibkr'>(canImportFile ? 'file' : 'ibkr');
-  const [ibkrToken, setIbkrToken] = useState('');
-  const [ibkrQueryId, setIbkrQueryId] = useState('');
   // Bulk cleanup: delete all dividends for a chosen owner+account (both required), password-confirmed.
   const [showBulk, setShowBulk] = useState(false);
   const [bulkOwnerId, setBulkOwnerId] = useState(0);
@@ -352,19 +350,9 @@ export default function Dividends() {
 
           {importMode === 'ibkr' && (
             <div className="mt-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div><label className="block text-xs font-medium text-slate-600 mb-1">IBKR Flex token *</label>
-                  <input type="password" autoComplete="off" value={ibkrToken} onChange={e => setIbkrToken(e.target.value)}
-                    placeholder="Flex Web Service token" disabled={importing}
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
-                <div><label className="block text-xs font-medium text-slate-600 mb-1">Flex Query ID *</label>
-                  <input type="text" inputMode="numeric" value={ibkrQueryId} onChange={e => setIbkrQueryId(e.target.value)}
-                    placeholder="e.g. 123456" disabled={importing}
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
-              </div>
-              <p className="text-[11px] text-slate-400 mt-2">Enable the Flex Web Service in IBKR Client Portal (Settings → Reporting) and create an Activity Flex Query that includes dividends. Your token is used only for this fetch and is never stored.</p>
+              <p className="text-[11px] text-slate-400 mb-2">Uses the IBKR Flex credentials saved for this account on the Account page (Broker integrations). Set them up once there; nothing is entered here.</p>
               <button type="button" onClick={handleIbkrFetch} disabled={importing}
-                className="mt-3 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50">
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50">
                 {importing ? 'Fetching…' : 'Fetch dividends'}</button>
             </div>
           )}
