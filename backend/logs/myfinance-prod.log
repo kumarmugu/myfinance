@@ -75,3 +75,148 @@
 2026-09-22 22:10:37 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (48ms)
 2026-09-22 22:10:37 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (14ms)
 2026-09-22 22:10:37 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (26ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (4ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (5ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (3ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (23ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (15ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (5ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (13ms)
+2026-09-22 22:18:58 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (22ms)
+2026-09-22 22:19:24 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-22 22:19:24 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-22 22:19:24 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-22 22:19:24 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-22 22:19:24 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (18ms)
+2026-09-22 22:19:24 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-22 22:19:25 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (9ms)
+2026-09-22 22:19:47 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-22 22:19:47 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-22 22:19:47 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-22 22:19:47 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-22 22:19:47 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (4ms)
+2026-09-22 22:19:47 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-22 22:19:47 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-22 22:19:47 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-22 22:19:47 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-22 22:19:47 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (12ms)
+2026-09-22 22:19:47 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (24ms)
+2026-09-22 22:19:47 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (4ms)
+2026-09-22 22:19:47 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (11ms)
+2026-09-22 22:19:47 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (21ms)
+2026-09-22 22:20:32 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-22 22:20:32 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-22 22:20:32 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-22 22:20:32 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-22 22:20:32 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-22 22:20:32 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (24ms)
+2026-09-22 22:20:32 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (13ms)
+2026-09-22 22:20:33 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (5ms)
+2026-09-22 22:20:33 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (5ms)
+2026-09-22 22:20:33 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (8ms)
+2026-09-22 22:20:33 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (11ms)
+2026-09-22 22:20:34 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-22 22:20:34 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-22 22:20:34 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-22 22:20:34 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (4ms)
+2026-09-22 22:20:34 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-22 22:20:34 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-22 22:20:34 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (56ms)
+2026-09-22 22:20:34 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (38ms)
+2026-09-22 22:21:37 [http-nio-8080-exec-1] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex SendRequest ok, reference code obtained (query 1645256)
+2026-09-22 22:21:40 [http-nio-8080-exec-1] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex statement retrieved (reference 8995005964)
+2026-09-22 22:21:40 [http-nio-8080-exec-1] INFO  c.m.service.DividendImportService - Dividend import (IBKR Flex) for userId=2: imported=27 skipped=9 assetsCreated=0
+2026-09-22 22:21:40 [http-nio-8080-exec-1] INFO  c.m.controller.DividendController - IBKR Flex fetch imported 27 dividends (0 assets created) for user mugu
+2026-09-22 22:21:40 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/fetch-ibkr → 200 (3657ms)
+2026-09-22 22:21:40 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-09-22 22:21:40 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-22 22:21:40 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-22 22:21:40 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (4ms)
+2026-09-22 22:21:40 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (24ms)
+2026-09-22 22:24:03 [http-nio-8080-exec-3] INFO  c.m.service.DividendImportService - Dividend import (Tiger) for userId=2: imported=0 skipped=0 assetsCreated=0
+2026-09-22 22:24:03 [http-nio-8080-exec-3] INFO  c.m.controller.DividendController - Imported 0 dividends (0 assets created) for user mugu
+2026-09-22 22:24:03 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/import → 200 (68ms)
+2026-09-22 22:24:03 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-22 22:24:03 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-22 22:24:03 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (3ms)
+2026-09-22 22:24:03 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-22 22:24:03 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (27ms)
+2026-09-22 22:24:51 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-22 22:24:51 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-09-22 22:24:51 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (5ms)
+2026-09-22 22:24:51 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-22 22:24:51 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (5ms)
+2026-09-22 22:24:51 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-22 22:24:51 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-22 22:24:51 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (5ms)
+2026-09-22 22:24:51 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (6ms)
+2026-09-22 22:24:51 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (29ms)
+2026-09-22 22:24:51 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (20ms)
+2026-09-22 22:24:51 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (7ms)
+2026-09-22 22:24:51 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (12ms)
+2026-09-22 22:24:51 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (25ms)
+2026-09-22 22:25:20 [http-nio-8080-exec-3] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex SendRequest ok, reference code obtained (query 1645256)
+2026-09-22 22:25:23 [http-nio-8080-exec-3] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex statement retrieved (reference 8995005964)
+2026-09-22 22:25:23 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/ibkr-sync/preview → 200 (3523ms)
+2026-09-22 22:25:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex SendRequest ok, reference code obtained (query 1645256)
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex statement retrieved (reference 8995005964)
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Created Asset id=225 symbol=SPCX
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=353 type=BUY assetId=225 quantity=20
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=321 assetId=225 quantity=20
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=354 type=BUY assetId=129 quantity=211.4216
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=6223.2316
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=355 type=BUY assetId=129 quantity=460.5131
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=6683.7447
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=356 type=BUY assetId=129 quantity=445.2946
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=7129.0393
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=357 type=BUY assetId=129 quantity=443.36
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=7572.3993
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=358 type=BUY assetId=129 quantity=440.016
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=8012.4153
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=359 type=BUY assetId=129 quantity=437.945
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=8450.3603
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=360 type=BUY assetId=129 quantity=454.4447
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=8904.8050
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=361 type=BUY assetId=129 quantity=531.0454
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=9435.8504
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=68 profit=220.40800000000000
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=289 assetId=193 quantity=1500.00
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed, 1 buy-FX backfilled
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.IbkrSyncService - IBKR trade sync for userId=2: inserted=9 updated=3 skipped=0 assetsCreated=1
+2026-09-22 22:25:57 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/ibkr-sync/apply → 200 (2229ms)
+2026-09-22 22:25:57 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-22 22:25:57 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-22 22:25:57 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (5ms)
+2026-09-22 22:25:57 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-22 22:25:57 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-22 22:25:57 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (20ms)
+2026-09-22 22:25:57 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (13ms)
+2026-09-22 22:26:15 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-22 22:26:15 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-22 22:26:22 [http-nio-8080-exec-2] INFO  c.m.controller.AssetController - Merging duplicate assets for userId=2
+2026-09-22 22:26:22 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/merge-duplicates → 200 (16ms)
+2026-09-22 22:26:22 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-22 22:26:25 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Refresh-all prices for user=2: updated=33, skipped=6
+2026-09-22 22:26:25 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/refresh-prices → 200 (1361ms)
+2026-09-22 22:26:25 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-22 22:26:45 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-22 22:26:45 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-22 22:26:45 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-22 22:26:45 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-22 22:26:45 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (10ms)
+2026-09-22 22:26:45 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-22 22:26:45 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-22 22:26:45 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-22 22:26:45 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (5ms)
+2026-09-22 22:26:45 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (28ms)
+2026-09-22 22:26:45 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (16ms)
+2026-09-22 22:26:45 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-22 22:26:45 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (9ms)
+2026-09-22 22:26:45 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (20ms)

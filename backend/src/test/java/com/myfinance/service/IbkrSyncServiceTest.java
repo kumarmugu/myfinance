@@ -115,4 +115,31 @@ class IbkrSyncServiceTest {
         Transaction overwritten = transactionRepository.findByUserIdAndExternalId(userId, "55502").orElseThrow();
         assertEquals(0, new BigDecimal("150.00").compareTo(overwritten.getPricePerUnit()), "approved mismatch overwritten");
     }
+
+    @Test
+    @WithMockUser(username = "syncuser")
+    void importsTradesFromTransactionHistoryCsvFileAndIsIdempotent() {
+        // The IBKR "Transaction History" CSV has no trade id, so dedupe is by the fuzzy match.
+        String csv = String.join("\n",
+            "Transaction History,Header,Date,Account,Description,Transaction Type,Symbol,Quantity,Price,Price Currency,Gross Amount ,Commission,Net Amount",
+            "Transaction History,Data,2025-01-10,U1,SINGTEL,Buy,Z74,900.0,3.05,SGD,-2745.0,-2.5,-2747.725",
+            "Transaction History,Data,2025-01-06,U1,Electronic Fund Transfer,Deposit,-,-,-,-,10000.0,-,10000.0");
+        byte[] file = csv.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+
+        var preview = syncService.previewFile(file, userId, account, owner, null, null);
+        assertEquals(1, preview.newTrades().size(), "only the Z74 Buy is a new trade; the deposit is ignored");
+
+        var result = syncService.applyFile(file, userId, account, owner, null, null, java.util.Set.of());
+        assertEquals(1, result.inserted());
+        assertEquals(1, transactionRepository.findByUserIdOrderByTransactionDateDesc(userId).size());
+        Transaction tx = transactionRepository.findByUserIdOrderByTransactionDateDesc(userId).get(0);
+        assertEquals("Z74", tx.getAsset().getSymbol());
+        assertEquals(com.myfinance.model.enums.Currency.SGD, tx.getCurrency(), "trade currency from Price Currency column");
+        assertEquals(0, new BigDecimal("3.05").compareTo(tx.getPricePerUnit()));
+
+        // Re-importing the same file must not duplicate the trade (fuzzy match recognises it).
+        var second = syncService.applyFile(file, userId, account, owner, null, null, java.util.Set.of());
+        assertEquals(0, second.inserted(), "the hand-entered/previously-imported trade is recognised");
+        assertEquals(1, transactionRepository.findByUserIdOrderByTransactionDateDesc(userId).size(), "no duplicate row");
+    }
 }

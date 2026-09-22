@@ -43,6 +43,79 @@ public class IbkrTradeParser {
                              List<ParsedCorporateAction> needsReview) {}
 
     /**
+     * Auto-detect the uploaded trades file and parse it into the common {@link FlexTrades} shape:
+     * an IBKR Flex statement (XML) or an IBKR "Transaction History" CSV. XML carries a stable
+     * {@code tradeID} for exact de-duplication; the CSV path has no id, so it relies on the fuzzy
+     * (account+owner+symbol+date+type+quantity+price) match instead.
+     */
+    public FlexTrades parseFile(byte[] content) {
+        String text = new String(content, StandardCharsets.UTF_8);
+        String head = text.stripLeading();
+        boolean xml = head.startsWith("<") || head.contains("<FlexQueryResponse") || head.contains("<FlexStatements");
+        return xml ? parse(text) : parseTransactionHistoryCsv(text);
+    }
+
+    /**
+     * Parse the {@code Buy}/{@code Sell} rows of an IBKR "Transaction History" CSV into trades.
+     * This is the same statement the dividend importer reads — here we take only genuine trade rows
+     * and ignore dividends, withholding, deposits, withdrawals, forex components, interest and fees.
+     *
+     * <p>With the leading {@code "Transaction History","Data"} prefix the data columns are (0-based):
+     * 2=Date, 5=Transaction Type, 6=Symbol, 7=Quantity, 8=Price, 9=Price Currency, 11=Commission.
+     * The trade currency is the Price Currency column. There is no trade id in this format, so trades
+     * get a null id and de-dupe by the fuzzy match.
+     */
+    public FlexTrades parseTransactionHistoryCsv(String csv) {
+        List<ParsedTrade> trades = new ArrayList<>();
+        for (String line : csv.split("\r?\n")) {
+            if (line.isBlank()) continue;
+            String[] f = splitCsv(line);
+            if (f.length < 11 || !"Transaction History".equals(f[0]) || !"Data".equals(f[1])) continue;
+
+            String txType = f[5];
+            String symbol = f[6];
+            if (!"Buy".equalsIgnoreCase(txType) && !"Sell".equalsIgnoreCase(txType)) continue;
+            if (symbol == null || symbol.isBlank() || symbol.equals("-")) continue;
+
+            LocalDate d = date(f[2]);
+            BigDecimal qty = num(f[7]);
+            BigDecimal price = num(f[8]);
+            String currency = f.length > 9 ? f[9] : null;
+            BigDecimal commission = f.length > 11 ? num(f[11]) : null;
+            if (d == null || qty.signum() == 0) continue;
+
+            boolean buy = "Buy".equalsIgnoreCase(txType);
+            trades.add(new ParsedTrade(
+                    null, symbol.trim().toUpperCase(), "STK",
+                    buy, qty.abs(), price.abs(),
+                    (currency == null || currency.isBlank() || currency.equals("-")) ? "USD" : currency.trim().toUpperCase(),
+                    d,
+                    commission == null ? null : commission.abs(),
+                    null));
+        }
+        return new FlexTrades(trades, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    }
+
+    /** Minimal CSV splitter honouring double-quoted fields (IBKR quotes amounts/descriptions). */
+    private String[] splitCsv(String line) {
+        List<String> out = new ArrayList<>();
+        StringBuilder cur = new StringBuilder();
+        boolean inQuotes = false;
+        for (int i = 0; i < line.length(); i++) {
+            char ch = line.charAt(i);
+            if (ch == '"') {
+                if (inQuotes && i + 1 < line.length() && line.charAt(i + 1) == '"') { cur.append('"'); i++; }
+                else inQuotes = !inQuotes;
+            } else if (ch == ',' && !inQuotes) {
+                out.add(cur.toString());
+                cur.setLength(0);
+            } else cur.append(ch);
+        }
+        out.add(cur.toString());
+        return out.toArray(new String[0]);
+    }
+
+    /**
      * Parse trades + corporate actions from a Flex statement. Returns imported-eligible trades,
      * skipped (non-stock) trades, actionable corporate actions, and ones needing manual review.
      */

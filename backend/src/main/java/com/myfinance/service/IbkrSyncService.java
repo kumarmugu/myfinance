@@ -75,10 +75,21 @@ public class IbkrSyncService {
 
     // ─────────────────────────── preview ───────────────────────────
 
+    /** Preview from a live Flex statement XML. */
     public SyncPreview preview(String xml, Long userId, Account account, Owner owner,
                                LocalDate from, LocalDate to) {
-        IbkrTradeParser.FlexTrades parsed = tradeParser.parse(xml);
+        return previewTrades(tradeParser.parse(xml), userId, account, owner, from, to);
+    }
 
+    /** Preview from an uploaded trades file (Flex XML or IBKR Transaction History CSV). */
+    public SyncPreview previewFile(byte[] content, Long userId, Account account, Owner owner,
+                                   LocalDate from, LocalDate to) {
+        return previewTrades(tradeParser.parseFile(content), userId, account, owner, from, to);
+    }
+
+    /** Shared preview over already-parsed trades — used by both the live fetch and file upload. */
+    public SyncPreview previewTrades(IbkrTradeParser.FlexTrades parsed, Long userId, Account account, Owner owner,
+                                     LocalDate from, LocalDate to) {
         List<TradePlan> news = new ArrayList<>();
         List<TradePlan> dups = new ArrayList<>();
         List<TradePlan> mismatches = new ArrayList<>();
@@ -169,7 +180,20 @@ public class IbkrSyncService {
     @Transactional
     public SyncResult apply(String xml, Long userId, Account account, Owner owner,
                             LocalDate from, LocalDate to, Set<String> approvedMismatchTradeIds) {
-        IbkrTradeParser.FlexTrades parsed = tradeParser.parse(xml);
+        return applyTrades(tradeParser.parse(xml), userId, account, owner, from, to, approvedMismatchTradeIds);
+    }
+
+    /** Apply from an uploaded trades file (Flex XML or IBKR Transaction History CSV). */
+    @Transactional
+    public SyncResult applyFile(byte[] content, Long userId, Account account, Owner owner,
+                                LocalDate from, LocalDate to, Set<String> approvedMismatchTradeIds) {
+        return applyTrades(tradeParser.parseFile(content), userId, account, owner, from, to, approvedMismatchTradeIds);
+    }
+
+    /** Shared apply over already-parsed trades — used by both the live fetch and file upload. */
+    @Transactional
+    public SyncResult applyTrades(IbkrTradeParser.FlexTrades parsed, Long userId, Account account, Owner owner,
+                                  LocalDate from, LocalDate to, Set<String> approvedMismatchTradeIds) {
         int inserted = 0, updated = 0, skipped = 0;
         int[] assetsCreated = {0};
 

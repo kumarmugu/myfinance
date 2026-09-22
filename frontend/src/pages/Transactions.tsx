@@ -1,6 +1,6 @@
 import { useEffect, useState, Fragment } from 'react';
 import { Plus, Trash2, Pencil, ArrowUpCircle, ArrowDownCircle, Lock, RefreshCw } from 'lucide-react';
-import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates, getActiveHoldings, recomputeRealizedPnl, previewIbkrSync, applyIbkrSync } from '../api';
+import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates, getActiveHoldings, recomputeRealizedPnl, previewIbkrSync, applyIbkrSync, previewTradeImport, applyTradeImport } from '../api';
 import type { IbkrSyncPreview, IbkrSyncBody } from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import { formatCurrency, formatDate, formatPercent } from '../utils/formatters';
@@ -65,6 +65,9 @@ export default function Transactions() {
   const [ibkrBusy, setIbkrBusy] = useState(false);
   const [ibkrPreview, setIbkrPreview] = useState<IbkrSyncPreview | null>(null);
   const [approvedMismatches, setApprovedMismatches] = useState<Set<string>>(new Set());
+  // IBKR source: 'live' fetch via Flex, or 'file' upload of a Flex XML / Transaction History CSV.
+  const [ibkrSource, setIbkrSource] = useState<'live' | 'file'>('live');
+  const [ibkrFile, setIbkrFile] = useState<File | null>(null);
   // Client-side pagination: how many of the filtered rows to render (grows via "Show more").
   const PAGE_SIZE = 100;
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -190,17 +193,20 @@ export default function Transactions() {
 
   const handleIbkrPreview = async () => {
     if (!ibkrOwnerId || !ibkrAccountId) { showToast('Select the owner and IBKR account', 'error'); return; }
-    if (!ibkrToken.trim() || !ibkrQueryId.trim()) { showToast('Enter your IBKR Flex token and Query ID', 'error'); return; }
+    if (ibkrSource === 'live' && (!ibkrToken.trim() || !ibkrQueryId.trim())) { showToast('Enter your IBKR Flex token and Query ID', 'error'); return; }
+    if (ibkrSource === 'file' && !ibkrFile) { showToast('Choose a trades file to import', 'error'); return; }
     setIbkrBusy(true); setIbkrPreview(null); setApprovedMismatches(new Set());
     try {
-      const { data } = await previewIbkrSync(ibkrBody());
+      const { data } = ibkrSource === 'live'
+        ? await previewIbkrSync(ibkrBody())
+        : await previewTradeImport(ibkrFile!, ibkrAccountId, ibkrOwnerId);
       setIbkrPreview(data);
       if (data.newTrades.length === 0 && data.mismatches.length === 0) {
         showToast(`Nothing new to import (${data.duplicates.length} already present)`, 'info');
       }
     } catch (err: any) {
       console.error(err);
-      showToast(err?.response?.data?.message || 'IBKR preview failed — check the token and Query ID', 'error');
+      showToast(err?.response?.data?.message || 'Preview failed — check the input and try again', 'error');
     } finally {
       setIbkrBusy(false);
     }
@@ -210,15 +216,19 @@ export default function Transactions() {
     if (!ibkrPreview) return;
     setIbkrBusy(true);
     try {
-      const { data } = await applyIbkrSync({ ...ibkrBody(), approvedMismatchTradeIds: Array.from(approvedMismatches) });
+      const approved = Array.from(approvedMismatches);
+      const { data } = ibkrSource === 'live'
+        ? await applyIbkrSync({ ...ibkrBody(), approvedMismatchTradeIds: approved })
+        : await applyTradeImport(ibkrFile!, ibkrAccountId, ibkrOwnerId, approved);
       showToast(`Imported ${data.inserted} trade${data.inserted === 1 ? '' : 's'}${data.updated ? `, updated ${data.updated}` : ''}${data.assetsCreated ? ` (${data.assetsCreated} new asset${data.assetsCreated === 1 ? '' : 's'})` : ''}`, 'success');
       setIbkrToken(''); // drop the token as soon as we're done
+      setIbkrFile(null);
       setIbkrPreview(null);
       setShowIbkr(false);
       loadData();
     } catch (err: any) {
       console.error(err);
-      showToast(err?.response?.data?.message || 'IBKR sync failed', 'error');
+      showToast(err?.response?.data?.message || 'Import failed', 'error');
     } finally {
       setIbkrBusy(false);
     }
@@ -514,7 +524,14 @@ export default function Transactions() {
       {canIbkrSync && anyOwnerHasIbkr && showIbkr && (
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
           <h3 className="text-base font-semibold text-slate-800 mb-1">Sync trades from IBKR</h3>
-          <p className="text-xs text-slate-500 mb-4">Pulls stock/ETF buys &amp; sells from your IBKR Activity Flex statement. Options, forex and futures are skipped. Nothing is written until you review the preview and confirm. Your token is used only for this request and never stored.</p>
+          <p className="text-xs text-slate-500 mb-3">Imports stock/ETF buys &amp; sells; options, forex and futures are skipped. Nothing is written until you review the preview and confirm. Duplicates are detected and skipped; you approve any value mismatches to correct existing records.</p>
+
+          {/* Source toggle: live Flex fetch, or upload a saved Flex XML / Transaction History CSV. */}
+          <div className="inline-flex rounded-lg border border-slate-200 p-0.5 mb-4 bg-slate-50">
+            <button type="button" onClick={() => { setIbkrSource('live'); setIbkrPreview(null); }} className={`px-3 py-1.5 text-xs font-medium rounded-md ${ibkrSource === 'live' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>Live fetch</button>
+            <button type="button" onClick={() => { setIbkrSource('file'); setIbkrPreview(null); }} className={`px-3 py-1.5 text-xs font-medium rounded-md ${ibkrSource === 'file' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>Upload file</button>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
             <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner *</label>
               <SearchableSelect options={[{ value: 0, label: 'Select owner...' }, ...owners.filter(o => ibkrAccountsForOwner(o.id).length > 0).map(o => ({ value: o.id, label: o.name }))]}
@@ -522,19 +539,30 @@ export default function Transactions() {
             <div><label className="block text-xs font-medium text-slate-600 mb-1">IBKR account *</label>
               <SearchableSelect options={[{ value: 0, label: ibkrOwnerId ? 'Select account...' : 'Select an owner first' }, ...ibkrAccountsForOwner(ibkrOwnerId).map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))]}
                 value={ibkrAccountId} onChange={v => setIbkrAccountId(Number(v))} placeholder="Select account..." /></div>
-            <div><label className="block text-xs font-medium text-slate-600 mb-1">IBKR Flex token *</label>
-              <input type="password" autoComplete="off" value={ibkrToken} onChange={e => setIbkrToken(e.target.value)} placeholder="Flex Web Service token" disabled={ibkrBusy}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
-            <div><label className="block text-xs font-medium text-slate-600 mb-1">Flex Query ID *</label>
-              <input type="text" inputMode="numeric" value={ibkrQueryId} onChange={e => setIbkrQueryId(e.target.value)} placeholder="e.g. 123456" disabled={ibkrBusy}
-                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
+            {ibkrSource === 'live' ? (
+              <>
+                <div><label className="block text-xs font-medium text-slate-600 mb-1">IBKR Flex token *</label>
+                  <input type="password" autoComplete="off" value={ibkrToken} onChange={e => setIbkrToken(e.target.value)} placeholder="Flex Web Service token" disabled={ibkrBusy}
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
+                <div><label className="block text-xs font-medium text-slate-600 mb-1">Flex Query ID *</label>
+                  <input type="text" inputMode="numeric" value={ibkrQueryId} onChange={e => setIbkrQueryId(e.target.value)} placeholder="e.g. 123456" disabled={ibkrBusy}
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 disabled:opacity-50" /></div>
+              </>
+            ) : (
+              <div className="md:col-span-2"><label className="block text-xs font-medium text-slate-600 mb-1">Trades file (.xml / .csv) *</label>
+                <input type="file" accept=".xml,.csv,text/csv,text/xml,application/xml" disabled={ibkrBusy}
+                  onChange={e => { setIbkrFile(e.target.files?.[0] ?? null); setIbkrPreview(null); }}
+                  className="block w-full text-sm text-slate-600 border border-slate-300 rounded-lg cursor-pointer file:mr-3 file:py-2 file:px-3 file:border-0 file:text-sm file:font-medium file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 disabled:opacity-50" /></div>
+            )}
           </div>
           <div className="flex flex-wrap items-end gap-4 mt-4">
+            {ibkrSource === 'live' && (
             <div className="inline-flex rounded-lg border border-slate-200 p-0.5 bg-slate-50">
               <button type="button" onClick={() => setIbkrMode('ALL')} className={`px-3 py-1.5 text-xs font-medium rounded-md ${ibkrMode === 'ALL' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>All history</button>
               <button type="button" onClick={() => setIbkrMode('RANGE')} className={`px-3 py-1.5 text-xs font-medium rounded-md ${ibkrMode === 'RANGE' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>Date range</button>
             </div>
-            {ibkrMode === 'RANGE' && (
+            )}
+            {ibkrSource === 'live' && ibkrMode === 'RANGE' && (
               <>
                 <div><label className="block text-xs font-medium text-slate-600 mb-1">From</label>
                   <input type="date" value={ibkrFrom} onChange={e => setIbkrFrom(e.target.value)} className="border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>

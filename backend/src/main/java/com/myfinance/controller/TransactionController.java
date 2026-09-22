@@ -146,23 +146,65 @@ public class TransactionController {
         }
     }
 
+    /**
+     * Preview a trade file import (IBKR Flex XML or "Transaction History" CSV). Classifies each
+     * trade (new / duplicate / mismatch) without writing anything. Gated by IBKR_SYNC.
+     */
+    @PostMapping("/import/preview")
+    public com.myfinance.service.IbkrSyncService.SyncPreview importPreview(
+            @RequestParam("file") org.springframework.web.multipart.MultipartFile file,
+            @RequestParam Long accountId, @RequestParam Long ownerId) {
+        var ctx = resolveCtx(accountId, ownerId);
+        try {
+            return ibkrSyncService.previewFile(file.getBytes(), ctx.userId, ctx.account, ctx.owner, null, null);
+        } catch (java.io.IOException e) {
+            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not read the uploaded file");
+        }
+    }
+
+    /**
+     * Apply a trade file import: insert new trades and overwrite only the approved mismatches, then
+     * recompute realized P/L. Gated by IBKR_SYNC. The file is re-uploaded for this call (stateless).
+     */
+    @PostMapping("/import/apply")
+    public com.myfinance.service.IbkrSyncService.SyncResult importApply(
+            @RequestParam("file") org.springframework.web.multipart.MultipartFile file,
+            @RequestParam Long accountId, @RequestParam Long ownerId,
+            @RequestParam(required = false) java.util.List<String> approvedMismatchTradeIds) {
+        var ctx = resolveCtx(accountId, ownerId);
+        java.util.Set<String> approved = approvedMismatchTradeIds == null
+                ? java.util.Set.of() : new java.util.HashSet<>(approvedMismatchTradeIds);
+        try {
+            return ibkrSyncService.applyFile(file.getBytes(), ctx.userId, ctx.account, ctx.owner, null, null, approved);
+        } catch (java.io.IOException e) {
+            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not read the uploaded file");
+        } catch (RuntimeException e) {
+            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
     /** Resolved, tenant-checked sync context. */
     private record SyncCtx(Long userId, com.myfinance.model.Account account, com.myfinance.model.Owner owner) {}
 
     private SyncCtx resolve(IbkrSyncRequest req) {
-        com.myfinance.model.AppUser user = tenantContext.getCurrentUser();
-        if (user == null) throw new org.springframework.web.server.ResponseStatusException(HttpStatus.UNAUTHORIZED);
-        if (!hasFeature(user, IBKR_FEATURE)) {
-            log.warn("User {} attempted IBKR trade sync without the {} feature", user.getUsername(), IBKR_FEATURE);
-            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.FORBIDDEN, "IBKR sync is not enabled for your account");
-        }
         if (req.token() == null || req.token().isBlank() || req.queryId() == null || req.queryId().isBlank()) {
             throw new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, "IBKR Flex token and Query ID are required");
         }
-        com.myfinance.model.Account account = accountRepository.findById(req.accountId())
+        return resolveCtx(req.accountId(), req.ownerId());
+    }
+
+    /** Feature-gate + tenant-check the account/owner; shared by the live sync and file import. */
+    private SyncCtx resolveCtx(Long accountId, Long ownerId) {
+        com.myfinance.model.AppUser user = tenantContext.getCurrentUser();
+        if (user == null) throw new org.springframework.web.server.ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        if (!hasFeature(user, IBKR_FEATURE)) {
+            log.warn("User {} attempted an IBKR trade operation without the {} feature", user.getUsername(), IBKR_FEATURE);
+            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.FORBIDDEN, "IBKR sync is not enabled for your account");
+        }
+        com.myfinance.model.Account account = accountRepository.findById(accountId)
                 .filter(a -> user.getId().equals(a.getUserId()))
                 .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid account"));
-        com.myfinance.model.Owner owner = ownerRepository.findById(req.ownerId())
+        com.myfinance.model.Owner owner = ownerRepository.findById(ownerId)
                 .filter(o -> user.getId().equals(o.getUserId()))
                 .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid owner"));
         return new SyncCtx(user.getId(), account, owner);

@@ -110,6 +110,24 @@ export const previewIbkrSync = (body: IbkrSyncBody) =>
 export const applyIbkrSync = (body: IbkrSyncBody) =>
   api.post<{ inserted: number; updated: number; skipped: number; assetsCreated: number }>('/transactions/ibkr-sync/apply', body);
 
+// Trade file import (IBKR Flex XML or "Transaction History" CSV). Two-phase like the live sync:
+// preview classifies (new/duplicate/mismatch) without writing; apply inserts new + approved overwrites.
+export const previewTradeImport = (file: File, accountId: number, ownerId: number) => {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('accountId', String(accountId));
+  fd.append('ownerId', String(ownerId));
+  return api.post<IbkrSyncPreview>('/transactions/import/preview', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+};
+export const applyTradeImport = (file: File, accountId: number, ownerId: number, approvedMismatchTradeIds: string[]) => {
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('accountId', String(accountId));
+  fd.append('ownerId', String(ownerId));
+  approvedMismatchTradeIds.forEach(id => fd.append('approvedMismatchTradeIds', id));
+  return api.post<{ inserted: number; updated: number; skipped: number; assetsCreated: number }>('/transactions/import/apply', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+};
+
 // ─── Holdings ───
 export const getActiveHoldings = (ownerId?: number) => api.get<Holding[]>('/holdings', { params: { ownerId } });
 export const getHoldingsByAccount = (accountId: number) => api.get<Holding[]>(`/holdings/account/${accountId}`);
