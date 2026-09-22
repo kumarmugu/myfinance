@@ -55,6 +55,13 @@ app:
     # the stooq path falls back to yahoo when Stooq returns a non-CSV/error response.
     provider: ${PRICE_PROVIDER:yahoo}
     enabled: ${PRICE_FETCH_ENABLED:true}
+  # Encryption key for stored broker API credentials (AES-256-GCM at rest). Base64-encoded 32 bytes.
+  # Empty by default = broker credential storage/sync is DISABLED (never stores plaintext). Set via
+  # the CREDENTIAL_MASTER_KEY env / secret store, e.g. generate with:
+  #   head -c 32 /dev/urandom | base64
+  # KMS-ready: in a cloud deployment, source this value from KMS/Secrets Manager into the env var.
+  crypto:
+    master-key: ${CREDENTIAL_MASTER_KEY:}
 
 # OpenAPI / Swagger
 springdoc:

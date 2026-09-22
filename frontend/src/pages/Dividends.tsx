@@ -39,7 +39,7 @@ export default function Dividends() {
   const [fxRates, setFxRates] = useState<CurrencyRate[]>([]);
   const { hasFeature } = useAuth();
   const canImportFile = hasFeature('DIVIDEND_IMPORT');
-  const canIbkr = hasFeature('IBKR_SYNC');
+  const canIbkr = hasFeature('BROKER_SYNC') || hasFeature('IBKR_SYNC'); // IBKR_SYNC kept for back-compat
   const canImport = canImportFile || canIbkr; // the panel shows if either capability is enabled
   const [showImport, setShowImport] = useState(false);
   const [importAccountId, setImportAccountId] = useState(0);
@@ -116,17 +116,16 @@ export default function Dividends() {
   const handleIbkrFetch = async () => {
     if (!importOwnerId) { showToast('Select an owner to import into', 'error'); return; }
     if (!importAccountId) { showToast('Select a broker to import into', 'error'); return; }
-    if (!ibkrToken.trim() || !ibkrQueryId.trim()) { showToast('Enter your IBKR Flex token and Query ID', 'error'); return; }
     setImporting(true);
     try {
-      const { data } = await fetchIbkrDividends(ibkrToken.trim(), ibkrQueryId.trim(), importAccountId, importOwnerId);
+      // Credentials are pulled from the account's stored config (Account page) — no token entry here.
+      const { data } = await fetchIbkrDividends(importAccountId, importOwnerId);
       showToast(`Fetched ${data.imported} dividend${data.imported === 1 ? '' : 's'}${data.skipped ? `, skipped ${data.skipped} duplicate${data.skipped === 1 ? '' : 's'}` : ''}${data.assetsCreated ? ` (${data.assetsCreated} new asset${data.assetsCreated === 1 ? '' : 's'})` : ''}`, 'success');
-      setIbkrToken(''); // clear the token from memory as soon as we're done
       setShowImport(false);
       loadData();
     } catch (err: any) {
       console.error(err);
-      showToast(err?.response?.data?.message || 'IBKR fetch failed — check the token and Query ID', 'error');
+      showToast(err?.response?.data?.message || 'IBKR fetch failed — configure credentials on the Account page', 'error');
     } finally {
       setImporting(false);
     }

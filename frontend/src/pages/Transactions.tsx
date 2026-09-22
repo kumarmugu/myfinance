@@ -28,7 +28,7 @@ function resolveRate(rates: CurrencyRate[], from: string, to: string): number | 
 export default function Transactions() {
   const { verifyPassword, hasFeature } = useAuth();
   const { showToast } = useToast();
-  const canIbkrSync = hasFeature('IBKR_SYNC');
+  const canIbkrSync = hasFeature('BROKER_SYNC') || hasFeature('IBKR_SYNC'); // IBKR_SYNC kept for back-compat
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [assets, setAssets] = useState<Asset[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);

@@ -101,7 +101,7 @@ export interface IbkrSyncPreview {
   skippedNonStock: string[]; corporateActions: string[]; needsReview: string[];
 }
 export interface IbkrSyncBody {
-  token: string; queryId: string; accountId: number; ownerId: number;
+  accountId: number; ownerId: number;
   mode: 'ALL' | 'RANGE'; from?: string | null; to?: string | null;
   approvedMismatchTradeIds?: string[];
 }
@@ -162,15 +162,30 @@ export const importDividends = (file: File, accountId: number, ownerId: number) 
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
-// Fetch dividends directly from IBKR via the Flex Web Service. Token + queryId are sent only for
-// this request and are never stored. Gated by the DIVIDEND_IMPORT feature.
-export const fetchIbkrDividends = (token: string, queryId: string, accountId: number, ownerId: number) =>
+// Fetch dividends from IBKR via the Flex Web Service using the account's stored credentials
+// (configured on the Account page). Gated by the broker-sync feature.
+export const fetchIbkrDividends = (accountId: number, ownerId: number) =>
   api.post<{ imported: number; skipped: number; assetsCreated: number }>('/dividends/fetch-ibkr',
-    { token, queryId, accountId, ownerId });
+    { accountId, ownerId });
 // Bulk cleanup of dividends scoped to one owner+account (both required). Preview count, then delete
 // with password confirmation.
 export const previewDividendBulkDelete = (ownerId: number, accountId: number) =>
   api.get<{ dividends: number }>('/dividends/bulk-count', { params: { ownerId, accountId } });
+
+// ─── Broker API credentials (stored, encrypted server-side; secrets never returned) ───
+export type BrokerKind = 'IBKR' | 'TIGER' | 'SAXO';
+export interface BrokerCredentialStatus {
+  id: number; broker: BrokerKind; ownerId: number | null; accountId: number | null;
+  meta1: string | null; secret1Set: boolean; secret2Set: boolean; updatedAt: string | null;
+}
+export const getBrokerCredentials = () =>
+  api.get<{ encryptionEnabled: boolean; credentials: BrokerCredentialStatus[] }>('/broker-credentials');
+export const saveBrokerCredential = (body: {
+  broker: BrokerKind; ownerId: number; accountId: number;
+  meta1?: string; meta2?: string; secret1?: string; secret2?: string;
+}) => api.post<BrokerCredentialStatus>('/broker-credentials', body);
+export const deleteBrokerCredential = (broker: BrokerKind, accountId: number) =>
+  api.delete('/broker-credentials', { params: { broker, accountId } });
 export const dividendBulkDelete = (ownerId: number, accountId: number, password: string) =>
   api.post<{ deleted: number }>('/dividends/bulk-delete', { ownerId, accountId, password });
 

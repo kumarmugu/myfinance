@@ -27,11 +27,10 @@ public class TransactionController {
     private final com.myfinance.repository.AccountRepository accountRepository;
     private final com.myfinance.repository.OwnerRepository ownerRepository;
     private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+    private final com.myfinance.service.BrokerCredentialService brokerCredentialService;
 
-    private static final String IBKR_FEATURE = "IBKR_SYNC";
-
-    /** Request for the IBKR trade sync. Token/queryId are used per-request and never stored. */
-    public record IbkrSyncRequest(String token, String queryId, Long accountId, Long ownerId,
+    /** Request for the IBKR trade sync. Credentials come from the account's stored config, not here. */
+    public record IbkrSyncRequest(Long accountId, Long ownerId,
                                   String mode, LocalDate from, LocalDate to,
                                   java.util.List<String> approvedMismatchTradeIds) {}
 
@@ -176,20 +175,20 @@ public class TransactionController {
      */
     @PostMapping("/ibkr-sync/preview")
     public com.myfinance.service.IbkrSyncService.SyncPreview ibkrSyncPreview(@RequestBody IbkrSyncRequest req) {
-        var ctx = resolve(req);
-        String xml = ibkrFlexService.fetchStatementXml(req.token(), req.queryId());
+        var ctx = resolveCtx(req.accountId(), req.ownerId());
+        String xml = fetchIbkrStatement(ctx.userId, ctx.account.getId());
         var range = dateRange(req);
         return ibkrSyncService.preview(xml, ctx.userId, ctx.account, ctx.owner, range[0], range[1]);
     }
 
     /**
      * Apply an IBKR trade sync: insert new trades and overwrite only the approved mismatches, then
-     * recompute realized P/L. Gated by IBKR_SYNC. Token never stored/logged.
+     * recompute realized P/L. Gated by BROKER_SYNC. Uses the account's stored Flex credential.
      */
     @PostMapping("/ibkr-sync/apply")
     public com.myfinance.service.IbkrSyncService.SyncResult ibkrSyncApply(@RequestBody IbkrSyncRequest req) {
-        var ctx = resolve(req);
-        String xml = ibkrFlexService.fetchStatementXml(req.token(), req.queryId());
+        var ctx = resolveCtx(req.accountId(), req.ownerId());
+        String xml = fetchIbkrStatement(ctx.userId, ctx.account.getId());
         var range = dateRange(req);
         java.util.Set<String> approved = req.approvedMismatchTradeIds() == null
                 ? java.util.Set.of() : new java.util.HashSet<>(req.approvedMismatchTradeIds());
@@ -198,6 +197,23 @@ public class TransactionController {
         } catch (RuntimeException e) {
             throw new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
+    }
+
+    /**
+     * Load the account's stored IBKR Flex credential (Query ID + token), decrypt it and fetch the
+     * statement. The token is used only for this call and is never logged. Errors if not configured.
+     */
+    private String fetchIbkrStatement(Long userId, Long accountId) {
+        var cred = brokerCredentialService.decryptFor(userId, accountId, com.myfinance.model.enums.Broker.IBKR)
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "No IBKR credentials saved for this account — add them on the Account page"));
+        String queryId = cred.meta1();
+        String token = cred.secret1();
+        if (token == null || token.isBlank() || queryId == null || queryId.isBlank()) {
+            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "IBKR credentials are incomplete — set both the Flex token and Query ID on the Account page");
+        }
+        return ibkrFlexService.fetchStatementXml(token, queryId);
     }
 
     /**
@@ -240,20 +256,13 @@ public class TransactionController {
     /** Resolved, tenant-checked sync context. */
     private record SyncCtx(Long userId, com.myfinance.model.Account account, com.myfinance.model.Owner owner) {}
 
-    private SyncCtx resolve(IbkrSyncRequest req) {
-        if (req.token() == null || req.token().isBlank() || req.queryId() == null || req.queryId().isBlank()) {
-            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, "IBKR Flex token and Query ID are required");
-        }
-        return resolveCtx(req.accountId(), req.ownerId());
-    }
-
     /** Feature-gate + tenant-check the account/owner; shared by the live sync and file import. */
     private SyncCtx resolveCtx(Long accountId, Long ownerId) {
         com.myfinance.model.AppUser user = tenantContext.getCurrentUser();
         if (user == null) throw new org.springframework.web.server.ResponseStatusException(HttpStatus.UNAUTHORIZED);
-        if (!hasFeature(user, IBKR_FEATURE)) {
-            log.warn("User {} attempted an IBKR trade operation without the {} feature", user.getUsername(), IBKR_FEATURE);
-            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.FORBIDDEN, "IBKR sync is not enabled for your account");
+        if (!com.myfinance.security.FeatureFlags.hasBrokerSync(user)) {
+            log.warn("User {} attempted a broker trade operation without the broker-sync feature", user.getUsername());
+            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.FORBIDDEN, "Broker sync is not enabled for your account");
         }
         com.myfinance.model.Account account = accountRepository.findById(accountId)
                 .filter(a -> user.getId().equals(a.getUserId()))
@@ -270,10 +279,5 @@ public class TransactionController {
         return range ? new LocalDate[]{req.from(), req.to()} : new LocalDate[]{null, null};
     }
 
-    private boolean hasFeature(com.myfinance.model.AppUser user, String key) {
-        String csv = user.getEnabledFeatures();
-        if (csv == null || csv.isBlank()) return true;
-        for (String f : csv.split(",")) if (key.equals(f.trim())) return true;
-        return false;
-    }
+
 }

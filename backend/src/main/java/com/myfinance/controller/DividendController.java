@@ -28,6 +28,7 @@ public class DividendController {
     private final DividendService dividendService;
     private final DividendImportService dividendImportService;
     private final com.myfinance.service.IbkrFlexService ibkrFlexService;
+    private final com.myfinance.service.BrokerCredentialService brokerCredentialService;
     private final AccountRepository accountRepository;
     private final OwnerRepository ownerRepository;
     private final TenantContext tenantContext;
@@ -35,14 +36,13 @@ public class DividendController {
 
     /** Per-user feature key that unlocks the file-based statement-import endpoint. */
     private static final String IMPORT_FEATURE = "DIVIDEND_IMPORT";
-    /** Per-user feature key that unlocks live IBKR pulls (Flex Web Service). */
-    private static final String IBKR_FEATURE = "IBKR_SYNC";
+
 
     /**
      * Request to fetch dividends directly from IBKR via the Flex Web Service. The {@code token} and
      * {@code queryId} are entered by the user per-request and are NOT stored anywhere.
      */
-    public record IbkrFlexRequest(String token, String queryId, Long accountId, Long ownerId) {}
+    public record IbkrFlexRequest(Long accountId, Long ownerId) {}
 
     @GetMapping
     public List<Dividend> getAll(
@@ -175,14 +175,10 @@ public class DividendController {
     public ResponseEntity<DividendImportService.ImportResult> fetchFromIbkr(@RequestBody IbkrFlexRequest req) {
         AppUser user = tenantContext.getCurrentUser();
         if (user == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-        if (!hasFeature(user, IBKR_FEATURE)) {
-            log.warn("User {} attempted IBKR Flex fetch without the {} feature", user.getUsername(), IBKR_FEATURE);
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "IBKR sync is not enabled for your account");
+        if (!com.myfinance.security.FeatureFlags.hasBrokerSync(user)) {
+            log.warn("User {} attempted IBKR Flex fetch without the broker-sync feature", user.getUsername());
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Broker sync is not enabled for your account");
         }
-        if (req.token() == null || req.token().isBlank() || req.queryId() == null || req.queryId().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "IBKR Flex token and Query ID are required");
-        }
-
         Account account = accountRepository.findById(req.accountId())
                 .filter(a -> user.getId().equals(a.getUserId()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid account"));
@@ -190,9 +186,17 @@ public class DividendController {
                 .filter(o -> user.getId().equals(o.getUserId()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid owner"));
 
-        // Note: never log the token. Only the resulting counts / reference code are logged.
+        // Load the account's stored IBKR Flex credential (decrypted only here; never logged).
+        var cred = brokerCredentialService.decryptFor(user.getId(), req.accountId(), com.myfinance.model.enums.Broker.IBKR)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "No IBKR credentials saved for this account — add them on the Account page"));
+        if (cred.secret1() == null || cred.secret1().isBlank() || cred.meta1() == null || cred.meta1().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "IBKR credentials are incomplete — set both the Flex token and Query ID on the Account page");
+        }
+
         try {
-            String xml = ibkrFlexService.fetchStatementXml(req.token(), req.queryId());
+            String xml = ibkrFlexService.fetchStatementXml(cred.secret1(), cred.meta1());
             var result = dividendImportService.importFlex(xml, user.getId(), account, owner);
             log.info("IBKR Flex fetch imported {} dividends ({} assets created) for user {}",
                     result.imported(), result.assetsCreated(), user.getUsername());
