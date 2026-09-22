@@ -26,6 +26,7 @@ public class TransactionController {
     private final com.myfinance.service.IbkrSyncService ibkrSyncService;
     private final com.myfinance.repository.AccountRepository accountRepository;
     private final com.myfinance.repository.OwnerRepository ownerRepository;
+    private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     private static final String IBKR_FEATURE = "IBKR_SYNC";
 
@@ -114,6 +115,59 @@ public class TransactionController {
         Long uid = tenantContext.getCurrentUserId();
         log.info("Recomputing realized P/L for userId={}", uid);
         return ResponseEntity.ok(transactionService.recomputeRealizedPnlForUser(uid));
+    }
+
+    /**
+     * Preview a scoped bulk delete: how many transactions, holdings and sold positions would be
+     * removed for this owner+account. Both owner and account are required (never a delete-all).
+     */
+    @GetMapping("/bulk-count")
+    public TransactionService.BulkDeleteResult bulkCount(@RequestParam Long ownerId, @RequestParam Long accountId) {
+        var ctx = resolveBulk(ownerId, accountId);
+        return transactionService.countForOwnerAccount(ctx.userId, ownerId, accountId);
+    }
+
+    /**
+     * Bulk-delete this user's transactions for one owner+account (also removing the derived holdings
+     * and sold positions, then recomputing P/L). Requires the account password.
+     */
+    @PostMapping("/bulk-delete")
+    public TransactionService.BulkDeleteResult bulkDelete(@RequestBody java.util.Map<String, Object> body) {
+        Long ownerId = asLong(body.get("ownerId"));
+        Long accountId = asLong(body.get("accountId"));
+        var ctx = resolveBulk(ownerId, accountId);
+        verifyPassword(ctx.user, (String) body.get("password"));
+        var result = transactionService.deleteForOwnerAccount(ctx.userId, ownerId, accountId);
+        log.info("Bulk-deleted transactions for user {} owner {} account {}: {}", ctx.user.getUsername(), ownerId, accountId, result);
+        return result;
+    }
+
+    private record BulkCtx(com.myfinance.model.AppUser user, Long userId) {}
+
+    /** Feature-agnostic bulk-scope guard: both owner+account required and owned by the caller. */
+    private BulkCtx resolveBulk(Long ownerId, Long accountId) {
+        com.myfinance.model.AppUser user = tenantContext.getCurrentUser();
+        if (user == null) throw new org.springframework.web.server.ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        if (ownerId == null || accountId == null) {
+            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, "Both owner and account are required");
+        }
+        accountRepository.findById(accountId).filter(a -> user.getId().equals(a.getUserId()))
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid account"));
+        ownerRepository.findById(ownerId).filter(o -> user.getId().equals(o.getUserId()))
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid owner"));
+        return new BulkCtx(user, user.getId());
+    }
+
+    private void verifyPassword(com.myfinance.model.AppUser user, String password) {
+        if (password == null || !passwordEncoder.matches(password, user.getPassword())) {
+            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.FORBIDDEN, "Incorrect password");
+        }
+    }
+
+    private Long asLong(Object o) {
+        if (o == null) return null;
+        if (o instanceof Number n) return n.longValue();
+        try { return Long.parseLong(o.toString()); } catch (NumberFormatException e) { return null; }
     }
 
     /**

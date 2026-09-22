@@ -31,6 +31,7 @@ public class DividendController {
     private final AccountRepository accountRepository;
     private final OwnerRepository ownerRepository;
     private final TenantContext tenantContext;
+    private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     /** Per-user feature key that unlocks the file-based statement-import endpoint. */
     private static final String IMPORT_FEATURE = "DIVIDEND_IMPORT";
@@ -75,6 +76,52 @@ public class DividendController {
         log.info("Deleting dividend id={}", id);
         dividendService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /** Preview: how many dividends a bulk delete for this owner+account would remove. */
+    @GetMapping("/bulk-count")
+    public java.util.Map<String, Object> bulkCount(@RequestParam Long ownerId, @RequestParam Long accountId) {
+        AppUser user = requireBulkScope(ownerId, accountId);
+        long count = dividendService.countForOwnerAccount(user.getId(), ownerId, accountId);
+        return java.util.Map.of("dividends", count);
+    }
+
+    /** Bulk-delete this user's dividends for one owner+account. Requires the account password. */
+    @PostMapping("/bulk-delete")
+    public java.util.Map<String, Object> bulkDelete(@RequestBody java.util.Map<String, Object> body) {
+        Long ownerId = asLong(body.get("ownerId"));
+        Long accountId = asLong(body.get("accountId"));
+        AppUser user = requireBulkScope(ownerId, accountId);
+        verifyPassword(user, (String) body.get("password"));
+        int deleted = dividendService.deleteForOwnerAccount(user.getId(), ownerId, accountId);
+        log.info("Bulk-deleted {} dividends for user {} owner {} account {}", deleted, user.getUsername(), ownerId, accountId);
+        return java.util.Map.of("deleted", deleted);
+    }
+
+    /** Both owner and account are mandatory and must belong to the caller — never a delete-all. */
+    private AppUser requireBulkScope(Long ownerId, Long accountId) {
+        AppUser user = tenantContext.getCurrentUser();
+        if (user == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        if (ownerId == null || accountId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Both owner and account are required");
+        }
+        accountRepository.findById(accountId).filter(a -> user.getId().equals(a.getUserId()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid account"));
+        ownerRepository.findById(ownerId).filter(o -> user.getId().equals(o.getUserId()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid owner"));
+        return user;
+    }
+
+    private void verifyPassword(AppUser user, String password) {
+        if (password == null || !passwordEncoder.matches(password, user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Incorrect password");
+        }
+    }
+
+    private Long asLong(Object o) {
+        if (o == null) return null;
+        if (o instanceof Number n) return n.longValue();
+        try { return Long.parseLong(o.toString()); } catch (NumberFormatException e) { return null; }
     }
 
     /**

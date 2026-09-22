@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Plus, Trash2, Upload } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { getDividends, getDividendSummary, createDividend, deleteDividend, getAccounts, getOwners, importDividends, fetchIbkrDividends, getCurrencyRates } from '../api';
+import { getDividends, getDividendSummary, createDividend, deleteDividend, getAccounts, getOwners, importDividends, fetchIbkrDividends, getCurrencyRates, previewDividendBulkDelete, dividendBulkDelete } from '../api';
 import { formatCurrency, formatDate } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import ExportMenu from '../components/ExportMenu';
@@ -51,6 +51,13 @@ export default function Dividends() {
   const [importMode, setImportMode] = useState<'file' | 'ibkr'>(canImportFile ? 'file' : 'ibkr');
   const [ibkrToken, setIbkrToken] = useState('');
   const [ibkrQueryId, setIbkrQueryId] = useState('');
+  // Bulk cleanup: delete all dividends for a chosen owner+account (both required), password-confirmed.
+  const [showBulk, setShowBulk] = useState(false);
+  const [bulkOwnerId, setBulkOwnerId] = useState(0);
+  const [bulkAccountId, setBulkAccountId] = useState(0);
+  const [bulkCount, setBulkCount] = useState<number | null>(null);
+  const [bulkPassword, setBulkPassword] = useState('');
+  const [bulkBusy, setBulkBusy] = useState(false);
   // Client-side pagination for the records table.
   const PAGE_SIZE = 100;
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -125,6 +132,34 @@ export default function Dividends() {
     }
   };
 
+  // Preview how many dividends would be deleted for the chosen owner+account.
+  const handleBulkPreview = async () => {
+    if (!bulkOwnerId || !bulkAccountId) { showToast('Select both an owner and an account', 'error'); return; }
+    setBulkBusy(true); setBulkCount(null);
+    try {
+      const { data } = await previewDividendBulkDelete(bulkOwnerId, bulkAccountId);
+      setBulkCount(data.dividends);
+    } catch (err: any) {
+      console.error(err);
+      showToast(err?.response?.data?.message || 'Preview failed', 'error');
+    } finally { setBulkBusy(false); }
+  };
+
+  const handleBulkDelete = async () => {
+    if (!bulkOwnerId || !bulkAccountId) { showToast('Select both an owner and an account', 'error'); return; }
+    if (!bulkPassword) { showToast('Enter your password to confirm', 'error'); return; }
+    setBulkBusy(true);
+    try {
+      const { data } = await dividendBulkDelete(bulkOwnerId, bulkAccountId, bulkPassword);
+      showToast(`Deleted ${data.deleted} dividend${data.deleted === 1 ? '' : 's'}`, 'success');
+      setShowBulk(false); setBulkPassword(''); setBulkCount(null); setBulkOwnerId(0); setBulkAccountId(0);
+      loadData();
+    } catch (err: any) {
+      console.error(err);
+      showToast(err?.response?.status === 403 ? 'Incorrect password' : (err?.response?.data?.message || 'Delete failed'), 'error');
+    } finally { setBulkBusy(false); }
+  };
+
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
   // Filters
@@ -187,6 +222,9 @@ export default function Dividends() {
               <Upload size={16} /> Import
             </button>
           )}
+          <button onClick={() => { setShowBulk(v => !v); setBulkCount(null); }} className="flex items-center gap-2 px-4 py-2 bg-white text-red-600 border border-red-200 rounded-lg text-sm font-medium hover:bg-red-50">
+            <Trash2 size={16} /> Bulk delete
+          </button>
           <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
             <Plus size={16} /> Record Dividend
           </button>
@@ -234,6 +272,40 @@ export default function Dividends() {
               <Bar dataKey="total" fill="#10b981" radius={[4, 4, 0, 0]} name="Dividend" />
             </BarChart>
           </ResponsiveContainer>
+        </div>
+      )}
+
+      {/* Bulk cleanup panel — delete all dividends for one owner+account, password-confirmed. */}
+      {showBulk && (
+        <div className="bg-white rounded-xl p-6 border border-red-200 shadow-sm">
+          <h3 className="text-base font-semibold text-red-700 mb-1">Bulk delete dividends</h3>
+          <p className="text-xs text-slate-500 mb-4">Deletes every dividend for the selected owner <span className="font-medium">and</span> account. This can't be undone. Preview the count, then confirm with your password.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner *</label>
+              <SearchableSelect options={[{ value: 0, label: 'Select owner...' }, ...owners.map(o => ({ value: o.id, label: o.name }))]}
+                value={bulkOwnerId} onChange={v => { setBulkOwnerId(Number(v)); setBulkAccountId(0); setBulkCount(null); }} placeholder="Select owner..." /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Account *</label>
+              <SearchableSelect options={[{ value: 0, label: bulkOwnerId ? 'Select account...' : 'Select an owner first' }, ...accounts.filter(a => !bulkOwnerId || a.owner?.id === bulkOwnerId).map(a => ({ value: a.id, label: brokerLabel(a) }))]}
+                value={bulkAccountId} onChange={v => { setBulkAccountId(Number(v)); setBulkCount(null); }} placeholder="Select account..." /></div>
+            <button type="button" onClick={handleBulkPreview} disabled={bulkBusy || !bulkOwnerId || !bulkAccountId}
+              className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200 disabled:opacity-50">Preview</button>
+          </div>
+          {bulkCount !== null && (
+            <div className="mt-4 border-t border-slate-100 pt-4">
+              {bulkCount === 0 ? (
+                <p className="text-sm text-slate-500">No dividends match this owner + account.</p>
+              ) : (
+                <div className="flex flex-wrap items-end gap-3">
+                  <p className="text-sm text-slate-700"><span className="font-semibold text-red-700">{bulkCount}</span> dividend{bulkCount === 1 ? '' : 's'} will be permanently deleted.</p>
+                  <input type="password" autoComplete="off" value={bulkPassword} onChange={e => setBulkPassword(e.target.value)} placeholder="Your password"
+                    className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-400" />
+                  <button type="button" onClick={handleBulkDelete} disabled={bulkBusy || !bulkPassword}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 disabled:opacity-50">
+                    {bulkBusy ? 'Deleting…' : `Delete ${bulkCount}`}</button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
 

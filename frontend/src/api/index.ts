@@ -128,6 +128,14 @@ export const applyTradeImport = (file: File, accountId: number, ownerId: number,
   return api.post<{ inserted: number; updated: number; skipped: number; assetsCreated: number }>('/transactions/import/apply', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
 };
 
+// Bulk cleanup of transactions scoped to one owner+account (both required). Preview shows how many
+// transactions/holdings/sold positions would go; delete removes them all and recomputes P/L.
+export interface TxnBulkResult { transactions: number; holdings: number; soldPositions: number; }
+export const previewTxnBulkDelete = (ownerId: number, accountId: number) =>
+  api.get<TxnBulkResult>('/transactions/bulk-count', { params: { ownerId, accountId } });
+export const txnBulkDelete = (ownerId: number, accountId: number, password: string) =>
+  api.post<TxnBulkResult>('/transactions/bulk-delete', { ownerId, accountId, password });
+
 // ─── Holdings ───
 export const getActiveHoldings = (ownerId?: number) => api.get<Holding[]>('/holdings', { params: { ownerId } });
 export const getHoldingsByAccount = (accountId: number) => api.get<Holding[]>(`/holdings/account/${accountId}`);
@@ -159,6 +167,12 @@ export const importDividends = (file: File, accountId: number, ownerId: number) 
 export const fetchIbkrDividends = (token: string, queryId: string, accountId: number, ownerId: number) =>
   api.post<{ imported: number; skipped: number; assetsCreated: number }>('/dividends/fetch-ibkr',
     { token, queryId, accountId, ownerId });
+// Bulk cleanup of dividends scoped to one owner+account (both required). Preview count, then delete
+// with password confirmation.
+export const previewDividendBulkDelete = (ownerId: number, accountId: number) =>
+  api.get<{ dividends: number }>('/dividends/bulk-count', { params: { ownerId, accountId } });
+export const dividendBulkDelete = (ownerId: number, accountId: number, password: string) =>
+  api.post<{ deleted: number }>('/dividends/bulk-delete', { ownerId, accountId, password });
 
 // ─── Fixed Deposits ───
 export const getFixedDeposits = (params?: { holderId?: number; bankId?: number; status?: string }) => api.get<FixedDeposit[]>('/fixed-deposits', { params });

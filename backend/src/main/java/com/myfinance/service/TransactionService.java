@@ -396,6 +396,49 @@ public class TransactionService {
     public record RecomputeResult(int sellsRecomputed, int soldPositionsSynced, int holdingsCurrencyFixed,
                                   int holdingsBuyFxBackfilled) {}
 
+    /** Counts a bulk delete for one owner+account would remove (preview, nothing is written). */
+    public BulkDeleteResult countForOwnerAccount(Long userId, Long ownerId, Long accountId) {
+        long txns = transactionRepository.findByUserIdAndAccountIdOrderByTransactionDateDesc(userId, accountId).stream()
+                .filter(t -> t.getOwner() != null && ownerId.equals(t.getOwner().getId())).count();
+        long holdings = holdingService.getByAccount(accountId).stream()
+                .filter(h -> h.getUserId() != null && userId.equals(h.getUserId()))
+                .filter(h -> h.getOwner() != null && ownerId.equals(h.getOwner().getId())).count();
+        long sold = soldPositionRepository.findByAccountIdOrderBySoldDateDesc(accountId).stream()
+                .filter(s -> s.getUserId() != null && userId.equals(s.getUserId()))
+                .filter(s -> s.getOwner() != null && ownerId.equals(s.getOwner().getId())).count();
+        return new BulkDeleteResult((int) txns, (int) holdings, (int) sold);
+    }
+
+    /**
+     * Bulk-delete the current user's transactions for one owner+account, and reset the derived
+     * state for that scope: the holdings and sold positions are removed too (they can't stand
+     * without their backing trades), then realized P/L is recomputed. Atomic.
+     */
+    @Transactional
+    public BulkDeleteResult deleteForOwnerAccount(Long userId, Long ownerId, Long accountId) {
+        var txns = transactionRepository.findByUserIdAndAccountIdOrderByTransactionDateDesc(userId, accountId).stream()
+                .filter(t -> t.getOwner() != null && ownerId.equals(t.getOwner().getId())).toList();
+        var holdings = holdingService.getByAccount(accountId).stream()
+                .filter(h -> h.getUserId() != null && userId.equals(h.getUserId()))
+                .filter(h -> h.getOwner() != null && ownerId.equals(h.getOwner().getId())).toList();
+        var sold = soldPositionRepository.findByAccountIdOrderBySoldDateDesc(accountId).stream()
+                .filter(s -> s.getUserId() != null && userId.equals(s.getUserId()))
+                .filter(s -> s.getOwner() != null && ownerId.equals(s.getOwner().getId())).toList();
+
+        soldPositionRepository.deleteAll(sold);
+        for (Holding h : holdings) holdingService.delete(h.getId());
+        transactionRepository.deleteAll(txns);
+
+        // Keep the rest of the user's P/L consistent after removing this scope.
+        recomputeRealizedPnlForUser(userId);
+        log.info("Bulk-deleted for userId={} owner={} account={}: {} txns, {} holdings, {} sold positions",
+                userId, ownerId, accountId, txns.size(), holdings.size(), sold.size());
+        return new BulkDeleteResult(txns.size(), holdings.size(), sold.size());
+    }
+
+    /** Counts removed (or that would be removed) by a scoped bulk delete. */
+    public record BulkDeleteResult(int transactions, int holdings, int soldPositions) {}
+
     /**
      * One-time maintenance: recompute the realized P/L (and re-sync the sold positions) for every
      * existing SELL of a user, using the FX-aware logic. The per-lot average buy price and buy FX

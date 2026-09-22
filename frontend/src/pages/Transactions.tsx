@@ -1,6 +1,7 @@
 import { useEffect, useState, Fragment } from 'react';
 import { Plus, Trash2, Pencil, ArrowUpCircle, ArrowDownCircle, Lock, RefreshCw } from 'lucide-react';
-import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates, getActiveHoldings, recomputeRealizedPnl, previewIbkrSync, applyIbkrSync, previewTradeImport, applyTradeImport } from '../api';
+import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates, getActiveHoldings, recomputeRealizedPnl, previewIbkrSync, applyIbkrSync, previewTradeImport, applyTradeImport, previewTxnBulkDelete, txnBulkDelete } from '../api';
+import type { TxnBulkResult } from '../api';
 import type { IbkrSyncPreview, IbkrSyncBody } from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import { formatCurrency, formatDate, formatPercent } from '../utils/formatters';
@@ -68,6 +69,13 @@ export default function Transactions() {
   // IBKR source: 'live' fetch via Flex, or 'file' upload of a Flex XML / Transaction History CSV.
   const [ibkrSource, setIbkrSource] = useState<'live' | 'file'>('live');
   const [ibkrFile, setIbkrFile] = useState<File | null>(null);
+  // Bulk cleanup: delete all transactions (+derived holdings/sold positions) for one owner+account.
+  const [showBulk, setShowBulk] = useState(false);
+  const [bulkOwnerId, setBulkOwnerId] = useState(0);
+  const [bulkAccountId, setBulkAccountId] = useState(0);
+  const [bulkPreview, setBulkPreview] = useState<TxnBulkResult | null>(null);
+  const [bulkPassword, setBulkPassword] = useState('');
+  const [bulkBusy, setBulkBusy] = useState(false);
   // Client-side pagination: how many of the filtered rows to render (grows via "Show more").
   const PAGE_SIZE = 100;
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -241,6 +249,33 @@ export default function Transactions() {
       if (next.has(tradeId)) next.delete(tradeId); else next.add(tradeId);
       return next;
     });
+  };
+
+  const handleBulkPreview = async () => {
+    if (!bulkOwnerId || !bulkAccountId) { showToast('Select both an owner and an account', 'error'); return; }
+    setBulkBusy(true); setBulkPreview(null);
+    try {
+      const { data } = await previewTxnBulkDelete(bulkOwnerId, bulkAccountId);
+      setBulkPreview(data);
+    } catch (err: any) {
+      console.error(err);
+      showToast(err?.response?.data?.message || 'Preview failed', 'error');
+    } finally { setBulkBusy(false); }
+  };
+
+  const handleBulkDelete = async () => {
+    if (!bulkOwnerId || !bulkAccountId) { showToast('Select both an owner and an account', 'error'); return; }
+    if (!bulkPassword) { showToast('Enter your password to confirm', 'error'); return; }
+    setBulkBusy(true);
+    try {
+      const { data } = await txnBulkDelete(bulkOwnerId, bulkAccountId, bulkPassword);
+      showToast(`Deleted ${data.transactions} transaction${data.transactions === 1 ? '' : 's'} (${data.holdings} holdings, ${data.soldPositions} sold positions reset)`, 'success');
+      setShowBulk(false); setBulkPassword(''); setBulkPreview(null); setBulkOwnerId(0); setBulkAccountId(0);
+      loadData();
+    } catch (err: any) {
+      console.error(err);
+      showToast(err?.response?.status === 403 ? 'Incorrect password' : (err?.response?.data?.message || 'Delete failed'), 'error');
+    } finally { setBulkBusy(false); }
   };
 
   const confirmDelete = async () => {
@@ -443,6 +478,9 @@ export default function Transactions() {
               <RefreshCw size={16} /> Sync IBKR
             </button>
           )}
+          <button onClick={() => { setShowBulk(v => !v); setBulkPreview(null); }} title="Bulk delete transactions for an owner + account" className="flex items-center gap-2 px-3 py-2 bg-white text-red-600 border border-red-200 rounded-lg text-sm font-medium hover:bg-red-50">
+            <Trash2 size={16} /> Bulk delete
+          </button>
           <button onClick={() => { if (showForm) { setShowForm(false); setEditingId(null); } else { setEditingId(null); setForm({ ...emptyForm(), ownerId: owners[0]?.id ?? 0 }); setShowForm(true); } }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
             <Plus size={16} /> New Transaction
           </button>
@@ -521,6 +559,39 @@ export default function Transactions() {
       </div>
 
       {/* Transaction Form */}
+      {showBulk && (
+        <div className="bg-white rounded-xl p-6 border border-red-200 shadow-sm">
+          <h3 className="text-base font-semibold text-red-700 mb-1">Bulk delete transactions</h3>
+          <p className="text-xs text-slate-500 mb-4">Deletes every transaction for the selected owner <span className="font-medium">and</span> account, and resets the derived holdings and sold positions for that scope (P/L is recomputed). This can't be undone. Preview first, then confirm with your password.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Owner *</label>
+              <SearchableSelect options={[{ value: 0, label: 'Select owner...' }, ...owners.map(o => ({ value: o.id, label: o.name }))]}
+                value={bulkOwnerId} onChange={v => { setBulkOwnerId(Number(v)); setBulkAccountId(0); setBulkPreview(null); }} placeholder="Select owner..." /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Account *</label>
+              <SearchableSelect options={[{ value: 0, label: bulkOwnerId ? 'Select account...' : 'Select an owner first' }, ...accounts.filter(a => !bulkOwnerId || a.owner?.id === bulkOwnerId).map(a => ({ value: a.id, label: `${a.name} (${a.currency})` }))]}
+                value={bulkAccountId} onChange={v => { setBulkAccountId(Number(v)); setBulkPreview(null); }} placeholder="Select account..." /></div>
+            <button type="button" onClick={handleBulkPreview} disabled={bulkBusy || !bulkOwnerId || !bulkAccountId}
+              className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200 disabled:opacity-50">Preview</button>
+          </div>
+          {bulkPreview && (
+            <div className="mt-4 border-t border-slate-100 pt-4">
+              {bulkPreview.transactions === 0 && bulkPreview.holdings === 0 && bulkPreview.soldPositions === 0 ? (
+                <p className="text-sm text-slate-500">Nothing matches this owner + account.</p>
+              ) : (
+                <div className="flex flex-wrap items-end gap-3">
+                  <p className="text-sm text-slate-700">Will delete <span className="font-semibold text-red-700">{bulkPreview.transactions}</span> transaction{bulkPreview.transactions === 1 ? '' : 's'}, and reset <span className="font-medium">{bulkPreview.holdings}</span> holding{bulkPreview.holdings === 1 ? '' : 's'} + <span className="font-medium">{bulkPreview.soldPositions}</span> sold position{bulkPreview.soldPositions === 1 ? '' : 's'}.</p>
+                  <input type="password" autoComplete="off" value={bulkPassword} onChange={e => setBulkPassword(e.target.value)} placeholder="Your password"
+                    className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-red-400" />
+                  <button type="button" onClick={handleBulkDelete} disabled={bulkBusy || !bulkPassword}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 disabled:opacity-50">
+                    {bulkBusy ? 'Deleting…' : 'Delete'}</button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
       {canIbkrSync && anyOwnerHasIbkr && showIbkr && (
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
           <h3 className="text-base font-semibold text-slate-800 mb-1">Sync trades from IBKR</h3>
