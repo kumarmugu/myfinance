@@ -51,7 +51,11 @@ public class TigerTradeMapper {
             String currency = o.getCurrency() == null || o.getCurrency().isBlank()
                     ? "USD" : o.getCurrency().trim().toUpperCase();
             LocalDate tradeDate = epochMillisToDate(firstNonNull(o.getOpenTime(), o.getLatestTime(), o.getUpdateTime()));
-            BigDecimal commission = o.getCommission() == null ? null : BigDecimal.valueOf(o.getCommission()).abs();
+            // All-in fee: broker commission + GST (the filled-order object exposes these two charges).
+            BigDecimal fee = BigDecimal.ZERO;
+            if (o.getCommission() != null) fee = fee.add(BigDecimal.valueOf(o.getCommission()).abs());
+            if (o.getGst() != null) fee = fee.add(BigDecimal.valueOf(o.getGst()).abs());
+            BigDecimal commission = fee.signum() == 0 ? null : fee;
             String tradeId = o.getId() == null ? null : "TIGER-" + o.getId();
 
             if (tradeDate == null) continue;

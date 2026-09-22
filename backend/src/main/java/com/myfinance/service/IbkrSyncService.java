@@ -54,6 +54,7 @@ public class IbkrSyncService {
     private final TransactionRepository transactionRepository;
     private final IbkrTradeParser tradeParser;
     private final SaxoTradeParser saxoTradeParser;
+    private final TigerStatementParser tigerStatementParser;
 
     private static final BigDecimal QTY_TOL = new BigDecimal("0.0001");
     private static final BigDecimal PRICE_TOL = new BigDecimal("0.01");
@@ -88,11 +89,15 @@ public class IbkrSyncService {
         return previewTrades(parseTradeFile(content), userId, account, owner, from, to);
     }
 
-    /** Auto-detect the uploaded trades file: a Saxo XLSX (ZIP) vs an IBKR Flex XML / Transaction History CSV. */
+    /**
+     * Auto-detect the uploaded trades file: a Saxo XLSX (ZIP), a Tiger "Activity Statement" CSV, or an
+     * IBKR Flex XML / Transaction History CSV.
+     */
     private IbkrTradeParser.FlexTrades parseTradeFile(byte[] content) {
-        return SaxoTradeParser.looksLikeXlsx(content)
-                ? saxoTradeParser.parse(content)
-                : tradeParser.parseFile(content);
+        if (SaxoTradeParser.looksLikeXlsx(content)) return saxoTradeParser.parse(content);
+        String text = new String(content, java.nio.charset.StandardCharsets.UTF_8);
+        if (TigerStatementParser.looksLikeTigerStatement(text)) return tigerStatementParser.parse(text);
+        return tradeParser.parseFile(content);
     }
 
     /** Shared preview over already-parsed trades — used by both the live fetch and file upload. */

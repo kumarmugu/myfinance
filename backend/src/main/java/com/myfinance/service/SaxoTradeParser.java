@@ -40,7 +40,10 @@ public class SaxoTradeParser {
     private static final List<String> PRICE_HEADERS    = List.of("price", "traded price", "avg price", "average price", "trade price");
     private static final List<String> DATE_HEADERS     = List.of("trade date", "trade time", "date", "execution time", "value date");
     private static final List<String> CCY_HEADERS      = List.of("instrument currency", "currency", "trade currency", "ccy");
-    private static final List<String> COMMISSION_HEADERS = List.of("commission", "fee", "cost");
+    /** Fee/charge header keywords — every matching column is summed into one all-in fee. */
+    private static final List<String> FEE_HEADERS      = List.of("commission", "fee", "cost", "charge", "tax", "levy", "duty", "gst", "conversion");
+    /** Per-line FX rate to the account/base currency, if the export carries one. */
+    private static final List<String> FX_HEADERS       = List.of("conversion rate", "fx rate", "exchange rate", "rate to base", "booking rate");
 
     /** True if the bytes look like an XLSX (a ZIP container starts with "PK"). */
     public static boolean looksLikeXlsx(byte[] content) {
@@ -60,10 +63,11 @@ public class SaxoTradeParser {
         // Find the header row (the first row that yields both a symbol and a side/quantity column).
         int headerIdx = -1;
         Map<String, Integer> cols = null;
+        List<Integer> feeCols = List.of();
         for (int i = 0; i < Math.min(sheet.size(), 10); i++) {
             Map<String, Integer> m = mapColumns(sheet.get(i));
             if (m.containsKey("symbol") && (m.containsKey("side") || m.containsKey("qty"))) {
-                headerIdx = i; cols = m; break;
+                headerIdx = i; cols = m; feeCols = feeColumns(sheet.get(i)); break;
             }
         }
         if (cols == null) {
@@ -84,16 +88,22 @@ public class SaxoTradeParser {
             BigDecimal price = num(cell(row, cols.get("price")));
             String currency = cell(row, cols.get("ccy"));
             LocalDate date = date(cell(row, cols.get("date")));
-            BigDecimal commission = cols.containsKey("commission") ? num(cell(row, cols.get("commission"))).abs() : null;
             if (date == null) continue;
+
+            // Sum every fee/charge column present into one all-in fee (absolute).
+            BigDecimal fees = BigDecimal.ZERO;
+            for (int fc : feeCols) fees = fees.add(num(cell(row, fc)).abs());
+
+            // Per-line FX rate if the export carries one; else leave null (app derives from its rate table).
+            BigDecimal fx = cols.containsKey("fx") ? num(cell(row, cols.get("fx"))) : BigDecimal.ZERO;
 
             trades.add(new IbkrTradeParser.ParsedTrade(
                     null, symbol.toUpperCase(), "STK",
                     buy, qty.abs(), price.abs(),
                     (currency == null || currency.isBlank()) ? "USD" : currency.trim().toUpperCase(),
                     date,
-                    commission == null || commission.signum() == 0 ? null : commission,
-                    null));
+                    fees.signum() == 0 ? null : fees,
+                    fx.signum() == 0 ? null : fx));
         }
         return new IbkrTradeParser.FlexTrades(trades, skipped, new ArrayList<>(), new ArrayList<>());
     }
@@ -110,9 +120,28 @@ public class SaxoTradeParser {
             putIfHeader(cols, "price", h, c, PRICE_HEADERS);
             putIfHeader(cols, "date", h, c, DATE_HEADERS);
             putIfHeader(cols, "ccy", h, c, CCY_HEADERS);
-            putIfHeader(cols, "commission", h, c, COMMISSION_HEADERS);
+            putIfHeader(cols, "fx", h, c, FX_HEADERS);
         }
         return cols;
+    }
+
+    /**
+     * Every fee/charge column index (a Saxo trades sheet may carry commission plus separate exchange
+     * fee, tax, levy, etc. columns). We sum them all into one all-in fee. The symbol/side/qty/price/
+     * date/ccy/fx columns are excluded so a header like "Trade Price" isn't mistaken for a fee.
+     */
+    private List<Integer> feeColumns(List<String> header) {
+        java.util.Set<Integer> structural = new java.util.HashSet<>(mapColumns(header).values());
+        List<Integer> out = new ArrayList<>();
+        for (int c = 0; c < header.size(); c++) {
+            if (structural.contains(c)) continue;
+            String h = header.get(c) == null ? "" : header.get(c).trim().toLowerCase();
+            if (h.isEmpty()) continue;
+            for (String kw : FEE_HEADERS) {
+                if (h.contains(kw)) { out.add(c); break; }
+            }
+        }
+        return out;
     }
 
     private void putIfHeader(Map<String, Integer> cols, String key, String header, int idx, List<String> keywords) {
