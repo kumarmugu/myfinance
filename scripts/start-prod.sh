@@ -7,6 +7,27 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 JAVA_HOME="${JAVA_HOME:-/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home}"
 
+# Load local secrets (untracked). scripts/.env.prod holds env vars like CREDENTIAL_MASTER_KEY.
+# `set -a` exports everything sourced so the backend process inherits it.
+ENV_FILE="$SCRIPT_DIR/.env.prod"
+if [ -f "$ENV_FILE" ]; then
+    echo "Loading secrets from scripts/.env.prod"
+    set -a
+    # shellcheck disable=SC1090
+    source "$ENV_FILE"
+    set +a
+fi
+
+# Broker credential encryption must be configured in production so secrets are never stored as
+# plaintext. Fail loudly rather than silently starting with encryption disabled.
+if [ -z "${CREDENTIAL_MASTER_KEY:-}" ]; then
+    echo "ERROR: CREDENTIAL_MASTER_KEY is not set." >&2
+    echo "       Broker credential storage would be disabled and any save would be rejected." >&2
+    echo "       Set it in scripts/.env.prod (see scripts/.env.prod.example) or export it, then re-run." >&2
+    echo "       Generate one with: openssl rand -base64 32" >&2
+    exit 1
+fi
+
 echo "═══════════════════════════════════════════"
 echo "  MyFinance — Production Mode"
 echo "═══════════════════════════════════════════"

@@ -29,6 +29,10 @@ saas-web/coverage/
 .env
 .env.local
 *.env
+scripts/.env.prod
+scripts/.env
+scripts/.env.local
+!scripts/.env.prod.example
 
 # IDE
 .idea/
