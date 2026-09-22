@@ -216,18 +216,37 @@ public class DividendController {
         return false;
     }
 
-    private DividendImportService.Format detectFormat(String explicit, String filename, byte[] content) {
+    /** Package-private for unit testing of format sniffing. */
+    DividendImportService.Format detectFormat(String explicit, String filename, byte[] content) {
         if (explicit != null) {
             try { return DividendImportService.Format.valueOf(explicit.trim().toUpperCase()); }
             catch (IllegalArgumentException ignored) { /* fall through to auto-detect */ }
         }
         String name = filename == null ? "" : filename.toLowerCase();
-        if (name.endsWith(".xlsx") || name.contains("saxo")) return DividendImportService.Format.SAXO_XLSX;
-        // Both IBKR and Tiger are .csv — sniff the header to tell them apart.
-        String head = new String(content, 0, Math.min(content.length, 2000), java.nio.charset.StandardCharsets.UTF_8);
-        if (head.contains("Activity Statement") || head.startsWith("Statement") || name.contains("statement")) {
+
+        // XLSX is a ZIP container ("PK" magic) — Saxo's dividend export.
+        if (name.endsWith(".xlsx") || (content.length > 1 && content[0] == 0x50 && content[1] == 0x4B)) {
+            return DividendImportService.Format.SAXO_XLSX;
+        }
+
+        // Sniff by CONTENT shape, not the "Activity Statement" title (both IBKR and Tiger use it).
+        String head = new String(content, 0, Math.min(content.length, 4000), java.nio.charset.StandardCharsets.UTF_8);
+        String stripped = head.stripLeading();
+
+        // IBKR Flex statement is XML.
+        if (stripped.startsWith("<") || stripped.contains("<FlexQueryResponse") || stripped.contains("<FlexStatements")) {
+            return DividendImportService.Format.IBKR_FLEX_XML;
+        }
+        // IBKR "Transaction History" CSV: rows are prefixed with "Transaction History,".
+        if (head.contains("Transaction History,")) {
+            return DividendImportService.Format.IBKR_CSV;
+        }
+        // Tiger Activity Statement CSV: distinctive multi-section markers.
+        if (head.contains("\nTrades,Stock,") || head.contains("\nTrades,Forex,")
+                || head.contains("\nDividends,") || head.contains("\nAccount Information,")) {
             return DividendImportService.Format.TIGER_CSV;
         }
+        // Fall back to the IBKR CSV parser.
         return DividendImportService.Format.IBKR_CSV;
     }
 }

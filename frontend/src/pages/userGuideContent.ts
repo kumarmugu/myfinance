@@ -217,10 +217,14 @@ export const GUIDE_SECTIONS: GuideSection[] = [
           'You cannot delete an owner or account that is still referenced by records — remove or reassign those records first.',
           'Setting the wrong account currency. The account currency is the settlement currency used for transactions in that account.',
         ],
-        tips: ['Create at least one owner (usually yourself) before adding financial records.'],
+        tips: [
+          'Create at least one owner (usually yourself) before adding financial records.',
+          'If Broker Sync is enabled, this screen also has a "Broker integrations" tab where you save IBKR/Tiger credentials to import trades and dividends.',
+        ],
         related: [
           { label: 'Open Brokers & Owners', route: '/accounts' },
           { label: 'Asset Catalog', pageId: 'asset-catalog' },
+          { label: 'Broker Integrations & Import', pageId: 'broker-integrations' },
           { label: 'Investment currencies explained', pageId: 'investment-currencies' },
         ],
         screenshots: [{ alt: 'Brokers & Owners screen listing owners and accounts', caption: 'Manage owners and the accounts that belong to them.' }],
@@ -376,19 +380,21 @@ export const GUIDE_SECTIONS: GuideSection[] = [
         prerequisites: ['Assets in your catalog.', 'An account to trade through.'],
         steps: [
           'Open Transactions from the sidebar.',
-          'Add a transaction: pick the asset, account and owner.',
+          'Add a transaction manually: pick the asset, account and owner.',
           'Choose Buy or Sell, then enter quantity, price per unit, fees and the transaction date.',
           'Tag the purpose (e.g. Long Term, Trading) if you want it grouped that way, then save.',
+          'Or click Import (top right) to pull trades from your broker — either a live fetch (IBKR/Tiger) or by uploading a broker file. See Broker Integrations & Import.',
         ],
         afterSave:
-          'A buy creates or increases a holding and recalculates the average cost. A sell reduces the holding and records a realised gain/loss under sold positions. Selling more than you own is rejected.',
+          'A buy creates or increases a holding and recalculates the average cost. A sell reduces the holding and records a realised gain/loss under sold positions. Selling more than you own is rejected. Imported trades are matched against existing ones so re-importing does not create duplicates.',
         commonMistakes: [
-          'Selling more units than you hold — this is blocked.',
+          'Selling more units than you hold — this is blocked. (Imports apply trades oldest-first so a buy is recorded before its later sell.)',
           'Using the wrong currency. The transaction currency is normally your broker account\'s currency.',
         ],
         related: [
           { label: 'Open Transactions', route: '/transactions' },
           { label: 'Portfolio', pageId: 'portfolio' },
+          { label: 'Broker Integrations & Import', pageId: 'broker-integrations' },
           { label: 'Investment currencies explained', pageId: 'investment-currencies' },
         ],
       },
@@ -405,12 +411,54 @@ export const GUIDE_SECTIONS: GuideSection[] = [
           'Add a dividend: choose the asset, account and owner.',
           'Enter the amount, currency and received date; the year and quarter are captured automatically.',
           'Save.',
+          'To bring in many at once, use Import: upload a broker file (IBKR / Tiger / Saxo statement) or, with Broker Sync enabled, choose "Fetch from broker" to pull IBKR dividends live. Duplicates are skipped automatically.',
         ],
-        afterSave: 'The payment appears in your dividend totals and yearly growth chart.',
+        afterSave: 'The payment appears in your dividend totals and yearly growth chart. Imports are net of withholding tax and skip rows that are already recorded.',
         related: [
           { label: 'Open Dividends', route: '/dividends' },
+          { label: 'Broker Integrations & Import', pageId: 'broker-integrations' },
           { label: 'Reports', pageId: 'reports' },
         ],
+      },
+      {
+        id: 'broker-integrations',
+        title: 'Broker Integrations & Import',
+        summary: 'Import trades and dividends from IBKR, Tiger and Saxo — live or by file.',
+        feature: 'BROKER_SYNC',
+        what:
+          'Broker Integrations let you bring trades (and IBKR dividends) into MyFinance instead of typing them one by one. There are two ways: a live fetch that calls the broker API using credentials you save once, and a file import where you upload a statement the broker exports. Everything imports through the same review-and-dedupe process as manual entry.',
+        why:
+          'Re-keying years of trades is slow and error-prone. Importing pulls them in accurately — with fees and, where available, the exchange rate — and refuses to create duplicates, so you can safely re-import or top up later.',
+        prerequisites: [
+          'The Broker Sync feature is enabled for your account (ask your administrator).',
+          'A Broker account exists under Brokers & Owners, linked to the right owner.',
+          'For live fetch: your broker credentials saved on the Account page (see steps). For file import: a statement file downloaded from your broker.',
+        ],
+        steps: [
+          'Save credentials once: open Brokers & Owners → the Broker integrations tab. Pick the broker, owner and account, then enter the fields. IBKR needs the Flex Query ID and Flex Web Service token. Tiger needs the Tiger ID, account and RSA private key. Secrets are encrypted and never shown again — leave the secret blank when editing to keep the saved one.',
+          'Import trades: on Transactions click Import. Choose Live fetch (pick IBKR or Tiger) or Upload file (IBKR Flex XML / IBKR Transaction History CSV / Tiger Activity Statement CSV / Saxo XLSX). Pick the owner and broker account, then Preview.',
+          'Review the preview: new trades, duplicates that will be skipped, and any value mismatches against records you already have. Approve the mismatches you want corrected, then Apply.',
+          'Import dividends: on Dividends use Import → Fetch from broker (IBKR live) or upload an IBKR/Tiger/Saxo statement.',
+          'For an ongoing routine, a date range such as the last 365 days keeps each import small.',
+        ],
+        afterSave:
+          'Applied trades create/adjust holdings and realised gains exactly like manual entries; applied dividends appear in your totals net of withholding tax. Fees from the statement are summed into each record, and the exchange rate is taken from the statement when present (otherwise your own FX rates are used). Re-importing the same data changes nothing.',
+        commonMistakes: [
+          'Saxo has no live API here — use file import (XLSX). Only IBKR and Tiger support live fetch.',
+          'Choosing the wrong broker in the live-fetch toggle. If the account has no credentials for the chosen broker you will be prompted to add them on the Account page.',
+          'Expecting a stored secret to be visible later. Secrets are write-only; you can replace one but never read it back.',
+          'Live fetch is unavailable if the server has no encryption key configured — your administrator sets CREDENTIAL_MASTER_KEY.',
+        ],
+        tips: [
+          'Credentials are per account, so each broker account is configured independently.',
+          'File import and live fetch are interchangeable — both dedupe against what is already there, so mix them freely.',
+        ],
+        related: [
+          { label: 'Open Brokers & Owners', route: '/accounts' },
+          { label: 'Transactions', pageId: 'transactions' },
+          { label: 'Dividends', pageId: 'dividends' },
+        ],
+        screenshots: [{ alt: 'Broker integrations tab on the Brokers & Owners screen with masked credential fields', caption: 'Save broker credentials once; secrets are encrypted and masked.' }],
       },
       {
         id: 'crypto',

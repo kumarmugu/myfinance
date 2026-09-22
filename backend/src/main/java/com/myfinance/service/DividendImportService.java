@@ -57,16 +57,22 @@ public class DividendImportService {
     public record ParsedDividend(LocalDate payDate, String symbol, String currency,
                                  BigDecimal net, BigDecimal gross, BigDecimal tax, String type) {}
 
-    public enum Format { IBKR_CSV, SAXO_XLSX, TIGER_CSV }
+    public enum Format { IBKR_CSV, IBKR_FLEX_XML, SAXO_XLSX, TIGER_CSV }
 
     @Transactional
     public ImportResult importFile(byte[] content, Format format, Long userId, Account account, Owner owner) {
         List<ParsedDividend> parsed = switch (format) {
             case IBKR_CSV -> parseIbkr(new String(content, java.nio.charset.StandardCharsets.UTF_8));
+            case IBKR_FLEX_XML -> parseFlexXml(new String(content, java.nio.charset.StandardCharsets.UTF_8));
             case SAXO_XLSX -> parseSaxo(content);
             case TIGER_CSV -> parseTiger(new String(content, java.nio.charset.StandardCharsets.UTF_8));
         };
-        return persist(parsed, userId, account, owner, format == Format.IBKR_CSV ? "IBKR" : format == Format.SAXO_XLSX ? "Saxo" : "Tiger");
+        String source = switch (format) {
+            case IBKR_CSV, IBKR_FLEX_XML -> "IBKR";
+            case SAXO_XLSX -> "Saxo";
+            case TIGER_CSV -> "Tiger";
+        };
+        return persist(parsed, userId, account, owner, source);
     }
 
     /**

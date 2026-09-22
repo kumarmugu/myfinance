@@ -320,6 +320,23 @@ LONG_TERM, TRADING, DIVIDEND_REINVESTMENT, SRS, RETIREMENT, SHORT_TERM
 | GET | `/api/holdings/short-term` | Short-term trades |
 | GET | `/api/dividends` | Dividend history |
 | POST | `/api/dividends` | Record dividend |
+| POST | `/api/dividends/fetch-ibkr` | Live-fetch IBKR dividends via stored Flex credential |
+| POST | `/api/transactions/ibkr-sync/preview` | Preview a live broker trade sync (IBKR/Tiger); nothing written |
+| POST | `/api/transactions/ibkr-sync/apply` | Apply a live broker trade sync |
+| POST | `/api/transactions/import/preview` | Preview a broker trade **file** import (auto-detects IBKR/Tiger/Saxo) |
+| POST | `/api/transactions/import/apply` | Apply a broker trade file import |
+
+### 7.2a Broker Integration APIs
+
+Stored, encrypted broker API credentials + import. Gated by the per-user `BROKER_SYNC` feature flag (legacy `IBKR_SYNC` still honoured). Secrets are **write-only** — never returned by any GET.
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/broker-credentials` | Masked status of stored credentials + `encryptionEnabled` (no secrets) |
+| POST | `/api/broker-credentials` | Save/update a credential (secret encrypted on write; blank secret keeps existing) |
+| DELETE | `/api/broker-credentials?broker=&accountId=` | Remove a stored credential |
+
+**Brokers supported:** IBKR (live Flex fetch + file), Tiger (live Open API + file), Saxo (**file import only** — live registration is funding-gated). Field mapping — IBKR: `meta1`=Flex Query ID, `secret1`=Flex token; Tiger: `meta1`=Tiger ID, `meta2`=account, `secret1`=RSA private key (PKCS#8). Trade imports classify each row as new / duplicate / mismatch and are applied oldest-first so a buy is recorded before its later sell; re-importing is idempotent.
 
 ### 7.3 Fixed Deposit APIs
 
