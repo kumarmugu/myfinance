@@ -93,7 +93,6 @@ public class TigerStatementParser {
             BigDecimal qty = num(cell(f, cols.get("qty")));
             if (qty.signum() == 0) continue;
             BigDecimal price = num(cell(f, cols.get("price")));
-            BigDecimal amount = cols.containsKey("amount") ? num(cell(f, cols.get("amount"))) : null;
             String activity = cols.containsKey("activity") ? cell(f, cols.get("activity")) : null;
             String currency = cols.containsKey("ccy") ? cell(f, cols.get("ccy")) : null;
             LocalDate date = tradeDate(cell(f, cols.get("date")));
@@ -104,7 +103,7 @@ public class TigerStatementParser {
             for (int fc : feeCols) fees = fees.add(num(cell(f, fc)).abs());
             if (fees.signum() == 0) fees = null;
 
-            boolean buy = direction(activity, amount);
+            boolean buy = direction(activity);
             String ccy = (currency == null || currency.isBlank()) ? "USD" : currency.trim().toUpperCase();
             BigDecimal fxToBase = resolveFx(ccy, baseCurrency, date, forexRates, baseTable);
 
@@ -146,16 +145,17 @@ public class TigerStatementParser {
     }
 
     /**
-     * BUY vs SELL. Prefer an explicit Activity Type ("Buy"/"Sell"); Tiger stock statements often leave
-     * it blank, in which case the sign of the trade Amount decides. Defaults to BUY.
+     * BUY vs SELL. Prefer an explicit Activity Type ("Buy"/"Sell"). Tiger stock statements often leave
+     * it blank for the common case, which in this export is a BUY (the per-trade Amount is the positive
+     * gross cost). We only treat a row as a SELL on an explicit sell indicator — never purely on the
+     * Amount sign — because the sign convention is not reliable across statement variants and guessing
+     * wrong produces phantom sells that fail with "Cannot sell more than held".
      */
-    private boolean direction(String activity, BigDecimal amount) {
+    private boolean direction(String activity) {
         if (activity != null) {
             String a = activity.trim().toLowerCase();
             if (a.startsWith("sell") || a.contains("sold")) return false;
-            if (a.startsWith("buy") || a.contains("bought")) return true;
         }
-        if (amount != null && amount.signum() < 0) return false;
         return true;
     }
 

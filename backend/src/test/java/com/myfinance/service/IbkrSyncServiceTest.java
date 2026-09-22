@@ -30,6 +30,7 @@ class IbkrSyncServiceTest {
     @Autowired private AccountRepository accountRepository;
     @Autowired private OwnerRepository ownerRepository;
     @Autowired private HoldingRepository holdingRepository;
+    @Autowired private SoldPositionRepository soldPositionRepository;
     @Autowired private AppUserRepository appUserRepository;
 
     private Long userId;
@@ -38,6 +39,7 @@ class IbkrSyncServiceTest {
 
     @BeforeEach
     void setup() {
+        soldPositionRepository.deleteAll();
         transactionRepository.deleteAll();
         holdingRepository.deleteAll();
         assetRepository.deleteAll();
@@ -141,5 +143,28 @@ class IbkrSyncServiceTest {
         var second = syncService.applyFile(file, userId, account, owner, null, null, java.util.Set.of());
         assertEquals(0, second.inserted(), "the hand-entered/previously-imported trade is recognised");
         assertEquals(1, transactionRepository.findByUserIdOrderByTransactionDateDesc(userId).size(), "no duplicate row");
+    }
+
+    @Test
+    @WithMockUser(username = "syncuser")
+    void appliesTradesChronologicallySoASellListedBeforeItsBuyStillImports() {
+        // A Tiger statement listing the SELL row physically BEFORE the earlier BUY row. Without
+        // chronological ordering the SELL would hit an empty holding ("Cannot sell more than held").
+        String csv = String.join("\n",
+            "Activity Statement,,,,2024-01-01 - 2024-12-31",
+            "Account Information,,,,Account,Address,Account Category,Base Currency",
+            "Account Information,,,DATA,50414420,ADDR,Cash,USD",
+            "Trades,,,,Symbol,Market,Exchange,Activity Type,Quantity,Trade Price,Amount,Commission,Trade Time,Settle Date,Currency",
+            "Trades,Stock,,DATA,AAPL,US,,Sell,4,200.00000,800.00,-1.00,\"2024-06-10\n10:00:00, US/Eastern\",,USD",
+            "Trades,Stock,,DATA,AAPL,US,,,10,150.00000,1500.00,-1.00,\"2024-01-15\n10:00:00, US/Eastern\",,USD");
+        byte[] file = csv.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+
+        var result = syncService.applyFile(file, userId, account, owner, null, null, java.util.Set.of());
+        assertEquals(2, result.inserted(), "both the buy and the sell import despite the file's order");
+
+        // Net holding = 10 bought - 4 sold = 6.
+        var holding = holdingRepository.findAll().stream()
+                .filter(h -> "AAPL".equals(h.getAsset().getSymbol())).findFirst().orElseThrow();
+        assertEquals(0, new BigDecimal("6").compareTo(holding.getQuantity()), "6 shares remain after the earlier buy and later sell");
     }
 }

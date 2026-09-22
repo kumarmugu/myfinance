@@ -470,8 +470,8 @@ export default function Transactions() {
             <RefreshCw size={16} className={recomputing ? 'animate-spin' : ''} /> {recomputing ? 'Recomputing...' : 'Recompute P/L'}
           </button>
           {canIbkrSync && anyOwnerHasIbkr && (
-            <button onClick={() => { setShowIbkr(v => !v); setIbkrPreview(null); }} title="Sync trades from your broker (live fetch or file import)" className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">
-              <RefreshCw size={16} /> Sync broker
+            <button onClick={() => { setShowIbkr(v => !v); setIbkrPreview(null); }} title="Import trades from your broker (live fetch or file import)" className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">
+              <RefreshCw size={16} /> Import
             </button>
           )}
           <button onClick={() => { setShowBulk(v => !v); setBulkPreview(null); }} title="Bulk delete transactions for an owner + account" className="flex items-center gap-2 px-3 py-2 bg-white text-red-600 border border-red-200 rounded-lg text-sm font-medium hover:bg-red-50">

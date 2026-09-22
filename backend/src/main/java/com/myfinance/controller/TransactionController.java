@@ -183,7 +183,7 @@ public class TransactionController {
         var ctx = resolveCtx(req.accountId(), req.ownerId());
         var range = dateRange(req);
         try {
-            if (brokerOf(req) == com.myfinance.model.enums.Broker.TIGER) {
+            if (brokerOf(req, ctx.userId, ctx.account.getId()) == com.myfinance.model.enums.Broker.TIGER) {
                 return tigerSyncService.preview(ctx.userId, ctx.account, ctx.owner, range[0], range[1]);
             }
             String xml = fetchIbkrStatement(ctx.userId, ctx.account.getId());
@@ -206,7 +206,7 @@ public class TransactionController {
         java.util.Set<String> approved = req.approvedMismatchTradeIds() == null
                 ? java.util.Set.of() : new java.util.HashSet<>(req.approvedMismatchTradeIds());
         try {
-            if (brokerOf(req) == com.myfinance.model.enums.Broker.TIGER) {
+            if (brokerOf(req, ctx.userId, ctx.account.getId()) == com.myfinance.model.enums.Broker.TIGER) {
                 return tigerSyncService.apply(ctx.userId, ctx.account, ctx.owner, range[0], range[1], approved);
             }
             String xml = fetchIbkrStatement(ctx.userId, ctx.account.getId());
@@ -218,14 +218,22 @@ public class TransactionController {
         }
     }
 
-    /** Resolve the requested broker; unknown/blank defaults to IBKR (back-compat with older clients). */
-    private com.myfinance.model.enums.Broker brokerOf(IbkrSyncRequest req) {
-        if (req.broker() == null || req.broker().isBlank()) return com.myfinance.model.enums.Broker.IBKR;
-        try {
-            return com.myfinance.model.enums.Broker.valueOf(req.broker().trim().toUpperCase());
-        } catch (IllegalArgumentException e) {
-            return com.myfinance.model.enums.Broker.IBKR;
+    /**
+     * Resolve which broker to sync. If the request names one explicitly, use it. Otherwise (older
+     * clients, or a browser serving a cached bundle) INFER it from the account's stored credentials:
+     * if only a Tiger credential exists we route to Tiger, else IBKR. This avoids wrongly demanding
+     * IBKR credentials for a Tiger-only account.
+     */
+    private com.myfinance.model.enums.Broker brokerOf(IbkrSyncRequest req, Long userId, Long accountId) {
+        if (req.broker() != null && !req.broker().isBlank()) {
+            try {
+                return com.myfinance.model.enums.Broker.valueOf(req.broker().trim().toUpperCase());
+            } catch (IllegalArgumentException ignored) { /* fall through to inference */ }
         }
+        boolean hasTiger = brokerCredentialService.statusFor(userId, accountId, com.myfinance.model.enums.Broker.TIGER).isPresent();
+        boolean hasIbkr = brokerCredentialService.statusFor(userId, accountId, com.myfinance.model.enums.Broker.IBKR).isPresent();
+        if (hasTiger && !hasIbkr) return com.myfinance.model.enums.Broker.TIGER;
+        return com.myfinance.model.enums.Broker.IBKR;
     }
 
     /**

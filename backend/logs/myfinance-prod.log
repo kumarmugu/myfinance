@@ -412,3 +412,1525 @@ org.springframework.web.server.ResponseStatusException: 503 SERVICE_UNAVAILABLE 
 2026-09-23 01:14:04 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2026-09-23 01:14:04 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2026-09-23 01:14:04 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-09-23 01:15:23 [main] INFO  com.myfinance.MyFinanceApplication - Starting MyFinanceApplication using Java 17.0.20 with PID 46736 (/Users/mugu/Documents/Projects/myfinance/backend/target/classes started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-23 01:15:23 [main] INFO  com.myfinance.MyFinanceApplication - The following 1 profile is active: "prod"
+2026-09-23 01:15:24 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-23 01:15:25 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 126 ms. Found 37 JPA repository interfaces.
+2026-09-23 01:15:25 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-09-23 01:15:25 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-23 01:15:25 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-09-23 01:15:26 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-23 01:15:26 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2090 ms
+2026-09-23 01:15:26 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-23 01:15:26 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-23 01:15:26 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-23 01:15:26 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-23 01:15:26 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-23 01:15:26 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data-prod/myfinance user=SA
+2026-09-23 01:15:26 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-23 01:15:26 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-23 01:15:28 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-23 01:15:28 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-23 01:15:29 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-23 01:15:33 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-23 01:15:35 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6e2ff120, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7f1b0c8c, org.springframework.security.web.context.SecurityContextHolderFilter@27f0979, org.springframework.security.web.header.HeaderWriterFilter@d64aeb0, org.springframework.web.filter.CorsFilter@886a0f5, org.springframework.security.web.authentication.logout.LogoutFilter@cf92193, com.myfinance.provisioning.ProvisioningTokenFilter@2bdab835, com.myfinance.security.JwtAuthFilter@6c9fe061, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@29f28e5d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3e8771a1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@432e9de9, org.springframework.security.web.session.SessionManagementFilter@3139ab0e, org.springframework.security.web.access.ExceptionTranslationFilter@3989e022, org.springframework.security.web.access.intercept.AuthorizationFilter@75e05153]
+2026-09-23 01:15:36 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2026-09-23 01:15:36 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 12.988 seconds (process running for 13.609)
+2026-09-23 01:15:37 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-23 01:15:37 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-23 01:15:37 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (8ms)
+2026-09-23 01:15:42 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (39ms)
+2026-09-23 01:15:42 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (6ms)
+2026-09-23 01:15:42 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/broker-credentials → 200 (9ms)
+2026-09-23 01:15:42 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/broker-credentials → 200 (7ms)
+2026-09-23 01:15:42 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (52ms)
+2026-09-23 01:15:42 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (55ms)
+2026-09-23 01:15:42 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (8ms)
+2026-09-23 01:15:42 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (17ms)
+2026-09-23 01:16:26 [http-nio-8080-exec-10] INFO  c.m.service.BrokerCredentialService - Saved IBKR credential for userId=2 accountId=2 (id=1)
+2026-09-23 01:16:26 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/broker-credentials → 200 (94ms)
+2026-09-23 01:16:26 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/broker-credentials → 200 (4ms)
+2026-09-23 01:16:26 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-23 01:16:26 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (10ms)
+2026-09-23 01:17:01 [http-nio-8080-exec-6] INFO  c.m.service.BrokerCredentialService - Saved TIGER credential for userId=2 accountId=1 (id=2)
+2026-09-23 01:17:01 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/broker-credentials → 200 (15ms)
+2026-09-23 01:17:01 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (5ms)
+2026-09-23 01:17:01 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/broker-credentials → 200 (5ms)
+2026-09-23 01:17:01 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (9ms)
+2026-09-23 01:17:04 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (5ms)
+2026-09-23 01:17:04 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (10ms)
+2026-09-23 01:17:04 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (19ms)
+2026-09-23 01:17:04 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (10ms)
+2026-09-23 01:17:04 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (6ms)
+2026-09-23 01:17:04 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (10ms)
+2026-09-23 01:17:04 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (37ms)
+2026-09-23 01:17:04 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (7ms)
+2026-09-23 01:17:04 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (5ms)
+2026-09-23 01:17:04 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (5ms)
+2026-09-23 01:17:04 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (97ms)
+2026-09-23 01:17:04 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (31ms)
+2026-09-23 01:17:57 [http-nio-8080-exec-2] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex SendRequest ok, reference code obtained (query 1645256)
+2026-09-23 01:17:58 [http-nio-8080-exec-2] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex statement retrieved (reference 8995005964)
+2026-09-23 01:17:58 [http-nio-8080-exec-2] INFO  c.m.service.DividendImportService - Dividend import (IBKR Flex) for userId=2: imported=36 skipped=0 assetsCreated=0
+2026-09-23 01:17:58 [http-nio-8080-exec-2] INFO  c.m.controller.DividendController - IBKR Flex fetch imported 36 dividends (0 assets created) for user mugu
+2026-09-23 01:17:58 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/fetch-ibkr → 200 (2423ms)
+2026-09-23 01:17:58 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-23 01:17:58 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-23 01:17:58 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (4ms)
+2026-09-23 01:17:58 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-23 01:17:58 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (23ms)
+2026-09-23 01:18:23 [http-nio-8080-exec-7] ERROR c.m.config.GlobalExceptionHandler - Unhandled RuntimeException: 400 BAD_REQUEST "No IBKR credentials saved for this account — add them on the Account page"
+org.springframework.web.server.ResponseStatusException: 400 BAD_REQUEST "No IBKR credentials saved for this account — add them on the Account page"
+	at com.myfinance.controller.DividendController.lambda$fetchFromIbkr$12(DividendController.java:191)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.myfinance.controller.DividendController.fetchFromIbkr(DividendController.java:191)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor.invoke(AfterReturningAdviceInterceptor.java:57)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:173)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720)
+	at com.myfinance.controller.DividendController$$SpringCGLIB$$0.fetchFromIbkr(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at com.myfinance.config.RequestLoggingConfig$1.doFilterInternal(RequestLoggingConfig.java:30)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.myfinance.security.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1736)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-09-23 01:18:23 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/fetch-ibkr → 400 (15ms)
+2026-09-23 01:18:31 [http-nio-8080-exec-8] ERROR c.m.config.GlobalExceptionHandler - Unhandled RuntimeException: 400 BAD_REQUEST "No IBKR credentials saved for this account — add them on the Account page"
+org.springframework.web.server.ResponseStatusException: 400 BAD_REQUEST "No IBKR credentials saved for this account — add them on the Account page"
+	at com.myfinance.controller.DividendController.lambda$fetchFromIbkr$12(DividendController.java:191)
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
+	at com.myfinance.controller.DividendController.fetchFromIbkr(DividendController.java:191)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor.invoke(AfterReturningAdviceInterceptor.java:57)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:173)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720)
+	at com.myfinance.controller.DividendController$$SpringCGLIB$$0.fetchFromIbkr(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at com.myfinance.config.RequestLoggingConfig$1.doFilterInternal(RequestLoggingConfig.java:30)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.myfinance.security.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1736)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-09-23 01:18:31 [http-nio-8080-exec-8] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/fetch-ibkr → 400 (7ms)
+2026-09-23 01:18:54 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-23 01:18:54 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (24ms)
+2026-09-23 01:18:54 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-23 01:18:54 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (4ms)
+2026-09-23 01:18:54 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (6ms)
+2026-09-23 01:18:54 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (5ms)
+2026-09-23 01:19:15 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-23 01:19:15 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (5ms)
+2026-09-23 01:19:15 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-23 01:19:15 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (6ms)
+2026-09-23 01:19:15 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (11ms)
+2026-09-23 01:19:15 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (5ms)
+2026-09-23 01:19:15 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (5ms)
+2026-09-23 01:19:15 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (7ms)
+2026-09-23 01:19:15 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (8ms)
+2026-09-23 01:19:15 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (6ms)
+2026-09-23 01:19:15 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (33ms)
+2026-09-23 01:19:15 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (54ms)
+2026-09-23 01:19:15 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (16ms)
+2026-09-23 01:19:15 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (26ms)
+2026-09-23 01:19:36 [http-nio-8080-exec-3] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex SendRequest ok, reference code obtained (query 1645256)
+2026-09-23 01:19:38 [http-nio-8080-exec-3] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex statement retrieved (reference 8995005964)
+2026-09-23 01:19:38 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/ibkr-sync/preview → 200 (2114ms)
+2026-09-23 01:20:01 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/preview → 200 (108ms)
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=385 type=BUY assetId=193 quantity=1000.0
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=289 assetId=193 quantity=2500.00
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=386 type=BUY assetId=193 quantity=500.0
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=289 assetId=193 quantity=3000.00
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=387 type=BUY assetId=129 quantity=531.0454
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=9966.8954
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=388 type=BUY assetId=225 quantity=20.0
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=321 assetId=225 quantity=40.00
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=389 type=BUY assetId=129 quantity=454.4447
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=10421.3401
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=390 type=BUY assetId=129 quantity=437.945
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=10859.2851
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=391 type=BUY assetId=129 quantity=440.016
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=11299.3011
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=392 type=BUY assetId=129 quantity=443.36
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=11742.6611
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=393 type=BUY assetId=129 quantity=445.2946
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=12187.9557
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=394 type=BUY assetId=129 quantity=209.8699
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=12397.8256
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=395 type=BUY assetId=129 quantity=460.5131
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=12858.3387
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=396 type=BUY assetId=129 quantity=211.4216
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=13069.7603
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=397 type=BUY assetId=129 quantity=464.3241
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=13534.0844
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=398 type=BUY assetId=129 quantity=218.1728
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=13752.2572
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=399 type=BUY assetId=129 quantity=223.5312
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=13975.7884
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=400 type=BUY assetId=129 quantity=237.9956
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=14213.7840
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=401 type=BUY assetId=129 quantity=246.4296
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=14460.2136
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=402 type=BUY assetId=129 quantity=269.3512
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=14729.5648
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=403 type=BUY assetId=135 quantity=200.0
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=196 assetId=135 quantity=2900.00
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=404 type=BUY assetId=100 quantity=25.0
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=353 assetId=100 quantity=25.0
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=405 type=BUY assetId=129 quantity=252.5635
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=14982.1283
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=406 type=BUY assetId=129 quantity=237.1312
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=15219.2595
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=407 type=BUY assetId=132 quantity=900.0
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=195 assetId=132 quantity=1800.00
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=408 type=BUY assetId=133 quantity=100.0
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=193 assetId=133 quantity=200.00
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=68 profit=220.40800000000000
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.myfinance.service.IbkrSyncService - IBKR trade sync for userId=2: inserted=24 updated=0 skipped=11 assetsCreated=0
+2026-09-23 01:20:17 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/apply → 200 (218ms)
+2026-09-23 01:20:17 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-23 01:20:17 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-23 01:20:17 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-23 01:20:17 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-23 01:20:17 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-23 01:20:17 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (17ms)
+2026-09-23 01:20:17 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (8ms)
+2026-09-23 01:21:29 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/preview → 200 (592ms)
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Created Asset id=257 symbol=MICROSOFT CORP.
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=409 type=BUY assetId=257 quantity=5.64
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=354 assetId=257 quantity=5.64
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Created Asset id=258 symbol=ARK INNOVATION ETF
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=410 type=BUY assetId=258 quantity=0.77
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=0.77
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=411 type=BUY assetId=258 quantity=0.13
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=0.90
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Created Asset id=259 symbol=ARK BLOCKCHAIN & FINTECH INNOVATION ETF
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=412 type=BUY assetId=259 quantity=0.03
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=0.03
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Created Asset id=260 symbol=PROSHARES ULTRAPRO QQQ ETF
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=413 type=BUY assetId=260 quantity=0.22
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=0.22
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=414 type=BUY assetId=260 quantity=0.66
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=0.88
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=415 type=BUY assetId=260 quantity=0.57
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=1.45
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=416 type=BUY assetId=260 quantity=0.43
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=1.88
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Created Asset id=261 symbol=INVESCO QQQ TRUST, SERIES 1 ETF
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=417 type=BUY assetId=261 quantity=36
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=358 assetId=261 quantity=36
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=418 type=BUY assetId=258 quantity=0.17
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=1.07
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=419 type=BUY assetId=258 quantity=0.18
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=1.25
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=420 type=BUY assetId=259 quantity=0.1
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=0.13
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Created Asset id=262 symbol=VANGUARD S&P 500 ETF
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=421 type=BUY assetId=262 quantity=65.78
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=359 assetId=262 quantity=65.78
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=422 type=BUY assetId=260 quantity=3.1
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=4.98
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Created Asset id=263 symbol=VANGUARD  MORNINGSTAR GROWTH ETF
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=423 type=BUY assetId=263 quantity=25.08
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=360 assetId=263 quantity=25.08
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Created Asset id=264 symbol=VANGUARD INFORMATION TECHNOLOGY ETF
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=424 type=BUY assetId=264 quantity=42.21
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=361 assetId=264 quantity=42.21
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Created Asset id=265 symbol=META PLATFORMS INC.
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=425 type=BUY assetId=265 quantity=1.44
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=362 assetId=265 quantity=1.44
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=426 type=BUY assetId=257 quantity=5.74
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=354 assetId=257 quantity=11.38
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=427 type=BUY assetId=259 quantity=0.08
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=0.21
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=428 type=BUY assetId=259 quantity=0.04
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=0.25
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=429 type=BUY assetId=258 quantity=0.49
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=1.74
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=430 type=BUY assetId=260 quantity=0.23
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=5.21
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=431 type=BUY assetId=260 quantity=0.01
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=5.22
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=432 type=BUY assetId=260 quantity=0.03
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=5.25
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=433 type=BUY assetId=260 quantity=0.01
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=5.26
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=434 type=BUY assetId=260 quantity=0.06
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=5.32
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=435 type=BUY assetId=260 quantity=0.05
+2026-09-23 01:21:39 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=5.37
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=436 type=BUY assetId=258 quantity=0.1
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=1.84
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=437 type=BUY assetId=258 quantity=0.91
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=2.75
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=438 type=BUY assetId=258 quantity=0.29
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=3.04
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=439 type=BUY assetId=259 quantity=0.09
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=0.34
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=440 type=BUY assetId=260 quantity=0.03
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=5.40
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Created Asset id=266 symbol=TESLA INC.
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=441 type=BUY assetId=266 quantity=0.17
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=363 assetId=266 quantity=0.17
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=442 type=BUY assetId=259 quantity=0.03
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=0.37
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=443 type=BUY assetId=258 quantity=0.55
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=3.59
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=444 type=BUY assetId=260 quantity=0.01
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=5.41
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=445 type=BUY assetId=259 quantity=0.01
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=0.38
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=446 type=BUY assetId=258 quantity=0.1
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=3.69
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=447 type=BUY assetId=258 quantity=0.67
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=4.36
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=448 type=BUY assetId=262 quantity=62.58
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=359 assetId=262 quantity=128.36
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=449 type=BUY assetId=263 quantity=21.56
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=360 assetId=263 quantity=46.64
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=450 type=BUY assetId=260 quantity=1.3
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=6.71
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=451 type=BUY assetId=261 quantity=32.31
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=358 assetId=261 quantity=68.31
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=452 type=BUY assetId=264 quantity=28.04
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=361 assetId=264 quantity=70.25
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=453 type=BUY assetId=265 quantity=1.43
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=362 assetId=265 quantity=2.87
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=454 type=BUY assetId=260 quantity=0.03
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=6.74
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=455 type=BUY assetId=258 quantity=0.53
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=4.89
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=456 type=BUY assetId=258 quantity=0.19
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=5.08
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=457 type=BUY assetId=260 quantity=0.01
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=6.75
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=458 type=BUY assetId=258 quantity=0.22
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=5.30
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=459 type=BUY assetId=257 quantity=5.69
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=354 assetId=257 quantity=17.07
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=460 type=BUY assetId=266 quantity=0.54
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=363 assetId=266 quantity=0.71
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=461 type=BUY assetId=258 quantity=0.61
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=5.91
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=462 type=BUY assetId=260 quantity=0.05
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=6.80
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=463 type=BUY assetId=260 quantity=0.01
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=6.81
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=464 type=BUY assetId=266 quantity=0.71
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=363 assetId=266 quantity=1.42
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=465 type=BUY assetId=258 quantity=0.2
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=6.11
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=466 type=BUY assetId=258 quantity=0.28
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=6.39
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=467 type=BUY assetId=263 quantity=18347.08
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=360 assetId=263 quantity=18393.72
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=468 type=BUY assetId=258 quantity=0.38
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=6.77
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=469 type=BUY assetId=266 quantity=0.32
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=363 assetId=266 quantity=1.74
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=470 type=BUY assetId=259 quantity=0.93
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=1.31
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=471 type=BUY assetId=258 quantity=1.73
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=8.50
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=472 type=BUY assetId=258 quantity=0.31
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=8.81
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=473 type=BUY assetId=260 quantity=1.54
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=8.35
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=474 type=BUY assetId=261 quantity=35.02
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=358 assetId=261 quantity=103.33
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=475 type=BUY assetId=259 quantity=0.54
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=1.85
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=476 type=BUY assetId=262 quantity=58.83
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=359 assetId=262 quantity=187.19
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=477 type=BUY assetId=263 quantity=8.96
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=360 assetId=263 quantity=18402.68
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=478 type=BUY assetId=265 quantity=1.43
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=362 assetId=265 quantity=4.30
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=479 type=BUY assetId=264 quantity=28.73
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=361 assetId=264 quantity=98.98
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=480 type=BUY assetId=257 quantity=5.78
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=354 assetId=257 quantity=22.85
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=481 type=BUY assetId=259 quantity=0.14
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=1.99
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=482 type=BUY assetId=260 quantity=0.01
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=8.36
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=483 type=BUY assetId=259 quantity=0.08
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=2.07
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=484 type=BUY assetId=258 quantity=1
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=9.81
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=485 type=BUY assetId=258 quantity=0.99
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=10.80
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=486 type=BUY assetId=260 quantity=0.08
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=8.44
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=487 type=BUY assetId=259 quantity=0.01
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=2.08
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=488 type=BUY assetId=258 quantity=1.92
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=12.72
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=489 type=BUY assetId=259 quantity=0.1
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=2.18
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=490 type=BUY assetId=260 quantity=0.01
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=8.45
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=491 type=BUY assetId=260 quantity=0.04
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=8.49
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=492 type=BUY assetId=258 quantity=0.97
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=13.69
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=493 type=BUY assetId=258 quantity=1.07
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=14.76
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=494 type=BUY assetId=259 quantity=0.07
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=2.25
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=495 type=BUY assetId=260 quantity=0.14
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=8.63
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=496 type=BUY assetId=258 quantity=1.53
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=16.29
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=497 type=BUY assetId=261 quantity=30.94
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=358 assetId=261 quantity=134.27
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=498 type=BUY assetId=259 quantity=0.01
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=2.26
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=499 type=BUY assetId=259 quantity=0.09
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=356 assetId=259 quantity=2.35
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=500 type=BUY assetId=258 quantity=3.68
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=19.97
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=501 type=BUY assetId=258 quantity=0.43
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=355 assetId=258 quantity=20.40
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=502 type=BUY assetId=262 quantity=58.09
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=359 assetId=262 quantity=245.28
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=503 type=BUY assetId=263 quantity=9.14
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=360 assetId=263 quantity=18411.82
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=504 type=BUY assetId=260 quantity=0.89
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=9.52
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=505 type=BUY assetId=265 quantity=1.43
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=362 assetId=265 quantity=5.73
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=506 type=BUY assetId=264 quantity=32.64
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=361 assetId=264 quantity=131.62
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=507 type=BUY assetId=260 quantity=0.69
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=10.21
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=508 type=BUY assetId=260 quantity=0.79
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=11.00
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=509 type=BUY assetId=260 quantity=0.86
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=11.86
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=510 type=BUY assetId=260 quantity=0.91
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=12.77
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=511 type=BUY assetId=257 quantity=5.23
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=354 assetId=257 quantity=28.08
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Created Asset id=267 symbol=VANGUARD CONSUMER DISCRETIONARY ETF
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=512 type=BUY assetId=267 quantity=0.12
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=364 assetId=267 quantity=0.12
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=513 type=BUY assetId=261 quantity=1.16
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=358 assetId=261 quantity=135.43
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=514 type=BUY assetId=260 quantity=0.01
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=357 assetId=260 quantity=12.78
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Created Asset id=268 symbol=**SEE ARKK
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=515 type=BUY assetId=268 quantity=4.33
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Saved Holding id=365 assetId=268 quantity=4.33
+2026-09-23 01:21:40 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Created Transaction id=516 type=SELL assetId=267 quantity=2395.05
+2026-09-23 01:21:40 [http-nio-8080-exec-6] ERROR c.m.service.TransactionService - Failed to sell: quantity 2395.05 exceeds holding for assetId=267
+2026-09-23 01:21:40 [http-nio-8080-exec-6] ERROR c.m.config.GlobalExceptionHandler - Unhandled RuntimeException: 400 BAD_REQUEST "Cannot sell more than held"
+org.springframework.web.server.ResponseStatusException: 400 BAD_REQUEST "Cannot sell more than held"
+	at com.myfinance.controller.TransactionController.importApply(TransactionController.java:281)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor.invoke(AfterReturningAdviceInterceptor.java:57)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:173)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720)
+	at com.myfinance.controller.TransactionController$$SpringCGLIB$$0.importApply(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at com.myfinance.config.RequestLoggingConfig$1.doFilterInternal(RequestLoggingConfig.java:30)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.myfinance.security.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1736)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-09-23 01:21:40 [http-nio-8080-exec-6] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/apply → 400 (726ms)
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Created Asset id=269 symbol=MICROSOFT CORP.
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=517 type=BUY assetId=269 quantity=5.64
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=366 assetId=269 quantity=5.64
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Created Asset id=270 symbol=ARK INNOVATION ETF
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=518 type=BUY assetId=270 quantity=0.77
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=0.77
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=519 type=BUY assetId=270 quantity=0.13
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=0.90
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Created Asset id=271 symbol=ARK BLOCKCHAIN & FINTECH INNOVATION ETF
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=520 type=BUY assetId=271 quantity=0.03
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=0.03
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Created Asset id=272 symbol=PROSHARES ULTRAPRO QQQ ETF
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=521 type=BUY assetId=272 quantity=0.22
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=0.22
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=522 type=BUY assetId=272 quantity=0.66
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=0.88
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=523 type=BUY assetId=272 quantity=0.57
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=1.45
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=524 type=BUY assetId=272 quantity=0.43
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=1.88
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Created Asset id=273 symbol=INVESCO QQQ TRUST, SERIES 1 ETF
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=525 type=BUY assetId=273 quantity=36
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=370 assetId=273 quantity=36
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=526 type=BUY assetId=270 quantity=0.17
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=1.07
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=527 type=BUY assetId=270 quantity=0.18
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=1.25
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=528 type=BUY assetId=271 quantity=0.1
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=0.13
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Created Asset id=274 symbol=VANGUARD S&P 500 ETF
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=529 type=BUY assetId=274 quantity=65.78
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=371 assetId=274 quantity=65.78
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=530 type=BUY assetId=272 quantity=3.1
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=4.98
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Created Asset id=275 symbol=VANGUARD  MORNINGSTAR GROWTH ETF
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=531 type=BUY assetId=275 quantity=25.08
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=372 assetId=275 quantity=25.08
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Created Asset id=276 symbol=VANGUARD INFORMATION TECHNOLOGY ETF
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=532 type=BUY assetId=276 quantity=42.21
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=373 assetId=276 quantity=42.21
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Created Asset id=277 symbol=META PLATFORMS INC.
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=533 type=BUY assetId=277 quantity=1.44
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=374 assetId=277 quantity=1.44
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=534 type=BUY assetId=269 quantity=5.74
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=366 assetId=269 quantity=11.38
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=535 type=BUY assetId=271 quantity=0.08
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=0.21
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=536 type=BUY assetId=271 quantity=0.04
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=0.25
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=537 type=BUY assetId=270 quantity=0.49
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=1.74
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=538 type=BUY assetId=272 quantity=0.23
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=5.21
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=539 type=BUY assetId=272 quantity=0.01
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=5.22
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=540 type=BUY assetId=272 quantity=0.03
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=5.25
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=541 type=BUY assetId=272 quantity=0.01
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=5.26
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=542 type=BUY assetId=272 quantity=0.06
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=5.32
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=543 type=BUY assetId=272 quantity=0.05
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=5.37
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=544 type=BUY assetId=270 quantity=0.1
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=1.84
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=545 type=BUY assetId=270 quantity=0.91
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=2.75
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=546 type=BUY assetId=270 quantity=0.29
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=3.04
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=547 type=BUY assetId=271 quantity=0.09
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=0.34
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=548 type=BUY assetId=272 quantity=0.03
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=5.40
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Created Asset id=278 symbol=TESLA INC.
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=549 type=BUY assetId=278 quantity=0.17
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=375 assetId=278 quantity=0.17
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=550 type=BUY assetId=271 quantity=0.03
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=0.37
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=551 type=BUY assetId=270 quantity=0.55
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=3.59
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=552 type=BUY assetId=272 quantity=0.01
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=5.41
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=553 type=BUY assetId=271 quantity=0.01
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=0.38
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=554 type=BUY assetId=270 quantity=0.1
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=3.69
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=555 type=BUY assetId=270 quantity=0.67
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=4.36
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=556 type=BUY assetId=274 quantity=62.58
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=371 assetId=274 quantity=128.36
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=557 type=BUY assetId=275 quantity=21.56
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=372 assetId=275 quantity=46.64
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=558 type=BUY assetId=272 quantity=1.3
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=6.71
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=559 type=BUY assetId=273 quantity=32.31
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=370 assetId=273 quantity=68.31
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=560 type=BUY assetId=276 quantity=28.04
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=373 assetId=276 quantity=70.25
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=561 type=BUY assetId=277 quantity=1.43
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=374 assetId=277 quantity=2.87
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=562 type=BUY assetId=272 quantity=0.03
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=6.74
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=563 type=BUY assetId=270 quantity=0.53
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=4.89
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=564 type=BUY assetId=270 quantity=0.19
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=5.08
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=565 type=BUY assetId=272 quantity=0.01
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=6.75
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=566 type=BUY assetId=270 quantity=0.22
+2026-09-23 01:21:54 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=5.30
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=567 type=BUY assetId=269 quantity=5.69
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=366 assetId=269 quantity=17.07
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=568 type=BUY assetId=278 quantity=0.54
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=375 assetId=278 quantity=0.71
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=569 type=BUY assetId=270 quantity=0.61
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=5.91
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=570 type=BUY assetId=272 quantity=0.05
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=6.80
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=571 type=BUY assetId=272 quantity=0.01
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=6.81
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=572 type=BUY assetId=278 quantity=0.71
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=375 assetId=278 quantity=1.42
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=573 type=BUY assetId=270 quantity=0.2
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=6.11
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=574 type=BUY assetId=270 quantity=0.28
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=6.39
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=575 type=BUY assetId=275 quantity=18347.08
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=372 assetId=275 quantity=18393.72
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=576 type=BUY assetId=270 quantity=0.38
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=6.77
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=577 type=BUY assetId=278 quantity=0.32
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=375 assetId=278 quantity=1.74
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=578 type=BUY assetId=271 quantity=0.93
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=1.31
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=579 type=BUY assetId=270 quantity=1.73
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=8.50
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=580 type=BUY assetId=270 quantity=0.31
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=8.81
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=581 type=BUY assetId=272 quantity=1.54
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=8.35
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=582 type=BUY assetId=273 quantity=35.02
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=370 assetId=273 quantity=103.33
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=583 type=BUY assetId=271 quantity=0.54
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=1.85
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=584 type=BUY assetId=274 quantity=58.83
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=371 assetId=274 quantity=187.19
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=585 type=BUY assetId=275 quantity=8.96
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=372 assetId=275 quantity=18402.68
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=586 type=BUY assetId=277 quantity=1.43
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=374 assetId=277 quantity=4.30
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=587 type=BUY assetId=276 quantity=28.73
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=373 assetId=276 quantity=98.98
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=588 type=BUY assetId=269 quantity=5.78
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=366 assetId=269 quantity=22.85
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=589 type=BUY assetId=271 quantity=0.14
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=1.99
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=590 type=BUY assetId=272 quantity=0.01
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=8.36
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=591 type=BUY assetId=271 quantity=0.08
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=2.07
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=592 type=BUY assetId=270 quantity=1
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=9.81
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=593 type=BUY assetId=270 quantity=0.99
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=10.80
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=594 type=BUY assetId=272 quantity=0.08
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=8.44
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=595 type=BUY assetId=271 quantity=0.01
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=2.08
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=596 type=BUY assetId=270 quantity=1.92
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=12.72
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=597 type=BUY assetId=271 quantity=0.1
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=2.18
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=598 type=BUY assetId=272 quantity=0.01
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=8.45
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=599 type=BUY assetId=272 quantity=0.04
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=8.49
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=600 type=BUY assetId=270 quantity=0.97
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=13.69
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=601 type=BUY assetId=270 quantity=1.07
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=14.76
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=602 type=BUY assetId=271 quantity=0.07
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=2.25
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=603 type=BUY assetId=272 quantity=0.14
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=8.63
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=604 type=BUY assetId=270 quantity=1.53
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=16.29
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=605 type=BUY assetId=273 quantity=30.94
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=370 assetId=273 quantity=134.27
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=606 type=BUY assetId=271 quantity=0.01
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=2.26
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=607 type=BUY assetId=271 quantity=0.09
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=368 assetId=271 quantity=2.35
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=608 type=BUY assetId=270 quantity=3.68
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=19.97
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=609 type=BUY assetId=270 quantity=0.43
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=367 assetId=270 quantity=20.40
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=610 type=BUY assetId=274 quantity=58.09
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=371 assetId=274 quantity=245.28
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=611 type=BUY assetId=275 quantity=9.14
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=372 assetId=275 quantity=18411.82
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=612 type=BUY assetId=272 quantity=0.89
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=9.52
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=613 type=BUY assetId=277 quantity=1.43
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=374 assetId=277 quantity=5.73
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=614 type=BUY assetId=276 quantity=32.64
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=373 assetId=276 quantity=131.62
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=615 type=BUY assetId=272 quantity=0.69
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=10.21
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=616 type=BUY assetId=272 quantity=0.79
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=11.00
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=617 type=BUY assetId=272 quantity=0.86
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=11.86
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=618 type=BUY assetId=272 quantity=0.91
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=12.77
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=619 type=BUY assetId=269 quantity=5.23
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=366 assetId=269 quantity=28.08
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Created Asset id=279 symbol=VANGUARD CONSUMER DISCRETIONARY ETF
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=620 type=BUY assetId=279 quantity=0.12
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=376 assetId=279 quantity=0.12
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=621 type=BUY assetId=273 quantity=1.16
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=370 assetId=273 quantity=135.43
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=622 type=BUY assetId=272 quantity=0.01
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=369 assetId=272 quantity=12.78
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Created Asset id=280 symbol=**SEE ARKK
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=623 type=BUY assetId=280 quantity=4.33
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=377 assetId=280 quantity=4.33
+2026-09-23 01:21:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=624 type=SELL assetId=279 quantity=2395.05
+2026-09-23 01:21:55 [http-nio-8080-exec-2] ERROR c.m.service.TransactionService - Failed to sell: quantity 2395.05 exceeds holding for assetId=279
+2026-09-23 01:21:55 [http-nio-8080-exec-2] ERROR c.m.config.GlobalExceptionHandler - Unhandled RuntimeException: 400 BAD_REQUEST "Cannot sell more than held"
+org.springframework.web.server.ResponseStatusException: 400 BAD_REQUEST "Cannot sell more than held"
+	at com.myfinance.controller.TransactionController.importApply(TransactionController.java:281)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor.invoke(AfterReturningAdviceInterceptor.java:57)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:173)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720)
+	at com.myfinance.controller.TransactionController$$SpringCGLIB$$0.importApply(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at com.myfinance.config.RequestLoggingConfig$1.doFilterInternal(RequestLoggingConfig.java:30)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.myfinance.security.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1736)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-09-23 01:21:55 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/apply → 400 (634ms)
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Created Asset id=281 symbol=MICROSOFT CORP.
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=625 type=BUY assetId=281 quantity=5.64
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=378 assetId=281 quantity=5.64
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Created Asset id=282 symbol=ARK INNOVATION ETF
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=626 type=BUY assetId=282 quantity=0.77
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=0.77
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=627 type=BUY assetId=282 quantity=0.13
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=0.90
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Created Asset id=283 symbol=ARK BLOCKCHAIN & FINTECH INNOVATION ETF
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=628 type=BUY assetId=283 quantity=0.03
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=0.03
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Created Asset id=284 symbol=PROSHARES ULTRAPRO QQQ ETF
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=629 type=BUY assetId=284 quantity=0.22
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=0.22
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=630 type=BUY assetId=284 quantity=0.66
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=0.88
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=631 type=BUY assetId=284 quantity=0.57
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=1.45
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=632 type=BUY assetId=284 quantity=0.43
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=1.88
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Created Asset id=285 symbol=INVESCO QQQ TRUST, SERIES 1 ETF
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=633 type=BUY assetId=285 quantity=36
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=382 assetId=285 quantity=36
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=634 type=BUY assetId=282 quantity=0.17
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=1.07
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=635 type=BUY assetId=282 quantity=0.18
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=1.25
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=636 type=BUY assetId=283 quantity=0.1
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=0.13
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Created Asset id=286 symbol=VANGUARD S&P 500 ETF
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=637 type=BUY assetId=286 quantity=65.78
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=383 assetId=286 quantity=65.78
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=638 type=BUY assetId=284 quantity=3.1
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=4.98
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Created Asset id=287 symbol=VANGUARD  MORNINGSTAR GROWTH ETF
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=639 type=BUY assetId=287 quantity=25.08
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=384 assetId=287 quantity=25.08
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Created Asset id=288 symbol=VANGUARD INFORMATION TECHNOLOGY ETF
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=640 type=BUY assetId=288 quantity=42.21
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=385 assetId=288 quantity=42.21
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Created Asset id=289 symbol=META PLATFORMS INC.
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=641 type=BUY assetId=289 quantity=1.44
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=386 assetId=289 quantity=1.44
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=642 type=BUY assetId=281 quantity=5.74
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=378 assetId=281 quantity=11.38
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=643 type=BUY assetId=283 quantity=0.08
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=0.21
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=644 type=BUY assetId=283 quantity=0.04
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=0.25
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=645 type=BUY assetId=282 quantity=0.49
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=1.74
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=646 type=BUY assetId=284 quantity=0.23
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=5.21
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=647 type=BUY assetId=284 quantity=0.01
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=5.22
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=648 type=BUY assetId=284 quantity=0.03
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=5.25
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=649 type=BUY assetId=284 quantity=0.01
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=5.26
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=650 type=BUY assetId=284 quantity=0.06
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=5.32
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=651 type=BUY assetId=284 quantity=0.05
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=5.37
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=652 type=BUY assetId=282 quantity=0.1
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=1.84
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=653 type=BUY assetId=282 quantity=0.91
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=2.75
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=654 type=BUY assetId=282 quantity=0.29
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=3.04
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=655 type=BUY assetId=283 quantity=0.09
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=0.34
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=656 type=BUY assetId=284 quantity=0.03
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=5.40
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Created Asset id=290 symbol=TESLA INC.
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=657 type=BUY assetId=290 quantity=0.17
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=387 assetId=290 quantity=0.17
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=658 type=BUY assetId=283 quantity=0.03
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=0.37
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=659 type=BUY assetId=282 quantity=0.55
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=3.59
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=660 type=BUY assetId=284 quantity=0.01
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=5.41
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=661 type=BUY assetId=283 quantity=0.01
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=0.38
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=662 type=BUY assetId=282 quantity=0.1
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=3.69
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=663 type=BUY assetId=282 quantity=0.67
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=4.36
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=664 type=BUY assetId=286 quantity=62.58
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=383 assetId=286 quantity=128.36
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=665 type=BUY assetId=287 quantity=21.56
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=384 assetId=287 quantity=46.64
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=666 type=BUY assetId=284 quantity=1.3
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=6.71
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=667 type=BUY assetId=285 quantity=32.31
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=382 assetId=285 quantity=68.31
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=668 type=BUY assetId=288 quantity=28.04
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=385 assetId=288 quantity=70.25
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=669 type=BUY assetId=289 quantity=1.43
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=386 assetId=289 quantity=2.87
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=670 type=BUY assetId=284 quantity=0.03
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=6.74
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=671 type=BUY assetId=282 quantity=0.53
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=4.89
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=672 type=BUY assetId=282 quantity=0.19
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=5.08
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=673 type=BUY assetId=284 quantity=0.01
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=6.75
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=674 type=BUY assetId=282 quantity=0.22
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=5.30
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=675 type=BUY assetId=281 quantity=5.69
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=378 assetId=281 quantity=17.07
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=676 type=BUY assetId=290 quantity=0.54
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=387 assetId=290 quantity=0.71
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=677 type=BUY assetId=282 quantity=0.61
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=5.91
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=678 type=BUY assetId=284 quantity=0.05
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=6.80
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=679 type=BUY assetId=284 quantity=0.01
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=6.81
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=680 type=BUY assetId=290 quantity=0.71
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=387 assetId=290 quantity=1.42
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=681 type=BUY assetId=282 quantity=0.2
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=6.11
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=682 type=BUY assetId=282 quantity=0.28
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=6.39
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=683 type=BUY assetId=287 quantity=18347.08
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=384 assetId=287 quantity=18393.72
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=684 type=BUY assetId=282 quantity=0.38
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=6.77
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=685 type=BUY assetId=290 quantity=0.32
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=387 assetId=290 quantity=1.74
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=686 type=BUY assetId=283 quantity=0.93
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=1.31
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=687 type=BUY assetId=282 quantity=1.73
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=8.50
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=688 type=BUY assetId=282 quantity=0.31
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=8.81
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=689 type=BUY assetId=284 quantity=1.54
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=8.35
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=690 type=BUY assetId=285 quantity=35.02
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=382 assetId=285 quantity=103.33
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=691 type=BUY assetId=283 quantity=0.54
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=1.85
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=692 type=BUY assetId=286 quantity=58.83
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=383 assetId=286 quantity=187.19
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=693 type=BUY assetId=287 quantity=8.96
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=384 assetId=287 quantity=18402.68
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=694 type=BUY assetId=289 quantity=1.43
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=386 assetId=289 quantity=4.30
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=695 type=BUY assetId=288 quantity=28.73
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=385 assetId=288 quantity=98.98
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=696 type=BUY assetId=281 quantity=5.78
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=378 assetId=281 quantity=22.85
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=697 type=BUY assetId=283 quantity=0.14
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=1.99
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=698 type=BUY assetId=284 quantity=0.01
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=8.36
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=699 type=BUY assetId=283 quantity=0.08
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=2.07
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=700 type=BUY assetId=282 quantity=1
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=9.81
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=701 type=BUY assetId=282 quantity=0.99
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=10.80
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=702 type=BUY assetId=284 quantity=0.08
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=8.44
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=703 type=BUY assetId=283 quantity=0.01
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=2.08
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=704 type=BUY assetId=282 quantity=1.92
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=12.72
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=705 type=BUY assetId=283 quantity=0.1
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=2.18
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=706 type=BUY assetId=284 quantity=0.01
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=8.45
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=707 type=BUY assetId=284 quantity=0.04
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=8.49
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=708 type=BUY assetId=282 quantity=0.97
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=13.69
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=709 type=BUY assetId=282 quantity=1.07
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=14.76
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=710 type=BUY assetId=283 quantity=0.07
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=2.25
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=711 type=BUY assetId=284 quantity=0.14
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=8.63
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=712 type=BUY assetId=282 quantity=1.53
+2026-09-23 01:22:02 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=16.29
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=713 type=BUY assetId=285 quantity=30.94
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=382 assetId=285 quantity=134.27
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=714 type=BUY assetId=283 quantity=0.01
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=2.26
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=715 type=BUY assetId=283 quantity=0.09
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=380 assetId=283 quantity=2.35
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=716 type=BUY assetId=282 quantity=3.68
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=19.97
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=717 type=BUY assetId=282 quantity=0.43
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=379 assetId=282 quantity=20.40
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=718 type=BUY assetId=286 quantity=58.09
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=383 assetId=286 quantity=245.28
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=719 type=BUY assetId=287 quantity=9.14
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=384 assetId=287 quantity=18411.82
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=720 type=BUY assetId=284 quantity=0.89
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=9.52
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=721 type=BUY assetId=289 quantity=1.43
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=386 assetId=289 quantity=5.73
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=722 type=BUY assetId=288 quantity=32.64
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=385 assetId=288 quantity=131.62
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=723 type=BUY assetId=284 quantity=0.69
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=10.21
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=724 type=BUY assetId=284 quantity=0.79
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=11.00
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=725 type=BUY assetId=284 quantity=0.86
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=11.86
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=726 type=BUY assetId=284 quantity=0.91
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=12.77
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=727 type=BUY assetId=281 quantity=5.23
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=378 assetId=281 quantity=28.08
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Created Asset id=291 symbol=VANGUARD CONSUMER DISCRETIONARY ETF
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=728 type=BUY assetId=291 quantity=0.12
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=388 assetId=291 quantity=0.12
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=729 type=BUY assetId=285 quantity=1.16
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=382 assetId=285 quantity=135.43
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=730 type=BUY assetId=284 quantity=0.01
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=381 assetId=284 quantity=12.78
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Created Asset id=292 symbol=**SEE ARKK
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=731 type=BUY assetId=292 quantity=4.33
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=389 assetId=292 quantity=4.33
+2026-09-23 01:22:03 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Created Transaction id=732 type=SELL assetId=291 quantity=2395.05
+2026-09-23 01:22:03 [http-nio-8080-exec-10] ERROR c.m.service.TransactionService - Failed to sell: quantity 2395.05 exceeds holding for assetId=291
+2026-09-23 01:22:03 [http-nio-8080-exec-10] ERROR c.m.config.GlobalExceptionHandler - Unhandled RuntimeException: 400 BAD_REQUEST "Cannot sell more than held"
+org.springframework.web.server.ResponseStatusException: 400 BAD_REQUEST "Cannot sell more than held"
+	at com.myfinance.controller.TransactionController.importApply(TransactionController.java:281)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor.invoke(AfterReturningAdviceInterceptor.java:57)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:173)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720)
+	at com.myfinance.controller.TransactionController$$SpringCGLIB$$0.importApply(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at com.myfinance.config.RequestLoggingConfig$1.doFilterInternal(RequestLoggingConfig.java:30)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.myfinance.security.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1736)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-09-23 01:22:03 [http-nio-8080-exec-10] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/apply → 400 (647ms)
+2026-09-23 01:24:30 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-23 01:24:30 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-23 01:24:30 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-23 01:24:30 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (19ms)
+2026-09-23 01:24:30 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-23 01:24:30 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (4ms)
+2026-09-23 01:24:30 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (12ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (1ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (8ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (18ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (7ms)
+2026-09-23 01:36:24 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (15ms)

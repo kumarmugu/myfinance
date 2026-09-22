@@ -312,15 +312,15 @@ export default function Dividends() {
           <h3 className="text-base font-semibold text-slate-800 mb-1">Import Dividends</h3>
           <p className="text-xs text-slate-500 mb-3">Only dividend rows are imported (net after withholding tax); buys, deposits, interest and reversals are skipped. Missing assets are created automatically, and re-running skips duplicates.</p>
 
-          {/* Mode toggle: upload a file (DIVIDEND_IMPORT) and/or fetch from IBKR (IBKR_SYNC). Each
-              button appears only when its feature is enabled; the IBKR option also needs the chosen
-              owner to actually have an IBKR account. */}
+          {/* Mode toggle: upload a file (DIVIDEND_IMPORT) and/or live-fetch from the broker
+              (BROKER_SYNC). Each button appears only when its feature is enabled. The live fetch
+              currently supports IBKR Flex, using the credentials saved on the Account page. */}
           {canImportFile && canIbkr && (
             <div className="inline-flex rounded-lg border border-slate-200 p-0.5 mb-4 bg-slate-50">
               <button type="button" onClick={() => setImportMode('file')}
                 className={`px-3 py-1.5 text-xs font-medium rounded-md ${importMode === 'file' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>Upload file</button>
               <button type="button" onClick={() => setImportMode('ibkr')}
-                className={`px-3 py-1.5 text-xs font-medium rounded-md ${importMode === 'ibkr' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>Fetch from IBKR</button>
+                className={`px-3 py-1.5 text-xs font-medium rounded-md ${importMode === 'ibkr' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500'}`}>Fetch from broker</button>
             </div>
           )}
 

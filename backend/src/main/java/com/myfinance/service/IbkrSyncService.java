@@ -210,7 +210,16 @@ public class IbkrSyncService {
         int inserted = 0, updated = 0, skipped = 0;
         int[] assetsCreated = {0};
 
-        for (ParsedTrade t : parsed.trades()) {
+        // Apply chronologically so a position is opened (BUY) before it is closed (SELL). Statements
+        // (e.g. Tiger) may list trades grouped by symbol rather than in time order, which would
+        // otherwise make a SELL hit an empty holding ("Cannot sell more than held"). Ties on the same
+        // date order BUY before SELL for the same reason.
+        List<ParsedTrade> ordered = new ArrayList<>(parsed.trades());
+        ordered.sort(java.util.Comparator
+                .comparing(ParsedTrade::tradeDate, java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder()))
+                .thenComparing(t -> t.buy() ? 0 : 1));
+
+        for (ParsedTrade t : ordered) {
             if (outOfRange(t.tradeDate(), from, to)) continue;
             TransactionType type = t.buy() ? TransactionType.BUY : TransactionType.SELL;
             TradePlan plan = classify(t, userId, account, owner);
