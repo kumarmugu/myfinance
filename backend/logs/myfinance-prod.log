@@ -2397,3 +2397,85 @@ org.springframework.web.server.ResponseStatusException: 400 BAD_REQUEST "Tiger r
 2026-09-23 08:51:14 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (6ms)
 2026-09-23 08:51:14 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (25ms)
 2026-09-23 08:51:14 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-23 08:52:14 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-23 08:52:14 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-23 08:52:14 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-09-23 08:52:44 [main] INFO  com.myfinance.MyFinanceApplication - Starting MyFinanceApplication using Java 17.0.20 with PID 81226 (/Users/mugu/Documents/Projects/myfinance/backend/target/classes started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-23 08:52:44 [main] INFO  com.myfinance.MyFinanceApplication - The following 1 profile is active: "prod"
+2026-09-23 08:52:45 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-23 08:52:45 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 116 ms. Found 37 JPA repository interfaces.
+2026-09-23 08:52:46 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-09-23 08:52:46 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-23 08:52:46 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-09-23 08:52:46 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-23 08:52:46 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1617 ms
+2026-09-23 08:52:46 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-23 08:52:46 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-23 08:52:46 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-23 08:52:46 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-23 08:52:46 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-23 08:52:46 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data-prod/myfinance user=SA
+2026-09-23 08:52:46 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-23 08:52:46 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-23 08:52:48 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-23 08:52:48 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-23 08:52:48 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-23 08:52:51 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-23 08:52:53 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1e77dac0, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4088f5f3, org.springframework.security.web.context.SecurityContextHolderFilter@35a2255c, org.springframework.security.web.header.HeaderWriterFilter@4b5c0183, org.springframework.web.filter.CorsFilter@af47f1b, org.springframework.security.web.authentication.logout.LogoutFilter@6e0fe9cd, com.myfinance.provisioning.ProvisioningTokenFilter@5203c80f, com.myfinance.security.JwtAuthFilter@411c5fa2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@277a1185, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1820910f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4d0f58a9, org.springframework.security.web.session.SessionManagementFilter@67779915, org.springframework.security.web.access.ExceptionTranslationFilter@60c952ea, org.springframework.security.web.access.intercept.AuthorizationFilter@48505ccd]
+2026-09-23 08:52:53 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2026-09-23 08:52:53 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 9.678 seconds (process running for 10.029)
+2026-09-23 08:52:53 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-23 08:52:53 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-23 08:52:53 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (7ms)
+2026-09-23 08:52:59 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (30ms)
+2026-09-23 08:52:59 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (3ms)
+2026-09-23 08:52:59 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (27ms)
+2026-09-23 08:52:59 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (40ms)
+2026-09-23 08:52:59 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (39ms)
+2026-09-23 08:52:59 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (42ms)
+2026-09-23 08:52:59 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (6ms)
+2026-09-23 08:52:59 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-09-23 08:52:59 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (5ms)
+2026-09-23 08:52:59 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (11ms)
+2026-09-23 08:52:59 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (6ms)
+2026-09-23 08:52:59 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-23 08:52:59 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (89ms)
+2026-09-23 08:52:59 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (30ms)
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=321 symbol=MICROSOFT CORP.
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=322 symbol=ARK INNOVATION ETF
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=323 symbol=ARK BLOCKCHAIN & FINTECH INNOVATION ETF
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=324 symbol=PROSHARES ULTRAPRO QQQ ETF
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=325 symbol=INVESCO QQQ TRUST, SERIES 1 ETF
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=326 symbol=VANGUARD S&P 500 ETF
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=327 symbol=VANGUARD  MORNINGSTAR GROWTH ETF
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=328 symbol=VANGUARD INFORMATION TECHNOLOGY ETF
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=329 symbol=META PLATFORMS INC.
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=330 symbol=TESLA INC.
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=331 symbol=VANGUARD CONSUMER DISCRETIONARY ETF
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=332 symbol=**SEE ARKK
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=333 symbol=FRESHWORKS INC
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=334 symbol=**SEE META
+2026-09-23 08:53:26 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=335 symbol=RIVIAN AUTOMOTIVE INC
+2026-09-23 08:53:27 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Created Asset id=336 symbol=**SEE ARKF
+2026-09-23 08:53:27 [http-nio-8080-exec-4] INFO  c.m.service.DividendImportService - Dividend import (Saxo) for userId=2: imported=339 skipped=0 assetsCreated=16
+2026-09-23 08:53:27 [http-nio-8080-exec-4] INFO  c.m.controller.DividendController - Imported 339 dividends (16 assets created) for user mugu
+2026-09-23 08:53:27 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/import → 200 (811ms)
+2026-09-23 08:53:27 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-23 08:53:27 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-09-23 08:53:27 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (5ms)
+2026-09-23 08:53:27 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (6ms)
+2026-09-23 08:53:27 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (33ms)
+2026-09-23 09:03:02 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (4ms)
+2026-09-23 09:03:02 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-09-23 09:03:02 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (6ms)
+2026-09-23 09:03:02 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (8ms)
+2026-09-23 09:03:02 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (6ms)
+2026-09-23 09:03:02 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (10ms)
+2026-09-23 09:03:02 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-23 09:03:02 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-23 09:03:02 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (3ms)
+2026-09-23 09:03:02 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-23 09:03:02 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-23 09:03:02 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (6ms)
+2026-09-23 09:03:02 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (69ms)
+2026-09-23 09:03:02 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (46ms)

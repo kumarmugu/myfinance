@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -148,21 +149,55 @@ public class DividendImportService {
         catch (IllegalArgumentException e) { return Currency.SGD; }
     }
 
-    /** Find an asset by symbol, creating a minimal one (type OTHER) if absent. */
-    private Asset findOrCreateAsset(String symbol, String currency, Long userId, int[] createdCounter) {
-        String sym = symbol.trim().toUpperCase();
-        return assetService.getBySymbol(sym).orElseGet(() -> {
-            Asset a = Asset.builder()
-                    .userId(userId)
-                    .name(sym)
-                    .symbol(sym)
-                    .assetType(AssetType.OTHER)
-                    .currency(parseCurrency(currency))
-                    .build();
-            Asset saved = assetService.create(a);
-            createdCounter[0]++;
-            return saved;
-        });
+    /**
+     * Resolve the asset for an imported row, avoiding duplicates. The incoming {@code instrument} may
+     * be a bare ticker ("MSFT"), a ticker with an exchange suffix ("MSFT:xnas"), or a descriptive name
+     * ("MICROSOFT CORP." / "META PLATFORMS, INC. (META)"). We:
+     * <ol>
+     *   <li>normalise to a ticker via {@link #extractTicker} and try an exact symbol match;</li>
+     *   <li>if the raw value looks like a company name, try to match an existing asset by name
+     *       (case/punctuation-insensitive) so "MICROSOFT CORP." reuses your existing asset instead of
+     *       creating a duplicate;</li>
+     *   <li>only if nothing matches, create a minimal asset.</li>
+     * </ol>
+     */
+    private Asset findOrCreateAsset(String instrument, String currency, Long userId, int[] createdCounter) {
+        String raw = instrument.trim();
+        String ticker = extractTicker(raw);                 // "NAME (TICKER)" → TICKER; else the value uppercased
+        String sym = (ticker == null ? raw : ticker).trim().toUpperCase();
+
+        // 1) Exact symbol match (fast path, matches most imports).
+        Optional<Asset> bySymbol = assetService.getBySymbol(sym);
+        if (bySymbol.isPresent()) return bySymbol.get();
+
+        // 2) If the incoming value is a company NAME, reuse an existing asset with the same name so a
+        //    descriptive statement label doesn't spawn a duplicate.
+        if (raw.contains(" ")) {
+            String normName = normalizeName(raw);
+            Optional<Asset> byName = assetService.getAll().stream()
+                    .filter(a -> a.getUserId() == null || a.getUserId().equals(userId))
+                    .filter(a -> a.getName() != null && normalizeName(a.getName()).equals(normName))
+                    .findFirst();
+            if (byName.isPresent()) return byName.get();
+        }
+
+        // 3) Create a minimal asset. Use the clean ticker as the symbol; keep the descriptive name.
+        Asset a = Asset.builder()
+                .userId(userId)
+                .name(raw)
+                .symbol(sym)
+                .assetType(AssetType.OTHER)
+                .currency(parseCurrency(currency))
+                .build();
+        Asset saved = assetService.create(a);
+        createdCounter[0]++;
+        return saved;
+    }
+
+    /** Lower-cased, punctuation-stripped, whitespace-collapsed name for tolerant matching. */
+    private String normalizeName(String s) {
+        if (s == null) return "";
+        return s.toLowerCase().replaceAll("[^a-z0-9]+", " ").trim();
     }
 
     // ─────────────────────────── IBKR Flex XML ───────────────────────────
@@ -487,19 +522,32 @@ public class DividendImportService {
         return out;
     }
 
-    /** Map Saxo dividend header names → column index (first match wins). */
+    /**
+     * Map Saxo dividend header names → column index. We prefer a real TICKER column ("Instrument
+     * Symbol"/"Symbol"/"Ticker"/"UIC") over the descriptive "Instrument" NAME column, and only fall
+     * back to the name column when no ticker column exists — otherwise a descriptive name like
+     * "MICROSOFT CORP." would be used as the symbol and create duplicate assets.
+     */
     private Map<String, Integer> mapSaxoDividendColumns(List<String> header) {
         Map<String, Integer> cols = new HashMap<>();
+        Integer nameFallback = null;
         for (int i = 0; i < header.size(); i++) {
             String h = header.get(i) == null ? "" : header.get(i).trim().toLowerCase();
             if (h.isEmpty()) continue;
-            if (!cols.containsKey("symbol") && (h.contains("instrument symbol") || h.equals("symbol") || h.equals("instrument") || h.contains("ticker") || h.contains("uic"))) cols.put("symbol", i);
-            else if (!cols.containsKey("event") && (h.equals("event") || h.contains("event") || h.contains("description") || h.contains("corporate action"))) cols.put("event", i);
+            boolean tickerHeader = h.contains("instrument symbol") || h.equals("symbol")
+                    || h.contains("ticker") || h.equals("uic") || h.contains("instrument code");
+            if (tickerHeader) { cols.put("symbol", i); }               // ticker column always wins
+            else if (nameFallback == null && (h.equals("instrument") || h.contains("instrument name")
+                    || h.equals("name") || h.contains("product") || h.contains("security"))) {
+                nameFallback = i;                                       // remember, use only if no ticker
+            }
+            else if (!cols.containsKey("event") && (h.contains("event") || h.contains("description") || h.contains("corporate action"))) cols.put("event", i);
             else if (!cols.containsKey("date") && (h.contains("pay date") || h.contains("value date") || h.contains("payment date") || h.equals("date"))) cols.put("date", i);
             else if (!cols.containsKey("gross") && (h.contains("dividend amount") || h.equals("dividend") || h.contains("gross"))) cols.put("gross", i);
             else if (!cols.containsKey("tax") && (h.contains("withholding") || h.contains("tax"))) cols.put("tax", i);
             else if (!cols.containsKey("booked") && (h.contains("booked amount") || h.contains("booked") || h.contains("net amount") || h.contains("amount booked"))) cols.put("booked", i);
         }
+        if (!cols.containsKey("symbol") && nameFallback != null) cols.put("symbol", nameFallback);
         return cols;
     }
 

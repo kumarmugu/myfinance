@@ -80,6 +80,30 @@ class DividendImportIntegrationTest {
 
     @Test
     @WithMockUser(username = "user")
+    void descriptiveInstrumentNameReusesExistingAssetByNameInsteadOfDuplicating() {
+        // The user already has a Microsoft asset (symbol MSFT). A statement whose instrument column is
+        // the descriptive name "MICROSOFT CORP." must reuse it, not create a duplicate asset.
+        assetRepository.save(Asset.builder().userId(user.getId()).name("Microsoft Corp").symbol("MSFT")
+                .assetType(AssetType.GROWTH_EQUITY).currency(Currency.USD).build());
+        long assetsBefore = assetRepository.count();
+
+        String tiger = String.join("\n",
+            "Activity Statement,,,,2024",
+            "Dividends,,,,Date,Product,Symbol,Dividend Reinvestment Plan,Quantity/Gross Rate,Phase,Cash Dividends,Shares,Fees & Tax,Net Cash Value,Currency",
+            "Dividends,,,DATA,2024-06-10,,MICROSOFT CORP.,,,Paid,3.00,0,,3.00,USD");
+        var res = importService.importFile(tiger.getBytes(StandardCharsets.UTF_8),
+                DividendImportService.Format.TIGER_CSV, user.getId(), account, owner);
+
+        assertEquals(1, res.imported());
+        assertEquals(0, res.assetsCreated(), "must reuse the existing Microsoft asset, not create a new one");
+        assertEquals(assetsBefore, assetRepository.count(), "no duplicate asset created");
+        // The dividend is linked to the existing MSFT asset.
+        Dividend d = dividendRepository.findByUserIdOrderByReceivedDateDesc(user.getId()).get(0);
+        assertEquals("MSFT", d.getAsset().getSymbol());
+    }
+
+    @Test
+    @WithMockUser(username = "user")
     void reimportingSameFileSkipsDuplicates() {
         var first = importService.importFile(CSV.getBytes(StandardCharsets.UTF_8),
                 DividendImportService.Format.IBKR_CSV, user.getId(), account, owner);
