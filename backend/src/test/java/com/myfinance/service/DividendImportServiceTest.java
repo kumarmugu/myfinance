@@ -68,6 +68,40 @@ class DividendImportServiceTest {
     }
 
     @Test
+    void ibkrGroupsMultipleSameDayComponentsIntoOneNetDividend() {
+        // IBKR reports a REIT distribution as several component rows on the same date. File import must
+        // collapse them into ONE net dividend (summing gross, subtracting tax once) — matching the Flex
+        // XML path, so file import and live fetch agree instead of producing 3 rows vs 1.
+        String csv = String.join("\n",
+            "Transaction History,Header,Date,Account,Description,Transaction Type,Symbol,Quantity,Price,Price Currency,Gross Amount ,Commission,Net Amount",
+            "Transaction History,Data,2026-09-07,U1,ME8U Cash Dividend SGD (Ordinary Dividend),Dividend,ME8U,-,-,-,-,-,14.85",
+            "Transaction History,Data,2026-09-07,U1,ME8U Cash Dividend SGD (Return of Capital),Dividend,ME8U,-,-,-,-,-,7.02",
+            "Transaction History,Data,2026-09-07,U1,ME8U Cash Dividend SGD (Capital Gains),Dividend,ME8U,-,-,-,-,-,62.10");
+        List<ParsedDividend> out = svc.parseIbkr(csv);
+        assertEquals(1, out.size(), "three same-day ME8U components collapse into one dividend");
+        ParsedDividend d = out.get(0);
+        assertEquals("ME8U", d.symbol());
+        assertEquals(0, new BigDecimal("83.97").compareTo(d.net()), "14.85 + 7.02 + 62.10 = 83.97");
+        assertNull(d.tax());
+    }
+
+    @Test
+    void ibkrDoesNotDoubleCountTaxAcrossSameDayComponents() {
+        // Two dividend components + one withholding-tax row on the same day: the tax is subtracted ONCE.
+        String csv = String.join("\n",
+            "Transaction History,Header,Date,Account,Description,Transaction Type,Symbol,Quantity,Price,Price Currency,Gross Amount ,Commission,Net Amount",
+            "Transaction History,Data,2026-08-13,U1,AAPL Cash Dividend USD (Ordinary Dividend),Dividend,AAPL,-,-,-,-,-,6.00",
+            "Transaction History,Data,2026-08-13,U1,AAPL Cash Dividend USD (Special),Dividend,AAPL,-,-,-,-,-,4.00",
+            "Transaction History,Data,2026-08-13,U1,AAPL US Tax,Foreign Tax Withholding,AAPL,-,-,-,-,-,-3.00");
+        List<ParsedDividend> out = svc.parseIbkr(csv);
+        assertEquals(1, out.size());
+        ParsedDividend d = out.get(0);
+        assertEquals(0, new BigDecimal("10.00").compareTo(d.gross()), "6 + 4");
+        assertEquals(0, new BigDecimal("3.00").compareTo(d.tax()), "tax counted once, not per component");
+        assertEquals(0, new BigDecimal("7.00").compareTo(d.net()), "10 gross - 3 tax");
+    }
+
+    @Test
     void ibkrClassifiesReturnOfCapital() {
         String csv = String.join("\n",
             "Transaction History,Header,Date,Account,Description,Transaction Type,Symbol,Quantity,Price,Price Currency,Gross Amount ,Commission,Net Amount",

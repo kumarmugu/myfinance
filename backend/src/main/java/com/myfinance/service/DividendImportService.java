@@ -283,17 +283,36 @@ public class DividendImportService {
             }
         }
 
-        List<ParsedDividend> out = new ArrayList<>();
+        // Group dividend rows by symbol+date so multiple lines on the same day (e.g. ordinary +
+        // return-of-capital + capital-gains components IBKR reports separately) collapse into ONE net
+        // dividend — matching the Flex XML path so file import and live fetch agree. Tax for that
+        // symbol+date is subtracted once, not once per component row.
+        Map<String, BigDecimal> grossByKey = new HashMap<>();
+        Map<String, String[]> metaByKey = new HashMap<>(); // key -> [symbol, date, currency, description]
+        List<String> order = new ArrayList<>();             // first-seen order for stable output
         for (String[] f : rows) {
             if (!"Dividend".equals(f[5])) continue;
             String date = f[2];
             String symbol = f[6];
             BigDecimal gross = parseNum(f[12]);                                   // positive income
-            BigDecimal tax = taxByKey.getOrDefault(date + "|" + symbol, BigDecimal.ZERO); // negative or 0
-            BigDecimal net = gross.add(tax);                                      // tax reduces net
-            String currency = tax.signum() != 0 ? "USD" : inferIbkrCurrency(f[4]);
-            out.add(new ParsedDividend(LocalDate.parse(date), symbol, currency,
-                    net, gross, tax.signum() == 0 ? null : tax.abs(), classifyType(f[4])));
+            String taxKey = date + "|" + symbol;
+            String currency = taxByKey.containsKey(taxKey) ? "USD" : inferIbkrCurrency(f[4]);
+            String key = symbol + "|" + date + "|" + currency;
+            grossByKey.merge(key, gross, BigDecimal::add);
+            if (!metaByKey.containsKey(key)) {
+                metaByKey.put(key, new String[]{symbol, date, currency, f[4]});
+                order.add(key);
+            }
+        }
+
+        List<ParsedDividend> out = new ArrayList<>();
+        for (String key : order) {
+            String[] m = metaByKey.get(key);
+            BigDecimal gross = grossByKey.get(key);
+            BigDecimal tax = taxByKey.getOrDefault(m[1] + "|" + m[0], BigDecimal.ZERO); // negative or 0
+            BigDecimal net = gross.add(tax);                                      // tax reduces net once
+            out.add(new ParsedDividend(LocalDate.parse(m[1]), m[0], m[2],
+                    net, gross, tax.signum() == 0 ? null : tax.abs(), classifyType(m[3])));
         }
         return out;
     }
