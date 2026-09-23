@@ -414,10 +414,15 @@ public class DividendImportService {
     // ─────────────────────────── Saxo XLSX ───────────────────────────
 
     /**
-     * Saxo "Share Dividends" XLSX. Columns (0-based): 4=Instrument Symbol, 5=Event, 7=Pay Date,
-     * 12=Dividend amount ("USD 34.75"), 14=Withholding tax amount, 19=Booked Amount (SGD, net).
-     * We import the SGD booked amount as the net. Reversal rows (Event contains "Reversal") and the
-     * matching original they cancel are both dropped.
+     * Saxo dividend XLSX export. Columns are resolved by <em>header name</em> (not fixed positions),
+     * and the sheet is read reference-aware so blank cells don't shift columns — this makes the import
+     * resilient to Saxo re-ordering, renaming or inserting columns between export versions.
+     *
+     * <p>We recognise: an instrument/symbol column, an event/description column, a pay/value date, the
+     * dividend (gross) amount, the withholding tax amount, and the "booked amount" (the net actually
+     * credited, usually in the account/base currency). Reversal rows (event contains "Reversal") and
+     * the matching original they cancel are both dropped. The booked amount is imported as the net; if
+     * no booked column exists we fall back to gross − tax.
      */
     List<ParsedDividend> parseSaxo(byte[] xlsx) {
         List<String> shared = new ArrayList<>();
@@ -426,8 +431,10 @@ public class DividendImportService {
             byte[] sharedXml = null, sheetXml = null;
             ZipEntry e;
             while ((e = zis.getNextEntry()) != null) {
-                if (e.getName().equals("xl/sharedStrings.xml")) sharedXml = readAll(zis);
-                else if (e.getName().equals("xl/worksheets/sheet1.xml")) sheetXml = readAll(zis);
+                String name = e.getName();
+                if (name.equals("xl/sharedStrings.xml")) sharedXml = readAll(zis);
+                // Accept any worksheet, not just sheet1.xml (Saxo may name it differently).
+                else if (sheetXml == null && name.startsWith("xl/worksheets/") && name.endsWith(".xml")) sheetXml = readAll(zis);
             }
             if (sharedXml != null) shared = readSharedStrings(sharedXml);
             if (sheetXml != null) sheet = readSheet(sheetXml, shared);
@@ -436,35 +443,75 @@ public class DividendImportService {
         }
         if (sheet.size() < 2) return List.of();
 
-        List<List<String>> data = sheet.subList(1, sheet.size());
+        // Find the header row and map the columns we need by name.
+        int headerIdx = -1;
+        Map<String, Integer> cols = null;
+        for (int i = 0; i < Math.min(sheet.size(), 15); i++) {
+            Map<String, Integer> m = mapSaxoDividendColumns(sheet.get(i));
+            if (m.containsKey("symbol") && (m.containsKey("booked") || m.containsKey("gross"))) {
+                headerIdx = i; cols = m; break;
+            }
+        }
+        if (cols == null) {
+            throw new RuntimeException("Could not recognise the Saxo dividends sheet — expected columns like Instrument, Event, Value Date, Dividend, Withholding Tax, Booked Amount");
+        }
+        final Map<String, Integer> c = cols;
+        List<List<String>> data = sheet.subList(headerIdx + 1, sheet.size());
+
         // Signatures (symbol|payDate|absBooked) that appear as a reversal → drop them and the original.
         java.util.Set<String> reversed = new java.util.HashSet<>();
         for (List<String> r : data) {
-            String event = col(r, 5);
-            if (event != null && event.toLowerCase().contains("reversal")) reversed.add(reversalSig(r));
+            String event = saxoCol(r, c, "event");
+            if (event != null && event.toLowerCase().contains("reversal")) reversed.add(reversalSig(r, c));
         }
 
         List<ParsedDividend> out = new ArrayList<>();
         for (List<String> r : data) {
-            String event = col(r, 5);
-            if (event == null) continue;
-            if (event.toLowerCase().contains("reversal")) continue;   // the reversal row
-            if (reversed.contains(reversalSig(r))) continue;          // the reversed original
-            BigDecimal bookedSgd = parseNum(col(r, 19));
-            if (bookedSgd.signum() == 0) continue;
-            BigDecimal grossUsd = parseMoneyToken(col(r, 12));
-            BigDecimal taxUsd = parseMoneyToken(col(r, 14)).abs();
-            out.add(new ParsedDividend(excelDate(col(r, 7)), stripExchange(col(r, 4)), "SGD", bookedSgd,
-                    grossUsd.signum() == 0 ? null : grossUsd,
-                    taxUsd.signum() == 0 ? null : taxUsd,
+            String symbol = stripExchange(saxoCol(r, c, "symbol"));
+            if (symbol == null || symbol.isBlank()) continue;
+            String event = saxoCol(r, c, "event");
+            if (event != null && event.toLowerCase().contains("reversal")) continue; // the reversal row
+            if (reversed.contains(reversalSig(r, c))) continue;                        // the reversed original
+
+            BigDecimal gross = c.containsKey("gross") ? parseMoneyToken(saxoCol(r, c, "gross")) : BigDecimal.ZERO;
+            BigDecimal tax = c.containsKey("tax") ? parseMoneyToken(saxoCol(r, c, "tax")).abs() : BigDecimal.ZERO;
+            // Net = the booked amount if present, else gross − tax.
+            BigDecimal net = c.containsKey("booked") ? parseNum(saxoCol(r, c, "booked")) : gross.subtract(tax);
+            if (net.signum() == 0) continue;
+
+            out.add(new ParsedDividend(excelDate(saxoCol(r, c, "date")), symbol, "SGD", net,
+                    gross.signum() == 0 ? null : gross,
+                    tax.signum() == 0 ? null : tax,
                     classifyType(event)));
         }
         return out;
     }
 
-    private String reversalSig(List<String> r) {
-        return stripExchange(col(r, 4)) + "|" + col(r, 7) + "|"
-                + parseNum(col(r, 19)).abs().stripTrailingZeros().toPlainString();
+    /** Map Saxo dividend header names → column index (first match wins). */
+    private Map<String, Integer> mapSaxoDividendColumns(List<String> header) {
+        Map<String, Integer> cols = new HashMap<>();
+        for (int i = 0; i < header.size(); i++) {
+            String h = header.get(i) == null ? "" : header.get(i).trim().toLowerCase();
+            if (h.isEmpty()) continue;
+            if (!cols.containsKey("symbol") && (h.contains("instrument symbol") || h.equals("symbol") || h.equals("instrument") || h.contains("ticker") || h.contains("uic"))) cols.put("symbol", i);
+            else if (!cols.containsKey("event") && (h.equals("event") || h.contains("event") || h.contains("description") || h.contains("corporate action"))) cols.put("event", i);
+            else if (!cols.containsKey("date") && (h.contains("pay date") || h.contains("value date") || h.contains("payment date") || h.equals("date"))) cols.put("date", i);
+            else if (!cols.containsKey("gross") && (h.contains("dividend amount") || h.equals("dividend") || h.contains("gross"))) cols.put("gross", i);
+            else if (!cols.containsKey("tax") && (h.contains("withholding") || h.contains("tax"))) cols.put("tax", i);
+            else if (!cols.containsKey("booked") && (h.contains("booked amount") || h.contains("booked") || h.contains("net amount") || h.contains("amount booked"))) cols.put("booked", i);
+        }
+        return cols;
+    }
+
+    private String saxoCol(List<String> row, Map<String, Integer> cols, String key) {
+        Integer i = cols.get(key);
+        return i == null ? null : col(row, i);
+    }
+
+    private String reversalSig(List<String> r, Map<String, Integer> cols) {
+        BigDecimal booked = cols.containsKey("booked") ? parseNum(saxoCol(r, cols, "booked")) : BigDecimal.ZERO;
+        return stripExchange(saxoCol(r, cols, "symbol")) + "|" + saxoCol(r, cols, "date") + "|"
+                + booked.abs().stripTrailingZeros().toPlainString();
     }
 
     private String stripExchange(String sym) {
@@ -540,40 +587,76 @@ public class DividendImportService {
         return out;
     }
 
+    /**
+     * Read a worksheet into rows of cell strings, resolving each cell's column from its {@code r}
+     * reference (e.g. "C7") so blank/omitted cells are preserved as empty strings and columns stay
+     * aligned. (An index-only reader collapses gaps and silently shifts every column after a blank.)
+     */
     private List<List<String>> readSheet(byte[] xml, List<String> shared) throws Exception {
         List<List<String>> rows = new ArrayList<>();
         XMLStreamReader r = XMLInputFactory.newInstance().createXMLStreamReader(new ByteArrayInputStream(xml));
-        List<String> row = null;
+        Map<Integer, String> cellsByCol = null;
+        int maxCol = -1;
         String cellType = null, value = null;
+        int colIdx = -1;
         boolean inValue = false;
         while (r.hasNext()) {
             int ev = r.next();
             if (ev == XMLStreamReader.START_ELEMENT) {
                 switch (r.getLocalName()) {
-                    case "row" -> row = new ArrayList<>();
-                    case "c" -> { cellType = r.getAttributeValue(null, "t"); value = null; }
-                    case "v" -> inValue = true;
+                    case "row" -> { cellsByCol = new HashMap<>(); maxCol = -1; }
+                    case "c" -> {
+                        cellType = r.getAttributeValue(null, "t");
+                        value = null;
+                        colIdx = columnFromRef(r.getAttributeValue(null, "r"));
+                    }
+                    case "v", "t" -> inValue = true;   // <v> for normal cells, inline <t> for inlineStr
                     default -> { }
                 }
             } else if (ev == XMLStreamReader.CHARACTERS && inValue) {
                 value = (value == null ? "" : value) + r.getText();
             } else if (ev == XMLStreamReader.END_ELEMENT) {
                 switch (r.getLocalName()) {
-                    case "v" -> inValue = false;
+                    case "v", "t" -> inValue = false;
                     case "c" -> {
                         String resolved = value;
                         if ("s".equals(cellType) && value != null) {
-                            int idx = Integer.parseInt(value);
-                            resolved = idx < shared.size() ? shared.get(idx) : "";
+                            int idx = safeInt(value);
+                            resolved = (idx >= 0 && idx < shared.size()) ? shared.get(idx) : "";
                         }
-                        if (row != null) row.add(resolved == null ? "" : resolved);
+                        if (cellsByCol != null && colIdx >= 0) {
+                            cellsByCol.put(colIdx, resolved == null ? "" : resolved);
+                            if (colIdx > maxCol) maxCol = colIdx;
+                        }
                     }
-                    case "row" -> { if (row != null) rows.add(row); row = null; }
+                    case "row" -> {
+                        List<String> row = new ArrayList<>();
+                        for (int col = 0; col <= maxCol; col++) row.add(cellsByCol == null ? "" : cellsByCol.getOrDefault(col, ""));
+                        rows.add(row);
+                        cellsByCol = null;
+                    }
                     default -> { }
                 }
             }
         }
         return rows;
+    }
+
+    /** "C7" → 2 (0-based column). Returns -1 if the ref is missing/unparseable. */
+    private int columnFromRef(String ref) {
+        if (ref == null) return -1;
+        int col = 0; boolean any = false;
+        for (int i = 0; i < ref.length(); i++) {
+            char ch = ref.charAt(i);
+            if (ch >= 'A' && ch <= 'Z') { col = col * 26 + (ch - 'A' + 1); any = true; }
+            else if (ch >= 'a' && ch <= 'z') { col = col * 26 + (ch - 'a' + 1); any = true; }
+            else break;
+        }
+        return any ? col - 1 : -1;
+    }
+
+    private int safeInt(String s) {
+        try { return Integer.parseInt(s.trim()); } catch (Exception e) { return -1; }
     }
 
     /** Minimal CSV splitter honouring double-quoted fields (IBKR quotes amounts with commas). */

@@ -149,16 +149,17 @@ class DividendImportServiceTest {
 
     @Test
     void saxoImportsBookedSgdAndSkipsReversalPair() throws Exception {
-        String[] header = new String[20];
-        for (int i = 0; i < 20; i++) header[i] = "H" + i;
-        String[] a = blank(20);
-        a[4] = "VOO:arcx"; a[5] = "Cash dividend"; a[7] = "45822"; a[12] = "USD 34.75"; a[14] = "-USD 8.30"; a[19] = "45.94";
-        String[] b = blank(20);
-        b[4] = "ARKK:arcx"; b[5] = "Capital gains distribution"; b[7] = "44196"; b[19] = "34.97";
-        String[] c = blank(20);
-        c[4] = "ARKK:arcx"; c[5] = "Capital gains distribution - Reversals"; c[7] = "44196"; c[19] = "-34.97";
+        // Columns are detected by header NAME (not fixed positions). A realistic header with the
+        // recognised names, plus a leading title row and a blank gap column to prove reference-aware
+        // reading keeps columns aligned.
+        String[] title = blank(7);
+        title[0] = "Share Dividends";
+        String[] header = new String[]{"Instrument Symbol", "Event", "", "Value Date", "Dividend Amount", "Withholding Tax", "Booked Amount"};
+        String[] a = new String[]{"VOO:arcx", "Cash dividend", "", "45822", "USD 34.75", "-USD 8.30", "45.94"};
+        String[] b = new String[]{"ARKK:arcx", "Capital gains distribution", "", "44196", "", "", "34.97"};
+        String[] c = new String[]{"ARKK:arcx", "Capital gains distribution - Reversals", "", "44196", "", "", "-34.97"};
 
-        byte[] xlsx = buildXlsx(List.of(header, a, b, c));
+        byte[] xlsx = buildXlsx(List.of(title, header, a, b, c));
         List<ParsedDividend> out = svc.parseSaxo(xlsx);
 
         assertEquals(1, out.size(), "reversal pair must be dropped, only the VOO row remains");
@@ -195,11 +196,16 @@ class DividendImportServiceTest {
         ss.append("</sst>");
 
         StringBuilder sheet = new StringBuilder("<?xml version=\"1.0\"?><worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData>");
-        for (String[] row : rows) {
-            sheet.append("<row>");
-            for (String cell : row) {
-                if (cell == null || cell.isEmpty()) sheet.append("<c/>");
-                else sheet.append("<c t=\"s\"><v>").append(dict.get(cell)).append("</v></c>");
+        for (int rIdx = 0; rIdx < rows.size(); rIdx++) {
+            String[] row = rows.get(rIdx);
+            sheet.append("<row r=\"").append(rIdx + 1).append("\">");
+            for (int cIdx = 0; cIdx < row.length; cIdx++) {
+                String cell = row[cIdx];
+                // Reference-aware reader keys on the cell's r="A1" ref; blank cells are simply omitted
+                // (as real Excel does) and the reader treats missing columns as empty.
+                if (cell == null || cell.isEmpty()) continue;
+                String ref = colRef(cIdx) + (rIdx + 1);
+                sheet.append("<c r=\"").append(ref).append("\" t=\"s\"><v>").append(dict.get(cell)).append("</v></c>");
             }
             sheet.append("</row>");
         }
@@ -219,6 +225,14 @@ class DividendImportServiceTest {
 
     private String esc(String s) {
         return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+    }
+
+    /** 0 → "A", 1 → "B", ... 26 → "AA" (Excel column letters). */
+    private String colRef(int c) {
+        StringBuilder sb = new StringBuilder();
+        int n = c;
+        do { sb.insert(0, (char) ('A' + (n % 26))); n = n / 26 - 1; } while (n >= 0);
+        return sb.toString();
     }
 
     // ─────────────────────────── IBKR Flex XML dividends ───────────────────────────
