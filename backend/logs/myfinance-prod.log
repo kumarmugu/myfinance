@@ -1,431 +1,70 @@
-2026-09-25 10:36:33 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=13h21m46s707ms).
-2026-09-25 10:37:03 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Retrograde clock change detected (housekeeper delta=29s757ms), soft-evicting connections from pool.
-2026-09-25 11:15:11 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=38m8s126ms).
-2026-09-25 18:49:45 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=7h34m34s383ms).
-2026-09-25 23:14:11 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4h24m25s958ms).
-2026-09-25 23:23:05 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-09-25 23:23:06 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
-2026-09-25 23:23:06 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
-2026-09-25 23:23:11 [main] INFO  com.myfinance.MyFinanceApplication - Starting MyFinanceApplication using Java 17.0.20 with PID 87452 (/Users/mugu/Documents/Projects/myfinance/backend/target/classes started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
-2026-09-25 23:23:11 [main] INFO  com.myfinance.MyFinanceApplication - The following 1 profile is active: "prod"
-2026-09-25 23:23:12 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-09-25 23:23:12 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 119 ms. Found 37 JPA repository interfaces.
-2026-09-25 23:23:13 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
-2026-09-25 23:23:13 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-2026-09-25 23:23:13 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
-2026-09-25 23:23:13 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2026-09-25 23:23:13 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1836 ms
-2026-09-25 23:23:13 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-09-25 23:23:13 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
-2026-09-25 23:23:13 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
-2026-09-25 23:23:14 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-09-25 23:23:14 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2026-09-25 23:23:14 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data-prod/myfinance user=SA
-2026-09-25 23:23:14 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2026-09-25 23:23:14 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-09-25 23:23:15 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-09-25 23:23:16 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-09-25 23:23:16 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-09-25 23:23:19 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
-2026-09-25 23:23:21 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6e145703, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5c568706, org.springframework.security.web.context.SecurityContextHolderFilter@3fa4fe1f, org.springframework.security.web.header.HeaderWriterFilter@7ee2b3e3, org.springframework.web.filter.CorsFilter@121e3c62, org.springframework.security.web.authentication.logout.LogoutFilter@432e9de9, com.myfinance.provisioning.ProvisioningTokenFilter@639c7f9c, com.myfinance.security.JwtAuthFilter@28a821f9, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@311fd276, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2c2a8c3d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@583739e2, org.springframework.security.web.session.SessionManagementFilter@7440b783, org.springframework.security.web.access.ExceptionTranslationFilter@92bdd87, org.springframework.security.web.access.intercept.AuthorizationFilter@6db47658]
-2026-09-25 23:23:22 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
-2026-09-25 23:23:22 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 10.846 seconds (process running for 11.269)
-2026-09-25 23:23:22 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-09-25 23:23:22 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
-2026-09-25 23:23:22 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (8ms)
-2026-09-25 23:23:26 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 401 (27ms)
-2026-09-25 23:23:26 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 401 (3ms)
-2026-09-25 23:23:34 [http-nio-8080-exec-4] INFO  c.m.controller.AuthController - Login attempt for user=mugu
-2026-09-25 23:23:34 [http-nio-8080-exec-4] WARN  c.m.controller.AuthController - Login failed for user=mugu
-2026-09-25 23:23:34 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 401 (316ms)
-2026-09-25 23:23:40 [http-nio-8080-exec-5] INFO  c.m.controller.AuthController - Login attempt for user=mugu
-2026-09-25 23:23:40 [http-nio-8080-exec-5] INFO  c.m.controller.AuthController - Login successful for user=mugu
-2026-09-25 23:23:40 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (121ms)
-2026-09-25 23:23:40 [http-nio-8080-exec-7] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
-2026-09-25 23:23:40 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (15ms)
-2026-09-25 23:23:40 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (22ms)
-2026-09-25 23:23:40 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (4ms)
-2026-09-25 23:23:40 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (7ms)
-2026-09-25 23:23:40 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (90ms)
-2026-09-25 23:23:40 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (30ms)
-2026-09-25 23:23:40 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (246ms)
-2026-09-25 23:23:40 [http-nio-8080-exec-3] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
-2026-09-25 23:23:41 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (125ms)
-2026-09-25 23:23:46 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
-2026-09-25 23:23:46 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (7ms)
-2026-09-25 23:23:46 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (10ms)
-2026-09-25 23:23:46 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (8ms)
-2026-09-25 23:23:46 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (13ms)
-2026-09-25 23:23:46 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
-2026-09-25 23:23:46 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
-2026-09-25 23:23:46 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (5ms)
-2026-09-25 23:23:46 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (6ms)
-2026-09-25 23:23:46 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (15ms)
-2026-09-25 23:23:46 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (5ms)
-2026-09-25 23:23:46 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (56ms)
-2026-09-25 23:23:46 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (11ms)
-2026-09-25 23:23:46 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (24ms)
-2026-09-25 23:23:51 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
-2026-09-25 23:23:51 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (5ms)
-2026-09-25 23:23:51 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (6ms)
-2026-09-25 23:23:51 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
-2026-09-25 23:23:51 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
-2026-09-25 23:23:51 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (5ms)
-2026-09-25 23:23:51 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (29ms)
-2026-09-25 23:23:51 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
-2026-09-25 23:23:51 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (3ms)
-2026-09-25 23:23:51 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
-2026-09-25 23:23:51 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (70ms)
-2026-09-25 23:23:51 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (44ms)
-2026-09-25 23:24:06 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/bulk-count → 200 (14ms)
-2026-09-25 23:24:16 [http-nio-8080-exec-9] INFO  c.m.controller.DividendController - Bulk-deleted 339 dividends for user mugu owner 1 account 3
-2026-09-25 23:24:16 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/bulk-delete → 200 (183ms)
-2026-09-25 23:24:16 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
-2026-09-25 23:24:16 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
-2026-09-25 23:24:16 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (3ms)
-2026-09-25 23:24:16 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
-2026-09-25 23:24:16 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (15ms)
-2026-09-25 23:24:24 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
-2026-09-25 23:24:24 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
-2026-09-25 23:24:36 [http-nio-8080-exec-3] INFO  c.m.controller.AssetController - Merging duplicate assets for userId=2
-2026-09-25 23:24:36 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/merge-duplicates → 200 (38ms)
-2026-09-25 23:24:36 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:24:45 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Merging duplicate assets for userId=2
-2026-09-25 23:24:45 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/merge-duplicates → 200 (10ms)
-2026-09-25 23:24:45 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:25:01 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Deleting asset id=321
-2026-09-25 23:25:01 [http-nio-8080-exec-8] INFO  com.myfinance.service.AssetService - Deleted Asset id=321
-2026-09-25 23:25:01 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/321 → 204 (10ms)
-2026-09-25 23:25:01 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:25:09 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Deleting asset id=336
-2026-09-25 23:25:09 [http-nio-8080-exec-1] INFO  com.myfinance.service.AssetService - Deleted Asset id=336
-2026-09-25 23:25:09 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/336 → 204 (7ms)
-2026-09-25 23:25:09 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:25:13 [http-nio-8080-exec-10] INFO  c.m.controller.AssetController - Deleting asset id=323
-2026-09-25 23:25:13 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Deleted Asset id=323
-2026-09-25 23:25:13 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/323 → 204 (8ms)
-2026-09-25 23:25:13 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:25:16 [http-nio-8080-exec-3] INFO  c.m.controller.AssetController - Deleting asset id=324
-2026-09-25 23:25:16 [http-nio-8080-exec-3] INFO  com.myfinance.service.AssetService - Deleted Asset id=324
-2026-09-25 23:25:16 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/324 → 204 (18ms)
-2026-09-25 23:25:16 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
-2026-09-25 23:25:22 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Deleting asset id=322
-2026-09-25 23:25:22 [http-nio-8080-exec-9] INFO  com.myfinance.service.AssetService - Deleted Asset id=322
-2026-09-25 23:25:22 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/322 → 204 (7ms)
-2026-09-25 23:25:22 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:25:27 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Deleting asset id=325
-2026-09-25 23:25:27 [http-nio-8080-exec-8] INFO  com.myfinance.service.AssetService - Deleted Asset id=325
-2026-09-25 23:25:27 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/325 → 204 (5ms)
-2026-09-25 23:25:27 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
-2026-09-25 23:25:32 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Deleting asset id=326
-2026-09-25 23:25:32 [http-nio-8080-exec-1] INFO  com.myfinance.service.AssetService - Deleted Asset id=326
-2026-09-25 23:25:32 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/326 → 204 (7ms)
-2026-09-25 23:25:32 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:25:38 [http-nio-8080-exec-10] INFO  c.m.controller.AssetController - Deleting asset id=330
-2026-09-25 23:25:38 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Deleted Asset id=330
-2026-09-25 23:25:38 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/330 → 204 (8ms)
-2026-09-25 23:25:38 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
-2026-09-25 23:25:42 [http-nio-8080-exec-3] INFO  c.m.controller.AssetController - Deleting asset id=329
-2026-09-25 23:25:42 [http-nio-8080-exec-3] INFO  com.myfinance.service.AssetService - Deleted Asset id=329
-2026-09-25 23:25:42 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/329 → 204 (6ms)
-2026-09-25 23:25:42 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:26:20 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Deleting asset id=327
-2026-09-25 23:26:20 [http-nio-8080-exec-9] INFO  com.myfinance.service.AssetService - Deleted Asset id=327
-2026-09-25 23:26:20 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/327 → 204 (6ms)
-2026-09-25 23:26:20 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:26:25 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Deleting asset id=332
-2026-09-25 23:26:25 [http-nio-8080-exec-8] INFO  com.myfinance.service.AssetService - Deleted Asset id=332
-2026-09-25 23:26:25 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/332 → 204 (7ms)
-2026-09-25 23:26:25 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:26:30 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Deleting asset id=328
-2026-09-25 23:26:30 [http-nio-8080-exec-1] INFO  com.myfinance.service.AssetService - Deleted Asset id=328
-2026-09-25 23:26:30 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/328 → 204 (5ms)
-2026-09-25 23:26:30 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
-2026-09-25 23:26:34 [http-nio-8080-exec-10] INFO  c.m.controller.AssetController - Deleting asset id=331
-2026-09-25 23:26:34 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Deleted Asset id=331
-2026-09-25 23:26:34 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/331 → 204 (8ms)
-2026-09-25 23:26:34 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:26:39 [http-nio-8080-exec-3] INFO  c.m.controller.AssetController - Deleting asset id=333
-2026-09-25 23:26:39 [http-nio-8080-exec-3] INFO  com.myfinance.service.AssetService - Deleted Asset id=333
-2026-09-25 23:26:39 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/333 → 204 (5ms)
-2026-09-25 23:26:39 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
-2026-09-25 23:26:43 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Deleting asset id=334
-2026-09-25 23:26:43 [http-nio-8080-exec-9] INFO  com.myfinance.service.AssetService - Deleted Asset id=334
-2026-09-25 23:26:43 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/334 → 204 (5ms)
-2026-09-25 23:26:43 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (1ms)
-2026-09-25 23:26:47 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Deleting asset id=335
-2026-09-25 23:26:47 [http-nio-8080-exec-8] INFO  com.myfinance.service.AssetService - Deleted Asset id=335
-2026-09-25 23:26:47 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/335 → 204 (7ms)
-2026-09-25 23:26:47 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
-2026-09-25 23:27:00 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Updating asset id=225
-2026-09-25 23:27:00 [http-nio-8080-exec-1] INFO  com.myfinance.service.AssetService - Updated Asset id=225 symbol=SPCX
-2026-09-25 23:27:00 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/225 → 200 (27ms)
-2026-09-25 23:27:00 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
-2026-09-25 23:27:02 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:27:02 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
-2026-09-25 23:27:14 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
-2026-09-25 23:27:14 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (4ms)
-2026-09-25 23:27:14 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
-2026-09-25 23:27:14 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
-2026-09-25 23:27:14 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
-2026-09-25 23:27:14 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
-2026-09-25 23:27:14 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
-2026-09-25 23:27:14 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (19ms)
-2026-09-25 23:27:14 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (5ms)
-2026-09-25 23:27:14 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
-2026-09-25 23:27:14 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (16ms)
-2026-09-25 23:27:14 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
-2026-09-25 23:27:35 [http-nio-8080-exec-5] INFO  com.myfinance.service.AssetService - Created Asset id=353 symbol=FB
-2026-09-25 23:27:35 [http-nio-8080-exec-5] INFO  c.m.service.DividendImportService - Dividend import (Saxo) for userId=2: imported=339 skipped=0 assetsCreated=1
-2026-09-25 23:27:35 [http-nio-8080-exec-5] INFO  c.m.controller.DividendController - Imported 339 dividends (1 assets created) for user mugu
-2026-09-25 23:27:35 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/import → 200 (771ms)
-2026-09-25 23:27:35 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
-2026-09-25 23:27:35 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
-2026-09-25 23:27:35 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (2ms)
-2026-09-25 23:27:35 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
-2026-09-25 23:27:35 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (24ms)
-2026-09-25 23:28:27 [http-nio-8080-exec-10] INFO  c.m.service.DividendImportService - Dividend import (IBKR) for userId=2: imported=0 skipped=51 assetsCreated=0
-2026-09-25 23:28:27 [http-nio-8080-exec-10] INFO  c.m.controller.DividendController - Imported 0 dividends (0 assets created) for user mugu
-2026-09-25 23:28:27 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/import → 200 (54ms)
-2026-09-25 23:28:27 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
-2026-09-25 23:28:27 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
-2026-09-25 23:28:27 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (3ms)
-2026-09-25 23:28:27 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
-2026-09-25 23:28:27 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (28ms)
-2026-09-25 23:28:44 [http-nio-8080-exec-4] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex SendRequest ok, reference code obtained (query 1645256)
-2026-09-25 23:28:51 [http-nio-8080-exec-4] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex statement retrieved (reference 2913607854)
-2026-09-25 23:28:52 [http-nio-8080-exec-4] INFO  c.m.service.DividendImportService - Dividend import (IBKR Flex) for userId=2: imported=32 skipped=4 assetsCreated=0
-2026-09-25 23:28:52 [http-nio-8080-exec-4] INFO  c.m.controller.DividendController - IBKR Flex fetch imported 32 dividends (0 assets created) for user mugu
-2026-09-25 23:28:52 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/fetch-ibkr → 200 (8331ms)
-2026-09-25 23:28:52 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
-2026-09-25 23:28:52 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
-2026-09-25 23:28:52 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (2ms)
-2026-09-25 23:28:52 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
-2026-09-25 23:28:52 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (23ms)
-2026-09-25 23:29:43 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Retrograde clock change detected (housekeeper delta=29s253ms), soft-evicting connections from pool.
-2026-09-25 23:30:09 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (3ms)
-2026-09-25 23:30:09 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
-2026-09-25 23:30:09 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
-2026-09-25 23:30:09 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
-2026-09-25 23:30:09 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (2ms)
-2026-09-25 23:30:09 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
-2026-09-25 23:30:09 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
-2026-09-25 23:30:09 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (33ms)
-2026-09-25 23:30:09 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
-2026-09-25 23:30:09 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
-2026-09-25 23:30:09 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (5ms)
-2026-09-25 23:30:09 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (5ms)
-2026-09-25 23:30:09 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
-2026-09-25 23:30:09 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (36ms)
-2026-09-25 23:39:12 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/bulk-count → 200 (13ms)
-2026-09-25 23:39:19 [http-nio-8080-exec-10] INFO  c.m.controller.DividendController - Bulk-deleted 339 dividends for user mugu owner 1 account 3
-2026-09-25 23:39:19 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/bulk-delete → 200 (118ms)
-2026-09-25 23:39:19 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
-2026-09-25 23:39:19 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (1ms)
-2026-09-25 23:39:19 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
-2026-09-25 23:39:19 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (2ms)
-2026-09-25 23:39:19 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (12ms)
-2026-09-25 23:39:27 [http-nio-8080-exec-9] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex SendRequest ok, reference code obtained (query 1645256)
-2026-09-25 23:39:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex statement retrieved (reference 2913607854)
-2026-09-25 23:39:29 [http-nio-8080-exec-9] INFO  c.m.service.DividendImportService - Dividend import (IBKR Flex) for userId=2: imported=0 skipped=36 assetsCreated=0
-2026-09-25 23:39:29 [http-nio-8080-exec-9] INFO  c.m.controller.DividendController - IBKR Flex fetch imported 0 dividends (0 assets created) for user mugu
-2026-09-25 23:39:29 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/fetch-ibkr → 200 (2177ms)
-2026-09-25 23:39:29 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
-2026-09-25 23:39:29 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
-2026-09-25 23:39:29 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
-2026-09-25 23:39:29 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (1ms)
-2026-09-25 23:39:29 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (15ms)
-2026-09-25 23:39:42 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/bulk-count → 200 (6ms)
-2026-09-25 23:39:48 [http-nio-8080-exec-2] INFO  c.m.controller.DividendController - Bulk-deleted 82 dividends for user mugu owner 1 account 2
-2026-09-25 23:39:48 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/bulk-delete → 200 (84ms)
-2026-09-25 23:39:48 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
-2026-09-25 23:39:48 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
-2026-09-25 23:39:48 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (2ms)
-2026-09-25 23:39:48 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
-2026-09-25 23:39:48 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (7ms)
-2026-09-25 23:40:06 [http-nio-8080-exec-4] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex SendRequest ok, reference code obtained (query 1645256)
-2026-09-25 23:40:08 [http-nio-8080-exec-4] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex statement retrieved (reference 2913607854)
-2026-09-25 23:40:08 [http-nio-8080-exec-4] INFO  c.m.service.DividendImportService - Dividend import (IBKR Flex) for userId=2: imported=36 skipped=0 assetsCreated=0
-2026-09-25 23:40:08 [http-nio-8080-exec-4] INFO  c.m.controller.DividendController - IBKR Flex fetch imported 36 dividends (0 assets created) for user mugu
-2026-09-25 23:40:08 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/fetch-ibkr → 200 (2323ms)
-2026-09-25 23:40:08 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
-2026-09-25 23:40:08 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
-2026-09-25 23:40:08 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (1ms)
-2026-09-25 23:40:08 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
-2026-09-25 23:40:08 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (9ms)
-2026-09-25 23:40:28 [http-nio-8080-exec-5] INFO  c.m.service.DividendImportService - Dividend import (IBKR) for userId=2: imported=46 skipped=5 assetsCreated=0
-2026-09-25 23:40:28 [http-nio-8080-exec-5] INFO  c.m.controller.DividendController - Imported 46 dividends (0 assets created) for user mugu
-2026-09-25 23:40:28 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/import → 200 (74ms)
-2026-09-25 23:40:28 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
-2026-09-25 23:40:28 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
-2026-09-25 23:40:28 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (1ms)
-2026-09-25 23:40:28 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (2ms)
-2026-09-25 23:40:28 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (11ms)
-2026-09-25 23:40:46 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/bulk-count → 200 (5ms)
-2026-09-25 23:40:55 [http-nio-8080-exec-10] INFO  c.m.controller.DividendController - Bulk-deleted 82 dividends for user mugu owner 1 account 2
-2026-09-25 23:40:55 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/bulk-delete → 200 (83ms)
-2026-09-25 23:40:55 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
-2026-09-25 23:40:55 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
-2026-09-25 23:40:55 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (1ms)
-2026-09-25 23:40:55 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (2ms)
-2026-09-25 23:40:55 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (8ms)
-2026-09-25 23:45:05 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
-2026-09-25 23:45:05 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (5ms)
-2026-09-25 23:45:05 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
-2026-09-25 23:45:05 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
-2026-09-25 23:45:05 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (5ms)
-2026-09-25 23:45:05 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
-2026-09-25 23:45:05 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
-2026-09-25 23:45:05 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (13ms)
-2026-09-25 23:45:05 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (11ms)
-2026-09-25 23:45:05 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (50ms)
-2026-09-25 23:45:05 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (4ms)
-2026-09-25 23:45:05 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (23ms)
-2026-09-25 23:45:05 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (24ms)
-2026-09-25 23:45:05 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (12ms)
-2026-09-25 23:45:26 [http-nio-8080-exec-10] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex SendRequest ok, reference code obtained (query 1645256)
-2026-09-25 23:45:28 [http-nio-8080-exec-10] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex statement retrieved (reference 2913607854)
-2026-09-25 23:45:28 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/ibkr-sync/preview → 200 (2154ms)
-2026-09-25 23:46:05 [http-nio-8080-exec-5] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex SendRequest ok, reference code obtained (query 1645256)
-2026-09-25 23:46:07 [http-nio-8080-exec-5] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex statement retrieved (reference 2913607854)
-2026-09-25 23:46:07 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/ibkr-sync/preview → 200 (2105ms)
-2026-09-25 23:46:31 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/preview → 200 (157ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (5ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (6ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (4ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (24ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (12ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (7ms)
-2026-09-25 23:46:35 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (15ms)
-2026-09-25 23:46:57 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/preview → 200 (81ms)
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=737 type=BUY assetId=129 quantity=237.1312
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=15456.3912
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=738 type=BUY assetId=129 quantity=252.5635
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=15708.9547
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=739 type=BUY assetId=129 quantity=269.3512
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=15978.3059
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=740 type=BUY assetId=129 quantity=246.4296
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=16224.7355
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=741 type=BUY assetId=129 quantity=237.9956
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=16462.7311
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=742 type=BUY assetId=129 quantity=223.5312
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=16686.2623
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=743 type=BUY assetId=129 quantity=218.1728
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=16904.4351
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=744 type=BUY assetId=129 quantity=464.3241
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=17368.7592
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=745 type=BUY assetId=129 quantity=211.4216
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=17580.1808
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=746 type=BUY assetId=129 quantity=460.5131
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=18040.6939
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=747 type=BUY assetId=129 quantity=445.2946
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=18485.9885
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=748 type=BUY assetId=129 quantity=440.016
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=18926.0045
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=749 type=BUY assetId=129 quantity=437.945
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=19363.9495
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=750 type=BUY assetId=129 quantity=454.4447
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=19818.3942
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Created Transaction id=751 type=BUY assetId=129 quantity=531.0454
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=20349.4396
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=68 profit=220.40800000000000
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
-2026-09-25 23:47:27 [http-nio-8080-exec-8] INFO  c.myfinance.service.IbkrSyncService - IBKR trade sync for userId=2: inserted=15 updated=0 skipped=20 assetsCreated=0
-2026-09-25 23:47:28 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/apply → 200 (160ms)
-2026-09-25 23:47:28 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
-2026-09-25 23:47:28 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
-2026-09-25 23:47:28 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
-2026-09-25 23:47:28 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:47:28 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
-2026-09-25 23:47:28 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (10ms)
-2026-09-25 23:47:28 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (20ms)
-2026-09-25 23:48:24 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/preview → 200 (83ms)
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=752 type=BUY assetId=129 quantity=237.1312
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=20586.5712
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=753 type=BUY assetId=129 quantity=252.5635
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=20839.1347
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=754 type=BUY assetId=129 quantity=269.3512
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=21108.4859
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=755 type=BUY assetId=129 quantity=246.4296
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=21354.9155
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=756 type=BUY assetId=129 quantity=237.9956
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=21592.9111
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=757 type=BUY assetId=129 quantity=223.5312
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=21816.4423
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=758 type=BUY assetId=129 quantity=218.1728
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=22034.6151
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=759 type=BUY assetId=129 quantity=464.3241
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=22498.9392
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=760 type=BUY assetId=129 quantity=211.4216
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=22710.3608
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=761 type=BUY assetId=129 quantity=460.5131
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=23170.8739
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=762 type=BUY assetId=129 quantity=445.2946
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=23616.1685
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=763 type=BUY assetId=129 quantity=440.016
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=24056.1845
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=764 type=BUY assetId=129 quantity=437.945
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=24494.1295
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=765 type=BUY assetId=129 quantity=454.4447
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=24948.5742
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Created Transaction id=766 type=BUY assetId=129 quantity=531.0454
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.HoldingService - Saved Holding id=199 assetId=129 quantity=25479.6196
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=68 profit=220.40800000000000
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.myfinance.service.IbkrSyncService - IBKR trade sync for userId=2: inserted=15 updated=0 skipped=20 assetsCreated=0
-2026-09-25 23:48:29 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/apply → 200 (110ms)
-2026-09-25 23:48:29 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
-2026-09-25 23:48:29 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
-2026-09-25 23:48:29 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
-2026-09-25 23:48:29 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
-2026-09-25 23:48:29 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
-2026-09-25 23:48:29 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (5ms)
-2026-09-25 23:48:29 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (16ms)
-2026-09-25 23:53:15 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions/bulk-count → 200 (28ms)
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=137
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=193
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=194
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=195
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=196
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=197
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=198
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=199
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=200
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=201
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=202
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=289
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=321
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=353
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=68 profit=220.40800000000000
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Bulk-deleted for userId=2 owner=1 account=2: 96 txns, 14 holdings, 0 sold positions
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Bulk-deleted transactions for user mugu owner 1 account 2: BulkDeleteResult[transactions=96, holdings=14, soldPositions=0]
-2026-09-25 23:53:28 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/bulk-delete → 200 (122ms)
-2026-09-25 23:53:28 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
-2026-09-25 23:53:28 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
-2026-09-25 23:53:28 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:53:28 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (1ms)
-2026-09-25 23:53:28 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
-2026-09-25 23:53:28 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (14ms)
-2026-09-25 23:53:28 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (9ms)
-2026-09-25 23:55:41 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (5ms)
-2026-09-25 23:55:42 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
-2026-09-25 23:55:51 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Refreshed price for asset id=353 symbol=FB -> 45.64
-2026-09-25 23:55:51 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/353/refresh-price → 200 (82ms)
-2026-09-25 23:55:51 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
-2026-09-25 23:56:02 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Refresh-all prices for user=2: updated=34, skipped=6
-2026-09-25 23:56:02 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/refresh-prices → 200 (1811ms)
-2026-09-25 23:56:02 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
-2026-09-25 23:59:44 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
-2026-09-25 23:59:44 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (51ms)
-2026-09-25 23:59:44 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
-2026-09-25 23:59:44 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-26 00:00:18 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-26 00:00:18 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-26 00:00:18 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-09-26 00:00:29 [main] INFO  com.myfinance.MyFinanceApplication - Starting MyFinanceApplication using Java 17.0.20 with PID 1665 (/Users/mugu/Documents/Projects/myfinance/backend/target/classes started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-26 00:00:29 [main] INFO  com.myfinance.MyFinanceApplication - The following 1 profile is active: "prod"
+2026-09-26 00:00:30 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-26 00:00:30 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 196 ms. Found 37 JPA repository interfaces.
+2026-09-26 00:00:31 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-09-26 00:00:31 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-26 00:00:31 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-09-26 00:00:31 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-26 00:00:31 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2499 ms
+2026-09-26 00:00:31 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-26 00:00:32 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-26 00:00:32 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-26 00:00:32 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-26 00:00:32 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-26 00:00:32 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data-prod/myfinance user=SA
+2026-09-26 00:00:32 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-26 00:00:32 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-26 00:00:34 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-26 00:00:35 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-26 00:00:35 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-26 00:00:39 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-26 00:00:41 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6f136d41, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@60c2071d, org.springframework.security.web.context.SecurityContextHolderFilter@d3346f7, org.springframework.security.web.header.HeaderWriterFilter@79a4865e, org.springframework.web.filter.CorsFilter@4cd29de4, org.springframework.security.web.authentication.logout.LogoutFilter@7552c30e, com.myfinance.provisioning.ProvisioningTokenFilter@5203c80f, com.myfinance.security.JwtAuthFilter@a683f92, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@15f436d7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@13b9da00, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6700ec4e, org.springframework.security.web.session.SessionManagementFilter@150a89d4, org.springframework.security.web.access.ExceptionTranslationFilter@b50042d, org.springframework.security.web.access.intercept.AuthorizationFilter@7baae2db]
+2026-09-26 00:00:41 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2026-09-26 00:00:41 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 13.753 seconds (process running for 14.296)
+2026-09-26 00:00:43 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-26 00:00:43 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 00:00:43 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (9ms)
+2026-09-26 00:00:53 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (39ms)
+2026-09-26 00:00:53 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (3ms)
+2026-09-26 00:00:53 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (45ms)
+2026-09-26 00:00:53 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (62ms)
+2026-09-26 00:00:53 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (6ms)
+2026-09-26 00:00:53 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (64ms)
+2026-09-26 00:00:53 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (66ms)
+2026-09-26 00:00:53 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-26 00:00:53 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (6ms)
+2026-09-26 00:00:53 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (9ms)
+2026-09-26 00:00:53 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (5ms)
+2026-09-26 00:00:53 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (6ms)
+2026-09-26 00:00:53 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (119ms)
+2026-09-26 00:00:53 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (44ms)
+2026-09-26 00:01:11 [http-nio-8080-exec-9] INFO  c.m.service.DividendImportService - Dividend import (IBKR) for userId=2: imported=50 skipped=1 assetsCreated=0
+2026-09-26 00:01:11 [http-nio-8080-exec-9] INFO  c.m.controller.DividendController - Imported 50 dividends (0 assets created) for user mugu
+2026-09-26 00:01:11 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/import → 200 (182ms)
+2026-09-26 00:01:11 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (4ms)
+2026-09-26 00:01:11 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-09-26 00:01:11 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-09-26 00:01:11 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (5ms)
+2026-09-26 00:01:11 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (21ms)
+2026-09-26 00:01:26 [http-nio-8080-exec-3] INFO  c.m.service.DividendImportService - Dividend import (IBKR) for userId=2: imported=0 skipped=51 assetsCreated=0
+2026-09-26 00:01:26 [http-nio-8080-exec-3] INFO  c.m.controller.DividendController - Imported 0 dividends (0 assets created) for user mugu
+2026-09-26 00:01:26 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/import → 200 (63ms)
+2026-09-26 00:01:26 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (5ms)
+2026-09-26 00:01:26 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (5ms)
+2026-09-26 00:01:26 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (5ms)
+2026-09-26 00:01:26 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (6ms)
+2026-09-26 00:01:26 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (19ms)
+2026-09-26 00:01:45 [http-nio-8080-exec-7] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex SendRequest ok, reference code obtained (query 1645256)
+2026-09-26 00:01:47 [http-nio-8080-exec-7] INFO  c.myfinance.service.IbkrFlexService - IBKR Flex statement retrieved (reference 2913607854)
+2026-09-26 00:01:47 [http-nio-8080-exec-7] INFO  c.m.service.DividendImportService - Dividend import (IBKR Flex) for userId=2: imported=32 skipped=4 assetsCreated=0
+2026-09-26 00:01:47 [http-nio-8080-exec-7] INFO  c.m.controller.DividendController - IBKR Flex fetch imported 32 dividends (0 assets created) for user mugu
+2026-09-26 00:01:47 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/fetch-ibkr → 200 (2394ms)
+2026-09-26 00:01:47 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-26 00:01:47 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (3ms)
+2026-09-26 00:01:47 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-26 00:01:47 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-26 00:01:47 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (18ms)

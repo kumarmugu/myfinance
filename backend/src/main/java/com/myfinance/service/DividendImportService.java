@@ -134,13 +134,16 @@ public class DividendImportService {
     }
 
     /**
-     * Normalized dedupe key. Amount compared at 2dp; the instrument is reduced to its ticker so a
-     * descriptive form ("INVESCO QQQ (QQQ)") and the bare ticker ("QQQ") collide and dedupe.
+     * Normalized dedupe key: date | instrument-ticker | account | owner. The amount is deliberately
+     * NOT part of the key. An instrument pays at most one distribution per pay-date into one account,
+     * so the same event imported from different sources (IBKR live Flex vs the IBKR CSV, which report
+     * REIT components differently and can total differently) must be recognised as the SAME dividend
+     * and not duplicated just because the two totals differ. The instrument is reduced to its ticker
+     * so a descriptive form ("INVESCO QQQ (QQQ)") and the bare ticker ("QQQ") collide and dedupe.
      */
-    private String dedupeKey(String date, String instrument, Long accountId, Long ownerId, BigDecimal amount) {
-        String amt = amount == null ? "" : amount.setScale(2, java.math.RoundingMode.HALF_UP).toPlainString();
+    private String dedupeKey(String date, String instrument, Long accountId, Long ownerId) {
         String inst = instrument == null ? "" : (extractTicker(instrument) == null ? "" : extractTicker(instrument));
-        return (date == null ? "" : date) + "|" + inst + "|" + accountId + "|" + ownerId + "|" + amt;
+        return (date == null ? "" : date) + "|" + inst + "|" + accountId + "|" + ownerId;
     }
 
     private Currency parseCurrency(String code) {
