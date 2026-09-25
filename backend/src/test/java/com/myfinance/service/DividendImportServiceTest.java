@@ -132,6 +132,21 @@ class DividendImportServiceTest {
     }
 
     @Test
+    void tigerGroupsSameDayComponentsIntoOneDividend() {
+        // A REIT distribution split into several same-day "Paid" rows must collapse into one dividend
+        // (net summed) so Tiger agrees with the other import paths instead of creating multiple rows.
+        String csv = String.join("\n",
+            "Dividends,,,,Date,Product,Symbol,Dividend Reinvestment Plan,Quantity/Gross Rate,Phase,Cash Dividends,Shares,Fees & Tax,Net Cash Value,Currency",
+            "Dividends,,,DATA,2026-09-07,,ME8U,,,Paid,14.85,0,,14.85,SGD",
+            "Dividends,,,DATA,2026-09-07,,ME8U,,,Paid,7.02,0,,7.02,SGD",
+            "Dividends,,,DATA,2026-09-07,,ME8U,,,Paid,62.10,0,,62.10,SGD");
+        List<ParsedDividend> out = svc.parseTiger(csv);
+        assertEquals(1, out.size(), "three same-day ME8U rows collapse into one");
+        assertEquals("ME8U", out.get(0).symbol());
+        assertEquals(0, new BigDecimal("83.97").compareTo(out.get(0).net()), "14.85 + 7.02 + 62.10");
+    }
+
+    @Test
     void tigerExtractsTickerFromDescriptiveSymbol() {
         // Tiger sometimes puts "NAME (TICKER)" in the Symbol column — must resolve to the bare ticker
         // so it matches the existing asset instead of creating a duplicate.
@@ -169,6 +184,20 @@ class DividendImportServiceTest {
         assertEquals(0, new BigDecimal("45.94").compareTo(d.net()));
         assertEquals(0, new BigDecimal("34.75").compareTo(d.gross()));
         assertEquals(0, new BigDecimal("8.30").compareTo(d.tax()));
+    }
+
+    @Test
+    void saxoGroupsSameDaySameSymbolComponentsIntoOneDividend() throws Exception {
+        // Two same-day booked components for the same instrument must collapse into one dividend.
+        String[] header = new String[]{"Instrument Symbol", "Event", "Value Date", "Booked Amount"};
+        String[] a = new String[]{"ME8U:xses", "Cash dividend", "45907", "14.85"};
+        String[] b = new String[]{"ME8U:xses", "Return of capital", "45907", "7.02"};
+        byte[] xlsx = buildXlsx(List.of(header, a, b));
+
+        List<ParsedDividend> out = svc.parseSaxo(xlsx);
+        assertEquals(1, out.size(), "same-day ME8U components collapse into one");
+        assertEquals("ME8U", out.get(0).symbol());
+        assertEquals(0, new BigDecimal("21.87").compareTo(out.get(0).net()), "14.85 + 7.02");
     }
 
     private String[] blank(int n) {
@@ -257,6 +286,27 @@ class DividendImportServiceTest {
         assertEquals(0, new BigDecimal("4.84").compareTo(d.net().setScale(2, RoundingMode.HALF_UP)), "gross 6.91 - tax 2.07");
         assertEquals(0, new BigDecimal("6.91").compareTo(d.gross()));
         assertEquals(0, new BigDecimal("2.07").compareTo(d.tax()));
+    }
+
+    @Test
+    void flexSumsReitDistributionComponentsToMatchTheCsvTotal() {
+        // A REIT (ME8U) distribution IBKR reports as three separate CashTransactions on the same date:
+        // ordinary dividend + return of capital + capital gains. The live-fetch path must sum them into
+        // ONE dividend (83.97) so it agrees with the CSV file import — not just count the ordinary part.
+        String xml = """
+            <FlexQueryResponse><FlexStatements><FlexStatement><CashTransactions>
+              <CashTransaction type="Dividends" symbol="ME8U" currency="SGD" reportDate="20260907"
+                               amount="14.85" description="ME8U Cash Dividend (Ordinary Dividend)"/>
+              <CashTransaction type="Return of Capital" symbol="ME8U" currency="SGD" reportDate="20260907"
+                               amount="7.02" description="ME8U Return of Capital"/>
+              <CashTransaction type="Capital Gains Distribution" symbol="ME8U" currency="SGD" reportDate="20260907"
+                               amount="62.10" description="ME8U Capital Gains"/>
+            </CashTransactions></FlexStatement></FlexStatements></FlexQueryResponse>
+            """;
+        var out = svc.parseFlexXml(xml);
+        assertEquals(1, out.size(), "the three components net into one dividend");
+        assertEquals("ME8U", out.get(0).symbol());
+        assertEquals(0, new BigDecimal("83.97").compareTo(out.get(0).net()), "14.85 + 7.02 + 62.10");
     }
 
     @Test

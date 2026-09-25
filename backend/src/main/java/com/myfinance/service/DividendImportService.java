@@ -240,7 +240,11 @@ public class DividendImportService {
                 String t = type.toLowerCase();
                 if (t.contains("withholding")) {
                     taxByKey.merge(key, amount, BigDecimal::add); // amount is negative
-                } else if (t.contains("dividend") || t.contains("payment in lieu")) {
+                } else if (isDistributionType(t)) {
+                    // Sum ALL distribution components for the same symbol+date+currency (ordinary
+                    // dividend + return of capital + capital gains, which IBKR reports as separate
+                    // cash transactions). This matches the CSV path so the two agree — e.g. a REIT like
+                    // ME8U nets to the same total whether fetched live or imported from file.
                     grossByKey.merge(key, amount, BigDecimal::add);
                     if (!metaByKey.containsKey(key)) {
                         metaByKey.put(key, new String[]{symbol.trim().toUpperCase(), payDate.toString(),
@@ -394,7 +398,9 @@ public class DividendImportService {
                     (fee == null || fee.signum() == 0) ? null : fee.abs(),
                     "ORDINARY"));
         }
-        return out;
+        // Collapse same-day components (e.g. a REIT distribution split across rows) into one dividend,
+        // matching the IBKR path so the total is consistent regardless of source.
+        return groupSameDay(out);
     }
 
     /**
@@ -519,7 +525,8 @@ public class DividendImportService {
                     tax.signum() == 0 ? null : tax,
                     classifyType(event)));
         }
-        return out;
+        // Collapse same-day components into one dividend, consistent with the other import paths.
+        return groupSameDay(out);
     }
 
     /**
@@ -566,6 +573,59 @@ public class DividendImportService {
         if (sym == null) return null;
         int i = sym.indexOf(':');
         return (i >= 0 ? sym.substring(0, i) : sym).trim().toUpperCase();
+    }
+
+    /**
+     * Whether an IBKR Flex CashTransaction {@code type} (lower-cased) is a shareholder distribution we
+     * import as a dividend. Covers ordinary dividends, payment-in-lieu, and the REIT/fund components
+     * IBKR reports separately — return of capital and capital gains — so the live fetch nets to the
+     * same total as the CSV file (which lists all of these as "Dividend" rows).
+     */
+    private boolean isDistributionType(String t) {
+        if (t == null) return false;
+        return t.contains("dividend")
+                || t.contains("payment in lieu")
+                || t.contains("return of capital")
+                || t.contains("capital gain")
+                || t.contains("distribution");
+    }
+
+    /**
+     * Collapse same-day distribution components into one dividend per (symbol, pay date, currency).
+     * Brokers split a REIT/fund distribution into several rows (ordinary + return of capital + capital
+     * gains) on the same date; summing them gives the single net cash actually received and keeps every
+     * import path consistent (and consistent with the IBKR live fetch). Net, gross and tax are summed;
+     * the first row's type/description wins; first-seen order is preserved.
+     */
+    private List<ParsedDividend> groupSameDay(List<ParsedDividend> in) {
+        Map<String, ParsedDividend> byKey = new java.util.LinkedHashMap<>();
+        for (ParsedDividend d : in) {
+            String key = (d.symbol() == null ? "" : d.symbol().toUpperCase()) + "|"
+                    + (d.payDate() == null ? "" : d.payDate()) + "|"
+                    + (d.currency() == null ? "" : d.currency().toUpperCase());
+            ParsedDividend prev = byKey.get(key);
+            if (prev == null) {
+                byKey.put(key, d);
+            } else {
+                byKey.put(key, new ParsedDividend(
+                        prev.payDate(), prev.symbol(), prev.currency(),
+                        sum(prev.net(), d.net()),
+                        sumNullable(prev.gross(), d.gross()),
+                        sumNullable(prev.tax(), d.tax()),
+                        prev.type()));
+            }
+        }
+        return new ArrayList<>(byKey.values());
+    }
+
+    private BigDecimal sum(BigDecimal a, BigDecimal b) {
+        return (a == null ? BigDecimal.ZERO : a).add(b == null ? BigDecimal.ZERO : b);
+    }
+
+    /** Sum two possibly-null amounts; returns null only when both are null (so "no value" stays null). */
+    private BigDecimal sumNullable(BigDecimal a, BigDecimal b) {
+        if (a == null && b == null) return null;
+        return sum(a, b);
     }
 
     /** Classify a dividend by its event/description text. */
