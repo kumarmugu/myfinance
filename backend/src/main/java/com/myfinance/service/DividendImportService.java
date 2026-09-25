@@ -265,6 +265,12 @@ public class DividendImportService {
                 String key = symbol.trim().toUpperCase() + "|" + payDate + "|" + (currency == null ? "" : currency.trim().toUpperCase());
 
                 String t = type.toLowerCase();
+                // TEMP DIAGNOSTIC: dump every ME8U cash transaction so we can see exactly which types
+                // IBKR Flex reports (to confirm the live total). Remove after investigation.
+                if ("ME8U".equalsIgnoreCase(symbol.trim())) {
+                    log.info("FLEX-DIAG ME8U: type='{}' amount={} date={} desc='{}'",
+                            type, attr(r, "amount"), payDate, description);
+                }
                 if (t.contains("withholding")) {
                     taxByKey.merge(key, amount, BigDecimal::add); // amount is negative
                 } else if (isDistributionType(t)) {
