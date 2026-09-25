@@ -16,6 +16,8 @@ export default function Assets() {
   const [refreshingId, setRefreshingId] = useState<number | null>(null);
   const [refreshingAll, setRefreshingAll] = useState(false);
   const [merging, setMerging] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+  const [bulkDeleting, setBulkDeleting] = useState(false);
   const { showToast } = useToast();
 
   useEffect(() => { loadData(); }, []);
@@ -55,12 +57,56 @@ export default function Assets() {
 
   const handleDelete = async (id: number) => {
     if (confirm('Delete?')) {
-      try { await deleteAsset(id); loadData(); }
+      try { await deleteAsset(id); setSelectedIds(prev => { const n = new Set(prev); n.delete(id); return n; }); loadData(); }
       catch (err: any) {
         const msg = err.response?.data?.message || 'Failed to delete';
         const refs = err.response?.data?.references;
         showToast(refs ? `${msg}\n\nReferenced by:\n• ${refs.join('\n• ')}` : msg);
       }
+    }
+  };
+
+  // ─── Multi-select + bulk delete ───
+  const toggleSelected = (id: number) =>
+    setSelectedIds(prev => { const n = new Set(prev); if (n.has(id)) n.delete(id); else n.add(id); return n; });
+
+  const allSelected = assets.length > 0 && assets.every(a => selectedIds.has(a.id));
+  const toggleSelectAll = () =>
+    setSelectedIds(allSelected ? new Set() : new Set(assets.map(a => a.id)));
+
+  /**
+   * Delete every selected asset. Each goes through the same reference-checked delete, so assets that
+   * are still referenced (by transactions, dividends or holdings) are kept and reported rather than
+   * silently skipped. The rest are removed.
+   */
+  const handleBulkDelete = async () => {
+    const ids = assets.filter(a => selectedIds.has(a.id)).map(a => a.id);
+    if (ids.length === 0) return;
+    if (!confirm(`Delete ${ids.length} selected asset${ids.length === 1 ? '' : 's'}? Assets still referenced by transactions, dividends or holdings will be kept.`)) return;
+
+    setBulkDeleting(true);
+    let deleted = 0;
+    const blocked: string[] = [];
+    for (const id of ids) {
+      const asset = assets.find(a => a.id === id);
+      try {
+        await deleteAsset(id);
+        deleted++;
+      } catch (err: any) {
+        const label = asset ? (asset.symbol || asset.name) : `#${id}`;
+        blocked.push(label);
+      }
+    }
+    setSelectedIds(new Set());
+    setBulkDeleting(false);
+    await loadData();
+
+    if (blocked.length === 0) {
+      showToast(`Deleted ${deleted} asset${deleted === 1 ? '' : 's'}`, 'success');
+    } else if (deleted === 0) {
+      showToast(`Could not delete — still referenced: ${blocked.join(', ')}`, 'error');
+    } else {
+      showToast(`Deleted ${deleted}; kept ${blocked.length} still referenced: ${blocked.join(', ')}`, 'info');
     }
   };
 
@@ -135,6 +181,19 @@ export default function Assets() {
         </div>
       </div>
 
+      {selectedIds.size > 0 && (
+        <div className="flex items-center justify-between rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-2.5">
+          <span className="text-sm text-indigo-800 font-medium">{selectedIds.size} selected</span>
+          <div className="flex items-center gap-2">
+            <button onClick={() => setSelectedIds(new Set())} className="px-3 py-1.5 text-sm font-medium text-slate-600 hover:text-slate-800">Clear</button>
+            <button onClick={handleBulkDelete} disabled={bulkDeleting}
+              className="flex items-center gap-2 px-3 py-1.5 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 disabled:opacity-50">
+              <Trash2 size={15} /> {bulkDeleting ? 'Deleting…' : `Delete selected`}
+            </button>
+          </div>
+        </div>
+      )}
+
       {showForm && (
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
           <h3 className="text-base font-semibold text-slate-800 mb-4">{editing ? 'Edit Asset' : 'Add Asset'}</h3>
@@ -166,6 +225,11 @@ export default function Assets() {
           <table className="w-full text-sm">
             <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
+                <th className="px-4 py-3 w-10">
+                  <input type="checkbox" aria-label="Select all assets"
+                    checked={allSelected} onChange={toggleSelectAll}
+                    className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+                </th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Symbol</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Name</th>
                 <th className="text-left px-4 py-3 font-medium text-slate-600">Type</th>
@@ -177,7 +241,12 @@ export default function Assets() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {assets.map(a => (
-                <tr key={a.id} className="hover:bg-slate-50 group">
+                <tr key={a.id} className={`group ${selectedIds.has(a.id) ? 'bg-indigo-50/60' : 'hover:bg-slate-50'}`}>
+                  <td className="px-4 py-3">
+                    <input type="checkbox" aria-label={`Select ${a.symbol}`}
+                      checked={selectedIds.has(a.id)} onChange={() => toggleSelected(a.id)}
+                      className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
+                  </td>
                   <td className="px-4 py-3 font-medium text-slate-800">{a.symbol}</td>
                   <td className="px-4 py-3 text-slate-600">{a.name}</td>
                   <td className="px-4 py-3"><span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{ASSET_TYPE_LABELS[a.assetType] || a.assetType}</span></td>
@@ -202,7 +271,7 @@ export default function Assets() {
                   </td>
                 </tr>
               ))}
-              {assets.length === 0 && <tr><td colSpan={7} className="px-4 py-12 text-center text-slate-400">No assets configured. Click "New Asset" to add one.</td></tr>}
+              {assets.length === 0 && <tr><td colSpan={8} className="px-4 py-12 text-center text-slate-400">No assets configured. Click "New Asset" to add one.</td></tr>}
             </tbody>
           </table>
         </div>

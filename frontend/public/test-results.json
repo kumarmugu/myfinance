@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-23T09:02:56.698296",
+  "timestamp": "2026-09-25T23:30:08.294936",
   "summary": {
     "total": 470,
     "passed": 470,
@@ -28,7 +28,7 @@
         {
           "name": "shouldHandleRuntimeException",
           "status": "pass",
-          "duration": "8ms"
+          "duration": "6ms"
         }
       ]
     },
@@ -279,32 +279,32 @@
         {
           "name": "shouldFilterByOwner",
           "status": "pass",
-          "duration": "125ms"
+          "duration": "124ms"
         },
         {
           "name": "shouldListByUser",
           "status": "pass",
-          "duration": "28ms"
+          "duration": "27ms"
         },
         {
           "name": "shouldRejectCreateWithoutOwner",
           "status": "pass",
-          "duration": "30ms"
+          "duration": "28ms"
         },
         {
           "name": "shouldToggleNetWorth",
           "status": "pass",
-          "duration": "30ms"
+          "duration": "41ms"
         },
         {
           "name": "shouldGetSummary",
           "status": "pass",
-          "duration": "26ms"
+          "duration": "27ms"
         },
         {
           "name": "shouldCreateBankSavings",
           "status": "pass",
-          "duration": "26ms"
+          "duration": "23ms"
         }
       ]
     },
@@ -315,22 +315,22 @@
         {
           "name": "shouldRefreshLastUpdatedOnUpdate",
           "status": "pass",
-          "duration": "131ms"
+          "duration": "118ms"
         },
         {
           "name": "shouldUpdateBankSavings",
           "status": "pass",
-          "duration": "30ms"
+          "duration": "25ms"
         },
         {
           "name": "shouldUpdateBalance",
           "status": "pass",
-          "duration": "30ms"
+          "duration": "27ms"
         },
         {
           "name": "shouldSetLastUpdatedOnCreate",
           "status": "pass",
-          "duration": "24ms"
+          "duration": "23ms"
         }
       ]
     },
@@ -622,17 +622,17 @@
         {
           "name": "shouldCreateDividend",
           "status": "pass",
-          "duration": "131ms"
+          "duration": "132ms"
         },
         {
           "name": "shouldDeleteDividend",
           "status": "pass",
-          "duration": "34ms"
+          "duration": "32ms"
         },
         {
           "name": "shouldGetDividendSummary",
           "status": "pass",
-          "duration": "42ms"
+          "duration": "57ms"
         }
       ]
     },
@@ -899,7 +899,7 @@
         {
           "name": "shouldSoftDelete",
           "status": "pass",
-          "duration": "185ms"
+          "duration": "188ms"
         },
         {
           "name": "shouldUpdateHomeLoan",
@@ -909,12 +909,12 @@
         {
           "name": "shouldCreateHomeLoan",
           "status": "pass",
-          "duration": "29ms"
+          "duration": "28ms"
         },
         {
           "name": "shouldListActiveLoans",
           "status": "pass",
-          "duration": "25ms"
+          "duration": "23ms"
         }
       ]
     },
@@ -1525,37 +1525,37 @@
         {
           "name": "shouldRejectWhenTokenInvalid",
           "status": "pass",
-          "duration": "258ms"
+          "duration": "196ms"
         },
         {
           "name": "shouldBeIdempotentOnRepeatProvisioning",
           "status": "pass",
-          "duration": "480ms"
+          "duration": "451ms"
         },
         {
           "name": "shouldReturn404ForStatusOfUnknownEmail",
           "status": "pass",
-          "duration": "67ms"
+          "duration": "63ms"
         },
         {
           "name": "shouldValidateEmailFormat",
           "status": "pass",
-          "duration": "37ms"
+          "duration": "35ms"
         },
         {
           "name": "shouldUpdateAccessStatus",
           "status": "pass",
-          "duration": "146ms"
+          "duration": "148ms"
         },
         {
           "name": "shouldProvisionUserWithValidToken",
           "status": "pass",
-          "duration": "119ms"
+          "duration": "122ms"
         },
         {
           "name": "shouldRejectWhenTokenMissing",
           "status": "pass",
-          "duration": "13ms"
+          "duration": "15ms"
         }
       ]
     },
@@ -1571,12 +1571,12 @@
         {
           "name": "wrongKeyCannotDecrypt",
           "status": "pass",
-          "duration": "6ms"
+          "duration": "7ms"
         },
         {
           "name": "roundTripsAValue",
           "status": "pass",
-          "duration": "4ms"
+          "duration": "5ms"
         },
         {
           "name": "usesAFreshIvSoSamePlaintextEncryptsDifferently",
@@ -1602,7 +1602,7 @@
         {
           "name": "unrelatedFeaturesDoNotGrantBrokerSync",
           "status": "pass",
-          "duration": "2ms"
+          "duration": "1ms"
         },
         {
           "name": "emptyCsvMeansAllEnabled",
@@ -1617,7 +1617,7 @@
         {
           "name": "brokerSyncKeyGrantsBrokerSync",
           "status": "pass",
-          "duration": "1ms"
+          "duration": "0ms"
         }
       ]
     },
@@ -1628,22 +1628,22 @@
         {
           "name": "shouldSwallowExceptionFromMalformedToken",
           "status": "pass",
-          "duration": "1041ms"
+          "duration": "1004ms"
         },
         {
           "name": "shouldNotAuthenticateWithInvalidToken",
           "status": "pass",
-          "duration": "10ms"
+          "duration": "8ms"
         },
         {
           "name": "shouldAuthenticateWithValidToken",
           "status": "pass",
-          "duration": "8ms"
+          "duration": "10ms"
         },
         {
           "name": "shouldSkipWhenHeaderDoesNotStartWithBearer",
           "status": "pass",
-          "duration": "8ms"
+          "duration": "7ms"
         },
         {
           "name": "shouldSkipWhenNoAuthorizationHeader",
@@ -1659,12 +1659,12 @@
         {
           "name": "shouldExtractRole",
           "status": "pass",
-          "duration": "824ms"
+          "duration": "838ms"
         },
         {
           "name": "shouldExtractUserId",
           "status": "pass",
-          "duration": "8ms"
+          "duration": "7ms"
         },
         {
           "name": "shouldExtractUsername",
@@ -1679,17 +1679,17 @@
         {
           "name": "shouldRejectExpiredToken",
           "status": "pass",
-          "duration": "7ms"
+          "duration": "6ms"
         },
         {
           "name": "shouldExtractMultipleClaims",
           "status": "pass",
-          "duration": "7ms"
+          "duration": "8ms"
         },
         {
           "name": "shouldGenerateToken",
           "status": "pass",
-          "duration": "4ms"
+          "duration": "5ms"
         },
         {
           "name": "shouldRejectTokenForDifferentUser",
@@ -1704,7 +1704,7 @@
         {
           "name": "shouldRejectMalformedToken",
           "status": "pass",
-          "duration": "5ms"
+          "duration": "6ms"
         }
       ]
     },
