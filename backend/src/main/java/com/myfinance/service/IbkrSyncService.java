@@ -107,7 +107,7 @@ public class IbkrSyncService {
         List<TradePlan> dups = new ArrayList<>();
         List<TradePlan> mismatches = new ArrayList<>();
 
-        for (ParsedTrade t : parsed.trades()) {
+        for (ParsedTrade t : withSyntheticIds(parsed.trades(), account, owner)) {
             if (outOfRange(t.tradeDate(), from, to)) continue;
             TradePlan plan = classify(t, userId, account, owner);
             switch (plan.classification()) {
@@ -214,7 +214,7 @@ public class IbkrSyncService {
         // (e.g. Tiger) may list trades grouped by symbol rather than in time order, which would
         // otherwise make a SELL hit an empty holding ("Cannot sell more than held"). Ties on the same
         // date order BUY before SELL for the same reason.
-        List<ParsedTrade> ordered = new ArrayList<>(parsed.trades());
+        List<ParsedTrade> ordered = new ArrayList<>(withSyntheticIds(parsed.trades(), account, owner));
         ordered.sort(java.util.Comparator
                 .comparing(ParsedTrade::tradeDate, java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder()))
                 .thenComparing(t -> t.buy() ? 0 : 1));
@@ -311,6 +311,33 @@ public class IbkrSyncService {
         if (to != null && d.isAfter(to)) return true;
         return false;
     }
+
+    /**
+     * Ensure every trade carries a stable id for exact de-duplication. Broker files that lack a real
+     * trade id (the IBKR "Transaction History" CSV, Tiger/Saxo statements) otherwise rely on a fuzzy
+     * match that can miss on re-import and create duplicates. Here we assign each such trade a
+     * deterministic synthetic id derived from its identifying fields (account+owner+symbol+date+type+
+     * quantity+price), with an occurrence suffix so genuinely-identical fills in the same file each get
+     * a distinct, repeatable id. Re-importing the same file yields the same ids → all classified as
+     * DUPLICATE. Trades that already have a real broker id (Flex XML, Tiger API) are left untouched.
+     */
+    private List<ParsedTrade> withSyntheticIds(List<ParsedTrade> trades, Account account, Owner owner) {
+        List<ParsedTrade> out = new ArrayList<>(trades.size());
+        java.util.Map<String, Integer> seen = new java.util.HashMap<>();
+        for (ParsedTrade t : trades) {
+            if (t.tradeId() != null && !t.tradeId().isBlank()) { out.add(t); continue; }
+            String base = "FILE|" + account.getId() + "|" + owner.getId() + "|"
+                    + safe(t.symbol()) + "|" + t.tradeDate() + "|" + (t.buy() ? "BUY" : "SELL") + "|"
+                    + plain(t.quantity()) + "|" + plain(t.price());
+            int occ = seen.merge(base, 1, Integer::sum);
+            String synthetic = "FILE-" + Integer.toHexString(base.hashCode()) + "-" + occ;
+            out.add(new ParsedTrade(synthetic, t.symbol(), t.assetCategory(), t.buy(), t.quantity(),
+                    t.price(), t.currency(), t.tradeDate(), t.commission(), t.fxRateToBase()));
+        }
+        return out;
+    }
+
+    private String safe(String s) { return s == null ? "" : s.trim().toUpperCase(); }
 
     private TradePlan plan(ParsedTrade t, TransactionType type, Classification c, Long existingId, String detail) {
         return new TradePlan(t.tradeId(), t.symbol(), type.name(), t.quantity(), t.price(),

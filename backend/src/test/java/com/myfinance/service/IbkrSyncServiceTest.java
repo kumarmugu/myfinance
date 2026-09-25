@@ -147,6 +147,29 @@ class IbkrSyncServiceTest {
 
     @Test
     @WithMockUser(username = "syncuser")
+    void reimportingAnIbkrCsvNeverCreatesDuplicatesEvenWithIdenticalFills() {
+        // The IBKR "Transaction History" CSV has no trade id. Two identical fills on the same day must
+        // both import the first time (they are real, distinct fills) and add NOTHING on re-import —
+        // the synthetic per-occurrence id makes it exactly idempotent, not fuzzy.
+        String csv = String.join("\n",
+            "Transaction History,Header,Date,Account,Description,Transaction Type,Symbol,Quantity,Price,Price Currency,Gross Amount ,Commission,Net Amount",
+            "Transaction History,Data,2025-03-07,U1,QQQ,Buy,QQQ,2,330.0,USD,-660.0,-1.0,-661.0",
+            "Transaction History,Data,2025-03-07,U1,QQQ,Buy,QQQ,2,330.0,USD,-660.0,-1.0,-661.0");
+        byte[] file = csv.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+
+        var first = syncService.applyFile(file, userId, account, owner, null, null, java.util.Set.of());
+        assertEquals(2, first.inserted(), "both identical fills import on the first run");
+        assertEquals(2, transactionRepository.findByUserIdOrderByTransactionDateDesc(userId).size());
+
+        var second = syncService.applyFile(file, userId, account, owner, null, null, java.util.Set.of());
+        assertEquals(0, second.inserted(), "re-import adds nothing");
+        assertEquals(2, second.skipped(), "both rows recognised as duplicates by their synthetic id");
+        assertEquals(2, transactionRepository.findByUserIdOrderByTransactionDateDesc(userId).size(),
+                "still exactly two transactions after re-import");
+    }
+
+    @Test
+    @WithMockUser(username = "syncuser")
     void appliesTradesChronologicallySoASellListedBeforeItsBuyStillImports() {
         // A Tiger statement listing the SELL row physically BEFORE the earlier BUY row. Without
         // chronological ordering the SELL would hit an empty holding ("Cannot sell more than held").
