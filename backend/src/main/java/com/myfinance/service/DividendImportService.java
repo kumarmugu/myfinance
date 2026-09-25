@@ -89,21 +89,42 @@ public class DividendImportService {
         // Key = date | instrument | accountId | ownerId | amount. We use a COUNT multiset so genuine
         // same-day duplicates in a statement (e.g. two identical return-of-capital rows) still import
         // the correct number of times rather than being over-skipped.
-        Map<String, Integer> existing = new HashMap<>();
+        // Index existing dividends by symbol+date+account+owner (NOT amount) so the same event from a
+        // different source reconciles instead of duplicating. One dividend per key.
+        Map<String, Dividend> existing = new HashMap<>();
         for (Dividend d : dividendRepository.findByUserIdOrderByReceivedDateDesc(userId)) {
-            existing.merge(dedupeKey(d.getReceivedDate() == null ? null : d.getReceivedDate().toString(),
-                    d.getInstrument(), account.getId(), owner.getId(), d.getAmount()), 1, Integer::sum);
+            if (d.getAccount() == null || !account.getId().equals(d.getAccount().getId())) continue;
+            if (d.getOwner() == null || !owner.getId().equals(d.getOwner().getId())) continue;
+            String k = dedupeKey(d.getReceivedDate() == null ? null : d.getReceivedDate().toString(),
+                    d.getInstrument(), account.getId(), owner.getId());
+            existing.putIfAbsent(k, d); // keep the first (most recent by received date) per key
         }
 
         int[] assetsCreated = {0};
-        int imported = 0, skipped = 0;
+        int imported = 0, skipped = 0, updated = 0;
         for (ParsedDividend d : parsed) {
             String key = dedupeKey(d.payDate() == null ? null : d.payDate().toString(),
-                    d.symbol(), account.getId(), owner.getId(), d.net());
-            Integer already = existing.get(key);
-            if (already != null && already > 0) {
-                existing.put(key, already - 1); // consume one existing match → skip this row
-                skipped++;
+                    d.symbol(), account.getId(), owner.getId());
+            Dividend prior = existing.get(key);
+            if (prior != null) {
+                // Same distribution already recorded. If this source reports a MORE COMPLETE total
+                // (larger absolute net — e.g. the CSV's full 83.97 vs Flex's partial 14.85), correct
+                // the stored record to the fuller figure; otherwise leave it. Never create a second row.
+                // Compare at 2 dp so DB column-scale rounding of the stored amount is not mistaken for
+                // a "more complete" figure — only a genuinely larger total (by at least a cent) updates.
+                BigDecimal newNet = (d.net() == null ? BigDecimal.ZERO : d.net()).abs().setScale(2, java.math.RoundingMode.HALF_UP);
+                BigDecimal oldNet = (prior.getAmount() == null ? BigDecimal.ZERO : prior.getAmount()).abs().setScale(2, java.math.RoundingMode.HALF_UP);
+                if (newNet.compareTo(oldNet) > 0) {
+                    prior.setAmount(d.net());
+                    prior.setGrossAmount(d.gross());
+                    prior.setWithholdingTax(d.tax());
+                    if (d.type() != null) prior.setDividendType(d.type());
+                    prior.setNotes("Imported from " + source + " statement");
+                    dividendService.create(prior); // save() updates the existing row (it has an id)
+                    updated++;
+                } else {
+                    skipped++;
+                }
                 continue;
             }
             Asset asset = (d.symbol() != null && !d.symbol().isBlank())
@@ -125,12 +146,15 @@ public class DividendImportService {
                     .instrument(d.symbol())
                     .notes("Imported from " + source + " statement")
                     .build();
-            dividendService.create(div);
+            Dividend saved = dividendService.create(div);
+            existing.put(key, saved); // so a later row in the same file for this key reconciles too
             imported++;
         }
-        log.info("Dividend import ({}) for userId={}: imported={} skipped={} assetsCreated={}",
-                source, userId, imported, skipped, assetsCreated[0]);
-        return new ImportResult(imported, skipped, assetsCreated[0]);
+        log.info("Dividend import ({}) for userId={}: imported={} updated={} skipped={} assetsCreated={}",
+                source, userId, imported, updated, skipped, assetsCreated[0]);
+        // "skipped" reports rows that did not create a new dividend — both exact duplicates and rows
+        // that reconciled/updated an existing one (an update is not a newly-imported record).
+        return new ImportResult(imported, skipped + updated, assetsCreated[0]);
     }
 
     /**

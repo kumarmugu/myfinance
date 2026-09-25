@@ -104,6 +104,42 @@ class DividendImportIntegrationTest {
 
     @Test
     @WithMockUser(username = "user")
+    void sameDistributionFromTwoSourcesReconcilesToTheFullerAmountWithoutDuplicating() {
+        // Simulate the IBKR live-fetch reporting only the ordinary component (14.85) first, then the
+        // CSV file reporting the full REIT distribution (83.97) for the same symbol+date+account+owner.
+        // Result: ONE dividend, corrected up to the fuller total — never two rows with different amounts.
+        String flexPartial = String.join("\n",
+            "Activity Statement,,,,2026",
+            "Dividends,,,,Date,Product,Symbol,Dividend Reinvestment Plan,Quantity/Gross Rate,Phase,Cash Dividends,Shares,Fees & Tax,Net Cash Value,Currency",
+            "Dividends,,,DATA,2026-09-07,,ME8U,,,Paid,14.85,0,,14.85,SGD");
+        var r1 = importService.importFile(flexPartial.getBytes(StandardCharsets.UTF_8),
+                DividendImportService.Format.TIGER_CSV, user.getId(), account, owner);
+        assertEquals(1, r1.imported());
+
+        String csvFull = String.join("\n",
+            "Transaction History,Header,Date,Account,Description,Transaction Type,Symbol,Quantity,Price,Price Currency,Gross Amount ,Commission,Net Amount",
+            "Transaction History,Data,2026-09-07,U1,ME8U (Ordinary Dividend),Dividend,ME8U,-,-,-,-,-,14.85",
+            "Transaction History,Data,2026-09-07,U1,ME8U (Return of Capital),Dividend,ME8U,-,-,-,-,-,7.02",
+            "Transaction History,Data,2026-09-07,U1,ME8U (Capital Gains),Dividend,ME8U,-,-,-,-,-,62.10");
+        var r2 = importService.importFile(csvFull.getBytes(StandardCharsets.UTF_8),
+                DividendImportService.Format.IBKR_CSV, user.getId(), account, owner);
+        assertEquals(0, r2.imported(), "no new dividend row is created for the same distribution");
+
+        var all = dividendRepository.findByUserIdOrderByReceivedDateDesc(user.getId());
+        assertEquals(1, all.size(), "still exactly one ME8U dividend");
+        assertEquals(0, new java.math.BigDecimal("83.97").compareTo(all.get(0).getAmount()),
+                "reconciled to the fuller CSV total");
+
+        // Importing the partial source again must NOT shrink it back.
+        importService.importFile(flexPartial.getBytes(StandardCharsets.UTF_8),
+                DividendImportService.Format.TIGER_CSV, user.getId(), account, owner);
+        assertEquals(0, new java.math.BigDecimal("83.97").compareTo(
+                dividendRepository.findByUserIdOrderByReceivedDateDesc(user.getId()).get(0).getAmount()),
+                "a smaller/partial re-import does not reduce the stored total");
+    }
+
+    @Test
+    @WithMockUser(username = "user")
     void reimportingSameFileSkipsDuplicates() {
         var first = importService.importFile(CSV.getBytes(StandardCharsets.UTF_8),
                 DividendImportService.Format.IBKR_CSV, user.getId(), account, owner);
