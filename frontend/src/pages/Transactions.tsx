@@ -76,6 +76,9 @@ export default function Transactions() {
   // IBKR source: 'live' fetch via Flex, or 'file' upload of a Flex XML / Transaction History CSV.
   const [ibkrSource, setIbkrSource] = useState<'live' | 'file'>('live');
   const [ibkrFile, setIbkrFile] = useState<File | null>(null);
+  // Ratios the user enters for splits detected in the imported file, keyed by "SYMBOL|date". The file
+  // records that a split happened but not the ratio, so we collect it here and apply on Apply.
+  const [splitRatios, setSplitRatios] = useState<Record<string, string>>({});
   // Bulk cleanup: delete all transactions (+derived holdings/sold positions) for one owner+account.
   const [showBulk, setShowBulk] = useState(false);
   const [bulkOwnerId, setBulkOwnerId] = useState(0);
@@ -231,7 +234,7 @@ export default function Transactions() {
   const handleIbkrPreview = async () => {
     if (!ibkrOwnerId || !ibkrAccountId) { showToast('Select the owner and account', 'error'); return; }
     if (ibkrSource === 'file' && !ibkrFile) { showToast('Choose a trades file to import', 'error'); return; }
-    setIbkrBusy(true); setIbkrPreview(null); setApprovedMismatches(new Set());
+    setIbkrBusy(true); setIbkrPreview(null); setApprovedMismatches(new Set()); setSplitRatios({});
     try {
       const { data } = ibkrSource === 'live'
         ? await previewIbkrSync(ibkrBody())
@@ -257,8 +260,26 @@ export default function Transactions() {
         ? await applyIbkrSync({ ...ibkrBody(), approvedMismatchTradeIds: approved })
         : await applyTradeImport(ibkrFile!, ibkrAccountId, ibkrOwnerId, approved);
       showToast(`Imported ${data.inserted} trade${data.inserted === 1 ? '' : 's'}${data.updated ? `, updated ${data.updated}` : ''}${data.assetsCreated ? ` (${data.assetsCreated} new asset${data.assetsCreated === 1 ? '' : 's'})` : ''}`, 'success');
+
+      // Apply any splits the user gave a ratio for (the file detected the split but not the ratio).
+      // Done AFTER the trades are imported so the just-imported shares are adjusted too.
+      for (const s of ibkrPreview.splits ?? []) {
+        const raw = splitRatios[`${s.symbol}|${s.date ?? ''}`];
+        if (!raw || !raw.trim()) continue;
+        const parsed = parseSplitRatio(raw);
+        if (!parsed) { showToast(`Skipped ${s.symbol}: ratio must be N:M, e.g. 8:1`, 'error'); continue; }
+        if (!s.date) { showToast(`Skipped ${s.symbol}: no split date in file`, 'error'); continue; }
+        try {
+          const { data: res } = await applyStockSplit({ symbol: s.symbol, effectiveDate: s.date, numerator: parsed.numerator, denominator: parsed.denominator });
+          showToast(`Applied ${res.numerator}:${res.denominator} split for ${res.symbol} (${res.transactionsAdjusted} txns, ${res.holdingsAdjusted} holdings)`, 'success');
+        } catch (e: any) {
+          showToast(e?.response?.data?.message || `Failed to apply split for ${s.symbol}`, 'error');
+        }
+      }
+
       setIbkrFile(null);
       setIbkrPreview(null);
+      setSplitRatios({});
       setShowIbkr(false);
       loadData();
     } catch (err: any) {
@@ -749,11 +770,34 @@ export default function Transactions() {
                 </div>
               )}
 
-              {ibkrPreview.corporateActions.length > 0 && (
-                <div className="mb-3 text-xs text-slate-600">
-                  <p className="font-semibold mb-1 text-slate-700">Corporate actions detected (not imported as trades)</p>
-                  <ul className="list-disc pl-5 space-y-0.5">{ibkrPreview.corporateActions.map((s, i) => <li key={i}>{s}</li>)}</ul>
-                  <p className="mt-1 text-slate-500">Splits carry no ratio in the file. Use the <span className="font-medium">Stock split</span> button above to adjust your holdings (enter the ratio, e.g. 3:1).</p>
+              {ibkrPreview.splits && ibkrPreview.splits.length > 0 && (
+                <div className="mb-3 text-xs">
+                  <p className="font-semibold mb-1 text-slate-700">Stock splits detected — enter the ratio to adjust your holdings on import</p>
+                  <p className="text-slate-500 mb-2">The file records that a split happened but not the ratio. Enter it as <span className="font-medium">new:old</span> (e.g. <span className="font-medium">8:1</span> forward, <span className="font-medium">1:8</span> reverse). Leave blank to skip. Splits are applied after the trades import.</p>
+                  <div className="space-y-1.5">
+                    {ibkrPreview.splits.map((s, i) => {
+                      const key = `${s.symbol}|${s.date ?? ''}`;
+                      return (
+                        <div key={i} className="flex items-center gap-3 px-3 py-1.5 border border-slate-100 rounded-lg">
+                          <span className="font-medium text-slate-700 w-20">{s.symbol}</span>
+                          <span className="text-slate-500 flex-1">{s.date ?? 'no date'}{s.description ? ` · ${s.description}` : ''}</span>
+                          <input type="text" value={splitRatios[key] ?? ''} placeholder="ratio e.g. 8:1"
+                            onChange={e => setSplitRatios(prev => ({ ...prev, [key]: e.target.value }))}
+                            className="w-32 border border-slate-300 rounded-lg px-2 py-1 text-xs" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Non-split corporate actions are informational only (dividends, mergers already handled elsewhere). */}
+              {ibkrPreview.corporateActions.length > ibkrPreview.splits.length && (
+                <div className="mb-3 text-xs text-slate-500">
+                  <p className="font-semibold mb-1 text-slate-600">Other corporate actions detected (not imported as trades)</p>
+                  <ul className="list-disc pl-5 space-y-0.5">
+                    {ibkrPreview.corporateActions.filter(s => !s.startsWith('SPLIT ')).map((s, i) => <li key={i}>{s}</li>)}
+                  </ul>
                 </div>
               )}
 

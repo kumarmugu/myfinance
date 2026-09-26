@@ -67,10 +67,15 @@ public class IbkrSyncService {
                             Classification classification, Long existingTransactionId,
                             String mismatchDetail) {}
 
+    /** A stock split detected in the imported file. The ratio is unknown (not in the file) — the UI
+     *  collects it from the user and applies the split on the same Apply click. */
+    public record SplitInfo(String symbol, LocalDate date, String description) {}
+
     /** The full preview returned to the UI (nothing has been written yet). */
     public record SyncPreview(List<TradePlan> newTrades, List<TradePlan> duplicates,
                               List<TradePlan> mismatches, List<String> skippedNonStock,
-                              List<String> corporateActions, List<String> needsReview) {}
+                              List<String> corporateActions, List<String> needsReview,
+                              List<SplitInfo> splits) {}
 
     /** Result of applying a sync. */
     public record SyncResult(int inserted, int updated, int skipped, int assetsCreated) {}
@@ -123,11 +128,18 @@ public class IbkrSyncService {
             skipped.add(t.symbol() + " " + t.assetCategory() + " " + t.tradeDate());
         }
         List<String> corp = new ArrayList<>();
-        for (ParsedCorporateAction c : parsed.corporateActions()) corp.add(describe(c));
+        List<SplitInfo> splits = new ArrayList<>();
+        for (ParsedCorporateAction c : parsed.corporateActions()) {
+            corp.add(describe(c));
+            // Surface splits as structured data so the UI can collect a ratio and apply them on Apply.
+            if ("SPLIT".equalsIgnoreCase(c.kind()) && c.symbol() != null) {
+                splits.add(new SplitInfo(c.symbol(), c.date(), c.description()));
+            }
+        }
         List<String> review = new ArrayList<>();
         for (ParsedCorporateAction c : parsed.needsReview()) review.add(describe(c));
 
-        return new SyncPreview(news, dups, mismatches, skipped, corp, review);
+        return new SyncPreview(news, dups, mismatches, skipped, corp, review, splits);
     }
 
     private TradePlan classify(ParsedTrade t, Long userId, Account account, Owner owner) {
