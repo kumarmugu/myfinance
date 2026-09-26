@@ -2,8 +2,10 @@ package com.myfinance.service;
 
 import com.myfinance.model.Asset;
 import com.myfinance.model.Holding;
+import com.myfinance.model.StockSplit;
 import com.myfinance.model.Transaction;
 import com.myfinance.repository.AssetRepository;
+import com.myfinance.repository.StockSplitRepository;
 import com.myfinance.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +47,7 @@ public class StockSplitService {
 
     private final AssetRepository assetRepository;
     private final TransactionRepository transactionRepository;
+    private final StockSplitRepository stockSplitRepository;
     private final HoldingService holdingService;
     private final TransactionService transactionService;
     private final AuditService auditService;
@@ -70,6 +73,14 @@ public class StockSplitService {
         if (numerator <= 0 || denominator <= 0) throw new RuntimeException("Split ratio must be positive (e.g. 3:1)");
 
         String want = symbol.trim().toUpperCase();
+
+        // Idempotency: a split for this symbol+date already applied must NOT be applied again (that would
+        // re-scale the holding a second time). This makes re-importing a file that still lists the split
+        // safe — the same split is recognised and rejected.
+        if (stockSplitRepository.findByUserIdAndSymbolIgnoreCaseAndEffectiveDate(userId, want, effectiveDate).isPresent()) {
+            throw new RuntimeException("A split for " + want + " effective " + effectiveDate
+                    + " has already been applied — skipping to avoid double-adjusting.");
+        }
 
         // Tenant-scoped: only this user's assets with a matching ticker can ever be touched.
         List<Asset> assets = assetRepository.findByUserId(userId).stream()
@@ -118,6 +129,11 @@ public class StockSplitService {
         //    them so closed lots before the split stay consistent.
         transactionService.recomputeRealizedPnlForUser(userId);
 
+        // 4. Record the split so it can never be applied twice (idempotent re-imports).
+        stockSplitRepository.save(StockSplit.builder()
+                .userId(userId).symbol(want).effectiveDate(effectiveDate)
+                .numerator(numerator).denominator(denominator).build());
+
         String ratio = numerator + ":" + denominator;
         auditService.log("STOCK_SPLIT", "Transaction", null,
                 "Applied " + ratio + " split for " + want + " effective " + effectiveDate
@@ -126,5 +142,13 @@ public class StockSplitService {
                 ratio, userId, want, effectiveDate, txnAdjusted, holdingsAdjusted);
 
         return new SplitResult(want, effectiveDate, numerator, denominator, txnAdjusted, holdingsAdjusted);
+    }
+
+    /** True if this user has already applied a split for the given symbol + effective date. */
+    public boolean isApplied(Long userId, String symbol, LocalDate effectiveDate) {
+        if (symbol == null || effectiveDate == null) return false;
+        return stockSplitRepository
+                .findByUserIdAndSymbolIgnoreCaseAndEffectiveDate(userId, symbol.trim().toUpperCase(), effectiveDate)
+                .isPresent();
     }
 }

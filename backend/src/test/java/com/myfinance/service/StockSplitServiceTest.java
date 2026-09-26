@@ -31,6 +31,7 @@ class StockSplitServiceTest {
     @Autowired private TransactionRepository transactionRepository;
     @Autowired private HoldingRepository holdingRepository;
     @Autowired private AppUserRepository appUserRepository;
+    @Autowired private com.myfinance.repository.StockSplitRepository stockSplitRepository;
     @Autowired private PasswordEncoder passwordEncoder;
 
     private AppUser user;
@@ -39,6 +40,7 @@ class StockSplitServiceTest {
 
     @BeforeEach
     void setup() {
+        stockSplitRepository.deleteAll();
         holdingRepository.deleteAll();
         transactionRepository.deleteAll();
         assetRepository.deleteAll();
@@ -195,5 +197,40 @@ class StockSplitServiceTest {
                 stockSplitService.applySplit(user.getId(), "OTHERCO", LocalDate.of(2022, 8, 25), 3, 1));
         Transaction stillUntouched = transactionRepository.findById(otherTxn.getId()).orElseThrow();
         assertEquals(0, new BigDecimal("5").compareTo(stillUntouched.getQuantity()));
+    }
+
+    @Test
+    void applyingTheSameSplitTwiceIsBlocked() {
+        Asset tsla = asset("TSLA");
+        Transaction b = buy(tsla, "5", "900", LocalDate.of(2022, 1, 10));
+        holding(tsla, "5", "900", "4500");
+
+        // First apply succeeds and is recorded.
+        stockSplitService.applySplit(user.getId(), "TSLA", LocalDate.of(2022, 8, 25), 3, 1);
+        assertEquals(1, stockSplitRepository.findByUserId(user.getId()).size(), "split recorded once");
+        assertTrue(stockSplitService.isApplied(user.getId(), "TSLA", LocalDate.of(2022, 8, 25)));
+
+        // Second identical apply is rejected — the holding/transactions are NOT scaled again.
+        assertThrows(RuntimeException.class, () ->
+                stockSplitService.applySplit(user.getId(), "TSLA", LocalDate.of(2022, 8, 25), 3, 1));
+
+        Transaction after = transactionRepository.findById(b.getId()).orElseThrow();
+        assertEquals(0, new BigDecimal("15").compareTo(after.getQuantity()), "still 15, not 45 (no double-apply)");
+        assertEquals(1, stockSplitRepository.findByUserId(user.getId()).size(), "still just one record");
+    }
+
+    @Test
+    void differentDateForSameSymbolIsAllowed() {
+        // Two genuine splits on different dates (e.g. Tesla 2020 then 2022) both apply.
+        Asset tsla = asset("TSLA");
+        Transaction b = buy(tsla, "4", "1500", LocalDate.of(2020, 1, 1)); // pre-2020 lot
+        holding(tsla, "4", "1500", "6000");
+
+        stockSplitService.applySplit(user.getId(), "TSLA", LocalDate.of(2020, 8, 31), 5, 1); // 4 -> 20
+        stockSplitService.applySplit(user.getId(), "TSLA", LocalDate.of(2022, 8, 25), 3, 1); // 20 -> 60
+
+        Transaction after = transactionRepository.findById(b.getId()).orElseThrow();
+        assertEquals(0, new BigDecimal("60").compareTo(after.getQuantity()), "5×3 compounded = 60 shares");
+        assertEquals(2, stockSplitRepository.findByUserId(user.getId()).size(), "both splits recorded");
     }
 }

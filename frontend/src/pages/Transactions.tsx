@@ -264,6 +264,7 @@ export default function Transactions() {
       // Apply any splits the user gave a ratio for (the file detected the split but not the ratio).
       // Done AFTER the trades are imported so the just-imported shares are adjusted too.
       for (const s of ibkrPreview.splits ?? []) {
+        if (s.alreadyApplied) continue; // already applied earlier — never re-apply
         const raw = splitRatios[`${s.symbol}|${s.date ?? ''}`];
         if (!raw || !raw.trim()) continue;
         const parsed = parseSplitRatio(raw);
@@ -781,9 +782,13 @@ export default function Transactions() {
                         <div key={i} className="flex items-center gap-3 px-3 py-1.5 border border-slate-100 rounded-lg">
                           <span className="font-medium text-slate-700 w-20">{s.symbol}</span>
                           <span className="text-slate-500 flex-1">{s.date ?? 'no date'}{s.description ? ` · ${s.description}` : ''}</span>
-                          <input type="text" value={splitRatios[key] ?? ''} placeholder="ratio e.g. 8:1"
-                            onChange={e => setSplitRatios(prev => ({ ...prev, [key]: e.target.value }))}
-                            className="w-32 border border-slate-300 rounded-lg px-2 py-1 text-xs" />
+                          {s.alreadyApplied ? (
+                            <span className="text-green-700 font-medium w-32 text-right">already applied</span>
+                          ) : (
+                            <input type="text" value={splitRatios[key] ?? ''} placeholder="ratio e.g. 8:1"
+                              onChange={e => setSplitRatios(prev => ({ ...prev, [key]: e.target.value }))}
+                              className="w-32 border border-slate-300 rounded-lg px-2 py-1 text-xs" />
+                          )}
                         </div>
                       );
                     })}

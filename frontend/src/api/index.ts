@@ -106,7 +106,7 @@ export interface IbkrTradePlan {
   currency: string; tradeDate: string; classification: 'NEW' | 'DUPLICATE' | 'MISMATCH';
   existingTransactionId: number | null; mismatchDetail: string | null;
 }
-export interface IbkrSplitInfo { symbol: string; date: string | null; description: string | null; }
+export interface IbkrSplitInfo { symbol: string; date: string | null; description: string | null; alreadyApplied: boolean; }
 export interface IbkrSyncPreview {
   newTrades: IbkrTradePlan[]; duplicates: IbkrTradePlan[]; mismatches: IbkrTradePlan[];
   skippedNonStock: string[]; corporateActions: string[]; needsReview: string[];

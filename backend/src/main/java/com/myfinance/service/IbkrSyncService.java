@@ -55,6 +55,7 @@ public class IbkrSyncService {
     private final IbkrTradeParser tradeParser;
     private final SaxoTradeParser saxoTradeParser;
     private final TigerStatementParser tigerStatementParser;
+    private final StockSplitService stockSplitService;
 
     private static final BigDecimal QTY_TOL = new BigDecimal("0.0001");
     private static final BigDecimal PRICE_TOL = new BigDecimal("0.01");
@@ -68,8 +69,10 @@ public class IbkrSyncService {
                             String mismatchDetail) {}
 
     /** A stock split detected in the imported file. The ratio is unknown (not in the file) — the UI
-     *  collects it from the user and applies the split on the same Apply click. */
-    public record SplitInfo(String symbol, LocalDate date, String description) {}
+     *  collects it from the user and applies the split on the same Apply click. {@code alreadyApplied}
+     *  is true when the user has already run this exact split (symbol+date), so the UI can lock it and
+     *  a re-import can't double-adjust the holding. */
+    public record SplitInfo(String symbol, LocalDate date, String description, boolean alreadyApplied) {}
 
     /** The full preview returned to the UI (nothing has been written yet). */
     public record SyncPreview(List<TradePlan> newTrades, List<TradePlan> duplicates,
@@ -132,8 +135,10 @@ public class IbkrSyncService {
         for (ParsedCorporateAction c : parsed.corporateActions()) {
             corp.add(describe(c));
             // Surface splits as structured data so the UI can collect a ratio and apply them on Apply.
+            // Flag ones already applied so the UI can lock them and a re-import can't double-adjust.
             if ("SPLIT".equalsIgnoreCase(c.kind()) && c.symbol() != null) {
-                splits.add(new SplitInfo(c.symbol(), c.date(), c.description()));
+                boolean applied = stockSplitService.isApplied(userId, c.symbol(), c.date());
+                splits.add(new SplitInfo(c.symbol(), c.date(), c.description(), applied));
             }
         }
         List<String> review = new ArrayList<>();
