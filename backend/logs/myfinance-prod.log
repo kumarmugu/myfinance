@@ -2730,3 +2730,163 @@ org.springframework.web.server.ResponseStatusException: 400 BAD_REQUEST "Cannot 
 2026-09-26 14:22:45 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (5ms)
 2026-09-26 14:22:45 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (5ms)
 2026-09-26 14:22:45 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (4ms)
+2026-09-26 14:29:20 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-26 14:29:20 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-26 14:29:20 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-26 14:29:20 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-26 14:29:20 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (7ms)
+2026-09-26 14:29:20 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (55ms)
+2026-09-26 14:29:20 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (49ms)
+2026-09-26 14:29:44 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-26 14:29:44 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-26 14:29:44 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-26 14:29:44 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-26 14:29:44 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (5ms)
+2026-09-26 14:29:44 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (5ms)
+2026-09-26 14:29:44 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (4ms)
+2026-09-26 14:30:15 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/preview → 200 (17ms)
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1408 type=BUY assetId=5 quantity=2
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=617 assetId=5 quantity=2
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1409 type=BUY assetId=5 quantity=1
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=617 assetId=5 quantity=3
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1410 type=BUY assetId=3 quantity=2
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=618 assetId=3 quantity=2
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1411 type=BUY assetId=3 quantity=1
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=618 assetId=3 quantity=3
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1412 type=BUY assetId=5 quantity=2
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=617 assetId=5 quantity=5
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1413 type=BUY assetId=8 quantity=1
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=619 assetId=8 quantity=1
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1414 type=BUY assetId=8 quantity=1
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=619 assetId=8 quantity=2
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1415 type=BUY assetId=8 quantity=1
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=619 assetId=8 quantity=3
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1416 type=BUY assetId=8 quantity=2
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=619 assetId=8 quantity=5
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1417 type=BUY assetId=8 quantity=1
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=619 assetId=8 quantity=6
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1372 profit=214.41800000000000
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.myfinance.service.IbkrSyncService - IBKR trade sync for userId=2: inserted=10 updated=0 skipped=0 assetsCreated=0
+2026-09-26 14:30:20 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/apply → 200 (119ms)
+2026-09-26 14:30:20 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-26 14:30:20 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-26 14:30:20 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-26 14:30:20 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-26 14:30:20 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-09-26 14:30:20 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (6ms)
+2026-09-26 14:30:20 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (3ms)
+2026-09-26 14:30:29 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-26 14:30:29 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-26 14:30:29 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-26 14:30:29 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-26 14:30:29 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-26 14:30:29 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (54ms)
+2026-09-26 14:30:30 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (8ms)
+2026-09-26 14:30:45 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions/bulk-count → 200 (6ms)
+2026-09-26 14:30:56 [http-nio-8080-exec-1] INFO  c.myfinance.service.HoldingService - Deleted Holding id=617
+2026-09-26 14:30:56 [http-nio-8080-exec-1] INFO  c.myfinance.service.HoldingService - Deleted Holding id=618
+2026-09-26 14:30:56 [http-nio-8080-exec-1] INFO  c.myfinance.service.HoldingService - Deleted Holding id=619
+2026-09-26 14:30:56 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1372 profit=214.41800000000000
+2026-09-26 14:30:56 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-26 14:30:56 [http-nio-8080-exec-1] INFO  c.m.service.TransactionService - Bulk-deleted for userId=2 owner=1 account=1: 10 txns, 3 holdings, 0 sold positions
+2026-09-26 14:30:56 [http-nio-8080-exec-1] INFO  c.m.controller.TransactionController - Bulk-deleted transactions for user mugu owner 1 account 1: BulkDeleteResult[transactions=10, holdings=3, soldPositions=0]
+2026-09-26 14:30:56 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/bulk-delete → 200 (97ms)
+2026-09-26 14:30:56 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-26 14:30:56 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-26 14:30:56 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-26 14:30:56 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-26 14:30:56 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-26 14:30:56 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (7ms)
+2026-09-26 14:30:56 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (16ms)
+2026-09-26 14:31:21 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/preview → 200 (11ms)
+2026-09-26 14:33:59 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-26 14:33:59 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-26 14:33:59 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-09-26 14:35:29 [main] INFO  com.myfinance.MyFinanceApplication - Starting MyFinanceApplication using Java 17.0.20 with PID 31371 (/Users/mugu/Documents/Projects/myfinance/backend/target/classes started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-26 14:35:29 [main] INFO  com.myfinance.MyFinanceApplication - The following 1 profile is active: "prod"
+2026-09-26 14:35:30 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-26 14:35:31 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 150 ms. Found 38 JPA repository interfaces.
+2026-09-26 14:35:31 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-09-26 14:35:32 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-26 14:35:32 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-09-26 14:35:32 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-26 14:35:32 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2107 ms
+2026-09-26 14:35:32 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-26 14:35:32 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-26 14:35:32 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-26 14:35:32 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-26 14:35:32 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-26 14:35:33 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data-prod/myfinance user=SA
+2026-09-26 14:35:33 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-26 14:35:33 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-26 14:35:34 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-26 14:35:34 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-26 14:35:35 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-26 14:35:39 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-26 14:35:41 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@76d3e05b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1d03099a, org.springframework.security.web.context.SecurityContextHolderFilter@4548f47, org.springframework.security.web.header.HeaderWriterFilter@25eebe99, org.springframework.web.filter.CorsFilter@2a372d63, org.springframework.security.web.authentication.logout.LogoutFilter@5a365e06, com.myfinance.provisioning.ProvisioningTokenFilter@987a0bb, com.myfinance.security.JwtAuthFilter@358b70c4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@82de8d1, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@26cacb6e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1ba9cb25, org.springframework.security.web.session.SessionManagementFilter@26e178d1, org.springframework.security.web.access.ExceptionTranslationFilter@453cd994, org.springframework.security.web.access.intercept.AuthorizationFilter@35e05c6d]
+2026-09-26 14:35:42 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2026-09-26 14:35:42 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 12.714 seconds (process running for 13.167)
+2026-09-26 14:35:59 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-26 14:35:59 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:35:59 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (8ms)
+2026-09-26 14:36:24 [http-nio-8080-exec-2] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:24 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (2ms)
+2026-09-26 14:36:25 [http-nio-8080-exec-4] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:25 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:26 [http-nio-8080-exec-6] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:26 [http-nio-8080-exec-6] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:27 [http-nio-8080-exec-8] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:27 [http-nio-8080-exec-8] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:28 [http-nio-8080-exec-10] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:28 [http-nio-8080-exec-10] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:29 [http-nio-8080-exec-2] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:29 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:30 [http-nio-8080-exec-4] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:30 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:36:31 [http-nio-8080-exec-6] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:31 [http-nio-8080-exec-6] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:32 [http-nio-8080-exec-8] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:32 [http-nio-8080-exec-8] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:33 [http-nio-8080-exec-10] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:33 [http-nio-8080-exec-10] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:34 [http-nio-8080-exec-2] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:34 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:35 [http-nio-8080-exec-4] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:35 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:36 [http-nio-8080-exec-6] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:36 [http-nio-8080-exec-6] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (2ms)
+2026-09-26 14:36:37 [http-nio-8080-exec-8] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:37 [http-nio-8080-exec-8] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:38 [http-nio-8080-exec-10] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:38 [http-nio-8080-exec-10] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:36:39 [http-nio-8080-exec-2] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:39 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:40 [http-nio-8080-exec-4] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:40 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:41 [http-nio-8080-exec-6] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:41 [http-nio-8080-exec-6] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:42 [http-nio-8080-exec-8] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:42 [http-nio-8080-exec-8] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:43 [http-nio-8080-exec-10] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:43 [http-nio-8080-exec-10] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:44 [http-nio-8080-exec-2] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:44 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:45 [http-nio-8080-exec-4] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:45 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:46 [http-nio-8080-exec-6] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:46 [http-nio-8080-exec-6] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:36:47 [http-nio-8080-exec-8] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:47 [http-nio-8080-exec-8] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:36:49 [http-nio-8080-exec-10] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:49 [http-nio-8080-exec-10] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:50 [http-nio-8080-exec-2] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:50 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:36:51 [http-nio-8080-exec-4] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:51 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:52 [http-nio-8080-exec-6] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:52 [http-nio-8080-exec-6] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:53 [http-nio-8080-exec-8] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:53 [http-nio-8080-exec-8] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:36:54 [http-nio-8080-exec-10] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:36:54 [http-nio-8080-exec-10] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
