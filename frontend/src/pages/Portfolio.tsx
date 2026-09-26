@@ -256,7 +256,11 @@ export default function Portfolio() {
               <div className="w-52">
                 <label className="block text-[11px] font-medium text-slate-500 mb-1">Account</label>
                 <SearchableSelect
-                  options={[{ value: '', label: 'All Accounts' }, ...accountOptions.map(a => ({ value: a.id.toString(), label: a.name }))]}
+                  options={[{ value: '', label: 'All Accounts' }, ...accountOptions.map(a => {
+                    // Disambiguate accounts that share a name across owners (e.g. two "Tiger" accounts).
+                    const dup = accountOptions.some(b => b.id !== a.id && b.name === a.name);
+                    return { value: a.id.toString(), label: dup && a.owner?.name ? `${a.name} (${a.owner.name})` : a.name };
+                  })]}
                   value={filterAccountId}
                   onChange={v => setFilterAccountId(v.toString())}
                   placeholder="All Accounts"

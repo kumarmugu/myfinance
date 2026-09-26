@@ -373,7 +373,14 @@ export default function Deposits() {
 
       {/* Filter + Table */}
       <div className="flex items-center gap-3 flex-wrap">
-        <div className="w-48"><SearchableSelect options={[{ value: '', label: 'All Accounts' }, ...accounts.filter(a => (a.accountType === 'BROKER' || a.accountType === 'CRYPTO_EXCHANGE') && (!filterOwner || a.owner?.id?.toString() === filterOwner)).map(a => ({ value: a.id.toString(), label: a.name }))]} value={filterAccount} onChange={v => setFilterAccount(v.toString())} placeholder="All Accounts" /></div>
+        <div className="w-48"><SearchableSelect options={[{ value: '', label: 'All Accounts' }, ...(() => {
+          const opts = accounts.filter(a => (a.accountType === 'BROKER' || a.accountType === 'CRYPTO_EXCHANGE') && (!filterOwner || a.owner?.id?.toString() === filterOwner));
+          // Disambiguate accounts that share a name across owners (e.g. two "Tiger" accounts).
+          return opts.map(a => {
+            const dup = opts.some(b => b.id !== a.id && b.name === a.name);
+            return { value: a.id.toString(), label: dup && a.owner?.name ? `${a.name} (${a.owner.name})` : a.name };
+          });
+        })()]} value={filterAccount} onChange={v => setFilterAccount(v.toString())} placeholder="All Accounts" /></div>
         <span className="text-xs text-slate-500">{filtered.length} records</span>
       </div>
 
