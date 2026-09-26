@@ -1538,3 +1538,40 @@ org.springframework.web.server.ResponseStatusException: 400 BAD_REQUEST "Cannot 
 2026-09-26 12:17:12 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
 2026-09-26 12:17:12 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
 2026-09-26 12:17:12 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (5ms)
+2026-09-26 12:18:55 [http-nio-8080-exec-3] INFO  c.myfinance.service.SaxoTradeParser - SAXO-DIAG header(row 0)=[Client ID, Trade Date, Value Date, Account ID, Trade ID, Position ID, Corporate Action Id, Bk Record Id, Booking Id, Transaction Type, Event, Booked Amount, Currency, Conversion Rate, Conversion cost, Total cost, Realized P/L, IBAN, IBAN owner name, Comment, Correction reason, Instrument, Instrument Symbol, Instrument ISIN, Instrument currency, Type, Exchange Description, From Derivative, Underlying asset type] | resolved cols={date=1, symbol=21, side=10, fx=13, qty=11, ccy=12} | feeCols=[14, 15]
+2026-09-26 12:18:55 [http-nio-8080-exec-3] INFO  c.myfinance.service.SaxoTradeParser - SAXO-DIAG row[1] TxnType(9)='Corporate action' Event(10)='Cash dividend' BookedAmt(11)='5.64' Instrument(21)='Microsoft Corp.' Symbol(22)='MSFT:xnas' Type(25)='Stock'
+2026-09-26 12:18:55 [http-nio-8080-exec-3] INFO  c.myfinance.service.SaxoTradeParser - SAXO-DIAG row[2] TxnType(9)='Cash amount' Event(10)='Securities Lending Client Fee' BookedAmt(11)='0.77' Instrument(21)='ARK Innovation ETF' Symbol(22)='ARKK:bats' Type(25)='Etf'
+2026-09-26 12:18:55 [http-nio-8080-exec-3] INFO  c.myfinance.service.SaxoTradeParser - SAXO-DIAG row[3] TxnType(9)='Cash amount' Event(10)='Securities Lending Client Fee' BookedAmt(11)='0.13' Instrument(21)='ARK Innovation ETF' Symbol(22)='ARKK:bats' Type(25)='Etf'
+2026-09-26 12:18:55 [http-nio-8080-exec-3] INFO  c.myfinance.service.SaxoTradeParser - SAXO-DIAG row[4] TxnType(9)='Cash amount' Event(10)='Securities Lending Client Fee' BookedAmt(11)='0.03' Instrument(21)='ARK Blockchain & Fintech Innovation ETF' Symbol(22)='ARKF:bats' Type(25)='Etf'
+2026-09-26 12:18:55 [http-nio-8080-exec-3] INFO  c.myfinance.service.SaxoTradeParser - SAXO-DIAG row[5] TxnType(9)='Corporate action' Event(10)='Cash dividend' BookedAmt(11)='0.22' Instrument(21)='ProShares UltraPro QQQ ETF' Symbol(22)='TQQQ:xnas' Type(25)='Etf'
+2026-09-26 12:18:55 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/preview → 200 (664ms)
+2026-09-26 12:20:00 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-26 12:20:00 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-26 12:20:00 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-09-26 12:20:21 [main] INFO  com.myfinance.MyFinanceApplication - Starting MyFinanceApplication using Java 17.0.20 with PID 87495 (/Users/mugu/Documents/Projects/myfinance/backend/target/classes started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-26 12:20:21 [main] INFO  com.myfinance.MyFinanceApplication - The following 1 profile is active: "prod"
+2026-09-26 12:20:22 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-26 12:20:22 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 148 ms. Found 37 JPA repository interfaces.
+2026-09-26 12:20:23 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-09-26 12:20:23 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-26 12:20:23 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-09-26 12:20:23 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-26 12:20:23 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2152 ms
+2026-09-26 12:20:24 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-26 12:20:24 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-26 12:20:24 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-26 12:20:24 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-26 12:20:24 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-26 12:20:24 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data-prod/myfinance user=SA
+2026-09-26 12:20:24 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-26 12:20:24 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-26 12:20:26 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-26 12:20:26 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-26 12:20:27 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-26 12:20:30 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-26 12:20:33 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7139ff5a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6ee7e602, org.springframework.security.web.context.SecurityContextHolderFilter@44261d79, org.springframework.security.web.header.HeaderWriterFilter@64ac6960, org.springframework.web.filter.CorsFilter@73f344bb, org.springframework.security.web.authentication.logout.LogoutFilter@f709952, com.myfinance.provisioning.ProvisioningTokenFilter@7b8aebd0, com.myfinance.security.JwtAuthFilter@1a26eecb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@508835bc, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@75e05153, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@23676bc, org.springframework.security.web.session.SessionManagementFilter@2b1205a7, org.springframework.security.web.access.ExceptionTranslationFilter@7859c88f, org.springframework.security.web.access.intercept.AuthorizationFilter@447b3e43]
+2026-09-26 12:20:33 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2026-09-26 12:20:33 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 12.78 seconds (process running for 13.215)
+2026-09-26 12:20:33 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-26 12:20:34 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 12:20:34 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (7ms)

@@ -79,11 +79,16 @@ public class SaxoTradeParser {
         org.slf4j.Logger diag = org.slf4j.LoggerFactory.getLogger(SaxoTradeParser.class);
         diag.info("SAXO-DIAG header(row {})={} | resolved cols={} | feeCols={}",
                 headerIdx, sheet.get(headerIdx), cols, feeCols);
-        for (int di = headerIdx + 1; di < Math.min(sheet.size(), headerIdx + 6); di++) {
+        java.util.Map<String, Integer> txnTypeCounts = new java.util.TreeMap<>();
+        java.util.Map<String, Integer> eventCounts = new java.util.TreeMap<>();
+        for (int di = headerIdx + 1; di < sheet.size(); di++) {
             List<String> r = sheet.get(di);
-            diag.info("SAXO-DIAG row[{}] TxnType(9)='{}' Event(10)='{}' BookedAmt(11)='{}' Instrument(21)='{}' Symbol(22)='{}' Type(25)='{}'",
-                    di, cell(r, 9), cell(r, 10), cell(r, 11), cell(r, 21), cell(r, 22), cell(r, 25));
+            String tt = cell(r, 9); String ev = cell(r, 10);
+            if (tt != null && !tt.isBlank()) txnTypeCounts.merge(tt.trim(), 1, Integer::sum);
+            if (ev != null && !ev.isBlank()) eventCounts.merge(ev.trim(), 1, Integer::sum);
         }
+        diag.info("SAXO-DIAG distinct TransactionType counts = {}", txnTypeCounts);
+        diag.info("SAXO-DIAG distinct Event counts = {}", eventCounts);
 
         for (int i = headerIdx + 1; i < sheet.size(); i++) {
             List<String> row = sheet.get(i);
