@@ -323,8 +323,9 @@ LONG_TERM, TRADING, DIVIDEND_REINVESTMENT, SRS, RETIREMENT, SHORT_TERM
 | POST | `/api/dividends/fetch-ibkr` | Live-fetch IBKR dividends via stored Flex credential |
 | POST | `/api/transactions/ibkr-sync/preview` | Preview a live broker trade sync (IBKR/Tiger); nothing written |
 | POST | `/api/transactions/ibkr-sync/apply` | Apply a live broker trade sync |
-| POST | `/api/transactions/import/preview` | Preview a broker trade **file** import (auto-detects IBKR/Tiger/Saxo) |
+| POST | `/api/transactions/import/preview` | Preview a broker trade **file** import (auto-detects IBKR/Tiger/Saxo); also returns detected stock splits (symbol + date, ratio unknown) |
 | POST | `/api/transactions/import/apply` | Apply a broker trade file import |
+| POST | `/api/transactions/split` | Apply a stock split/reverse split to a symbol: rescales the caller's transactions + holdings dated on/before the effective date (qty ×ratio, price ÷ratio; cost basis preserved) and recomputes P/L |
 
 ### 7.2a Broker Integration APIs
 

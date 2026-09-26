@@ -438,6 +438,7 @@ export const GUIDE_SECTIONS: GuideSection[] = [
           'Save credentials once: open Brokers & Owners → the Broker integrations tab. Pick the broker, owner and account, then enter the fields. IBKR needs the Flex Query ID and Flex Web Service token. Tiger needs the Tiger ID, account and RSA private key. Secrets are encrypted and never shown again — leave the secret blank when editing to keep the saved one.',
           'Import trades: on Transactions click Import. Choose Live fetch (pick IBKR or Tiger) or Upload file (IBKR Flex XML / IBKR Transaction History CSV / Tiger Activity Statement CSV / Saxo XLSX). Pick the owner and broker account, then Preview.',
           'Review the preview: new trades, duplicates that will be skipped, and any value mismatches against records you already have. Approve the mismatches you want corrected, then Apply.',
+          'Handle stock splits: if the file contains split events, the preview lists them with a ratio box (the file records that a split happened but not the ratio). Enter the ratio as new:old — e.g. 8:1 for a forward split, 1:8 for a reverse split — and it is applied automatically after the trades import. Leave a box blank to skip. You can also run a split any time from the Stock split button on Transactions.',
           'Import dividends: on Dividends use Import → Fetch from broker (IBKR live) or upload an IBKR/Tiger/Saxo statement.',
           'For an ongoing routine, a date range such as the last 365 days keeps each import small.',
         ],
@@ -448,10 +449,14 @@ export const GUIDE_SECTIONS: GuideSection[] = [
           'Choosing the wrong broker in the live-fetch toggle. If the account has no credentials for the chosen broker you will be prompted to add them on the Account page.',
           'Expecting a stored secret to be visible later. Secrets are write-only; you can replace one but never read it back.',
           'Live fetch is unavailable if the server has no encryption key configured — your administrator sets CREDENTIAL_MASTER_KEY.',
+          'Skipping a split. If a holding shows a wildly negative return because its average cost is several times the current price, a split probably was not applied — enter the ratio in the import preview or via the Stock split button.',
+          'Reversing the ratio. It is new:old. A 3-for-1 forward split is 3:1 (more shares, lower price); a 1-for-8 reverse split is 1:8 (fewer shares, higher price).',
         ],
         tips: [
           'Credentials are per account, so each broker account is configured independently.',
           'File import and live fetch are interchangeable — both dedupe against what is already there, so mix them freely.',
+          'A split only rescales trades dated on or before its effective date; post-split trades are already in new shares, so applying two splits (oldest first) compounds correctly.',
+          'Ratios for recent well-known splits (confirm against your own broker statement): Tesla TSLA 5:1 on 2020-08-31 and 3:1 on 2022-08-25; ProShares TQQQ 2:1 on 2025-11-20; Vanguard ETFs effective 2026-04-21 — VGT 8:1, VUG 6:1, VOOG 6:1, MGK 5:1, VO 4:1.',
         ],
         related: [
           { label: 'Open Brokers & Owners', route: '/accounts' },
