@@ -74,11 +74,16 @@ public class SaxoTradeParser {
             throw new RuntimeException("Could not recognise the Saxo trades sheet — expected columns like Instrument, Buy/Sell, Amount, Price, Trade Date");
         }
 
-        // TEMP DIAGNOSTIC: log the detected header row and column mapping so we can see the real Saxo
-        // trade column names and fix the mapping. Remove after investigation.
-        org.slf4j.LoggerFactory.getLogger(SaxoTradeParser.class)
-                .info("SAXO-DIAG header(row {})={} | resolved cols={} | feeCols={}",
-                        headerIdx, sheet.get(headerIdx), cols, feeCols);
+        // TEMP DIAGNOSTIC: log the detected header row, column mapping, and first few data rows so we
+        // can see the real Saxo trade column names/values and fix the mapping. Remove after investigation.
+        org.slf4j.Logger diag = org.slf4j.LoggerFactory.getLogger(SaxoTradeParser.class);
+        diag.info("SAXO-DIAG header(row {})={} | resolved cols={} | feeCols={}",
+                headerIdx, sheet.get(headerIdx), cols, feeCols);
+        for (int di = headerIdx + 1; di < Math.min(sheet.size(), headerIdx + 6); di++) {
+            List<String> r = sheet.get(di);
+            diag.info("SAXO-DIAG row[{}] TxnType(9)='{}' Event(10)='{}' BookedAmt(11)='{}' Instrument(21)='{}' Symbol(22)='{}' Type(25)='{}'",
+                    di, cell(r, 9), cell(r, 10), cell(r, 11), cell(r, 21), cell(r, 22), cell(r, 25));
+        }
 
         for (int i = headerIdx + 1; i < sheet.size(); i++) {
             List<String> row = sheet.get(i);
