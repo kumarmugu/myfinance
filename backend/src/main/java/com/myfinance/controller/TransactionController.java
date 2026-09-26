@@ -29,6 +29,7 @@ public class TransactionController {
     private final com.myfinance.repository.OwnerRepository ownerRepository;
     private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
     private final com.myfinance.service.BrokerCredentialService brokerCredentialService;
+    private final com.myfinance.service.StockSplitService stockSplitService;
 
     /**
      * Request for a live broker trade sync. Credentials come from the account's stored config, not
@@ -119,6 +120,26 @@ public class TransactionController {
         Long uid = tenantContext.getCurrentUserId();
         log.info("Recomputing realized P/L for userId={}", uid);
         return ResponseEntity.ok(transactionService.recomputeRealizedPnlForUser(uid));
+    }
+
+    /**
+     * Apply a stock split (or reverse split) to the caller's position in a symbol. Adjusts every
+     * transaction/holding dated on or before the effective date: quantity ×(numerator/denominator),
+     * price ÷(numerator/denominator), so the cost basis is preserved. Tenant-scoped.
+     */
+    public record StockSplitRequest(String symbol, LocalDate effectiveDate,
+                                    Integer numerator, Integer denominator) {}
+
+    @PostMapping("/split")
+    public com.myfinance.service.StockSplitService.SplitResult applySplit(@RequestBody StockSplitRequest req) {
+        Long uid = tenantContext.getCurrentUserId();
+        if (req.numerator() == null || req.denominator() == null) {
+            throw new RuntimeException("Split ratio (numerator and denominator) is required, e.g. 3:1");
+        }
+        log.info("Applying stock split for userId={} symbol={} ratio={}:{} effective={}",
+                uid, req.symbol(), req.numerator(), req.denominator(), req.effectiveDate());
+        return stockSplitService.applySplit(uid, req.symbol(), req.effectiveDate(),
+                req.numerator(), req.denominator());
     }
 
     /**

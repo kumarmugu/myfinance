@@ -88,16 +88,7 @@ public class SaxoTradeParser {
                     + "Transaction Type, Event, Instrument Symbol, Trade Date, Currency");
         }
 
-        // TEMP DIAGNOSTIC: dump full "Stock split" / corporate-action rows so we can see where the split
-        // ratio lives (Event has none). Remove after investigation.
-        org.slf4j.Logger diag = org.slf4j.LoggerFactory.getLogger(SaxoTradeParser.class);
-        for (int di = headerIdx + 1; di < sheet.size(); di++) {
-            List<String> r = sheet.get(di);
-            String ev = cell(r, cols.get("event"));
-            if (ev != null && ev.toLowerCase().contains("split")) {
-                diag.info("SAXO-DIAG SPLIT row[{}] full={}", di, r);
-            }
-        }
+        List<IbkrTradeParser.ParsedCorporateAction> corporateActions = new ArrayList<>();
 
         for (int i = headerIdx + 1; i < sheet.size(); i++) {
             List<String> row = sheet.get(i);
@@ -106,7 +97,19 @@ public class SaxoTradeParser {
             // splits/mergers, Cash amount = fees/interest, Cash Transfer = deposits/withdrawals) is skipped
             // here — those are not trades and must never be turned into positions.
             String txnType = cell(row, cols.get("txnType"));
-            if (txnType == null || !txnType.trim().equalsIgnoreCase("Trade")) continue;
+            if (txnType == null || !txnType.trim().equalsIgnoreCase("Trade")) {
+                // Detect stock-split events and surface them so the user can enter the ratio (the Saxo
+                // export records that a split happened, but NOT the ratio). Symbol prefers the ticker.
+                String ev = cell(row, cols.get("event"));
+                if (ev != null && ev.toLowerCase().contains("split")) {
+                    String sym = stripExchange(cell(row, cols.get("symbol")));
+                    if (sym == null || sym.isBlank()) sym = cell(row, cols.get("name"));
+                    corporateActions.add(new IbkrTradeParser.ParsedCorporateAction(
+                            "SPLIT", sym == null ? null : sym.toUpperCase(), null,
+                            null, date(cell(row, cols.get("date"))), ev.trim()));
+                }
+                continue;
+            }
 
             // Side, quantity and price live inside the Event text, e.g. "Buy 10 @ 53.00 USD".
             String event = cell(row, cols.get("event"));
@@ -148,7 +151,7 @@ public class SaxoTradeParser {
                     fees.signum() == 0 ? null : fees,
                     fx.signum() == 0 ? null : fx));
         }
-        return new IbkrTradeParser.FlexTrades(trades, skipped, new ArrayList<>(), new ArrayList<>());
+        return new IbkrTradeParser.FlexTrades(trades, skipped, corporateActions, new ArrayList<>());
     }
 
     /** A Trade row whose Event text we couldn't parse — surface it as skipped so the user can see it. */

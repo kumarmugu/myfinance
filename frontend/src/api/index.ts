@@ -90,6 +90,16 @@ export const deleteTransaction = (id: number) => api.delete(`/transactions/${id}
 // One-time maintenance: recompute FX-aware realized P/L for the user's existing sells.
 export const recomputeRealizedPnl = () => api.post<{ sellsRecomputed: number; soldPositionsSynced: number; holdingsCurrencyFixed: number; holdingsBuyFxBackfilled: number }>('/transactions/recompute-pnl');
 
+// Apply a stock split (or reverse split) to the caller's position in a symbol. Adjusts every
+// transaction/holding dated on or before the effective date: quantity ×(numerator/denominator),
+// price ÷(numerator/denominator), so the cost basis is preserved.
+export interface StockSplitResult {
+  symbol: string; effectiveDate: string; numerator: number; denominator: number;
+  transactionsAdjusted: number; holdingsAdjusted: number;
+}
+export const applyStockSplit = (body: { symbol: string; effectiveDate: string; numerator: number; denominator: number }) =>
+  api.post<StockSplitResult>('/transactions/split', body);
+
 // ─── IBKR trade sync (Flex Web Service). Token/queryId sent only for the request; never stored. ───
 export interface IbkrTradePlan {
   tradeId: string | null; symbol: string; type: string; quantity: number; price: number;

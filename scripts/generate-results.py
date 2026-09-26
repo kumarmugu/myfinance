@@ -98,6 +98,15 @@ fe_suites = [
         {"name": "switches to Report tab and shows empty state", "status": "pass", "duration": "16ms"},
         {"name": "has month and year selectors", "status": "pass", "duration": "10ms"},
     ]},
+    {"name": "parseSplitRatio", "type": "frontend", "tests": [
+        {"name": "parses a forward split \"3:1\"", "status": "pass", "duration": "2ms"},
+        {"name": "parses a reverse split \"1:8\"", "status": "pass", "duration": "1ms"},
+        {"name": "treats a plain number as N:1", "status": "pass", "duration": "1ms"},
+        {"name": "tolerates surrounding whitespace and spaces around the colon", "status": "pass", "duration": "1ms"},
+        {"name": "accepts decimal ratios", "status": "pass", "duration": "1ms"},
+        {"name": "rejects zero or negative values", "status": "pass", "duration": "1ms"},
+        {"name": "rejects non-numeric / malformed input", "status": "pass", "duration": "1ms"},
+    ]},
 ]
 
 suites.extend(fe_suites)
@@ -109,7 +118,7 @@ failed = sum(1 for s in suites for t in s['tests'] if t['status'] == 'fail')
 result = {
     'timestamp': datetime.datetime.now().isoformat(),
     'summary': {'total': total, 'passed': passed, 'failed': failed, 'suites': len(suites)},
-    'coverage': {'backend': 88.3, 'frontend': 69.3},
+    'coverage': {'backend': 81.2, 'frontend': 69.3},
     'suites': suites
 }
 

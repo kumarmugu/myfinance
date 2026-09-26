@@ -1,11 +1,12 @@
 import { useEffect, useState, Fragment } from 'react';
-import { Plus, Trash2, Pencil, ArrowUpCircle, ArrowDownCircle, Lock, RefreshCw } from 'lucide-react';
-import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates, getActiveHoldings, recomputeRealizedPnl, previewIbkrSync, applyIbkrSync, previewTradeImport, applyTradeImport, previewTxnBulkDelete, txnBulkDelete } from '../api';
+import { Plus, Trash2, Pencil, ArrowUpCircle, ArrowDownCircle, Lock, RefreshCw, Scissors } from 'lucide-react';
+import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates, getActiveHoldings, recomputeRealizedPnl, previewIbkrSync, applyIbkrSync, previewTradeImport, applyTradeImport, previewTxnBulkDelete, txnBulkDelete, applyStockSplit } from '../api';
 import type { TxnBulkResult } from '../api';
 import type { IbkrSyncPreview, IbkrSyncBody } from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import { formatCurrency, formatDate, formatPercent } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
+import { parseSplitRatio } from '../utils/stockSplit';
 import ExportMenu from '../components/ExportMenu';
 import { transactionsExportConfig } from '../utils/export/configs';
 import { useToast } from '../contexts/ToastContext';
@@ -54,6 +55,13 @@ export default function Transactions() {
   const [deletePassword, setDeletePassword] = useState('');
   const [deleteError, setDeleteError] = useState('');
   const [recomputing, setRecomputing] = useState(false);
+  // Stock split adjustment: enter symbol + effective date + ratio (e.g. 3:1). Broker files record
+  // that a split happened but not the ratio, so the user supplies it.
+  const [showSplit, setShowSplit] = useState(false);
+  const [splitSymbol, setSplitSymbol] = useState('');
+  const [splitDate, setSplitDate] = useState('');
+  const [splitRatio, setSplitRatio] = useState(''); // "N:M" e.g. "3:1" forward, "1:8" reverse
+  const [splitBusy, setSplitBusy] = useState(false);
   // Broker trade sync: live fetch uses stored credentials (configured on the Account page).
   const [showIbkr, setShowIbkr] = useState(false);
   const [ibkrBrokerKind, setIbkrBrokerKind] = useState<'IBKR' | 'TIGER'>('IBKR');
@@ -184,6 +192,29 @@ export default function Transactions() {
       showToast('Failed to recompute realized P/L');
     } finally {
       setRecomputing(false);
+    }
+  };
+
+  const handleApplySplit = async () => {
+    const sym = splitSymbol.trim().toUpperCase();
+    if (!sym) { showToast('Enter the symbol (e.g. TSLA)'); return; }
+    if (!splitDate) { showToast('Enter the split effective date'); return; }
+    // Ratio like "3:1" (forward) or "1:8" (reverse). Also accept a plain number → treated as N:1.
+    const parsed = parseSplitRatio(splitRatio);
+    if (!parsed) { showToast('Enter the ratio as N:M, e.g. 3:1 (forward) or 1:8 (reverse)'); return; }
+    const { numerator, denominator } = parsed;
+    setSplitBusy(true);
+    try {
+      const { data } = await applyStockSplit({ symbol: sym, effectiveDate: splitDate, numerator, denominator });
+      showToast(`Applied ${data.numerator}:${data.denominator} split for ${data.symbol} — adjusted ${data.transactionsAdjusted} transaction${data.transactionsAdjusted === 1 ? '' : 's'} and ${data.holdingsAdjusted} holding${data.holdingsAdjusted === 1 ? '' : 's'}`, 'success');
+      setShowSplit(false);
+      setSplitSymbol(''); setSplitDate(''); setSplitRatio('');
+      loadData();
+    } catch (err: any) {
+      console.error(err);
+      showToast(err?.response?.data?.message || 'Failed to apply stock split');
+    } finally {
+      setSplitBusy(false);
     }
   };
 
@@ -469,6 +500,9 @@ export default function Transactions() {
           <button onClick={handleRecompute} disabled={recomputing} title="Recompute FX-aware realized P/L for your existing sells (one-time fix for older trades)" className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 disabled:opacity-50">
             <RefreshCw size={16} className={recomputing ? 'animate-spin' : ''} /> {recomputing ? 'Recomputing...' : 'Recompute P/L'}
           </button>
+          <button onClick={() => setShowSplit(v => !v)} title="Adjust your holdings and trade history for a stock split or reverse split" className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">
+            <Scissors size={16} /> Stock split
+          </button>
           {canIbkrSync && anyOwnerHasIbkr && (
             <button onClick={() => { setShowIbkr(v => !v); setIbkrPreview(null); }} title="Import trades from your broker (live fetch or file import)" className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">
               <RefreshCw size={16} /> Import
@@ -553,6 +587,33 @@ export default function Transactions() {
           </label>
         </div>
       </div>
+
+      {showSplit && (
+        <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+          <h3 className="text-base font-semibold text-slate-800 mb-1">Apply a stock split</h3>
+          <p className="text-xs text-slate-500 mb-4">
+            Adjusts every transaction and holding for this symbol dated on or before the effective date:
+            quantity is multiplied by the ratio and price divided by it, so your cost basis is unchanged.
+            Enter the ratio as <span className="font-medium">new:old</span> — e.g. <span className="font-medium">3:1</span> for
+            a 3-for-1 forward split, or <span className="font-medium">1:8</span> for a 1-for-8 reverse split.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Symbol *</label>
+              <SearchableSelect
+                options={Array.from(new Set(assets.map(a => a.symbol))).map(s => ({ value: s, label: s }))}
+                value={splitSymbol} onChange={v => setSplitSymbol(String(v))} placeholder="e.g. TSLA" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Effective date *</label>
+              <input type="date" value={splitDate} onChange={e => setSplitDate(e.target.value)}
+                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">Ratio (new:old) *</label>
+              <input type="text" value={splitRatio} onChange={e => setSplitRatio(e.target.value)} placeholder="3:1"
+                className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" /></div>
+            <button type="button" onClick={handleApplySplit} disabled={splitBusy}
+              className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50">
+              {splitBusy ? 'Applying…' : 'Apply split'}</button>
+          </div>
+        </div>
+      )}
 
       {/* Transaction Form */}
       {showBulk && (
@@ -685,6 +746,14 @@ export default function Transactions() {
                       </label>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {ibkrPreview.corporateActions.length > 0 && (
+                <div className="mb-3 text-xs text-slate-600">
+                  <p className="font-semibold mb-1 text-slate-700">Corporate actions detected (not imported as trades)</p>
+                  <ul className="list-disc pl-5 space-y-0.5">{ibkrPreview.corporateActions.map((s, i) => <li key={i}>{s}</li>)}</ul>
+                  <p className="mt-1 text-slate-500">Splits carry no ratio in the file. Use the <span className="font-medium">Stock split</span> button above to adjust your holdings (enter the ratio, e.g. 3:1).</p>
                 </div>
               )}
 
