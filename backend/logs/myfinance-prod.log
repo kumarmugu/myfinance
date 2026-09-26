@@ -2890,3 +2890,171 @@ org.springframework.web.server.ResponseStatusException: 400 BAD_REQUEST "Cannot 
 2026-09-26 14:36:53 [http-nio-8080-exec-8] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
 2026-09-26 14:36:54 [http-nio-8080-exec-10] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
 2026-09-26 14:36:54 [http-nio-8080-exec-10] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:38:51 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-26 14:38:51 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-26 14:38:51 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-09-26 14:39:49 [main] INFO  com.myfinance.MyFinanceApplication - Starting MyFinanceApplication using Java 17.0.20 with PID 33916 (/Users/mugu/Documents/Projects/myfinance/backend/target/classes started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-26 14:39:49 [main] INFO  com.myfinance.MyFinanceApplication - The following 1 profile is active: "prod"
+2026-09-26 14:39:50 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-26 14:39:50 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 138 ms. Found 38 JPA repository interfaces.
+2026-09-26 14:39:51 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-09-26 14:39:51 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-26 14:39:51 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-09-26 14:39:51 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-26 14:39:51 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2043 ms
+2026-09-26 14:39:51 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-26 14:39:51 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-26 14:39:51 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-26 14:39:52 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-26 14:39:52 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-26 14:39:52 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data-prod/myfinance user=SA
+2026-09-26 14:39:52 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-26 14:39:52 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-26 14:39:54 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-26 14:39:54 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-26 14:39:55 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-26 14:39:58 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-26 14:40:01 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5379bea3, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7ffa2be, org.springframework.security.web.context.SecurityContextHolderFilter@6328eb18, org.springframework.security.web.header.HeaderWriterFilter@48d46169, org.springframework.web.filter.CorsFilter@5b4b3c51, org.springframework.security.web.authentication.logout.LogoutFilter@1e7c2765, com.myfinance.provisioning.ProvisioningTokenFilter@5a7b6b75, com.myfinance.security.JwtAuthFilter@d471ddb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6ea34ece, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@67566bd4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1a4cfae4, org.springframework.security.web.session.SessionManagementFilter@52d7889a, org.springframework.security.web.access.ExceptionTranslationFilter@39b266b2, org.springframework.security.web.access.intercept.AuthorizationFilter@26df56f6]
+2026-09-26 14:40:01 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2026-09-26 14:40:01 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 12.83 seconds (process running for 13.272)
+2026-09-26 14:40:16 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-26 14:40:16 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:16 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (8ms)
+2026-09-26 14:40:17 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:17 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:18 [http-nio-8080-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:18 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:19 [http-nio-8080-exec-7] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:19 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:20 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:20 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:21 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:21 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:22 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:22 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:23 [http-nio-8080-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:23 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:24 [http-nio-8080-exec-7] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:24 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:25 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:25 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:26 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:26 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (2ms)
+2026-09-26 14:40:27 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:27 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:28 [http-nio-8080-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:28 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:40:29 [http-nio-8080-exec-7] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:29 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:30 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:30 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:31 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:31 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:32 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:32 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:33 [http-nio-8080-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:33 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:40:34 [http-nio-8080-exec-7] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:34 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:35 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:35 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:36 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:36 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:40:37 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:37 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:38 [http-nio-8080-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:38 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:40:39 [http-nio-8080-exec-7] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:39 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:40 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:40 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:41 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:41 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:42 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:42 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:43 [http-nio-8080-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:43 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:44 [http-nio-8080-exec-7] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:44 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:45 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:45 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:56 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:56 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:57 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:57 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:58 [http-nio-8080-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:58 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:40:59 [http-nio-8080-exec-7] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:40:59 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:00 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:00 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:01 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:01 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:02 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:02 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:03 [http-nio-8080-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:03 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:41:04 [http-nio-8080-exec-7] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:04 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:05 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:05 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:06 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:06 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:07 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:07 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:08 [http-nio-8080-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:08 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:41:09 [http-nio-8080-exec-7] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:09 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:10 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:10 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:11 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:11 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:12 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:12 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:41:13 [http-nio-8080-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:13 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:14 [http-nio-8080-exec-7] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:14 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (2ms)
+2026-09-26 14:41:15 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:15 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:41:16 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:16 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:17 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:17 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:18 [http-nio-8080-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:18 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:41:20 [http-nio-8080-exec-7] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:20 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:21 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:21 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:41:22 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:22 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:41:23 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:23 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:24 [http-nio-8080-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:24 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:25 [http-nio-8080-exec-7] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:25 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:26 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:26 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:27 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:27 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:28 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:28 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:29 [http-nio-8080-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:29 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:30 [http-nio-8080-exec-7] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:30 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (0ms)
+2026-09-26 14:41:31 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:31 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:32 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:32 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:33 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:33 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:34 [http-nio-8080-exec-5] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:34 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:35 [http-nio-8080-exec-7] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:35 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
+2026-09-26 14:41:36 [http-nio-8080-exec-9] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-26 14:41:36 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (1ms)
