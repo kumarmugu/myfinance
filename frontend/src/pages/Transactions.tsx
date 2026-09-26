@@ -510,7 +510,14 @@ export default function Transactions() {
             <SearchableSelect
               options={[{ value: '', label: 'All Owners' }, ...owners.map(o => ({ value: o.id, label: o.name, icon: o.name[0] }))]}
               value={filterOwner || ''}
-              onChange={v => setFilterOwner(v ? Number(v) : undefined)}
+              onChange={v => {
+                const next = v ? Number(v) : undefined;
+                // Drop a stale account selection that doesn't belong to the newly-chosen owner,
+                // so owner+account can't combine into an impossible (0-result) filter.
+                const acct = accounts.find(a => String(a.id) === filterAccountId);
+                if (acct && next && acct.owner?.id !== next) setFilterAccountId('');
+                setFilterOwner(next);
+              }}
               placeholder="All Owners"
             />
           </div>
@@ -562,7 +569,15 @@ export default function Transactions() {
           <div className="w-44">
             <label className="block text-[11px] font-medium text-slate-500 mb-1">Account</label>
             <SearchableSelect
-              options={[{ value: '', label: 'All Accounts' }, ...accounts.map(a => ({ value: a.id.toString(), label: a.name }))]}
+              options={[{ value: '', label: 'All Accounts' }, ...accounts
+                // When an owner is selected, only offer that owner's accounts — otherwise picking a
+                // same-named account from another owner (e.g. two "Tiger" accounts) matches nothing.
+                .filter(a => !filterOwner || a.owner?.id === filterOwner)
+                // Disambiguate accounts that share a name across owners by appending the owner.
+                .map(a => {
+                  const dup = accounts.some(b => b.id !== a.id && b.name === a.name);
+                  return { value: a.id.toString(), label: dup && a.owner?.name ? `${a.name} (${a.owner.name})` : a.name };
+                })]}
               value={filterAccountId}
               onChange={v => setFilterAccountId(v.toString())}
               placeholder="All Accounts"
