@@ -88,6 +88,17 @@ public class SaxoTradeParser {
                     + "Transaction Type, Event, Instrument Symbol, Trade Date, Currency");
         }
 
+        // TEMP DIAGNOSTIC: dump full "Stock split" / corporate-action rows so we can see where the split
+        // ratio lives (Event has none). Remove after investigation.
+        org.slf4j.Logger diag = org.slf4j.LoggerFactory.getLogger(SaxoTradeParser.class);
+        for (int di = headerIdx + 1; di < sheet.size(); di++) {
+            List<String> r = sheet.get(di);
+            String ev = cell(r, cols.get("event"));
+            if (ev != null && ev.toLowerCase().contains("split")) {
+                diag.info("SAXO-DIAG SPLIT row[{}] full={}", di, r);
+            }
+        }
+
         for (int i = headerIdx + 1; i < sheet.size(); i++) {
             List<String> row = sheet.get(i);
 
