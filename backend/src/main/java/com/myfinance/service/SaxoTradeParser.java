@@ -33,17 +33,28 @@ import java.util.zip.ZipInputStream;
 @Service
 public class SaxoTradeParser {
 
-    /** Header keywords we recognise (lower-cased, matched by "contains"). */
-    private static final List<String> SYMBOL_HEADERS   = List.of("instrument symbol", "instrument", "symbol", "ticker", "uic");
-    private static final List<String> SIDE_HEADERS     = List.of("buy/sell", "b/s", "direction", "side", "event");
-    private static final List<String> QTY_HEADERS      = List.of("amount", "quantity", "traded amount", "filled quantity", "nominal");
-    private static final List<String> PRICE_HEADERS    = List.of("price", "traded price", "avg price", "average price", "trade price");
-    private static final List<String> DATE_HEADERS     = List.of("trade date", "trade time", "date", "execution time", "value date");
-    private static final List<String> CCY_HEADERS      = List.of("instrument currency", "currency", "trade currency", "ccy");
+    /**
+     * Header keywords we recognise (lower-cased, matched by "contains"). Order matters: the FIRST
+     * keyword that a header contains wins, so more-specific names must come first. A Saxo transactions
+     * export has an "Instrument" (descriptive name) AND an "Instrument Symbol" (the ticker) column — we
+     * must map SYMBOL to the ticker, so "instrument symbol" is matched before the bare "instrument".
+     */
+    private static final List<String> SYMBOL_HEADERS   = List.of("instrument symbol", "symbol", "ticker", "uic");
+    private static final List<String> NAME_HEADERS     = List.of("instrument");
+    /** "Transaction Type" classifies the row: only "Trade" rows are buys/sells (the rest are dividends, fees, transfers...). */
+    private static final List<String> TXNTYPE_HEADERS  = List.of("transaction type");
+    /** Saxo packs side+quantity+price into the "Event" text, e.g. "Buy 10 @ 53.00 USD" / "Sell -5 @ 373.47 USD". */
+    private static final List<String> EVENT_HEADERS    = List.of("event");
+    private static final List<String> DATE_HEADERS     = List.of("trade date", "trade time", "execution time", "value date", "date");
+    private static final List<String> CCY_HEADERS      = List.of("instrument currency", "trade currency", "currency", "ccy");
     /** Fee/charge header keywords — every matching column is summed into one all-in fee. */
-    private static final List<String> FEE_HEADERS      = List.of("commission", "fee", "cost", "charge", "tax", "levy", "duty", "gst", "conversion");
+    private static final List<String> FEE_HEADERS      = List.of("conversion cost", "total cost", "commission");
     /** Per-line FX rate to the account/base currency, if the export carries one. */
     private static final List<String> FX_HEADERS       = List.of("conversion rate", "fx rate", "exchange rate", "rate to base", "booking rate");
+
+    /** side + signed quantity + price (+ optional currency) packed in the Saxo "Event" text. */
+    private static final java.util.regex.Pattern EVENT_TRADE =
+            java.util.regex.Pattern.compile("(?i)\\b(buy|sell|bought|sold)\\b\\s*(-?[0-9][0-9,]*(?:\\.[0-9]+)?)\\s*@\\s*([0-9][0-9,]*(?:\\.[0-9]+)?)\\s*([A-Za-z]{3})?");
 
     /** True if the bytes look like an XLSX (a ZIP container starts with "PK"). */
     public static boolean looksLikeXlsx(byte[] content) {
@@ -60,53 +71,58 @@ public class SaxoTradeParser {
             return new IbkrTradeParser.FlexTrades(trades, skipped, new ArrayList<>(), new ArrayList<>());
         }
 
-        // Find the header row (the first row that yields both a symbol and a side/quantity column).
+        // Find the header row: the first row that yields a symbol/name column plus the "Transaction Type"
+        // classifier and the "Event" column (Saxo packs side+qty+price into Event, and there is no
+        // dedicated quantity/price column in the transactions export).
         int headerIdx = -1;
         Map<String, Integer> cols = null;
         List<Integer> feeCols = List.of();
         for (int i = 0; i < Math.min(sheet.size(), 10); i++) {
             Map<String, Integer> m = mapColumns(sheet.get(i));
-            if (m.containsKey("symbol") && (m.containsKey("side") || m.containsKey("qty"))) {
+            if ((m.containsKey("symbol") || m.containsKey("name")) && m.containsKey("txnType") && m.containsKey("event")) {
                 headerIdx = i; cols = m; feeCols = feeColumns(sheet.get(i)); break;
             }
         }
         if (cols == null) {
-            throw new RuntimeException("Could not recognise the Saxo trades sheet — expected columns like Instrument, Buy/Sell, Amount, Price, Trade Date");
+            throw new RuntimeException("Could not recognise the Saxo transactions sheet — expected columns like "
+                    + "Transaction Type, Event, Instrument Symbol, Trade Date, Currency");
         }
-
-        // TEMP DIAGNOSTIC: log the detected header row, column mapping, and first few data rows so we
-        // can see the real Saxo trade column names/values and fix the mapping. Remove after investigation.
-        org.slf4j.Logger diag = org.slf4j.LoggerFactory.getLogger(SaxoTradeParser.class);
-        diag.info("SAXO-DIAG header(row {})={} | resolved cols={} | feeCols={}",
-                headerIdx, sheet.get(headerIdx), cols, feeCols);
-        java.util.Map<String, Integer> txnTypeCounts = new java.util.TreeMap<>();
-        java.util.Map<String, Integer> eventCounts = new java.util.TreeMap<>();
-        for (int di = headerIdx + 1; di < sheet.size(); di++) {
-            List<String> r = sheet.get(di);
-            String tt = cell(r, 9); String ev = cell(r, 10);
-            if (tt != null && !tt.isBlank()) txnTypeCounts.merge(tt.trim(), 1, Integer::sum);
-            if (ev != null && !ev.isBlank()) eventCounts.merge(ev.trim(), 1, Integer::sum);
-        }
-        diag.info("SAXO-DIAG distinct TransactionType counts = {}", txnTypeCounts);
-        diag.info("SAXO-DIAG distinct Event counts = {}", eventCounts);
 
         for (int i = headerIdx + 1; i < sheet.size(); i++) {
             List<String> row = sheet.get(i);
-            String symbol = stripExchange(cell(row, cols.get("symbol")));
-            if (symbol == null || symbol.isBlank()) continue;
 
-            String sideRaw = cell(row, cols.get("side"));
-            BigDecimal qty = num(cell(row, cols.get("qty")));
-            Boolean buy = direction(sideRaw, qty);
-            if (buy == null) continue;                    // not a trade row (dividend, fee, transfer, ...)
+            // Only genuine trade bookings are buys/sells. Everything else (Corporate action = dividends/
+            // splits/mergers, Cash amount = fees/interest, Cash Transfer = deposits/withdrawals) is skipped
+            // here — those are not trades and must never be turned into positions.
+            String txnType = cell(row, cols.get("txnType"));
+            if (txnType == null || !txnType.trim().equalsIgnoreCase("Trade")) continue;
+
+            // Side, quantity and price live inside the Event text, e.g. "Buy 10 @ 53.00 USD".
+            String event = cell(row, cols.get("event"));
+            if (event == null) continue;
+            var m = EVENT_TRADE.matcher(event);
+            if (!m.find()) { skipped.add(unparsedTrade(row, cols, event)); continue; }
+
+            String side = m.group(1).toLowerCase();
+            boolean buy = side.startsWith("buy") || side.equals("bought");
+            BigDecimal qty = new BigDecimal(m.group(2).replace(",", "")).abs();
+            BigDecimal price = new BigDecimal(m.group(3).replace(",", "")).abs();
             if (qty.signum() == 0) continue;
 
-            BigDecimal price = num(cell(row, cols.get("price")));
-            String currency = cell(row, cols.get("ccy"));
+            // Symbol: prefer the real ticker ("Instrument Symbol", e.g. "MSFT:xnas" → "MSFT"); fall back to
+            // the descriptive name only if no ticker column/value is present.
+            String symbol = stripExchange(cell(row, cols.get("symbol")));
+            if (symbol == null || symbol.isBlank()) symbol = cell(row, cols.get("name"));
+            if (symbol == null || symbol.isBlank()) continue;
+
+            // Currency: the code trailing the Event wins ("... 53.00 USD"), else the instrument currency column.
+            String currency = (m.group(4) != null && !m.group(4).isBlank()) ? m.group(4) : cell(row, cols.get("ccy"));
+
             LocalDate date = date(cell(row, cols.get("date")));
             if (date == null) continue;
 
-            // Sum every fee/charge column present into one all-in fee (absolute).
+            // Sum any explicit fee/charge columns into one all-in fee (usually 0 on Saxo trade rows —
+            // commissions/custody fees are booked as separate "Cash amount" rows).
             BigDecimal fees = BigDecimal.ZERO;
             for (int fc : feeCols) fees = fees.add(num(cell(row, fc)).abs());
 
@@ -115,13 +131,24 @@ public class SaxoTradeParser {
 
             trades.add(new IbkrTradeParser.ParsedTrade(
                     null, symbol.toUpperCase(), "STK",
-                    buy, qty.abs(), price.abs(),
+                    buy, qty, price,
                     (currency == null || currency.isBlank()) ? "USD" : currency.trim().toUpperCase(),
                     date,
                     fees.signum() == 0 ? null : fees,
                     fx.signum() == 0 ? null : fx));
         }
         return new IbkrTradeParser.FlexTrades(trades, skipped, new ArrayList<>(), new ArrayList<>());
+    }
+
+    /** A Trade row whose Event text we couldn't parse — surface it as skipped so the user can see it. */
+    private IbkrTradeParser.ParsedTrade unparsedTrade(List<String> row, Map<String, Integer> cols, String event) {
+        String symbol = stripExchange(cell(row, cols.get("symbol")));
+        if (symbol == null || symbol.isBlank()) symbol = cell(row, cols.get("name"));
+        LocalDate date = date(cell(row, cols.get("date")));
+        return new IbkrTradeParser.ParsedTrade(
+                null, symbol == null ? event : symbol.toUpperCase(), "STK",
+                true, BigDecimal.ZERO, BigDecimal.ZERO,
+                "USD", date, null, null);
     }
 
     /** Map recognised header keywords → column index. */
@@ -131,9 +158,9 @@ public class SaxoTradeParser {
             String h = header.get(c) == null ? "" : header.get(c).trim().toLowerCase();
             if (h.isEmpty()) continue;
             putIfHeader(cols, "symbol", h, c, SYMBOL_HEADERS);
-            putIfHeader(cols, "side", h, c, SIDE_HEADERS);
-            putIfHeader(cols, "qty", h, c, QTY_HEADERS);
-            putIfHeader(cols, "price", h, c, PRICE_HEADERS);
+            putIfHeader(cols, "name", h, c, NAME_HEADERS);
+            putIfHeader(cols, "txnType", h, c, TXNTYPE_HEADERS);
+            putIfHeader(cols, "event", h, c, EVENT_HEADERS);
             putIfHeader(cols, "date", h, c, DATE_HEADERS);
             putIfHeader(cols, "ccy", h, c, CCY_HEADERS);
             putIfHeader(cols, "fx", h, c, FX_HEADERS);
@@ -165,17 +192,6 @@ public class SaxoTradeParser {
         for (String kw : keywords) {
             if (header.contains(kw)) { cols.put(key, idx); return; }
         }
-    }
-
-    /** BUY → true, SELL → false. If side text is ambiguous, fall back to the sign of the quantity. */
-    private Boolean direction(String side, BigDecimal qty) {
-        if (side != null) {
-            String s = side.trim().toLowerCase();
-            if (s.startsWith("buy") || s.equals("b") || s.contains("bought")) return Boolean.TRUE;
-            if (s.startsWith("sell") || s.equals("s") || s.contains("sold")) return Boolean.FALSE;
-        }
-        if (qty != null && qty.signum() != 0) return qty.signum() > 0;
-        return null;
     }
 
     // ─────────────────────────── XLSX reading (reference-aware) ───────────────────────────

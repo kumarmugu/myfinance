@@ -30,33 +30,72 @@ class SaxoTradeParserTest {
         assertFalse(SaxoTradeParser.looksLikeXlsx(null));
     }
 
+    /**
+     * The real Saxo "Transactions" export layout: side/quantity/price are packed into the "Event" text
+     * ("Buy 10 @ 150.00 USD"), the real ticker is in "Instrument Symbol", the descriptive name is in
+     * "Instrument", and "Transaction Type" classifies the row. Only "Trade" rows are buys/sells.
+     */
     @Test
-    void parsesTradesWithSummedFeesAndFxRate() throws Exception {
-        // Columns: Instrument Symbol | Buy/Sell | Amount | Price | Trade Date | Instrument Currency | Commission | Exchange Fee | Conversion Rate
+    void parsesTradeRowsFromEventText() throws Exception {
         String[][] rows = {
-            {"Instrument Symbol", "Buy/Sell", "Amount", "Price", "Trade Date", "Instrument Currency", "Commission", "Exchange Fee", "Conversion Rate"},
-            {"AAPL:xnas", "Buy", "10", "150.00", "2024-01-15", "USD", "-1.00", "-0.50", "1.34"},
-            {"TSLA:xnas", "Sell", "5", "250.00", "2024-06-10", "USD", "-1.00", "-0.25", "1.30"},
+            {"Trade Date", "Transaction Type", "Event", "Booked Amount", "Currency", "Instrument", "Instrument Symbol", "Instrument currency"},
+            {"2024-01-15", "Trade", "Buy 10 @ 150.00 USD", "-1500.00", "USD", "Apple Inc.", "AAPL:xnas", "USD"},
+            {"2024-06-10", "Trade", "Sell -5 @ 250.00 USD", "1250.00", "USD", "Tesla Inc.", "TSLA:xnas", "USD"},
         };
-        byte[] xlsx = buildXlsx(rows);
-
-        FlexTrades result = parser.parse(xlsx);
+        FlexTrades result = parser.parse(buildXlsx(rows));
         assertEquals(2, result.trades().size());
 
         ParsedTrade buy = result.trades().get(0);
-        assertEquals("AAPL", buy.symbol(), "exchange suffix stripped");
+        assertEquals("AAPL", buy.symbol(), "ticker column preferred + exchange suffix stripped");
         assertTrue(buy.buy());
-        assertEquals(0, new BigDecimal("10").compareTo(buy.quantity()));
-        assertEquals(0, new BigDecimal("150.00").compareTo(buy.price()));
+        assertEquals(0, new BigDecimal("10").compareTo(buy.quantity()), "quantity parsed from Event, not Booked Amount");
+        assertEquals(0, new BigDecimal("150.00").compareTo(buy.price()), "price parsed from Event");
         assertEquals("USD", buy.currency());
         assertEquals(LocalDate.of(2024, 1, 15), buy.tradeDate());
-        // all-in fee = |commission 1.00| + |exchange fee 0.50| = 1.50
-        assertEquals(0, new BigDecimal("1.50").compareTo(buy.commission()), "commission + exchange fee summed");
-        assertEquals(0, new BigDecimal("1.34").compareTo(buy.fxRateToBase()), "per-line conversion rate captured");
 
         ParsedTrade sell = result.trades().get(1);
         assertEquals("TSLA", sell.symbol());
         assertFalse(sell.buy());
+        assertEquals(0, new BigDecimal("5").compareTo(sell.quantity()), "negative qty in Event is taken as magnitude");
+    }
+
+    /** Corporate actions (dividends/splits), cash amounts (fees) and transfers must NOT become trades. */
+    @Test
+    void skipsNonTradeRows() throws Exception {
+        String[][] rows = {
+            {"Trade Date", "Transaction Type", "Event", "Booked Amount", "Currency", "Instrument", "Instrument Symbol", "Instrument currency"},
+            {"2024-01-15", "Trade", "Buy 10 @ 150.00 USD", "-1500.00", "USD", "Apple Inc.", "AAPL:xnas", "USD"},
+            {"2024-02-01", "Corporate action", "Cash dividend", "5.64", "USD", "Microsoft Corp.", "MSFT:xnas", "USD"},
+            {"2024-02-02", "Cash amount", "Securities Lending Client Fee", "0.77", "USD", "ARK Innovation ETF", "ARKK:bats", "USD"},
+            {"2024-02-03", "Cash Transfer", "Deposit", "1000.00", "USD", "", "", "USD"},
+        };
+        FlexTrades result = parser.parse(buildXlsx(rows));
+        assertEquals(1, result.trades().size(), "only the Trade row becomes a trade");
+        assertEquals("AAPL", result.trades().get(0).symbol());
+    }
+
+    /** A "Trade" row whose Event text we can't parse is surfaced as skipped, never as a bogus trade. */
+    @Test
+    void unparseableTradeEventGoesToSkipped() throws Exception {
+        String[][] rows = {
+            {"Trade Date", "Transaction Type", "Event", "Booked Amount", "Currency", "Instrument", "Instrument Symbol", "Instrument currency"},
+            {"2024-01-15", "Trade", "Assignment of option", "0.00", "USD", "Apple Inc.", "AAPL:xnas", "USD"},
+        };
+        FlexTrades result = parser.parse(buildXlsx(rows));
+        assertEquals(0, result.trades().size());
+        assertEquals(1, result.skipped().size());
+    }
+
+    /** Currency falls back to the trailing code in the Event when no explicit currency is resolved. */
+    @Test
+    void currencyFromEventTrailingCode() throws Exception {
+        String[][] rows = {
+            {"Trade Date", "Transaction Type", "Event", "Instrument", "Instrument Symbol"},
+            {"2024-03-01", "Trade", "Buy 3 @ 100.00 EUR", "Some Euro Fund", "EFUND:xetr"},
+        };
+        FlexTrades result = parser.parse(buildXlsx(rows));
+        assertEquals(1, result.trades().size());
+        assertEquals("EUR", result.trades().get(0).currency(), "currency taken from Event when column absent");
     }
 
     @Test
