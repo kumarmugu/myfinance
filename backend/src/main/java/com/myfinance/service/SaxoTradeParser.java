@@ -74,6 +74,12 @@ public class SaxoTradeParser {
             throw new RuntimeException("Could not recognise the Saxo trades sheet — expected columns like Instrument, Buy/Sell, Amount, Price, Trade Date");
         }
 
+        // TEMP DIAGNOSTIC: log the detected header row and column mapping so we can see the real Saxo
+        // trade column names and fix the mapping. Remove after investigation.
+        org.slf4j.LoggerFactory.getLogger(SaxoTradeParser.class)
+                .info("SAXO-DIAG header(row {})={} | resolved cols={} | feeCols={}",
+                        headerIdx, sheet.get(headerIdx), cols, feeCols);
+
         for (int i = headerIdx + 1; i < sheet.size(); i++) {
             List<String> row = sheet.get(i);
             String symbol = stripExchange(cell(row, cols.get("symbol")));
