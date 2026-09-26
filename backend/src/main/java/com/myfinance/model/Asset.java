@@ -44,6 +44,14 @@ public class Asset {
     private String exchange;
     private String description;
 
+    /**
+     * Comma-separated list of former tickers this instrument has traded under (e.g. META carries
+     * {@code "FB"} after Facebook's rename). Lets a broker import that still reports the old ticker
+     * fold into this (renamed) asset instead of creating a duplicate. Nullable: most assets have none.
+     * Additive/prod-safe.
+     */
+    private String previousSymbols;
+
     @Builder.Default
     private Boolean includeInNetWorth = true;
 

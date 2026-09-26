@@ -303,17 +303,23 @@ public class IbkrSyncService {
 
     private Asset findOrCreateAsset(String symbol, String currency, Owner owner, int[] createdCounter) {
         String sym = symbol.trim().toUpperCase();
-        return assetService.getBySymbol(sym).orElseGet(() -> {
-            Asset a = Asset.builder()
-                    .userId(owner.getUserId())
-                    .name(sym).symbol(sym)
-                    .assetType(AssetType.OTHER)
-                    .currency(parseCurrency(currency))
-                    .build();
-            Asset saved = assetService.create(a);
-            createdCounter[0]++;
-            return saved;
-        });
+        // 1) Exact ticker match.
+        var exact = assetService.getBySymbol(sym);
+        if (exact.isPresent()) return exact.get();
+        // 2) Alias match: an asset the user renamed keeps its old ticker in previousSymbols (e.g. a
+        //    file still reporting FB folds into the renamed META asset) — reuse it, don't duplicate.
+        var alias = assetService.getByPreviousSymbol(owner.getUserId(), sym);
+        if (alias.isPresent()) return alias.get();
+        // 3) Genuinely new instrument.
+        Asset a = Asset.builder()
+                .userId(owner.getUserId())
+                .name(sym).symbol(sym)
+                .assetType(AssetType.OTHER)
+                .currency(parseCurrency(currency))
+                .build();
+        Asset saved = assetService.create(a);
+        createdCounter[0]++;
+        return saved;
     }
 
     private Currency parseCurrency(String code) {

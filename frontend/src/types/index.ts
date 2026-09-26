@@ -43,6 +43,8 @@ export interface Asset {
   currency: Currency;
   exchange: string;
   description: string;
+  /** Comma-separated former tickers (e.g. "FB" on META) so imports of the old ticker fold into this asset. */
+  previousSymbols?: string | null;
   includeInNetWorth: boolean;
   createdAt: string;
   updatedAt: string;

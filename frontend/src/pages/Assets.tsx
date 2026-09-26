@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Plus, Trash2, Pencil, RefreshCw, Merge } from 'lucide-react';
-import { getAssets, createAsset, updateAsset, deleteAsset, refreshAssetPrice, refreshAllAssetPrices, mergeDuplicateAssets } from '../api';
+import { getAssets, createAsset, updateAsset, deleteAsset, refreshAssetPrice, refreshAllAssetPrices, mergeDuplicateAssets, mergeAssets } from '../api';
 import SearchableSelect from '../components/SearchableSelect';
 import type { Asset, AssetType, Currency } from '../types';
 import { ASSET_TYPE_LABELS } from '../types';
@@ -12,10 +12,14 @@ export default function Assets() {
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Asset | null>(null);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState({ name: '', symbol: '', assetType: 'GROWTH_EQUITY' as AssetType, currency: 'USD' as Currency, exchange: '', description: '', currentPrice: 0 });
+  const [form, setForm] = useState({ name: '', symbol: '', assetType: 'GROWTH_EQUITY' as AssetType, currency: 'USD' as Currency, exchange: '', description: '', currentPrice: 0, previousSymbols: '' });
   const [refreshingId, setRefreshingId] = useState<number | null>(null);
   const [refreshingAll, setRefreshingAll] = useState(false);
   const [merging, setMerging] = useState(false);
+  // "Merge into" flow: fold one asset (source) into another (target), e.g. imported FB into renamed META.
+  const [mergeSource, setMergeSource] = useState<Asset | null>(null);
+  const [mergeTargetId, setMergeTargetId] = useState<number | ''>('');
+  const [mergingInto, setMergingInto] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [bulkDeleting, setBulkDeleting] = useState(false);
   const { showToast } = useToast();
@@ -23,7 +27,7 @@ export default function Assets() {
   useEffect(() => { loadData(); }, []);
   const loadData = async () => { try { setAssets((await getAssets()).data); } catch (err) { console.error(err); } finally { setLoading(false); } };
 
-  const resetForm = () => setForm({ name: '', symbol: '', assetType: 'GROWTH_EQUITY', currency: 'USD', exchange: '', description: '', currentPrice: 0 });
+  const resetForm = () => setForm({ name: '', symbol: '', assetType: 'GROWTH_EQUITY', currency: 'USD', exchange: '', description: '', currentPrice: 0, previousSymbols: '' });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,8 +55,25 @@ export default function Assets() {
       exchange: asset.exchange || '',
       description: asset.description || '',
       currentPrice: asset.currentPrice || 0,
+      previousSymbols: asset.previousSymbols || '',
     });
     setShowForm(true);
+  };
+
+  const handleMergeInto = async () => {
+    if (!mergeSource || !mergeTargetId) { showToast('Pick the asset to merge into'); return; }
+    if (mergeSource.id === mergeTargetId) { showToast('Choose two different assets'); return; }
+    setMergingInto(true);
+    try {
+      const { data } = await mergeAssets(mergeSource.id, Number(mergeTargetId));
+      showToast(`Merged ${data.mergedSymbol} into ${data.survivingSymbol} — moved ${data.transactionsRepointed} transaction${data.transactionsRepointed === 1 ? '' : 's'}, ${data.holdingsMerged} holding${data.holdingsMerged === 1 ? '' : 's'}, ${data.dividendsRepointed} dividend${data.dividendsRepointed === 1 ? '' : 's'}`, 'success');
+      setMergeSource(null); setMergeTargetId(''); loadData();
+    } catch (err: any) {
+      console.error(err);
+      showToast(err.response?.data?.message || 'Failed to merge assets');
+    } finally {
+      setMergingInto(false);
+    }
   };
 
   const handleDelete = async (id: number) => {
@@ -194,6 +215,30 @@ export default function Assets() {
         </div>
       )}
 
+      {mergeSource && (
+        <div className="bg-white rounded-xl p-6 border border-amber-200 shadow-sm">
+          <h3 className="text-base font-semibold text-slate-800 mb-1">Merge {mergeSource.symbol} into another asset</h3>
+          <p className="text-xs text-slate-500 mb-4">
+            Moves every transaction, holding and dividend from <span className="font-medium">{mergeSource.symbol}</span> onto
+            the asset you choose, records <span className="font-medium">{mergeSource.symbol}</span> as a previous symbol of
+            it (so future imports of {mergeSource.symbol} fold in automatically), then deletes {mergeSource.symbol}. This can't be undone.
+          </p>
+          <div className="flex flex-wrap items-end gap-3">
+            <div className="w-72"><label className="block text-sm font-medium text-slate-700 mb-1">Merge into (surviving asset)</label>
+              <SearchableSelect
+                options={assets.filter(a => a.id !== mergeSource.id).map(a => ({ value: a.id.toString(), label: `${a.symbol} — ${a.name}` }))}
+                value={mergeTargetId === '' ? '' : mergeTargetId.toString()}
+                onChange={v => setMergeTargetId(v ? Number(v) : '')}
+                placeholder="Select the asset to keep..." /></div>
+            <button type="button" onClick={handleMergeInto} disabled={mergingInto || !mergeTargetId}
+              className="px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700 disabled:opacity-50">
+              {mergingInto ? 'Merging…' : 'Merge'}</button>
+            <button type="button" onClick={() => { setMergeSource(null); setMergeTargetId(''); }}
+              className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
+          </div>
+        </div>
+      )}
+
       {showForm && (
         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
           <h3 className="text-base font-semibold text-slate-800 mb-4">{editing ? 'Edit Asset' : 'Add Asset'}</h3>
@@ -212,6 +257,9 @@ export default function Assets() {
             <div><label className="block text-sm font-medium text-slate-700 mb-1">Exchange</label><input type="text" value={form.exchange} onChange={e => setForm({...form, exchange: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="e.g. NYSE, SGX" /></div>
             <div><label className="block text-sm font-medium text-slate-700 mb-1">Current Price</label><input type="number" step="any" value={form.currentPrice || ''} onChange={e => setForm({...form, currentPrice: parseFloat(e.target.value) || 0})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Latest market price" /></div>
             <div><label className="block text-sm font-medium text-slate-700 mb-1">Description</label><input type="text" value={form.description} onChange={e => setForm({...form, description: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Optional" /></div>
+            <div className="lg:col-span-2"><label className="block text-sm font-medium text-slate-700 mb-1">Previous symbols</label>
+              <input type="text" value={form.previousSymbols} onChange={e => setForm({...form, previousSymbols: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm" placeholder="Former tickers, comma-separated (e.g. FB)" />
+              <p className="text-[11px] text-slate-400 mt-1">Old tickers this instrument traded under. An import of one of these folds into this asset instead of creating a duplicate.</p></div>
             <div className="flex items-end gap-2">
               <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">{editing ? 'Update' : 'Save'}</button>
               <button type="button" onClick={() => { setShowForm(false); setEditing(null); }} className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-sm font-medium">Cancel</button>
@@ -266,6 +314,7 @@ export default function Assets() {
                         <RefreshCw size={14} className={refreshingId === a.id ? 'animate-spin' : ''} />
                       </button>
                       <button onClick={() => startEdit(a)} className="text-slate-400 hover:text-indigo-600"><Pencil size={14} /></button>
+                      <button onClick={() => { setMergeSource(a); setMergeTargetId(''); }} title="Merge this asset into another (e.g. an old ticker into its renamed asset)" className="text-slate-400 hover:text-amber-600"><Merge size={14} /></button>
                       <button onClick={() => handleDelete(a.id)} className="text-slate-400 hover:text-red-500"><Trash2 size={14} /></button>
                     </div>
                   </td>

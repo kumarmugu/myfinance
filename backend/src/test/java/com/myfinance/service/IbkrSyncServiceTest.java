@@ -64,6 +64,26 @@ class IbkrSyncServiceTest {
 
     @Test
     @WithMockUser(username = "syncuser")
+    void importOfRenamedTickerFoldsIntoExistingAssetViaAlias() {
+        // User renamed FB → META and recorded FB as a previous symbol. A file still reporting FB must
+        // fold into the existing META asset, not create a duplicate FB asset.
+        Asset meta = assetRepository.save(Asset.builder()
+                .userId(userId).name("Meta Platforms").symbol("META")
+                .assetType(AssetType.GROWTH_EQUITY).currency(Currency.USD)
+                .previousSymbols("FB").build());
+
+        String xml = flex("99001", "FB", "BUY", "5", "200.00", "20220101");
+        var result = syncService.apply(xml, userId, account, owner, null, null, java.util.Set.of());
+
+        assertEquals(1, result.inserted());
+        assertEquals(0, result.assetsCreated(), "no new FB asset — folded into META");
+        assertTrue(assetRepository.findBySymbol("FB").isEmpty(), "no FB asset created");
+        Transaction saved = transactionRepository.findByUserIdAndExternalId(userId, "99001").orElseThrow();
+        assertEquals(meta.getId(), saved.getAsset().getId(), "trade attached to the existing META asset");
+    }
+
+    @Test
+    @WithMockUser(username = "syncuser")
     void classifiesNewTradeAndApplyInsertsThenIsIdempotent() {
         String xml = flex("55501", "AAPL", "BUY", "10", "150.00", "20240115");
 

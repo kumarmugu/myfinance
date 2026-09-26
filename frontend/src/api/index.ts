@@ -71,6 +71,10 @@ export const toggleAssetNetWorth = (id: number, include: boolean) => api.patch<A
 export const deleteAsset = (id: number) => api.delete(`/assets/${id}`);
 // Merge import-created "NAME (TICKER)" duplicate assets back into the canonical ticker.
 export const mergeDuplicateAssets = () => api.post<{ assetsMerged: number; dividendsRepointed: number; transactionsRepointed: number; holdingsRepointed: number; duplicateDividendsRemoved: number }>(`/assets/merge-duplicates`);
+// Fold one asset into another (e.g. an imported FB into the renamed META). Moves txns/holdings/dividends,
+// records the source ticker as a previous symbol of the target, deletes the source.
+export const mergeAssets = (sourceId: number, targetId: number) =>
+  api.post<{ survivingSymbol: string; mergedSymbol: string; transactionsRepointed: number; holdingsMerged: number; dividendsRepointed: number }>(`/assets/merge`, { sourceId, targetId });
 
 // ─── Dashboard ───
 export const getDashboardSummary = (ownerId?: number) => api.get<DashboardSummary>('/dashboard/summary', { params: { ownerId } });

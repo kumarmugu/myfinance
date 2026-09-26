@@ -24,6 +24,7 @@ public class AssetController {
     private final com.myfinance.repository.AssetRepository assetRepository;
     private final TenantContext tenantContext;
     private final PriceFetchService priceFetchService;
+    private final com.myfinance.service.TransactionService transactionService;
 
     @GetMapping
     public List<Asset> getAll() { return assetRepository.findByUserId(tenantContext.getCurrentUserId()); }
@@ -143,6 +144,23 @@ public class AssetController {
         Long uid = tenantContext.getCurrentUserId();
         log.info("Merging duplicate assets for userId={}", uid);
         return ResponseEntity.ok(assetService.mergeDuplicateAssets(uid));
+    }
+
+    /**
+     * Fold one asset into another (e.g. an imported FB into the renamed META). Moves the source's
+     * transactions/holdings/dividends to the target, records the source ticker as a previous symbol of
+     * the target (so future imports of the old ticker resolve to it), deletes the source, and
+     * recomputes realized P/L. Tenant-scoped to the current user.
+     */
+    public record MergeIntoRequest(Long sourceId, Long targetId) {}
+
+    @PostMapping("/merge")
+    public ResponseEntity<AssetService.MergeIntoResult> mergeInto(@RequestBody MergeIntoRequest req) {
+        Long uid = tenantContext.getCurrentUserId();
+        log.info("Merging asset id={} into id={} for userId={}", req.sourceId(), req.targetId(), uid);
+        var result = assetService.mergeInto(uid, req.sourceId(), req.targetId());
+        transactionService.recomputeRealizedPnlForUser(uid);
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/{id}")
