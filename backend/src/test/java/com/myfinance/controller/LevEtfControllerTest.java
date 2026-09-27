@@ -41,6 +41,13 @@ class LevEtfControllerTest {
     @Autowired private LevEtfStrategyRepository strategyRepository;
     @Autowired private BenchmarkIndexRepository benchmarkRepository;
     @Autowired private MarketDataBarRepository barRepository;
+    @Autowired private com.myfinance.repository.LevEtfAlertPrefRepository alertPrefRepository;
+    @Autowired private com.myfinance.repository.LevEtfAlertHistoryRepository alertHistoryRepository;
+    @Autowired private com.myfinance.repository.LevEtfPositionSnapshotRepository positionRepository;
+    @Autowired private com.myfinance.repository.AllocationSnapshotRepository allocationSnapshotRepository;
+    @Autowired private com.myfinance.repository.RebalancePlanRepository rebalancePlanRepository;
+    @Autowired private com.myfinance.repository.LevEtfBacktestRepository backtestRepository;
+    @Autowired private com.myfinance.repository.LevEtfInstrumentRepository instrumentRepository;
     @Autowired private PasswordEncoder passwordEncoder;
 
     private AppUser userA;
@@ -48,8 +55,15 @@ class LevEtfControllerTest {
 
     @BeforeEach
     void setup() {
+        alertHistoryRepository.deleteAll();
+        alertPrefRepository.deleteAll();
+        rebalancePlanRepository.deleteAll();
+        allocationSnapshotRepository.deleteAll();
+        positionRepository.deleteAll();
+        backtestRepository.deleteAll();
         barRepository.deleteAll();
         strategyRepository.deleteAll();
+        instrumentRepository.deleteAll();
         benchmarkRepository.deleteAll();
 
         userA = user("levUserA", "leva@test.com");
@@ -161,5 +175,208 @@ class LevEtfControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(21))) // 0..100 step 5
                 .andExpect(jsonPath("$[0].drawdownPercent", is(0)));
+    }
+
+    // ─────────── CRUD coverage ───────────
+
+    @Test
+    @WithMockUser(username = "levUserA")
+    void benchmarkCrud_roundTrips() throws Exception {
+        String created = mockMvc.perform(post("/api/lev-etf/benchmarks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"symbol\":\"^NDX\",\"name\":\"Nasdaq 100\",\"currency\":\"USD\",\"enabled\":true}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.symbol", is("^NDX")))
+                .andReturn().getResponse().getContentAsString();
+        Long id = objectMapper.readTree(created).get("id").asLong();
+
+        mockMvc.perform(get("/api/lev-etf/benchmarks")).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))));
+
+        mockMvc.perform(put("/api/lev-etf/benchmarks/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"symbol\":\"^NDX\",\"name\":\"NDX renamed\",\"currency\":\"USD\",\"enabled\":true}"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.name", is("NDX renamed")));
+
+        mockMvc.perform(delete("/api/lev-etf/benchmarks/" + id)).andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithMockUser(username = "levUserA")
+    void instrumentCrud_roundTrips() throws Exception {
+        String created = mockMvc.perform(post("/api/lev-etf/instruments")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"symbol\":\"TQQQ\",\"name\":\"3x Nasdaq\",\"leverageMultiple\":3,\"tradingCurrency\":\"USD\",\"enabled\":true}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.symbol", is("TQQQ")))
+                .andReturn().getResponse().getContentAsString();
+        Long id = objectMapper.readTree(created).get("id").asLong();
+
+        mockMvc.perform(get("/api/lev-etf/instruments")).andExpect(status().isOk());
+        mockMvc.perform(put("/api/lev-etf/instruments/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"symbol\":\"TQQQ\",\"name\":\"3x Nasdaq (edit)\",\"leverageMultiple\":3,\"tradingCurrency\":\"USD\",\"enabled\":true}"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.name", is("3x Nasdaq (edit)")));
+        mockMvc.perform(delete("/api/lev-etf/instruments/" + id)).andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithMockUser(username = "levUserA")
+    void strategyCreateUpdate_bumpsRuleVersionOnRuleChange() throws Exception {
+        String created = mockMvc.perform(post("/api/lev-etf/strategies")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Wizard S\",\"initialAllocationPercent\":10,\"drawdownMultiplier\":0.5," +
+                                "\"minimumAllocationPercent\":10,\"maximumAllocationPercent\":50,\"maximumAllocationEnabled\":true," +
+                                "\"allocationMode\":\"INITIAL_PLUS_HALF_DRAWDOWN\",\"referenceHighMode\":\"ALL_TIME\"," +
+                                "\"portfolioScope\":\"MANUAL\",\"scopeManualValue\":100000,\"rebalanceTolerancePercent\":1}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.ruleVersion", is(1)))
+                .andReturn().getResponse().getContentAsString();
+        Long id = objectMapper.readTree(created).get("id").asLong();
+
+        mockMvc.perform(put("/api/lev-etf/strategies/" + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Wizard S\",\"initialAllocationPercent\":10,\"drawdownMultiplier\":1.0," +
+                                "\"minimumAllocationPercent\":10,\"maximumAllocationPercent\":50,\"maximumAllocationEnabled\":true," +
+                                "\"allocationMode\":\"INITIAL_PLUS_HALF_DRAWDOWN\",\"referenceHighMode\":\"ALL_TIME\"," +
+                                "\"portfolioScope\":\"MANUAL\",\"scopeManualValue\":100000,\"rebalanceTolerancePercent\":1}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.ruleVersion", is(2)));
+
+        mockMvc.perform(delete("/api/lev-etf/strategies/" + id)).andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithMockUser(username = "levUserA")
+    void positions_addListDelete_andDeriveBaseValue() throws Exception {
+        LevEtfStrategy s = strategyFor(userA, null);
+        String created = mockMvc.perform(post("/api/lev-etf/strategies/" + s.getId() + "/positions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"quantity\":10,\"marketPrice\":50,\"marketValue\":500,\"tradingCurrency\":\"SGD\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.baseCurrencyValue", notNullValue()))
+                .andReturn().getResponse().getContentAsString();
+        Long pid = objectMapper.readTree(created).get("id").asLong();
+        mockMvc.perform(get("/api/lev-etf/strategies/" + s.getId() + "/positions"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
+        mockMvc.perform(delete("/api/lev-etf/positions/" + pid)).andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithMockUser(username = "levUserA")
+    void rebalancePlan_blocksWithoutEtfPrice() throws Exception {
+        BenchmarkIndex bm = benchmarkFor(userA);
+        LevEtfStrategy s = strategyFor(userA, bm.getId());
+        s.setPortfolioScope(com.myfinance.model.enums.levetf.PortfolioScopeType.MANUAL);
+        s.setScopeManualValue(new BigDecimal("100000"));
+        strategyRepository.save(s);
+        mockMvc.perform(post("/api/lev-etf/market-data/BENCHMARK/" + bm.getId() + "/manual-bar")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"date\":\"2026-01-15\",\"close\":60,\"currency\":\"USD\"}")).andExpect(status().isOk());
+
+        // Without an ETF price the rebalance is blocked → generate 400 (no fabricated trade).
+        mockMvc.perform(post("/api/lev-etf/strategies/" + s.getId() + "/rebalance-plan"))
+                .andExpect(status().isBadRequest());
+
+        mockMvc.perform(get("/api/lev-etf/rebalance-plans").param("strategyId", s.getId().toString()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "levUserA")
+    void alertPrefs_and_notifications_crud() throws Exception {
+        String created = mockMvc.perform(post("/api/lev-etf/alert-prefs")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"trigger\":\"DRAWDOWN_THRESHOLD\",\"threshold\":30,\"inAppEnabled\":true,\"emailEnabled\":false}"))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+        Long id = objectMapper.readTree(created).get("id").asLong();
+        mockMvc.perform(get("/api/lev-etf/alert-prefs")).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))));
+
+        mockMvc.perform(get("/api/lev-etf/notifications")).andExpect(status().isOk());
+        mockMvc.perform(get("/api/lev-etf/notifications/unread-count"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.count", notNullValue()));
+        mockMvc.perform(post("/api/lev-etf/notifications/read-all")).andExpect(status().isNoContent());
+
+        mockMvc.perform(delete("/api/lev-etf/alert-prefs/" + id)).andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithMockUser(username = "levUserA")
+    void calculate_firesDrawdownAlert_whenThresholdMet() throws Exception {
+        BenchmarkIndex bm = benchmarkFor(userA);
+        LevEtfStrategy s = strategyFor(userA, bm.getId());
+        mockMvc.perform(post("/api/lev-etf/alert-prefs")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"strategyId\":" + s.getId() + ",\"trigger\":\"DRAWDOWN_THRESHOLD\",\"threshold\":30,\"inAppEnabled\":true,\"emailEnabled\":false}"))
+                .andExpect(status().isCreated());
+        // Bar at 60 vs ref high 100 → 40% drawdown ≥ 30 threshold → alert fires.
+        mockMvc.perform(post("/api/lev-etf/market-data/BENCHMARK/" + bm.getId() + "/manual-bar")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"date\":\"2026-01-15\",\"close\":60,\"currency\":\"USD\"}")).andExpect(status().isOk());
+        mockMvc.perform(post("/api/lev-etf/strategies/" + s.getId() + "/calculate")).andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/lev-etf/notifications"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))));
+    }
+
+    @Test
+    @WithMockUser(username = "levUserA")
+    void backtest_blocksWithoutHistory_andListsRuns() throws Exception {
+        LevEtfStrategy s = strategyFor(userA, null);
+        String body = "{\"strategyId\":" + s.getId() + ",\"initialPortfolioValue\":100000,\"rebalanceFrequency\":\"MONTHLY\"}";
+        mockMvc.perform(post("/api/lev-etf/backtests")
+                        .contentType(MediaType.APPLICATION_JSON).content(body))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("FAILED")))
+                .andExpect(jsonPath("$.warnings", not(emptyOrNullString())));
+        mockMvc.perform(get("/api/lev-etf/backtests")).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))));
+    }
+
+    @Test
+    @WithMockUser(username = "levUserA")
+    void backtest_runsOverManualHistory() throws Exception {
+        BenchmarkIndex bm = benchmarkFor(userA);
+        String etfCreated = mockMvc.perform(post("/api/lev-etf/instruments")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"symbol\":\"TQQQ\",\"name\":\"3x\",\"leverageMultiple\":3,\"tradingCurrency\":\"USD\",\"enabled\":true}"))
+                .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
+        Long etfId = objectMapper.readTree(etfCreated).get("id").asLong();
+        LevEtfStrategy s = strategyFor(userA, bm.getId());
+        s.setEtfInstrumentId(etfId);
+        strategyRepository.save(s);
+
+        for (String d : new String[]{"2026-01-05", "2026-01-06", "2026-01-07"}) {
+            mockMvc.perform(post("/api/lev-etf/market-data/BENCHMARK/" + bm.getId() + "/manual-bar")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"date\":\"" + d + "\",\"close\":90,\"currency\":\"USD\"}")).andExpect(status().isOk());
+            mockMvc.perform(post("/api/lev-etf/market-data/ETF/" + etfId + "/manual-bar")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"date\":\"" + d + "\",\"close\":25,\"currency\":\"USD\"}")).andExpect(status().isOk());
+        }
+        String body = "{\"strategyId\":" + s.getId() + ",\"benchmarkIndexId\":" + bm.getId()
+                + ",\"etfInstrumentId\":" + etfId + ",\"initialPortfolioValue\":100000,\"rebalanceFrequency\":\"DAILY\"}";
+        String run = mockMvc.perform(post("/api/lev-etf/backtests")
+                        .contentType(MediaType.APPLICATION_JSON).content(body))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", is("DONE")))
+                .andReturn().getResponse().getContentAsString();
+        Long btId = objectMapper.readTree(run).get("id").asLong();
+        mockMvc.perform(get("/api/lev-etf/backtests/" + btId)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.resultsJson", not(emptyOrNullString())));
+    }
+
+    @Test
+    @WithMockUser(username = "levUserA")
+    void marketDataHistory_readable_afterManualBar() throws Exception {
+        BenchmarkIndex bm = benchmarkFor(userA);
+        mockMvc.perform(post("/api/lev-etf/market-data/BENCHMARK/" + bm.getId() + "/manual-bar")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"date\":\"2026-01-10\",\"close\":123.45,\"currency\":\"USD\"}")).andExpect(status().isOk());
+        mockMvc.perform(get("/api/lev-etf/market-data/BENCHMARK/" + bm.getId()))
+                .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
     }
 }

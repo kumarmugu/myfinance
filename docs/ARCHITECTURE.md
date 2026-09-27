@@ -692,3 +692,62 @@ myfinance/
 | **v2.7** | Per-user base/display currency, user-created currencies, no hardcoded FX | Done |
 | **v2.8** | Interactive in-app User Guide + contextual help; docs realigned to implementation | Done |
 | **v3.0** | Data import from CSV/Excel, automated price updates | Planned |
+| **v3.1** | Leveraged ETF Allocation Planner (drawdown-scaled allocation, benchmark monitor, rebalance advisory, backtesting, in-app alerts) | Done |
+
+---
+
+## 16. Leveraged ETF Allocation Planner
+
+A per-user, feature-flagged module (`LEV_ETF`) that helps a user decide how much of a portfolio to allocate to a leveraged ETF as a function of the *underlying benchmark's* drawdown from a reference high. It is **advisory only** — it never places a broker order; execution is user-recorded.
+
+### 16.1 Feature flag & routing
+- Backend: `AppUser.enabledFeatures` CSV gains the `LEV_ETF` key (empty CSV = all features enabled, per convention).
+- Frontend: nav item **Investments → Leveraged ETF** and route `/lev-etf`, gated by `useAuth().hasFeature('LEV_ETF')`; admins are redirected (asset pages are user-facing only).
+
+### 16.2 Data model (additive `lev_etf_*` tables)
+All tables are new and additive (safe under `ddl-auto: update`); every table carries `userId`; money/percent/rate fields are `BigDecimal`.
+
+| Entity | Table | Purpose |
+|--------|-------|---------|
+| `BenchmarkIndex` | `lev_etf_benchmarks` | The index (or ETF proxy) whose drawdown drives a strategy. |
+| `LevEtfInstrument` | `lev_etf_instruments` | The traded leveraged ETF (own price series; leverage multiple explicit, never inferred). |
+| `LevEtfStrategy` | `lev_etf_strategies` | Allocation rule + caps, reference-high method, portfolio scope, rebalance settings. `@Version` for optimistic locking; `ruleVersion` bumped on rule-affecting edits. |
+| `MarketDataBar` | `lev_etf_market_bars` | Daily OHLCV history per instrument; unique on (userId, type, instrumentId, date); `dataQuality` flags OK/STALE/INVALID/MISSING. |
+| `LevEtfPositionSnapshot` | `lev_etf_positions` | Recorded ETF position (manual/import/broker); `externalId` for idempotent re-sync. |
+| `AllocationSnapshot` | `lev_etf_allocation_snapshots` | Immutable record of one calculation (inputs, outputs, `ruleVersion`, timestamps, `blockedReason`). |
+| `RebalancePlan` | `lev_etf_rebalance_plans` | Advisory proposal + decision trail; pins snapshot + ruleVersion; `@Version`. |
+| `LevEtfAlertPref` / `LevEtfAlertHistory` | `lev_etf_alert_prefs` / `lev_etf_alert_history` | Per-user alert prefs and fired, deduped in-app notifications. |
+| `LevEtfBacktest` | `lev_etf_backtests` | Backtest config + results (JSON) + explicit warnings. |
+
+### 16.3 Calculation engine (pure, testable)
+`service/levetf/AllocationCalculationService` is a pure `@Service` (no JPA/HTTP): `BigDecimal` only (PCT scale 6, MONEY scale 2, HALF_UP).
+- **Drawdown** = max(0, (referenceHigh − currentIndex) / referenceHigh × 100). Index above the high → 0.
+- **Target allocation** modes: `INITIAL_PLUS_HALF_DRAWDOWN` (raw = drawdown × multiplier, floored at the initial %), `DRAWDOWN_ONLY_WITH_MIN` (floored at the minimum %), `LADDER` (highest matching threshold row). Optional max cap.
+- **Reference high** modes: `ALL_TIME`, `ROLLING_52_WEEK`, `CUSTOM_START_DATE`, `MANUAL` — computed only from OK-quality closes and only up to the evaluation date (no look-ahead).
+- **Rebalance**: target vs current ETF value, BUY/REDUCE/NO_ACTION vs tolerance, quantity via latest ETF price + FX (`CurrencyConversionService`), fractional/lot rounding, residual.
+- **Safety**: missing/stale/invalid/non-positive prices, missing FX, or zero/negative portfolio → the result is **blocked with a reason**; a value is never silently replaced with zero.
+
+### 16.4 Orchestration & services
+- `LevEtfPlannerService.computeAndSnapshot` loads the latest stored bars, resolves the reference high, runs the engine, resolves the portfolio scope value and ETF value (FX-converted to base), computes the rebalance, and persists an **immutable** `AllocationSnapshot` stamped with the strategy's `ruleVersion`.
+- `LevEtfMarketDataService` upserts daily history (idempotent) via `PriceFetchService.fetchDailyHistory` (Yahoo `/chart`), supports manual bar entry for instruments the free feeds don't cover, and flags STALE by `app.levetf.stale-after-hours`.
+- `RebalancePlanService` generates/approves/rejects/records-execution/cancels plans (advisory; audited via `AuditService`).
+- `LevEtfAlertService` persists deduped in-app alerts (primary channel) and optionally emails via `LevEtfSmtpEmailSender` (only when `app.mail.enabled=true`).
+- `LevEtfBacktestService` runs a chronological, no-look-ahead simulation over the ETF's own stored price series (path-dependent; fees/slippage applied only when configured; results labelled a simulation, not a prediction).
+- `LevEtfScheduler` is an **opt-in** Spring `@Scheduled` refresh, disabled by default (`app.levetf.scheduler.enabled=false`) — no AWS/EventBridge.
+
+### 16.5 API surface (all under `/api/lev-etf/**`, tenant-scoped)
+`benchmarks`, `instruments`, `strategies` (+`/calculate`, `/snapshots`, `/positions`, `/rebalance-plan`), `market-data/{type}/{id}` (+`/refresh`, `/manual-bar`), `rebalance-plans/{id}` (`/approve`, `/reject`, `/execute`), `backtests`, `alert-prefs`, `notifications` (+`/unread-count`, `/read`, `/read-all`), `preview/allocation-curve`. Every read/mutation is scoped to the authenticated user; creates stamp `userId` from `TenantContext` and never trust a body `userId`; updates/deletes verify ownership.
+
+### 16.6 Config variables
+| Key | Default | Purpose |
+|-----|---------|---------|
+| `app.levetf.stale-after-hours` | `36` | Age after which the latest bar is flagged STALE (blocks calculation). |
+| `app.levetf.scheduler.enabled` | `false` | Opt-in scheduled market-data refresh. |
+| `app.levetf.scheduler.cron` | `0 30 6 * * *` | Refresh cadence when enabled. |
+| `app.mail.enabled` | `false` | Optional alert email; in-app notifications always work regardless. |
+| `app.mail.from` + `spring.mail.*` | — | SMTP settings when email is enabled. |
+
+### 16.7 Known limitations
+- Free price feeds don't quote most raw indices — use an ETF proxy or manual bars; index data is never fabricated.
+- The scheduler and email are inert unless explicitly enabled by the operator.
+- Backtests are historical simulations of the ETF's own series, not forecasts.
