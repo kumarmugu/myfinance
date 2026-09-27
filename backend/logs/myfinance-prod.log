@@ -1833,3 +1833,15 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: /Users/mugu/Docu
 2026-09-27 22:48:17 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 10.415 seconds (process running for 10.759)
 2026-09-27 22:48:59 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
 2026-09-27 22:49:01 [http-nio-8080-exec-3] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 1882 ms
+2026-09-27 22:49:29 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (13ms)
+2026-09-27 22:49:29 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (8ms)
+2026-09-27 22:50:47 [http-nio-8080-exec-6] INFO  c.m.controller.AssetController - Updating asset id=139
+2026-09-27 22:50:47 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Updated Asset id=139 symbol=0P00000D6I.F
+2026-09-27 22:50:47 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/139 → 200 (62ms)
+2026-09-27 22:50:47 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (6ms)
+2026-09-27 22:50:49 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Refreshed price for asset id=139 symbol=0P00000D6I.F -> 95.51
+2026-09-27 22:50:49 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/139/refresh-price → 200 (225ms)
+2026-09-27 22:50:49 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-27 22:51:31 [http-nio-8080-exec-10] INFO  c.m.controller.AssetController - Refresh-all prices for user=2: updated=9, skipped=0
+2026-09-27 22:51:31 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/refresh-prices → 200 (303ms)
+2026-09-27 22:51:31 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (5ms)
