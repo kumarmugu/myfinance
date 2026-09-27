@@ -105,7 +105,8 @@ public class TigerStatementParser {
             for (int fc : feeCols) fees = fees.add(num(cell(f, fc)).abs());
             if (fees.signum() == 0) fees = null;
 
-            boolean buy = direction(activity);
+            BigDecimal amount = cols.containsKey("amount") ? num(cell(f, cols.get("amount"))) : null;
+            boolean buy = direction(activity, qty, amount);
             String ccy = (currency == null || currency.isBlank()) ? "USD" : currency.trim().toUpperCase();
             BigDecimal fxToBase = resolveFx(ccy, baseCurrency, date, forexRates, baseTable);
 
@@ -113,7 +114,64 @@ public class TigerStatementParser {
                     null, symbol, "STK",
                     buy, qty.abs(), price.abs(), ccy, date, fees, fxToBase));
         }
-        return new IbkrTradeParser.FlexTrades(trades, skipped, new ArrayList<>(), new ArrayList<>());
+        List<IbkrTradeParser.ParsedCorporateAction> corporateActions = readCorporateActions(rows);
+        return new IbkrTradeParser.FlexTrades(trades, skipped, corporateActions, new ArrayList<>());
+    }
+
+    /**
+     * Read the {@code Corporate Actions} section for stock splits. Tiger lists each split as two DATA
+     * rows (a negative "remove old shares" and a positive "add new shares"), both with a Description
+     * like {@code "1 Split to 10"} — meaning 1 old share becomes 10 new (a 10-for-1 split). Columns:
+     * 4=Symbol, 5=Date, 6=Currency, 7=Description, 8=Quantity, 9=Amount. We collapse the paired rows
+     * into a single SPLIT per symbol+date. The ratio (numerator:denominator) is best-effort; the
+     * import flow surfaces the split for the user to confirm the ratio before applying.
+     */
+    private List<IbkrTradeParser.ParsedCorporateAction> readCorporateActions(List<List<String>> rows) {
+        java.util.LinkedHashMap<String, IbkrTradeParser.ParsedCorporateAction> byKey = new java.util.LinkedHashMap<>();
+        for (List<String> f : rows) {
+            if (f.size() < 8) continue;
+            if (!"Corporate Actions".equals(trim(f.get(0)))) continue;
+            if (!"DATA".equalsIgnoreCase(trim(f.get(3)))) continue;
+
+            String symbol = extractTicker(cell(f, 4));
+            if (symbol == null || symbol.isBlank()) continue;
+            LocalDate date = parseCaDate(cell(f, 5));
+            String description = trim(cell(f, 7));
+            if (!description.toLowerCase().contains("split")) continue; // only handle splits here
+
+            String key = symbol + "|" + date + "|" + description;
+            byKey.computeIfAbsent(key, k -> new IbkrTradeParser.ParsedCorporateAction(
+                    "SPLIT", symbol, null, splitRatioFromDescription(description), date, description));
+        }
+        return new ArrayList<>(byKey.values());
+    }
+
+    /**
+     * Parse a Tiger split description into a factor (new shares per old share). Tiger phrases it as
+     * "{old} Split to {new}", e.g. "1 Split to 10" → 10, "1 Split to 2" → 2. Returns null if it can't
+     * be parsed (the import UI then asks the user for the ratio).
+     */
+    private BigDecimal splitRatioFromDescription(String desc) {
+        if (desc == null) return null;
+        var m = java.util.regex.Pattern.compile("(\\d+(?:\\.\\d+)?)\\s*split\\s*to\\s*(\\d+(?:\\.\\d+)?)",
+                java.util.regex.Pattern.CASE_INSENSITIVE).matcher(desc);
+        if (m.find()) {
+            BigDecimal oldShares = new BigDecimal(m.group(1));
+            BigDecimal newShares = new BigDecimal(m.group(2));
+            if (oldShares.signum() != 0) return newShares.divide(oldShares, 8, java.math.RoundingMode.HALF_UP);
+        }
+        return null;
+    }
+
+    /** Corporate-action date cell — a plain ISO date ("2025-11-17"), unlike the wrapped Trade Time. */
+    private LocalDate parseCaDate(String s) {
+        if (s == null || s.isBlank()) return null;
+        var m = java.util.regex.Pattern.compile("(\\d{4}-\\d{2}-\\d{2})").matcher(s.trim());
+        if (m.find()) {
+            try { return LocalDate.parse(m.group(1), DateTimeFormatter.ISO_LOCAL_DATE); }
+            catch (Exception e) { return null; }
+        }
+        return null;
     }
 
     // ─────────────────────────── column mapping ───────────────────────────
@@ -147,17 +205,26 @@ public class TigerStatementParser {
     }
 
     /**
-     * BUY vs SELL. Prefer an explicit Activity Type ("Buy"/"Sell"). Tiger stock statements often leave
-     * it blank for the common case, which in this export is a BUY (the per-trade Amount is the positive
-     * gross cost). We only treat a row as a SELL on an explicit sell indicator — never purely on the
-     * Amount sign — because the sign convention is not reliable across statement variants and guessing
-     * wrong produces phantom sells that fail with "Cannot sell more than held".
+     * BUY vs SELL. The Activity Type varies across Tiger statement sections: the stock section uses
+     * "Open" (buy) / "Close" (sell), while fund and older exports use "Buy" / "Sell". A SELL is also
+     * unambiguously signalled by a negative Quantity (and negative Amount) on the row. We treat a row
+     * as a SELL when the activity says so OR when the signed quantity is negative; everything else is a
+     * BUY. Using the sign only as a tiebreaker (not the sole signal for ambiguous blanks) avoids the
+     * phantom-sell problem that a pure amount-sign heuristic caused.
+     *
+     * @param signedQty the raw Quantity as parsed (negative for sells); may be null
+     * @param signedAmount the raw Amount as parsed (negative for sells in this export); may be null
      */
-    private boolean direction(String activity) {
+    private boolean direction(String activity, BigDecimal signedQty, BigDecimal signedAmount) {
         if (activity != null) {
             String a = activity.trim().toLowerCase();
-            if (a.startsWith("sell") || a.contains("sold")) return false;
+            if (a.startsWith("sell") || a.contains("sold") || a.startsWith("close")) return false;
+            if (a.startsWith("buy") || a.startsWith("open")) return true;
         }
+        // No decisive activity label: fall back to the sign. A negative quantity (or, if quantity is
+        // zero/absent, a negative amount) means shares left the account → SELL.
+        if (signedQty != null && signedQty.signum() < 0) return false;
+        if ((signedQty == null || signedQty.signum() == 0) && signedAmount != null && signedAmount.signum() < 0) return false;
         return true;
     }
 

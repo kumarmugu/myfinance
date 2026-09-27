@@ -104,6 +104,64 @@ class TigerStatementParserTest {
     }
 
     @Test
+    void detectsSellFromCloseActivityAndNegativeQuantity() {
+        // Real Tiger stock section uses Open (buy) / Close (sell) with a negative qty & amount on sells.
+        String stmt = String.join("\n",
+            "Activity Statement,,,,2025-01-01 - 2025-12-31",
+            "Account Information,,,,Account,Address,Account Category,Base Currency",
+            "Account Information,,,DATA,50439557,ADDR,Cash,USD",
+            "Trades,,,,Symbol,Market,Exchange,Activity Type,Quantity,Trade Price,Amount,Commission,Platform Fee,Settlement Fee,GST,Trade Time,Settle Date,Currency",
+            "Trades,Stock,,DATA,Exelixis (EXEL),US,NASDAQ,Open,50,34.00000,\"1,700.00\",-0.99,-1.00,-0.15,-0.19,\"2025-10-20\n11:01:07, US/Eastern\",2025-10-21,USD",
+            "Trades,Stock,,DATA,Exelixis (EXEL),US,NASDAQ,Close,-25,40.00000,\"-1,000.00\",-0.99,-1.00,-0.08,-0.19,\"2025-10-27\n15:54:50, US/Eastern\",2025-10-28,USD");
+        FlexTrades result = parser.parse(stmt);
+
+        assertEquals(2, result.trades().size());
+        ParsedTrade open = result.trades().get(0);
+        assertEquals("EXEL", open.symbol());
+        assertTrue(open.buy(), "Open → BUY");
+        assertEquals(0, new BigDecimal("50").compareTo(open.quantity()));
+
+        ParsedTrade close = result.trades().get(1);
+        assertFalse(close.buy(), "Close (negative qty) → SELL");
+        assertEquals(0, new BigDecimal("25").compareTo(close.quantity()), "quantity is stored absolute");
+    }
+
+    @Test
+    void detectsSellFromExplicitSellActivityInFundSection() {
+        String stmt = String.join("\n",
+            "Activity Statement,,,,2025-01-01 - 2025-12-31",
+            "Account Information,,,,Account,Address,Account Category,Base Currency",
+            "Account Information,,,DATA,50439557,ADDR,Cash,USD",
+            "Trades,,,,Symbol,Market,Exchange,Activity Type,Quantity,Trade Price,Amount,Commission,Platform Fee,Settlement Fee,GST,Trade Time,Settle Date,Currency",
+            "Trades,Stock,,DATA,FULLERTON USD CASH (SGXZ99103178.USD),SG,,Sell,-835.861,1.12963,-944.21,0.00,0.00,0.00,0.00,\"2025-02-10\n21:02:47, GMT+8\",2025-02-11,USD");
+        FlexTrades result = parser.parse(stmt);
+        assertEquals(1, result.trades().size());
+        assertFalse(result.trades().get(0).buy(), "explicit Sell → SELL");
+        assertEquals("SGXZ99103178", result.trades().get(0).symbol());
+    }
+
+    @Test
+    void parsesStockSplitsFromCorporateActionsSection() {
+        String stmt = String.join("\n",
+            "Activity Statement,,,,2025-01-01 - 2025-12-31",
+            "Corporate Actions,,,,Symbol,Date,Currency,Description,Quantity,Amount",
+            "Corporate Actions,,,DATA,Netflix (NFLX),2025-11-17,USD,1 Split to 10,-1,",
+            "Corporate Actions,,,DATA,Netflix (NFLX),2025-11-17,USD,1 Split to 10,10,",
+            "Corporate Actions,,,DATA,ProShares UltraPro QQQ (TQQQ),2025-11-20,USD,1 Split to 2,-80,",
+            "Corporate Actions,,,DATA,ProShares UltraPro QQQ (TQQQ),2025-11-20,USD,1 Split to 2,160,");
+        FlexTrades result = parser.parse(stmt);
+
+        // Paired remove/add rows collapse into one SPLIT per symbol+date.
+        assertEquals(2, result.corporateActions().size(), "two distinct splits (NFLX, TQQQ)");
+        var nflx = result.corporateActions().stream().filter(c -> c.symbol().equals("NFLX")).findFirst().orElseThrow();
+        assertEquals("SPLIT", nflx.kind());
+        assertEquals(LocalDate.of(2025, 11, 17), nflx.date());
+        assertEquals(0, new BigDecimal("10").compareTo(nflx.ratio()), "1 Split to 10 → factor 10");
+        var tqqq = result.corporateActions().stream().filter(c -> c.symbol().equals("TQQQ")).findFirst().orElseThrow();
+        assertEquals(0, new BigDecimal("2").compareTo(tqqq.ratio()), "1 Split to 2 → factor 2");
+    }
+
+    @Test
     void looksLikeTigerStatementDetectsTheFormat() {
         assertTrue(TigerStatementParser.looksLikeTigerStatement(STATEMENT));
         assertFalse(TigerStatementParser.looksLikeTigerStatement("<FlexQueryResponse></FlexQueryResponse>"));

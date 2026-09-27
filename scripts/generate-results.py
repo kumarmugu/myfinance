@@ -107,6 +107,15 @@ fe_suites = [
         {"name": "rejects zero or negative values", "status": "pass", "duration": "1ms"},
         {"name": "rejects non-numeric / malformed input", "status": "pass", "duration": "1ms"},
     ]},
+    {"name": "LeveragedEtf", "type": "frontend", "tests": [
+        {"name": "renders the header and advisory-only note", "status": "pass", "duration": "20ms"},
+        {"name": "renders all seven tabs", "status": "pass", "duration": "10ms"},
+        {"name": "loads shared reference data on mount", "status": "pass", "duration": "12ms"},
+        {"name": "switches to the Notifications tab and loads notifications + alert prefs", "status": "pass", "duration": "9ms"},
+        {"name": "switches to the Backtesting tab and loads past runs", "status": "pass", "duration": "8ms"},
+        {"name": "switches to the Strategy tab and fetches the live allocation-curve preview", "status": "pass", "duration": "9ms"},
+        {"name": "shows an empty-state on the Index Monitor tab when there are no benchmarks", "status": "pass", "duration": "7ms"},
+    ]},
 ]
 
 suites.extend(fe_suites)
