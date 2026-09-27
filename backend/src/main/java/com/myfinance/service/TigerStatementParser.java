@@ -87,8 +87,10 @@ public class TigerStatementParser {
             if (!"DATA".equalsIgnoreCase(marker)) continue; // skip TOTAL rows
             if (cols == null) continue;                     // no header seen yet
 
-            String symbol = cell(f, cols.getOrDefault("symbol", 4));
-            if (symbol == null || symbol.isBlank()) continue; // Tiger's duplicate blank-symbol row
+            String rawSymbol = cell(f, cols.getOrDefault("symbol", 4));
+            if (rawSymbol == null || rawSymbol.isBlank()) continue; // Tiger's duplicate blank-symbol row
+            String symbol = extractTicker(rawSymbol);
+            if (symbol == null || symbol.isBlank()) continue;
 
             BigDecimal qty = num(cell(f, cols.get("qty")));
             if (qty.signum() == 0) continue;
@@ -108,7 +110,7 @@ public class TigerStatementParser {
             BigDecimal fxToBase = resolveFx(ccy, baseCurrency, date, forexRates, baseTable);
 
             trades.add(new IbkrTradeParser.ParsedTrade(
-                    null, symbol.trim().toUpperCase(), "STK",
+                    null, symbol, "STK",
                     buy, qty.abs(), price.abs(), ccy, date, fees, fxToBase));
         }
         return new IbkrTradeParser.FlexTrades(trades, skipped, new ArrayList<>(), new ArrayList<>());
@@ -290,6 +292,20 @@ public class TigerStatementParser {
     }
 
     // ─────────────────────────── helpers ───────────────────────────
+
+    /**
+     * Extract the ticker from a Tiger Symbol cell that may be a bare ticker ("VOO") or a descriptive
+     * form with the ticker in trailing parentheses ("VANGUARD S&amp;P 500 ETF (VOO)" → "VOO"). Mirrors
+     * the dividend importer so both trade and dividend imports resolve to the same asset symbol.
+     */
+    private String extractTicker(String cell) {
+        if (cell == null) return null;
+        String s = cell.trim();
+        if (s.isEmpty()) return null;
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("\\(([A-Za-z0-9.\\-]{1,15})\\)\\s*$").matcher(s);
+        if (m.find()) return m.group(1).toUpperCase();
+        return s.toUpperCase();
+    }
 
     private String cell(List<String> row, Integer i) {
         if (i == null || i < 0 || i >= row.size()) return null;

@@ -62,6 +62,22 @@ app:
   # KMS-ready: in a cloud deployment, source this value from KMS/Secrets Manager into the env var.
   crypto:
     master-key: ${CREDENTIAL_MASTER_KEY:}
+  # Leveraged ETF Allocation Planner.
+  # stale-after-hours: a latest market bar older than this is flagged STALE and blocks calculations.
+  # scheduler.enabled=false (default) means NO background timer runs — history is refreshed on demand
+  # from the UI. There is no AWS/EventBridge; this is an opt-in Spring @Scheduled task. When enabled,
+  # scheduler.cron controls the cadence (default 06:30 daily).
+  levetf:
+    stale-after-hours: ${LEVETF_STALE_AFTER_HOURS:36}
+    scheduler:
+      enabled: ${LEVETF_SCHEDULER_ENABLED:false}
+      cron: ${LEVETF_SCHEDULER_CRON:0 30 6 * * *}
+  # Optional email for Leveraged ETF alerts. enabled=false (default) = in-app notifications only, no SMTP
+  # needed. To also send email, set app.mail.enabled=true and the standard spring.mail.* properties
+  # (host/port/username/password) via env/secret store. In-app alerts always work regardless.
+  mail:
+    enabled: ${MAIL_ENABLED:false}
+    from: ${MAIL_FROM:no-reply@myfinance.local}
 
 # OpenAPI / Swagger
 springdoc:

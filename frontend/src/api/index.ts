@@ -318,3 +318,77 @@ export const scanReceipt = (file: File) => {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
+
+// ─── Leveraged ETF Allocation Planner (/api/lev-etf) ───
+import type {
+  BenchmarkIndex, LevEtfInstrument, LevEtfStrategy, MarketDataBar, LevEtfPosition,
+  AllocationSnapshot, RebalancePlan, LevEtfAlertPref, LevEtfNotification, LevEtfBacktest,
+  MarketRefreshResult, LevInstrumentType,
+} from '../types';
+
+// Benchmarks
+export const levGetBenchmarks = () => api.get<BenchmarkIndex[]>('/lev-etf/benchmarks');
+export const levCreateBenchmark = (b: Partial<BenchmarkIndex>) => api.post<BenchmarkIndex>('/lev-etf/benchmarks', b);
+export const levUpdateBenchmark = (id: number, b: Partial<BenchmarkIndex>) => api.put<BenchmarkIndex>(`/lev-etf/benchmarks/${id}`, b);
+export const levDeleteBenchmark = (id: number) => api.delete(`/lev-etf/benchmarks/${id}`);
+
+// ETF instruments
+export const levGetInstruments = () => api.get<LevEtfInstrument[]>('/lev-etf/instruments');
+export const levCreateInstrument = (i: Partial<LevEtfInstrument>) => api.post<LevEtfInstrument>('/lev-etf/instruments', i);
+export const levUpdateInstrument = (id: number, i: Partial<LevEtfInstrument>) => api.put<LevEtfInstrument>(`/lev-etf/instruments/${id}`, i);
+export const levDeleteInstrument = (id: number) => api.delete(`/lev-etf/instruments/${id}`);
+
+// Strategies
+export const levGetStrategies = () => api.get<LevEtfStrategy[]>('/lev-etf/strategies');
+export const levGetStrategy = (id: number) => api.get<LevEtfStrategy>(`/lev-etf/strategies/${id}`);
+export const levCreateStrategy = (s: Partial<LevEtfStrategy>) => api.post<LevEtfStrategy>('/lev-etf/strategies', s);
+export const levUpdateStrategy = (id: number, s: Partial<LevEtfStrategy>) => api.put<LevEtfStrategy>(`/lev-etf/strategies/${id}`, s);
+export const levDeleteStrategy = (id: number) => api.delete(`/lev-etf/strategies/${id}`);
+
+// Market data
+export const levGetHistory = (type: LevInstrumentType, instrumentId: number) =>
+  api.get<MarketDataBar[]>(`/lev-etf/market-data/${type}/${instrumentId}`);
+export const levRefreshBenchmark = (id: number, range = '5y') =>
+  api.post<MarketRefreshResult>(`/lev-etf/market-data/benchmark/${id}/refresh?range=${range}`);
+export const levRefreshEtf = (id: number, range = '5y') =>
+  api.post<MarketRefreshResult>(`/lev-etf/market-data/etf/${id}/refresh?range=${range}`);
+export const levAddManualBar = (type: LevInstrumentType, instrumentId: number, body: { date: string; close: number; currency?: string }) =>
+  api.post<MarketDataBar>(`/lev-etf/market-data/${type}/${instrumentId}/manual-bar`, body);
+
+// Positions
+export const levGetPositions = (strategyId: number) => api.get<LevEtfPosition[]>(`/lev-etf/strategies/${strategyId}/positions`);
+export const levAddPosition = (strategyId: number, p: Partial<LevEtfPosition>) =>
+  api.post<LevEtfPosition>(`/lev-etf/strategies/${strategyId}/positions`, p);
+export const levDeletePosition = (id: number) => api.delete(`/lev-etf/positions/${id}`);
+
+// Calculate / snapshots
+export const levCalculate = (strategyId: number) => api.post<AllocationSnapshot>(`/lev-etf/strategies/${strategyId}/calculate`);
+export const levGetSnapshots = (strategyId: number) => api.get<AllocationSnapshot[]>(`/lev-etf/strategies/${strategyId}/snapshots`);
+export const levGetLatestSnapshot = (strategyId: number) => api.get<AllocationSnapshot>(`/lev-etf/strategies/${strategyId}/snapshots/latest`);
+export const levPreviewCurve = (s: Partial<LevEtfStrategy>) =>
+  api.post<{ drawdownPercent: number; targetAllocationPercent: number }[]>('/lev-etf/preview/allocation-curve', s);
+
+// Rebalance plans
+export const levGetPlans = (strategyId?: number) =>
+  api.get<RebalancePlan[]>('/lev-etf/rebalance-plans', { params: { strategyId } });
+export const levGeneratePlan = (strategyId: number) => api.post<RebalancePlan>(`/lev-etf/strategies/${strategyId}/rebalance-plan`);
+export const levApprovePlan = (id: number) => api.post<RebalancePlan>(`/lev-etf/rebalance-plans/${id}/approve`);
+export const levRejectPlan = (id: number, notes?: string) => api.post<RebalancePlan>(`/lev-etf/rebalance-plans/${id}/reject`, { notes });
+export const levExecutePlan = (id: number, body: { executedQuantity?: number; executedPrice?: number; fees?: number; brokerReference?: string; partial?: boolean; notes?: string }) =>
+  api.post<RebalancePlan>(`/lev-etf/rebalance-plans/${id}/execute`, body);
+export const levCancelPlan = (id: number) => api.delete(`/lev-etf/rebalance-plans/${id}`);
+
+// Backtests
+export const levGetBacktests = () => api.get<LevEtfBacktest[]>('/lev-etf/backtests');
+export const levGetBacktest = (id: number) => api.get<LevEtfBacktest>(`/lev-etf/backtests/${id}`);
+export const levRunBacktest = (body: { strategyId: number; benchmarkIndexId?: number; etfInstrumentId?: number; initialPortfolioValue?: number; startDate?: string; endDate?: string; rebalanceFrequency?: string; feePercent?: number; slippagePercent?: number }) =>
+  api.post<LevEtfBacktest>('/lev-etf/backtests', body);
+
+// Alerts / notifications
+export const levGetAlertPrefs = () => api.get<LevEtfAlertPref[]>('/lev-etf/alert-prefs');
+export const levCreateAlertPref = (p: Partial<LevEtfAlertPref>) => api.post<LevEtfAlertPref>('/lev-etf/alert-prefs', p);
+export const levDeleteAlertPref = (id: number) => api.delete(`/lev-etf/alert-prefs/${id}`);
+export const levGetNotifications = () => api.get<LevEtfNotification[]>('/lev-etf/notifications');
+export const levGetUnreadCount = () => api.get<{ count: number }>('/lev-etf/notifications/unread-count');
+export const levMarkNotificationRead = (id: number) => api.post(`/lev-etf/notifications/${id}/read`);
+export const levMarkAllNotificationsRead = () => api.post('/lev-etf/notifications/read-all');

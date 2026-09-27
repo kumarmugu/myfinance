@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home, Settings, FlaskConical, Users, KeyRound, ClipboardList, Building, PiggyBank, ScrollText } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, ArrowLeftRight, Landmark, Target, FileBarChart, Building2, Coins, FileText, DollarSign, LogOut, Bitcoin, Banknote, RefreshCw, Calculator, Shield, HelpCircle, Receipt, Briefcase, Wallet, Home, Settings, FlaskConical, Users, KeyRound, ClipboardList, Building, PiggyBank, ScrollText, Gauge } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import ToastContainer from './components/ToastContainer';
@@ -34,6 +34,7 @@ import Properties from './pages/Properties';
 import PreciousMetals from './pages/PreciousMetals';
 import Bonds from './pages/Bonds';
 import Budget from './pages/Budget';
+import LeveragedEtf from './pages/LeveragedEtf';
 
 function App() {
   return (
@@ -88,6 +89,7 @@ function AppContent() {
         { to: '/transactions', icon: ArrowLeftRight, label: 'Transactions', feature: 'PORTFOLIO' },
         { to: '/dividends', icon: DollarSign, label: 'Dividends', feature: 'DIVIDENDS' },
         { to: '/crypto', icon: Bitcoin, label: 'Crypto', feature: 'CRYPTO' },
+        { to: '/lev-etf', icon: Gauge, label: 'Leveraged ETF', feature: 'LEV_ETF' },
         { to: '/deposits', icon: ArrowLeftRight, label: 'Cash Flows', feature: 'CASH_FLOWS' },
       ],
     },
@@ -210,6 +212,7 @@ function AppContent() {
               <Route path="/transactions" element={!isAdmin ? <Transactions /> : <UserManagement />} />
               <Route path="/dividends" element={!isAdmin ? <Dividends /> : <UserManagement />} />
               <Route path="/crypto" element={!isAdmin ? <Crypto /> : <UserManagement />} />
+              <Route path="/lev-etf" element={!isAdmin ? <LeveragedEtf /> : <UserManagement />} />
               <Route path="/deposits" element={!isAdmin ? <Deposits /> : <UserManagement />} />
               <Route path="/fixed-deposits" element={!isAdmin ? <FixedDeposits /> : <UserManagement />} />
               <Route path="/bank-savings" element={!isAdmin ? <BankSavings /> : <UserManagement />} />

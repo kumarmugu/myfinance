@@ -335,3 +335,217 @@ export interface InsurancePolicy {
   owner: Owner | null;
   createdAt: string;
 }
+
+// ─── Leveraged ETF Allocation Planner ───
+
+export type AllocationMode = 'INITIAL_PLUS_HALF_DRAWDOWN' | 'DRAWDOWN_ONLY_WITH_MIN' | 'LADDER';
+export type ReferenceHighMode = 'ALL_TIME' | 'ROLLING_52_WEEK' | 'CUSTOM_START_DATE' | 'MANUAL';
+export type PortfolioScopeType = 'WHOLE' | 'ACCOUNT' | 'MANUAL';
+export type LevInstrumentType = 'BENCHMARK' | 'ETF';
+export type DataQuality = 'OK' | 'STALE' | 'INVALID' | 'MISSING';
+export type RebalanceAction = 'BUY' | 'REDUCE' | 'SELL' | 'NO_ACTION';
+export type RebalancePlanStatus = 'DRAFT' | 'PENDING_REVIEW' | 'APPROVED' | 'EXECUTED' | 'PARTIALLY_EXECUTED' | 'CANCELLED' | 'EXPIRED';
+export type AlertTrigger = 'DRAWDOWN_THRESHOLD' | 'TARGET_CHANGE' | 'GAP_EXCEEDS' | 'NEW_HIGH' | 'STALE_DATA' | 'PLAN_PENDING';
+
+export const ALLOCATION_MODE_LABELS: Record<string, string> = {
+  INITIAL_PLUS_HALF_DRAWDOWN: 'Initial + ½ × drawdown',
+  DRAWDOWN_ONLY_WITH_MIN: 'Drawdown-scaled with minimum',
+  LADDER: 'Custom ladder',
+};
+export const REFERENCE_HIGH_MODE_LABELS: Record<string, string> = {
+  ALL_TIME: 'All-time high',
+  ROLLING_52_WEEK: 'Rolling 52-week high',
+  CUSTOM_START_DATE: 'High since a start date',
+  MANUAL: 'Manually entered',
+};
+export const REBALANCE_ACTION_LABELS: Record<string, string> = {
+  BUY: 'Buy', REDUCE: 'Reduce', SELL: 'Sell', NO_ACTION: 'No action',
+};
+
+export interface BenchmarkIndex {
+  id: number;
+  userId?: number;
+  symbol: string;
+  name: string;
+  exchange?: string | null;
+  provider?: string | null;
+  currency?: string | null;
+  benchmarkType?: string;
+  timezone?: string | null;
+  enabled?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface LevEtfInstrument {
+  id: number;
+  userId?: number;
+  symbol: string;
+  name: string;
+  exchange?: string | null;
+  issuer?: string | null;
+  leverageMultiple?: number | null;
+  leverageDirection?: string | null;
+  underlyingBenchmarkId?: number | null;
+  tradingCurrency?: string | null;
+  expenseRatio?: number | null;
+  resetFrequency?: string | null;
+  enabled?: boolean;
+}
+
+export interface LevEtfStrategy {
+  id: number;
+  userId?: number;
+  name: string;
+  description?: string | null;
+  benchmarkIndexId?: number | null;
+  etfInstrumentId?: number | null;
+  initialAllocationPercent?: number;
+  drawdownMultiplier?: number;
+  minimumAllocationPercent?: number;
+  maximumAllocationPercent?: number;
+  maximumAllocationEnabled?: boolean;
+  allocationMode?: AllocationMode;
+  ladderJson?: string | null;
+  referenceHighMode?: ReferenceHighMode;
+  referenceHighValue?: number | null;
+  referenceHighDate?: string | null;
+  referenceHighFrozen?: boolean;
+  portfolioScope?: PortfolioScopeType;
+  scopeAccountId?: number | null;
+  scopeManualValue?: number | null;
+  rebalanceTolerancePercent?: number;
+  rebalanceFrequency?: string | null;
+  tradingCurrency?: string | null;
+  ruleVersion?: number;
+  enabled?: boolean;
+  archived?: boolean;
+  version?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface MarketDataBar {
+  id: number;
+  instrumentType: LevInstrumentType;
+  instrumentId: number;
+  date: string;
+  open?: number | null;
+  high?: number | null;
+  low?: number | null;
+  close?: number | null;
+  adjustedClose?: number | null;
+  volume?: number | null;
+  currency?: string | null;
+  provider?: string | null;
+  sourceTimestamp?: string | null;
+  dataQuality?: DataQuality;
+}
+
+export interface LevEtfPosition {
+  id: number;
+  userId?: number;
+  strategyId?: number;
+  etfInstrumentId?: number | null;
+  snapshotDate?: string | null;
+  quantity?: number | null;
+  averageCost?: number | null;
+  marketPrice?: number | null;
+  marketValue?: number | null;
+  tradingCurrency?: string | null;
+  baseCurrencyValue?: number | null;
+  source?: string | null;
+  externalId?: string | null;
+}
+
+export interface AllocationSnapshot {
+  id: number;
+  strategyId: number;
+  ruleVersion?: number;
+  benchmarkPrice?: number | null;
+  referenceHigh?: number | null;
+  referenceHighDate?: string | null;
+  drawdownPercent?: number | null;
+  targetAllocationPercent?: number | null;
+  actualAllocationPercent?: number | null;
+  portfolioValueBase?: number | null;
+  targetEtfValueBase?: number | null;
+  currentEtfValueBase?: number | null;
+  rebalanceDifferenceBase?: number | null;
+  fxRate?: number | null;
+  calculationTimestamp?: string;
+  benchmarkPriceTimestamp?: string | null;
+  etfPriceTimestamp?: string | null;
+  dataQuality?: DataQuality;
+  blockedReason?: string | null;
+}
+
+export interface RebalancePlan {
+  id: number;
+  strategyId?: number;
+  allocationSnapshotId?: number;
+  ruleVersion?: number;
+  action?: RebalanceAction;
+  quantity?: number | null;
+  estimatedPrice?: number | null;
+  estimatedAmount?: number | null;
+  currency?: string | null;
+  reason?: string | null;
+  status?: RebalancePlanStatus;
+  approvalTimestamp?: string | null;
+  executionTimestamp?: string | null;
+  executedQuantity?: number | null;
+  executedPrice?: number | null;
+  executedFees?: number | null;
+  brokerReference?: string | null;
+  notes?: string | null;
+  createdAt?: string;
+}
+
+export interface LevEtfAlertPref {
+  id: number;
+  strategyId?: number | null;
+  trigger: AlertTrigger;
+  threshold?: number | null;
+  inAppEnabled?: boolean;
+  emailEnabled?: boolean;
+  repeatPolicy?: string;
+}
+
+export interface LevEtfNotification {
+  id: number;
+  strategyId?: number | null;
+  trigger?: AlertTrigger;
+  threshold?: number | null;
+  message?: string;
+  dedupeKey?: string;
+  channelEmail?: boolean;
+  emailDeliveryStatus?: string;
+  readFlag?: boolean;
+  createdAt?: string;
+}
+
+export interface LevEtfBacktest {
+  id: number;
+  strategyId?: number;
+  ruleVersion?: number;
+  benchmarkIndexId?: number | null;
+  etfInstrumentId?: number | null;
+  initialPortfolioValue?: number | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  rebalanceFrequency?: string | null;
+  configJson?: string | null;
+  status?: string;
+  resultsJson?: string | null;
+  warnings?: string | null;
+  createdAt?: string;
+  completedAt?: string | null;
+}
+
+export interface MarketRefreshResult {
+  barsInserted: number;
+  barsUpdated: number;
+  providerEnabled: boolean;
+  message: string;
+}

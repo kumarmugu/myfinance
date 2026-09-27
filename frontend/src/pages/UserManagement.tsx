@@ -42,6 +42,7 @@ const ALL_FEATURES = [
   { key: 'SRS_CPF', label: 'SRS & CPF' },
   { key: 'REPORTS', label: 'Reports' },
   { key: 'BUDGET', label: 'Budget & Expenses' },
+  { key: 'LEV_ETF', label: 'Leveraged ETF Planner' },
 ];
 
 // Opt-in features that should NOT be granted to new users by default (admin ticks them explicitly).

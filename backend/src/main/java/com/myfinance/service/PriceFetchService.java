@@ -13,6 +13,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -192,5 +193,74 @@ public class PriceFetchService {
 
     private static String urlEncode(String s) {
         return java.net.URLEncoder.encode(s, java.nio.charset.StandardCharsets.UTF_8);
+    }
+
+    // ─── Historical daily bars (Yahoo /chart) ───
+
+    /** One daily OHLC(+adjclose) bar from a provider. All prices are {@link BigDecimal} in the quote currency. */
+    public record DailyBar(java.time.LocalDate date, BigDecimal open, BigDecimal high, BigDecimal low,
+                           BigDecimal close, BigDecimal adjClose, BigDecimal volume) {}
+
+    /**
+     * Best-effort daily history for a benchmark/ETF symbol. Uses Yahoo's {@code /chart} endpoint (works
+     * without auth and returns full OHLCV + adjclose arrays for a range). Returns an empty list when
+     * disabled, the symbol is unquoted, or the request/parse fails. Never throws.
+     *
+     * @param symbol   the raw symbol (mapped to Yahoo convention using {@code exchange})
+     * @param exchange exchange hint (SGX/LSE/HKEX/... ) for symbol mapping; may be null
+     * @param range    Yahoo range token, e.g. {@code "1y"}, {@code "5y"}, {@code "10y"}, {@code "max"}
+     */
+    public List<DailyBar> fetchDailyHistory(String symbol, String exchange, String range) {
+        if (!enabled) return List.of();
+        if (symbol == null || symbol.isBlank()) return List.of();
+        try {
+            String sym = mapYahooSymbol(symbol.trim(), exchange);
+            String r = (range == null || range.isBlank()) ? "5y" : range.trim();
+            String url = "https://query1.finance.yahoo.com/v8/finance/chart/" + urlEncode(sym)
+                    + "?range=" + urlEncode(r) + "&interval=1d";
+            String body = get(url);
+            return parseYahooHistory(body);
+        } catch (Exception e) {
+            log.debug("History fetch failed for symbol={}: {}", symbol, e.toString());
+            return List.of();
+        }
+    }
+
+    /** Parse the Yahoo /chart history payload into ascending daily bars. Skips rows with a null close. */
+    List<DailyBar> parseYahooHistory(String body) {
+        if (body == null) return List.of();
+        try {
+            JsonNode result = mapper.readTree(body).path("chart").path("result").path(0);
+            JsonNode timestamps = result.path("timestamp");
+            JsonNode quote = result.path("indicators").path("quote").path(0);
+            JsonNode adj = result.path("indicators").path("adjclose").path(0).path("adjclose");
+            if (!timestamps.isArray() || timestamps.isEmpty()) return List.of();
+
+            JsonNode opens = quote.path("open");
+            JsonNode highs = quote.path("high");
+            JsonNode lows = quote.path("low");
+            JsonNode closes = quote.path("close");
+            JsonNode volumes = quote.path("volume");
+
+            java.util.List<DailyBar> bars = new java.util.ArrayList<>();
+            for (int i = 0; i < timestamps.size(); i++) {
+                BigDecimal close = num(closes, i);
+                if (close == null) continue; // provider gaps → skip (caller marks MISSING for absent dates)
+                java.time.LocalDate date = java.time.Instant.ofEpochSecond(timestamps.get(i).asLong())
+                        .atZone(java.time.ZoneOffset.UTC).toLocalDate();
+                bars.add(new DailyBar(date, num(opens, i), num(highs, i), num(lows, i),
+                        close, num(adj, i), num(volumes, i)));
+            }
+            return bars;
+        } catch (Exception e) {
+            log.debug("Yahoo history parse failed: {}", e.toString());
+            return List.of();
+        }
+    }
+
+    private static BigDecimal num(JsonNode arr, int i) {
+        if (arr == null || !arr.isArray() || i >= arr.size()) return null;
+        JsonNode n = arr.get(i);
+        return (n == null || n.isNull() || !n.isNumber()) ? null : n.decimalValue();
     }
 }

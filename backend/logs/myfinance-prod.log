@@ -317,3 +317,1329 @@
 2026-09-27 21:39:01 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (8ms)
 2026-09-27 21:39:01 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (22ms)
 2026-09-27 21:39:01 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (18ms)
+2026-09-27 21:47:21 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-27 21:47:21 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-27 21:47:48 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Merging asset id=450 into id=100 for userId=2
+2026-09-27 21:47:48 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Merged asset id=450 symbol='SUPER MICRO COMPUTER INC (SMCI)' into id=100 symbol='NVDA': 6 txns, 1 holdings, 0 dividends; previousSymbols now 'SUPER MICRO COMPUTER INC (SMCI)'
+2026-09-27 21:47:48 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1372 profit=214.41800000000000
+2026-09-27 21:47:48 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-27 21:47:48 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/merge → 200 (41ms)
+2026-09-27 21:47:48 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 21:48:48 [http-nio-8080-exec-3] INFO  c.m.controller.AssetController - Deleting asset id=102
+2026-09-27 21:48:48 [http-nio-8080-exec-3] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=102, referenced by: [2 Transaction(s), 1 Holding(s)]
+2026-09-27 21:48:48 [http-nio-8080-exec-3] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'SMCI - Super Micro Computer Inc'. It is referenced by: 2 Transaction(s), 1 Holding(s)
+2026-09-27 21:48:48 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/102 → 409 (43ms)
+2026-09-27 21:49:01 [http-nio-8080-exec-7] INFO  c.m.controller.AssetController - Deleting asset id=102
+2026-09-27 21:49:01 [http-nio-8080-exec-7] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=102, referenced by: [2 Transaction(s), 1 Holding(s)]
+2026-09-27 21:49:01 [http-nio-8080-exec-7] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'SMCI - Super Micro Computer Inc'. It is referenced by: 2 Transaction(s), 1 Holding(s)
+2026-09-27 21:49:01 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/102 → 409 (4ms)
+2026-09-27 21:49:01 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 21:49:22 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-27 21:49:22 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-27 21:49:22 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-27 21:49:22 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-27 21:49:22 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (14ms)
+2026-09-27 21:49:22 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-27 21:49:22 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-27 21:49:22 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (5ms)
+2026-09-27 21:49:22 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (28ms)
+2026-09-27 21:49:22 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (15ms)
+2026-09-27 21:49:22 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-27 21:49:22 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-27 21:49:22 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (13ms)
+2026-09-27 21:49:22 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (25ms)
+2026-09-27 21:49:28 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-27 21:49:28 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-27 21:49:28 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-27 21:49:28 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (1ms)
+2026-09-27 21:49:28 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-27 21:49:28 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-27 21:49:28 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (19ms)
+2026-09-27 21:49:41 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions/bulk-count → 200 (28ms)
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=417
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=418
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=419
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=420
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=421
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=422
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=423
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=424
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=425
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=426
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=427
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=428
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=429
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1372 profit=214.41800000000000
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Bulk-deleted for userId=2 owner=1 account=2: 35 txns, 13 holdings, 0 sold positions
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Bulk-deleted transactions for user mugu owner 1 account 2: BulkDeleteResult[transactions=35, holdings=13, soldPositions=0]
+2026-09-27 21:49:50 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/bulk-delete → 200 (142ms)
+2026-09-27 21:49:50 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-27 21:49:50 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-27 21:49:50 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-27 21:49:50 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-27 21:49:50 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-27 21:49:50 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-27 21:49:50 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (13ms)
+2026-09-27 21:50:03 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions/bulk-count → 200 (8ms)
+2026-09-27 21:50:07 [http-nio-8080-exec-4] ERROR c.m.config.GlobalExceptionHandler - Unhandled RuntimeException: 403 FORBIDDEN "Incorrect password"
+org.springframework.web.server.ResponseStatusException: 403 FORBIDDEN "Incorrect password"
+	at com.myfinance.controller.TransactionController.verifyPassword(TransactionController.java:188)
+	at com.myfinance.controller.TransactionController.bulkDelete(TransactionController.java:164)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:354)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.framework.adapter.AfterReturningAdviceInterceptor.invoke(AfterReturningAdviceInterceptor.java:57)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:173)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:768)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:720)
+	at com.myfinance.controller.TransactionController$$SpringCGLIB$$0.bulkDelete(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at com.myfinance.config.RequestLoggingConfig$1.doFilterInternal(RequestLoggingConfig.java:30)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.myfinance.security.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:175)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:150)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1736)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-09-27 21:50:07 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/bulk-delete → 400 (107ms)
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=641
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=642
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=643
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=644
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=645
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=646
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=647
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=648
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=649
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=650
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=651
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=652
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=654
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=655
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=656
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=657
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=658
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=659
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=660
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=661
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=662
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=663
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=664
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=665
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.myfinance.service.HoldingService - Deleted Holding id=666
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1372 profit=214.41800000000000
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Recomputed for userId=2: 1 sells, 1 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.m.service.TransactionService - Bulk-deleted for userId=2 owner=1 account=1: 99 txns, 25 holdings, 0 sold positions
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.m.controller.TransactionController - Bulk-deleted transactions for user mugu owner 1 account 1: BulkDeleteResult[transactions=99, holdings=25, soldPositions=0]
+2026-09-27 21:50:14 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/bulk-delete → 200 (143ms)
+2026-09-27 21:50:14 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-27 21:50:14 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-27 21:50:14 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-27 21:50:14 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-27 21:50:14 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-27 21:50:14 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (8ms)
+2026-09-27 21:50:14 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (3ms)
+2026-09-27 21:50:31 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions/bulk-count → 200 (5ms)
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=577
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=578
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=579
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=580
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=581
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=582
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=583
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=584
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=585
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=586
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=587
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=588
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Deleted Holding id=589
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Recomputed for userId=2: 0 sells, 0 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Bulk-deleted for userId=2 owner=1 account=3: 29 txns, 13 holdings, 1 sold positions
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Bulk-deleted transactions for user mugu owner 1 account 3: BulkDeleteResult[transactions=29, holdings=13, soldPositions=1]
+2026-09-27 21:50:38 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/bulk-delete → 200 (88ms)
+2026-09-27 21:50:38 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (1ms)
+2026-09-27 21:50:38 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (1ms)
+2026-09-27 21:50:38 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-27 21:50:38 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-27 21:50:38 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 21:50:38 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (3ms)
+2026-09-27 21:50:38 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (2ms)
+2026-09-27 21:50:55 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (4ms)
+2026-09-27 21:50:55 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (5ms)
+2026-09-27 21:51:20 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Deleting asset id=449
+2026-09-27 21:51:20 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Deleted Asset id=449
+2026-09-27 21:51:20 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/449 → 204 (7ms)
+2026-09-27 21:51:20 [http-nio-8080-exec-3] INFO  c.m.controller.AssetController - Deleting asset id=451
+2026-09-27 21:51:20 [http-nio-8080-exec-3] INFO  com.myfinance.service.AssetService - Deleted Asset id=451
+2026-09-27 21:51:20 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/451 → 204 (4ms)
+2026-09-27 21:51:20 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Deleting asset id=452
+2026-09-27 21:51:20 [http-nio-8080-exec-8] INFO  com.myfinance.service.AssetService - Deleted Asset id=452
+2026-09-27 21:51:20 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/452 → 204 (5ms)
+2026-09-27 21:51:20 [http-nio-8080-exec-2] INFO  c.m.controller.AssetController - Deleting asset id=454
+2026-09-27 21:51:20 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Deleted Asset id=454
+2026-09-27 21:51:20 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/454 → 204 (3ms)
+2026-09-27 21:51:20 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Deleting asset id=455
+2026-09-27 21:51:20 [http-nio-8080-exec-9] INFO  com.myfinance.service.AssetService - Deleted Asset id=455
+2026-09-27 21:51:20 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/455 → 204 (4ms)
+2026-09-27 21:51:20 [http-nio-8080-exec-7] INFO  c.m.controller.AssetController - Deleting asset id=456
+2026-09-27 21:51:20 [http-nio-8080-exec-7] INFO  com.myfinance.service.AssetService - Deleted Asset id=456
+2026-09-27 21:51:20 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/456 → 204 (4ms)
+2026-09-27 21:51:20 [http-nio-8080-exec-6] INFO  c.m.controller.AssetController - Deleting asset id=457
+2026-09-27 21:51:20 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Deleted Asset id=457
+2026-09-27 21:51:20 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/457 → 204 (3ms)
+2026-09-27 21:51:20 [http-nio-8080-exec-10] INFO  c.m.controller.AssetController - Deleting asset id=458
+2026-09-27 21:51:20 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Deleted Asset id=458
+2026-09-27 21:51:20 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/458 → 204 (3ms)
+2026-09-27 21:51:20 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Deleting asset id=459
+2026-09-27 21:51:20 [http-nio-8080-exec-1] INFO  com.myfinance.service.AssetService - Deleted Asset id=459
+2026-09-27 21:51:20 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/459 → 204 (3ms)
+2026-09-27 21:51:20 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 21:51:34 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Deleting asset id=225
+2026-09-27 21:51:34 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Deleted Asset id=225
+2026-09-27 21:51:34 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/225 → 204 (8ms)
+2026-09-27 21:51:34 [http-nio-8080-exec-3] INFO  c.m.controller.AssetController - Deleting asset id=453
+2026-09-27 21:51:34 [http-nio-8080-exec-3] INFO  com.myfinance.service.AssetService - Deleted Asset id=453
+2026-09-27 21:51:34 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/453 → 204 (4ms)
+2026-09-27 21:51:34 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Deleting asset id=460
+2026-09-27 21:51:34 [http-nio-8080-exec-8] INFO  com.myfinance.service.AssetService - Deleted Asset id=460
+2026-09-27 21:51:34 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/460 → 204 (4ms)
+2026-09-27 21:51:34 [http-nio-8080-exec-2] INFO  c.m.controller.AssetController - Deleting asset id=461
+2026-09-27 21:51:34 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Deleted Asset id=461
+2026-09-27 21:51:34 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/461 → 204 (3ms)
+2026-09-27 21:51:34 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Deleting asset id=462
+2026-09-27 21:51:34 [http-nio-8080-exec-9] INFO  com.myfinance.service.AssetService - Deleted Asset id=462
+2026-09-27 21:51:34 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/462 → 204 (5ms)
+2026-09-27 21:51:34 [http-nio-8080-exec-7] INFO  c.m.controller.AssetController - Deleting asset id=463
+2026-09-27 21:51:34 [http-nio-8080-exec-7] INFO  com.myfinance.service.AssetService - Deleted Asset id=463
+2026-09-27 21:51:34 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/463 → 204 (3ms)
+2026-09-27 21:51:34 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 21:51:46 [http-nio-8080-exec-10] INFO  c.m.controller.AssetController - Deleting asset id=1
+2026-09-27 21:51:46 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Deleted Asset id=1
+2026-09-27 21:51:46 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/1 → 204 (4ms)
+2026-09-27 21:51:46 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Deleting asset id=2
+2026-09-27 21:51:46 [http-nio-8080-exec-1] INFO  com.myfinance.service.AssetService - Deleted Asset id=2
+2026-09-27 21:51:46 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/2 → 204 (3ms)
+2026-09-27 21:51:46 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Deleting asset id=3
+2026-09-27 21:51:46 [http-nio-8080-exec-5] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=3, referenced by: [3 Transaction(s), 2 Holding(s), 39 Dividend(s)]
+2026-09-27 21:51:46 [http-nio-8080-exec-5] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'VOO - Vanguard S&P 500 ETF'. It is referenced by: 3 Transaction(s), 2 Holding(s), 39 Dividend(s)
+2026-09-27 21:51:46 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/3 → 409 (5ms)
+2026-09-27 21:51:46 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Deleting asset id=4
+2026-09-27 21:51:46 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Deleted Asset id=4
+2026-09-27 21:51:46 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/4 → 204 (4ms)
+2026-09-27 21:51:46 [http-nio-8080-exec-3] INFO  c.m.controller.AssetController - Deleting asset id=5
+2026-09-27 21:51:46 [http-nio-8080-exec-3] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=5, referenced by: [3 Transaction(s), 1 Holding(s), 19 Dividend(s)]
+2026-09-27 21:51:46 [http-nio-8080-exec-3] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'QQQ - Invesco QQQ Trust, Series 1'. It is referenced by: 3 Transaction(s), 1 Holding(s), 19 Dividend(s)
+2026-09-27 21:51:46 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/5 → 409 (3ms)
+2026-09-27 21:51:46 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-2] INFO  c.m.controller.AssetController - Deleting asset id=3
+2026-09-27 21:51:58 [http-nio-8080-exec-2] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=3, referenced by: [3 Transaction(s), 2 Holding(s), 39 Dividend(s)]
+2026-09-27 21:51:58 [http-nio-8080-exec-2] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'VOO - Vanguard S&P 500 ETF'. It is referenced by: 3 Transaction(s), 2 Holding(s), 39 Dividend(s)
+2026-09-27 21:51:58 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/3 → 409 (4ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Deleting asset id=5
+2026-09-27 21:51:58 [http-nio-8080-exec-9] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=5, referenced by: [3 Transaction(s), 1 Holding(s), 19 Dividend(s)]
+2026-09-27 21:51:58 [http-nio-8080-exec-9] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'QQQ - Invesco QQQ Trust, Series 1'. It is referenced by: 3 Transaction(s), 1 Holding(s), 19 Dividend(s)
+2026-09-27 21:51:58 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/5 → 409 (3ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-7] INFO  c.m.controller.AssetController - Deleting asset id=6
+2026-09-27 21:51:58 [http-nio-8080-exec-7] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=6, referenced by: [1 Transaction(s), 1 Holding(s)]
+2026-09-27 21:51:58 [http-nio-8080-exec-7] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'VUG - Vanguard Morningstar Growth Index Fund ETF'. It is referenced by: 1 Transaction(s), 1 Holding(s)
+2026-09-27 21:51:58 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/6 → 409 (3ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-6] INFO  c.m.controller.AssetController - Deleting asset id=7
+2026-09-27 21:51:58 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Deleted Asset id=7
+2026-09-27 21:51:58 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/7 → 204 (3ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-10] INFO  c.m.controller.AssetController - Deleting asset id=8
+2026-09-27 21:51:58 [http-nio-8080-exec-10] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=8, referenced by: [5 Transaction(s), 1 Holding(s)]
+2026-09-27 21:51:58 [http-nio-8080-exec-10] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'TSLA - Tesla'. It is referenced by: 5 Transaction(s), 1 Holding(s)
+2026-09-27 21:51:58 [http-nio-8080-exec-10] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/8 → 409 (3ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Deleting asset id=9
+2026-09-27 21:51:58 [http-nio-8080-exec-1] INFO  com.myfinance.service.AssetService - Deleted Asset id=9
+2026-09-27 21:51:58 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/9 → 204 (3ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Deleting asset id=10
+2026-09-27 21:51:58 [http-nio-8080-exec-5] INFO  com.myfinance.service.AssetService - Deleted Asset id=10
+2026-09-27 21:51:58 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/10 → 204 (4ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Deleting asset id=11
+2026-09-27 21:51:58 [http-nio-8080-exec-4] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=11, referenced by: [15 Dividend(s)]
+2026-09-27 21:51:58 [http-nio-8080-exec-4] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'TQQQ - ProShares Ultrapro QQQ ETF'. It is referenced by: 15 Dividend(s)
+2026-09-27 21:51:58 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/11 → 409 (3ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-3] INFO  c.m.controller.AssetController - Deleting asset id=12
+2026-09-27 21:51:58 [http-nio-8080-exec-3] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=12, referenced by: [3 Dividend(s)]
+2026-09-27 21:51:58 [http-nio-8080-exec-3] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'META - Meta'. It is referenced by: 3 Dividend(s)
+2026-09-27 21:51:58 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/12 → 409 (2ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Deleting asset id=33
+2026-09-27 21:51:58 [http-nio-8080-exec-8] INFO  com.myfinance.service.AssetService - Deleted Asset id=33
+2026-09-27 21:51:58 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/33 → 204 (4ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-2] INFO  c.m.controller.AssetController - Deleting asset id=65
+2026-09-27 21:51:58 [http-nio-8080-exec-2] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=65, referenced by: [1 Transaction(s), 1 Holding(s)]
+2026-09-27 21:51:58 [http-nio-8080-exec-2] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'VCR - Vanguard Consumer Discretionary ETF'. It is referenced by: 1 Transaction(s), 1 Holding(s)
+2026-09-27 21:51:58 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/65 → 409 (3ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Deleting asset id=97
+2026-09-27 21:51:58 [http-nio-8080-exec-9] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=97, referenced by: [27 Dividend(s)]
+2026-09-27 21:51:58 [http-nio-8080-exec-9] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'AAPL - Apple'. It is referenced by: 27 Dividend(s)
+2026-09-27 21:51:58 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/97 → 409 (3ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-7] INFO  c.m.controller.AssetController - Deleting asset id=98
+2026-09-27 21:51:58 [http-nio-8080-exec-7] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=98, referenced by: [16 Dividend(s)]
+2026-09-27 21:51:58 [http-nio-8080-exec-7] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'SPXL - Direxion Daily S&P 500 Bull 3X Shares'. It is referenced by: 16 Dividend(s)
+2026-09-27 21:51:58 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/98 → 409 (2ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-6] INFO  c.m.controller.AssetController - Deleting asset id=99
+2026-09-27 21:51:58 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Deleted Asset id=99
+2026-09-27 21:51:58 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/99 → 204 (3ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-10] INFO  c.m.controller.AssetController - Deleting asset id=100
+2026-09-27 21:51:58 [http-nio-8080-exec-10] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=100, referenced by: [18 Dividend(s)]
+2026-09-27 21:51:58 [http-nio-8080-exec-10] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'NVDA - NVIDIA Corp'. It is referenced by: 18 Dividend(s)
+2026-09-27 21:51:58 [http-nio-8080-exec-10] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/100 → 409 (3ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Deleting asset id=101
+2026-09-27 21:51:58 [http-nio-8080-exec-1] INFO  com.myfinance.service.AssetService - Deleted Asset id=101
+2026-09-27 21:51:58 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/101 → 204 (4ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Deleting asset id=102
+2026-09-27 21:51:58 [http-nio-8080-exec-5] INFO  com.myfinance.service.AssetService - Deleted Asset id=102
+2026-09-27 21:51:58 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/102 → 204 (2ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Deleting asset id=103
+2026-09-27 21:51:58 [http-nio-8080-exec-4] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=103, referenced by: [8 Dividend(s)]
+2026-09-27 21:51:58 [http-nio-8080-exec-4] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'QQQM - Invesco Nasdaq 100 ETF'. It is referenced by: 8 Dividend(s)
+2026-09-27 21:51:58 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/103 → 409 (3ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-3] INFO  c.m.controller.AssetController - Deleting asset id=104
+2026-09-27 21:51:58 [http-nio-8080-exec-3] INFO  com.myfinance.service.AssetService - Deleted Asset id=104
+2026-09-27 21:51:58 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/104 → 204 (3ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Deleting asset id=105
+2026-09-27 21:51:58 [http-nio-8080-exec-8] INFO  com.myfinance.service.AssetService - Deleted Asset id=105
+2026-09-27 21:51:58 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/105 → 204 (3ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-2] INFO  c.m.controller.AssetController - Deleting asset id=106
+2026-09-27 21:51:58 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Deleted Asset id=106
+2026-09-27 21:51:58 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/106 → 204 (3ms)
+2026-09-27 21:51:58 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Deleting asset id=107
+2026-09-27 21:51:58 [http-nio-8080-exec-9] INFO  com.myfinance.service.AssetService - Deleted Asset id=107
+2026-09-27 21:51:58 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/107 → 204 (5ms)
+2026-09-27 21:51:59 [http-nio-8080-exec-7] INFO  c.m.controller.AssetController - Deleting asset id=129
+2026-09-27 21:51:59 [http-nio-8080-exec-7] INFO  com.myfinance.service.AssetService - Deleted Asset id=129
+2026-09-27 21:51:59 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/129 → 204 (4ms)
+2026-09-27 21:51:59 [http-nio-8080-exec-6] INFO  c.m.controller.AssetController - Deleting asset id=130
+2026-09-27 21:51:59 [http-nio-8080-exec-6] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=130, referenced by: [11 Dividend(s)]
+2026-09-27 21:51:59 [http-nio-8080-exec-6] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'GOOGL - Alphabet Inc'. It is referenced by: 11 Dividend(s)
+2026-09-27 21:51:59 [http-nio-8080-exec-6] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/130 → 409 (4ms)
+2026-09-27 21:51:59 [http-nio-8080-exec-10] INFO  c.m.controller.AssetController - Deleting asset id=131
+2026-09-27 21:51:59 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Deleted Asset id=131
+2026-09-27 21:51:59 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/131 → 204 (3ms)
+2026-09-27 21:51:59 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Deleting asset id=132
+2026-09-27 21:51:59 [http-nio-8080-exec-1] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=132, referenced by: [3 Dividend(s)]
+2026-09-27 21:51:59 [http-nio-8080-exec-1] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'Z74 - Singapore Telecommunications'. It is referenced by: 3 Dividend(s)
+2026-09-27 21:51:59 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/132 → 409 (3ms)
+2026-09-27 21:51:59 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Deleting asset id=133
+2026-09-27 21:51:59 [http-nio-8080-exec-5] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=133, referenced by: [6 Dividend(s)]
+2026-09-27 21:51:59 [http-nio-8080-exec-5] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'O39 - OCBC Bank'. It is referenced by: 6 Dividend(s)
+2026-09-27 21:51:59 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/133 → 409 (2ms)
+2026-09-27 21:51:59 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Deleting asset id=134
+2026-09-27 21:51:59 [http-nio-8080-exec-4] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=134, referenced by: [12 Dividend(s)]
+2026-09-27 21:51:59 [http-nio-8080-exec-4] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'D05 - DBS Group Holdings'. It is referenced by: 12 Dividend(s)
+2026-09-27 21:51:59 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/134 → 409 (2ms)
+2026-09-27 21:51:59 [http-nio-8080-exec-3] INFO  c.m.controller.AssetController - Deleting asset id=135
+2026-09-27 21:51:59 [http-nio-8080-exec-3] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=135, referenced by: [15 Dividend(s)]
+2026-09-27 21:51:59 [http-nio-8080-exec-3] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'ME8U - Mapletree Industrial Trust'. It is referenced by: 15 Dividend(s)
+2026-09-27 21:51:59 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/135 → 409 (3ms)
+2026-09-27 21:51:59 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Deleting asset id=136
+2026-09-27 21:51:59 [http-nio-8080-exec-8] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=136, referenced by: [8 Dividend(s)]
+2026-09-27 21:51:59 [http-nio-8080-exec-8] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'C38U - CapitaLand Integrated Commercial Trust'. It is referenced by: 8 Dividend(s)
+2026-09-27 21:51:59 [http-nio-8080-exec-8] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/136 → 409 (3ms)
+2026-09-27 21:51:59 [http-nio-8080-exec-2] INFO  c.m.controller.AssetController - Deleting asset id=137
+2026-09-27 21:51:59 [http-nio-8080-exec-2] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=137, referenced by: [6 Transaction(s), 1 Holding(s)]
+2026-09-27 21:51:59 [http-nio-8080-exec-2] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'AMUNDI-USA - Amundi Prime USA AS (C) SGD'. It is referenced by: 6 Transaction(s), 1 Holding(s)
+2026-09-27 21:51:59 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/137 → 409 (3ms)
+2026-09-27 21:51:59 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Deleting asset id=138
+2026-09-27 21:51:59 [http-nio-8080-exec-9] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=138, referenced by: [5 Transaction(s), 1 Holding(s)]
+2026-09-27 21:51:59 [http-nio-8080-exec-9] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'AMUNDI-WORLD - Amundi Index MSCI World A12S (C) SGD'. It is referenced by: 5 Transaction(s), 1 Holding(s)
+2026-09-27 21:51:59 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/138 → 409 (3ms)
+2026-09-27 21:51:59 [http-nio-8080-exec-7] INFO  c.m.controller.AssetController - Deleting asset id=139
+2026-09-27 21:51:59 [http-nio-8080-exec-7] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=139, referenced by: [1 Transaction(s), 1 Holding(s)]
+2026-09-27 21:51:59 [http-nio-8080-exec-7] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'FID-GTECH-EUR - Fidelity Global Technology Fd A EUR'. It is referenced by: 1 Transaction(s), 1 Holding(s)
+2026-09-27 21:51:59 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/139 → 409 (3ms)
+2026-09-27 21:51:59 [http-nio-8080-exec-6] INFO  c.m.controller.AssetController - Deleting asset id=140
+2026-09-27 21:51:59 [http-nio-8080-exec-6] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=140, referenced by: [1 Transaction(s), 1 Holding(s)]
+2026-09-27 21:51:59 [http-nio-8080-exec-6] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'FID-GTECH-USD - Fidelity Global Technology Fd A (ACC) USD'. It is referenced by: 1 Transaction(s), 1 Holding(s)
+2026-09-27 21:51:59 [http-nio-8080-exec-6] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/140 → 409 (2ms)
+2026-09-27 21:51:59 [http-nio-8080-exec-10] INFO  c.m.controller.AssetController - Deleting asset id=193
+2026-09-27 21:51:59 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Deleted Asset id=193
+2026-09-27 21:51:59 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/193 → 204 (3ms)
+2026-09-27 21:51:59 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 21:52:20 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Deleting asset id=135
+2026-09-27 21:52:20 [http-nio-8080-exec-5] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=135, referenced by: [15 Dividend(s)]
+2026-09-27 21:52:20 [http-nio-8080-exec-5] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'ME8U - Mapletree Industrial Trust'. It is referenced by: 15 Dividend(s)
+2026-09-27 21:52:20 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/135 → 409 (3ms)
+2026-09-27 21:52:20 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Deleting asset id=136
+2026-09-27 21:52:20 [http-nio-8080-exec-4] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=136, referenced by: [8 Dividend(s)]
+2026-09-27 21:52:20 [http-nio-8080-exec-4] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'C38U - CapitaLand Integrated Commercial Trust'. It is referenced by: 8 Dividend(s)
+2026-09-27 21:52:20 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/136 → 409 (3ms)
+2026-09-27 21:52:20 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 21:52:34 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-27 21:52:34 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-27 21:52:34 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-27 21:52:34 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-27 21:52:34 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-27 21:52:34 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-27 21:52:34 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-27 21:52:34 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-27 21:52:34 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (41ms)
+2026-09-27 21:52:34 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (50ms)
+2026-09-27 21:52:34 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (20ms)
+2026-09-27 21:52:34 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (3ms)
+2026-09-27 21:52:44 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/bulk-count → 200 (6ms)
+2026-09-27 21:52:49 [http-nio-8080-exec-10] INFO  c.m.controller.DividendController - Bulk-deleted 87 dividends for user mugu owner 1 account 1
+2026-09-27 21:52:49 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/bulk-delete → 200 (94ms)
+2026-09-27 21:52:49 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-27 21:52:49 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-27 21:52:49 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (1ms)
+2026-09-27 21:52:49 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (1ms)
+2026-09-27 21:52:49 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (7ms)
+2026-09-27 21:52:58 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/bulk-count → 200 (5ms)
+2026-09-27 21:53:03 [http-nio-8080-exec-3] INFO  c.m.controller.DividendController - Bulk-deleted 82 dividends for user mugu owner 1 account 2
+2026-09-27 21:53:03 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/dividends/bulk-delete → 200 (87ms)
+2026-09-27 21:53:03 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-27 21:53:03 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/summary → 200 (1ms)
+2026-09-27 21:53:03 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-27 21:53:03 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-27 21:53:03 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends → 200 (4ms)
+2026-09-27 21:53:12 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dividends/bulk-count → 200 (3ms)
+2026-09-27 21:53:17 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-27 21:53:17 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Deleting asset id=3
+2026-09-27 21:53:23 [http-nio-8080-exec-9] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=3, referenced by: [3 Transaction(s), 2 Holding(s), 12 Dividend(s)]
+2026-09-27 21:53:23 [http-nio-8080-exec-9] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'VOO - Vanguard S&P 500 ETF'. It is referenced by: 3 Transaction(s), 2 Holding(s), 12 Dividend(s)
+2026-09-27 21:53:23 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/3 → 409 (3ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-3] INFO  c.m.controller.AssetController - Deleting asset id=5
+2026-09-27 21:53:23 [http-nio-8080-exec-3] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=5, referenced by: [3 Transaction(s), 1 Holding(s), 19 Dividend(s)]
+2026-09-27 21:53:23 [http-nio-8080-exec-3] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'QQQ - Invesco QQQ Trust, Series 1'. It is referenced by: 3 Transaction(s), 1 Holding(s), 19 Dividend(s)
+2026-09-27 21:53:23 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/5 → 409 (4ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-2] INFO  c.m.controller.AssetController - Deleting asset id=6
+2026-09-27 21:53:23 [http-nio-8080-exec-2] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=6, referenced by: [1 Transaction(s), 1 Holding(s)]
+2026-09-27 21:53:23 [http-nio-8080-exec-2] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'VUG - Vanguard Morningstar Growth Index Fund ETF'. It is referenced by: 1 Transaction(s), 1 Holding(s)
+2026-09-27 21:53:23 [http-nio-8080-exec-2] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/6 → 409 (3ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-7] INFO  c.m.controller.AssetController - Deleting asset id=8
+2026-09-27 21:53:23 [http-nio-8080-exec-7] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=8, referenced by: [5 Transaction(s), 1 Holding(s)]
+2026-09-27 21:53:23 [http-nio-8080-exec-7] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'TSLA - Tesla'. It is referenced by: 5 Transaction(s), 1 Holding(s)
+2026-09-27 21:53:23 [http-nio-8080-exec-7] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/8 → 409 (2ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Deleting asset id=11
+2026-09-27 21:53:23 [http-nio-8080-exec-8] INFO  com.myfinance.service.AssetService - Deleted Asset id=11
+2026-09-27 21:53:23 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/11 → 204 (4ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-10] INFO  c.m.controller.AssetController - Deleting asset id=12
+2026-09-27 21:53:23 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Deleted Asset id=12
+2026-09-27 21:53:23 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/12 → 204 (4ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-6] INFO  c.m.controller.AssetController - Deleting asset id=65
+2026-09-27 21:53:23 [http-nio-8080-exec-6] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=65, referenced by: [1 Transaction(s), 1 Holding(s)]
+2026-09-27 21:53:23 [http-nio-8080-exec-6] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'VCR - Vanguard Consumer Discretionary ETF'. It is referenced by: 1 Transaction(s), 1 Holding(s)
+2026-09-27 21:53:23 [http-nio-8080-exec-6] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/65 → 409 (3ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Deleting asset id=97
+2026-09-27 21:53:23 [http-nio-8080-exec-5] INFO  com.myfinance.service.AssetService - Deleted Asset id=97
+2026-09-27 21:53:23 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/97 → 204 (3ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Deleting asset id=98
+2026-09-27 21:53:23 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Deleted Asset id=98
+2026-09-27 21:53:23 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/98 → 204 (4ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Deleting asset id=100
+2026-09-27 21:53:23 [http-nio-8080-exec-1] INFO  com.myfinance.service.AssetService - Deleted Asset id=100
+2026-09-27 21:53:23 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/100 → 204 (3ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Deleting asset id=103
+2026-09-27 21:53:23 [http-nio-8080-exec-9] INFO  com.myfinance.service.AssetService - Deleted Asset id=103
+2026-09-27 21:53:23 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/103 → 204 (3ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-3] INFO  c.m.controller.AssetController - Deleting asset id=130
+2026-09-27 21:53:23 [http-nio-8080-exec-3] INFO  com.myfinance.service.AssetService - Deleted Asset id=130
+2026-09-27 21:53:23 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/130 → 204 (3ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-2] INFO  c.m.controller.AssetController - Deleting asset id=132
+2026-09-27 21:53:23 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Deleted Asset id=132
+2026-09-27 21:53:23 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/132 → 204 (3ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-7] INFO  c.m.controller.AssetController - Deleting asset id=133
+2026-09-27 21:53:23 [http-nio-8080-exec-7] INFO  com.myfinance.service.AssetService - Deleted Asset id=133
+2026-09-27 21:53:23 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/133 → 204 (3ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Deleting asset id=134
+2026-09-27 21:53:23 [http-nio-8080-exec-8] INFO  com.myfinance.service.AssetService - Deleted Asset id=134
+2026-09-27 21:53:23 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/134 → 204 (3ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-10] INFO  c.m.controller.AssetController - Deleting asset id=135
+2026-09-27 21:53:23 [http-nio-8080-exec-10] INFO  com.myfinance.service.AssetService - Deleted Asset id=135
+2026-09-27 21:53:23 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/135 → 204 (2ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-6] INFO  c.m.controller.AssetController - Deleting asset id=136
+2026-09-27 21:53:23 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Deleted Asset id=136
+2026-09-27 21:53:23 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/136 → 204 (2ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Deleting asset id=137
+2026-09-27 21:53:23 [http-nio-8080-exec-5] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=137, referenced by: [6 Transaction(s), 1 Holding(s)]
+2026-09-27 21:53:23 [http-nio-8080-exec-5] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'AMUNDI-USA - Amundi Prime USA AS (C) SGD'. It is referenced by: 6 Transaction(s), 1 Holding(s)
+2026-09-27 21:53:23 [http-nio-8080-exec-5] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/137 → 409 (2ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Deleting asset id=138
+2026-09-27 21:53:23 [http-nio-8080-exec-4] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=138, referenced by: [5 Transaction(s), 1 Holding(s)]
+2026-09-27 21:53:23 [http-nio-8080-exec-4] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'AMUNDI-WORLD - Amundi Index MSCI World A12S (C) SGD'. It is referenced by: 5 Transaction(s), 1 Holding(s)
+2026-09-27 21:53:23 [http-nio-8080-exec-4] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/138 → 409 (2ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Deleting asset id=139
+2026-09-27 21:53:23 [http-nio-8080-exec-1] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=139, referenced by: [1 Transaction(s), 1 Holding(s)]
+2026-09-27 21:53:23 [http-nio-8080-exec-1] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'FID-GTECH-EUR - Fidelity Global Technology Fd A EUR'. It is referenced by: 1 Transaction(s), 1 Holding(s)
+2026-09-27 21:53:23 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/139 → 409 (3ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Deleting asset id=140
+2026-09-27 21:53:23 [http-nio-8080-exec-9] WARN  com.myfinance.service.AssetService - Cannot delete Asset id=140, referenced by: [1 Transaction(s), 1 Holding(s)]
+2026-09-27 21:53:23 [http-nio-8080-exec-9] WARN  c.m.config.GlobalExceptionHandler - Reference constraint violation: Cannot delete Asset 'FID-GTECH-USD - Fidelity Global Technology Fd A (ACC) USD'. It is referenced by: 1 Transaction(s), 1 Holding(s)
+2026-09-27 21:53:23 [http-nio-8080-exec-9] WARN  c.m.config.RequestLoggingConfig - [HTTP] DELETE /api/assets/140 → 409 (2ms)
+2026-09-27 21:53:23 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (1ms)
+2026-09-27 22:04:22 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (3ms)
+2026-09-27 22:04:22 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
+2026-09-27 22:04:22 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 22:04:22 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-27 22:05:38 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m21s888ms).
+2026-09-27 22:09:17 [http-nio-8080-exec-6] INFO  c.m.controller.AssetController - Updating asset id=137
+2026-09-27 22:09:17 [http-nio-8080-exec-6] INFO  com.myfinance.service.AssetService - Updated Asset id=137 symbol=AMAPUAS:LX
+2026-09-27 22:09:17 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/137 → 200 (69ms)
+2026-09-27 22:09:17 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 22:10:09 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Updating asset id=138
+2026-09-27 22:10:09 [http-nio-8080-exec-4] INFO  com.myfinance.service.AssetService - Updated Asset id=138 symbol=0P0001OO2D.SI
+2026-09-27 22:10:09 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/138 → 200 (4ms)
+2026-09-27 22:10:09 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 22:10:15 [http-nio-8080-exec-9] INFO  c.m.controller.AssetController - Refreshed price for asset id=138 symbol=0P0001OO2D.SI -> 238.35
+2026-09-27 22:10:15 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/138/refresh-price → 200 (441ms)
+2026-09-27 22:10:15 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (1ms)
+2026-09-27 22:10:19 [http-nio-8080-exec-2] INFO  c.m.controller.AssetController - No online price for asset id=137 symbol=AMAPUAS:LX — leaving current price unchanged
+2026-09-27 22:10:19 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/137/refresh-price → 200 (32ms)
+2026-09-27 22:10:51 [http-nio-8080-exec-7] INFO  c.m.controller.AssetController - Updating asset id=137
+2026-09-27 22:10:51 [http-nio-8080-exec-7] INFO  com.myfinance.service.AssetService - Updated Asset id=137 symbol=0P0001OOJG.SI
+2026-09-27 22:10:51 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/137 → 200 (4ms)
+2026-09-27 22:10:51 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 22:10:55 [http-nio-8080-exec-10] INFO  c.m.controller.AssetController - Refreshed price for asset id=137 symbol=0P0001OOJG.SI -> 246.58
+2026-09-27 22:10:55 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/137/refresh-price → 200 (33ms)
+2026-09-27 22:10:55 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (1ms)
+2026-09-27 22:12:28 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Updating asset id=139
+2026-09-27 22:12:28 [http-nio-8080-exec-5] INFO  com.myfinance.service.AssetService - Updated Asset id=139 symbol=0P00015OFP.F
+2026-09-27 22:12:28 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/139 → 200 (4ms)
+2026-09-27 22:12:28 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (1ms)
+2026-09-27 22:12:30 [http-nio-8080-exec-1] INFO  c.m.controller.AssetController - Refreshed price for asset id=139 symbol=0P00015OFP.F -> 68.68
+2026-09-27 22:12:30 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/139/refresh-price → 200 (32ms)
+2026-09-27 22:12:30 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (1ms)
+2026-09-27 22:12:32 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (1ms)
+2026-09-27 22:13:02 [http-nio-8080-exec-2] INFO  c.m.controller.AssetController - Updating asset id=140
+2026-09-27 22:13:02 [http-nio-8080-exec-2] INFO  com.myfinance.service.AssetService - Updated Asset id=140 symbol=0P00012JRK
+2026-09-27 22:13:02 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/assets/140 → 200 (3ms)
+2026-09-27 22:13:02 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (1ms)
+2026-09-27 22:13:04 [http-nio-8080-exec-8] INFO  c.m.controller.AssetController - Refreshed price for asset id=140 symbol=0P00012JRK -> 86.11
+2026-09-27 22:13:04 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/140/refresh-price → 200 (34ms)
+2026-09-27 22:13:04 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-27 22:13:05 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
+2026-09-27 22:13:05 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-09-27 22:13:05 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 22:13:05 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 22:13:12 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-27 22:13:12 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-27 22:13:12 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-27 22:13:12 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-27 22:13:12 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (8ms)
+2026-09-27 22:13:12 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-27 22:13:12 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-27 22:13:12 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-27 22:13:12 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (2ms)
+2026-09-27 22:13:12 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (5ms)
+2026-09-27 22:13:25 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-27 22:13:25 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (2ms)
+2026-09-27 22:13:25 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (4ms)
+2026-09-27 22:13:25 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-09-27 22:14:07 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (2ms)
+2026-09-27 22:14:07 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (3ms)
+2026-09-27 22:14:14 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
+2026-09-27 22:14:14 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (10ms)
+2026-09-27 22:14:14 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-27 22:14:14 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (3ms)
+2026-09-27 22:14:14 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (2ms)
+2026-09-27 22:14:14 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-09-27 22:14:14 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-27 22:14:14 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-27 22:14:14 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (2ms)
+2026-09-27 22:14:14 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-27 22:14:14 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-27 22:14:14 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (4ms)
+2026-09-27 22:14:22 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (2ms)
+2026-09-27 22:14:22 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-27 22:14:22 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (2ms)
+2026-09-27 22:14:22 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (5ms)
+2026-09-27 22:14:29 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-09-27 22:14:29 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (1ms)
+2026-09-27 22:14:29 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (1ms)
+2026-09-27 22:14:29 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-27 22:14:29 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (1ms)
+2026-09-27 22:14:29 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (6ms)
+2026-09-27 22:14:29 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-27 22:14:29 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (1ms)
+2026-09-27 22:14:29 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (1ms)
+2026-09-27 22:14:29 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-27 22:14:29 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-27 22:14:29 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (5ms)
+2026-09-27 22:14:29 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (3ms)
+2026-09-27 22:14:29 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (4ms)
+2026-09-27 22:16:27 [http-nio-8080-exec-3] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-09-27 22:16:27 [http-nio-8080-exec-3] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (4ms)
+2026-09-27 22:16:32 [main] INFO  com.myfinance.MyFinanceApplication - Starting MyFinanceApplication using Java 17.0.20 with PID 69119 (/Users/mugu/Documents/Projects/myfinance/backend/target/classes started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-27 22:16:32 [main] INFO  com.myfinance.MyFinanceApplication - The following 1 profile is active: "prod"
+2026-09-27 22:16:33 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-27 22:16:33 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 167 ms. Found 48 JPA repository interfaces.
+2026-09-27 22:16:34 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-09-27 22:16:34 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-27 22:16:34 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-09-27 22:16:34 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-27 22:16:34 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2260 ms
+2026-09-27 22:16:34 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-27 22:16:35 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-27 22:16:35 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-27 22:16:35 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-27 22:16:35 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-27 22:16:36 [main] ERROR com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Exception during pool initialization.
+org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database may be already in use: "/Users/mugu/Documents/Projects/myfinance/backend/data-prod/myfinance.mv.db". Possible solutions: close all other connection(s); use the server mode [90020-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.mvstore.db.Store.convertMVStoreException(Store.java:165)
+	at org.h2.mvstore.db.Store.<init>(Store.java:142)
+	at org.h2.engine.Database.<init>(Database.java:326)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:343)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:125)
+	at org.h2.Driver.connect(Driver.java:59)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:122)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:428)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:276)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:682)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1335)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1165)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1685)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1434)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:210)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:173)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:168)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:153)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:86)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:266)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:240)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4880)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:845)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:240)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:433)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:921)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:437)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:126)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:105)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:499)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:218)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:188)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:618)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at com.myfinance.MyFinanceApplication.main(MyFinanceApplication.java:10)
+Caused by: org.h2.mvstore.MVStoreException: The file is locked: /Users/mugu/Documents/Projects/myfinance/backend/data-prod/myfinance.mv.db [2.2.224/7]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
+	at org.h2.mvstore.SingleFileStore.lockFileChannel(SingleFileStore.java:143)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:117)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2035)
+	at org.h2.mvstore.db.Store.<init>(Store.java:133)
+	... 138 common frames omitted
+2026-09-27 22:16:36 [main] WARN  o.h.e.j.e.i.JdbcEnvironmentInitiator - HHH000342: Could not obtain connection to query metadata
+java.lang.NullPointerException: Cannot invoke "org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(java.sql.SQLException, String)" because the return value of "org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.sqlExceptionHelper()" is null
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:116)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:276)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:107)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215)
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:223)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:191)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:170)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1432)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1503)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:682)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1335)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1165)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1685)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1434)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:210)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:173)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:168)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:153)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:86)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:266)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:240)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4880)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:845)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:240)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:433)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:921)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:437)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:126)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:105)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:499)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:218)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:188)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:618)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at com.myfinance.MyFinanceApplication.main(MyFinanceApplication.java:10)
+2026-09-27 22:16:36 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-27 22:16:38 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-27 22:16:38 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-27 22:16:39 [main] ERROR com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Exception during pool initialization.
+org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database may be already in use: "/Users/mugu/Documents/Projects/myfinance/backend/data-prod/myfinance.mv.db". Possible solutions: close all other connection(s); use the server mode [90020-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.mvstore.db.Store.convertMVStoreException(Store.java:165)
+	at org.h2.mvstore.db.Store.<init>(Store.java:142)
+	at org.h2.engine.Database.<init>(Database.java:326)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:343)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:125)
+	at org.h2.Driver.connect(Driver.java:59)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:122)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:428)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl.getIsolatedConnection(DdlTransactionIsolatorNonJtaImpl.java:46)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl.getIsolatedConnection(DdlTransactionIsolatorNonJtaImpl.java:39)
+	at org.hibernate.tool.schema.internal.exec.ImprovedExtractionContextImpl.getJdbcConnection(ImprovedExtractionContextImpl.java:63)
+	at org.hibernate.tool.schema.extract.spi.ExtractionContext.getQueryResults(ExtractionContext.java:43)
+	at org.hibernate.tool.schema.extract.internal.SequenceInformationExtractorLegacyImpl.extractMetadata(SequenceInformationExtractorLegacyImpl.java:39)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.initializeSequences(DatabaseInformationImpl.java:66)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.<init>(DatabaseInformationImpl.java:60)
+	at org.hibernate.tool.schema.internal.Helper.buildDatabaseInformation(Helper.java:185)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:98)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:286)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:682)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1335)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1165)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1685)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1434)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:210)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:173)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:168)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:153)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:86)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:266)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:240)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4880)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:845)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:240)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:433)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:921)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:437)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:126)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:105)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:499)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:218)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:188)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:618)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at com.myfinance.MyFinanceApplication.main(MyFinanceApplication.java:10)
+Caused by: org.h2.mvstore.MVStoreException: The file is locked: /Users/mugu/Documents/Projects/myfinance/backend/data-prod/myfinance.mv.db [2.2.224/7]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
+	at org.h2.mvstore.SingleFileStore.lockFileChannel(SingleFileStore.java:143)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:117)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2035)
+	at org.h2.mvstore.db.Store.<init>(Store.java:133)
+	... 142 common frames omitted
+2026-09-27 22:16:39 [main] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 90020, SQLState: 90020
+2026-09-27 22:16:39 [main] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Database may be already in use: "/Users/mugu/Documents/Projects/myfinance/backend/data-prod/myfinance.mv.db". Possible solutions: close all other connection(s); use the server mode [90020-224]
+2026-09-27 22:16:39 [main] ERROR o.s.o.j.LocalContainerEntityManagerFactoryBean - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution [Database may be already in use: "/Users/mugu/Documents/Projects/myfinance/backend/data-prod/myfinance.mv.db". Possible solutions: close all other connection(s); use the server mode [90020-224]] [n/a]
+2026-09-27 22:16:39 [main] ERROR o.s.b.w.e.tomcat.TomcatStarter - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'jwtAuthFilter' defined in file [/Users/mugu/Documents/Projects/myfinance/backend/target/classes/com/myfinance/security/JwtAuthFilter.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'customUserDetailsService' defined in file [/Users/mugu/Documents/Projects/myfinance/backend/target/classes/com/myfinance/security/CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'appUserRepository' defined in com.myfinance.repository.AppUserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+2026-09-27 22:16:39 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-09-27 22:16:39 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2026-09-27 22:16:39 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-09-27 22:16:39 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.context.ApplicationContextException: Unable to start web server
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:165)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:618)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at com.myfinance.MyFinanceApplication.main(MyFinanceApplication.java:10)
+Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:145)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:105)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:499)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:218)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:188)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	... 8 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'jwtAuthFilter' defined in file [/Users/mugu/Documents/Projects/myfinance/backend/target/classes/com/myfinance/security/JwtAuthFilter.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'customUserDetailsService' defined in file [/Users/mugu/Documents/Projects/myfinance/backend/target/classes/com/myfinance/security/CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'appUserRepository' defined in com.myfinance.repository.AppUserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:795)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:210)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:173)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:168)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:153)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:86)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:266)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:240)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4880)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:845)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1332)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1322)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:145)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:866)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:240)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:433)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:921)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:171)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:437)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:126)
+	... 13 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'customUserDetailsService' defined in file [/Users/mugu/Documents/Projects/myfinance/backend/target/classes/com/myfinance/security/CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'appUserRepository' defined in com.myfinance.repository.AppUserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:795)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1355)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1192)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	... 54 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'appUserRepository' defined in com.myfinance.repository.AppUserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1685)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1434)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	... 68 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jpaSharedEM_entityManagerFactory': Cannot resolve reference to bean 'entityManagerFactory' while setting constructor argument
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:682)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:509)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1335)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1165)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	... 82 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution [Database may be already in use: "/Users/mugu/Documents/Projects/myfinance/backend/data-prod/myfinance.mv.db". Possible solutions: close all other connection(s); use the server mode [90020-224]] [n/a]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1786)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365)
+	... 94 common frames omitted
+Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution [Database may be already in use: "/Users/mugu/Documents/Projects/myfinance/backend/data-prod/myfinance.mv.db". Possible solutions: close all other connection(s); use the server mode [90020-224]] [n/a]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:421)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1833)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	... 101 common frames omitted
+Caused by: org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution [Database may be already in use: "/Users/mugu/Documents/Projects/myfinance/backend/data-prod/myfinance.mv.db". Possible solutions: close all other connection(s); use the server mode [90020-224]] [n/a]
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:51)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:94)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl.getIsolatedConnection(DdlTransactionIsolatorNonJtaImpl.java:74)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl.getIsolatedConnection(DdlTransactionIsolatorNonJtaImpl.java:39)
+	at org.hibernate.tool.schema.internal.exec.ImprovedExtractionContextImpl.getJdbcConnection(ImprovedExtractionContextImpl.java:63)
+	at org.hibernate.tool.schema.extract.spi.ExtractionContext.getQueryResults(ExtractionContext.java:43)
+	at org.hibernate.tool.schema.extract.internal.SequenceInformationExtractorLegacyImpl.extractMetadata(SequenceInformationExtractorLegacyImpl.java:39)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.initializeSequences(DatabaseInformationImpl.java:66)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.<init>(DatabaseInformationImpl.java:60)
+	at org.hibernate.tool.schema.internal.Helper.buildDatabaseInformation(Helper.java:185)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:98)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:286)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	... 105 common frames omitted
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database may be already in use: "/Users/mugu/Documents/Projects/myfinance/backend/data-prod/myfinance.mv.db". Possible solutions: close all other connection(s); use the server mode [90020-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.mvstore.db.Store.convertMVStoreException(Store.java:165)
+	at org.h2.mvstore.db.Store.<init>(Store.java:142)
+	at org.h2.engine.Database.<init>(Database.java:326)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:343)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:125)
+	at org.h2.Driver.connect(Driver.java:59)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:122)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:428)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl.getIsolatedConnection(DdlTransactionIsolatorNonJtaImpl.java:46)
+	... 125 common frames omitted
+Caused by: org.h2.mvstore.MVStoreException: The file is locked: /Users/mugu/Documents/Projects/myfinance/backend/data-prod/myfinance.mv.db [2.2.224/7]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
+	at org.h2.mvstore.SingleFileStore.lockFileChannel(SingleFileStore.java:143)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:117)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2035)
+	at org.h2.mvstore.db.Store.<init>(Store.java:133)
+	... 142 common frames omitted
+2026-09-27 22:26:50 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (9ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (1ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (16ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (18ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (17ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (15ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (19ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (34ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (4ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (14ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (8ms)
+2026-09-27 22:26:50 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (4ms)

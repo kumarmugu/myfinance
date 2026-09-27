@@ -90,6 +90,20 @@ class TigerStatementParserTest {
     }
 
     @Test
+    void extractsBareTickerFromDescriptiveSymbolCell() {
+        // Some Tiger statements put the full name in the Symbol cell with the ticker in trailing
+        // parentheses, e.g. "VANGUARD S&P 500 ETF (VOO)". The importer must resolve it to "VOO"
+        // so it matches the existing asset instead of importing under the full name.
+        String stmt = STATEMENT.replace(
+            "Trades,Stock,,DATA,QQQ,US,,,2,330.00000,660.00,-0.99,-1.00,-0.01,-0.14,\"2022-03-07\n12:02:32, US/Eastern\",,USD",
+            "Trades,Stock,,DATA,\"VANGUARD S&P 500 ETF (VOO)\",US,,,2,330.00000,660.00,-0.99,-1.00,-0.01,-0.14,\"2022-03-07\n12:02:32, US/Eastern\",,USD");
+        FlexTrades result = parser.parse(stmt);
+        ParsedTrade voo = result.trades().get(0);
+        assertEquals("VOO", voo.symbol(),
+                "descriptive symbol cell resolves to the bare ticker in trailing parentheses");
+    }
+
+    @Test
     void looksLikeTigerStatementDetectsTheFormat() {
         assertTrue(TigerStatementParser.looksLikeTigerStatement(STATEMENT));
         assertFalse(TigerStatementParser.looksLikeTigerStatement("<FlexQueryResponse></FlexQueryResponse>"));

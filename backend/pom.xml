@@ -84,6 +84,12 @@
             <version>2.5.0</version>
         </dependency>
 
+        <!-- Optional email (Leveraged ETF alerts). No-op unless app.mail.enabled=true + SMTP configured. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
         <!-- Tess4J: local Tesseract OCR for receipt scanning (Apache-2.0, self-hosted, no external API) -->
         <dependency>
             <groupId>net.sourceforge.tess4j</groupId>
