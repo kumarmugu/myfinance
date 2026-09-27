@@ -122,6 +122,7 @@ function AppContent() {
       label: 'Planning',
       items: [
         { to: '/planning', icon: Target, label: 'Allocation & Net Worth' },
+        { to: '/lev-etf', icon: Gauge, label: 'Leveraged ETF', feature: 'LEV_ETF' },
         { to: '/budget', icon: PiggyBank, label: 'Budget & Expenses', feature: 'BUDGET' },
         { to: '/reports', icon: FileBarChart, label: 'Reports', feature: 'REPORTS' },
       ],
