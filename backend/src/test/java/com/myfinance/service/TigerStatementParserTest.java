@@ -127,17 +127,17 @@ class TigerStatementParserTest {
     }
 
     @Test
-    void detectsSellFromExplicitSellActivityInFundSection() {
+    void detectsSellFromExplicitSellActivity() {
         String stmt = String.join("\n",
             "Activity Statement,,,,2025-01-01 - 2025-12-31",
             "Account Information,,,,Account,Address,Account Category,Base Currency",
             "Account Information,,,DATA,50439557,ADDR,Cash,USD",
             "Trades,,,,Symbol,Market,Exchange,Activity Type,Quantity,Trade Price,Amount,Commission,Platform Fee,Settlement Fee,GST,Trade Time,Settle Date,Currency",
-            "Trades,Stock,,DATA,FULLERTON USD CASH (SGXZ99103178.USD),SG,,Sell,-835.861,1.12963,-944.21,0.00,0.00,0.00,0.00,\"2025-02-10\n21:02:47, GMT+8\",2025-02-11,USD");
+            "Trades,Stock,,DATA,Rivian (RIVN),US,NASDAQ,Sell,-18,14.50000,-261.00,-0.99,-1.00,-0.05,-0.18,\"2025-11-05\n11:37:16, US/Eastern\",2025-11-06,USD");
         FlexTrades result = parser.parse(stmt);
         assertEquals(1, result.trades().size());
         assertFalse(result.trades().get(0).buy(), "explicit Sell → SELL");
-        assertEquals("SGXZ99103178", result.trades().get(0).symbol());
+        assertEquals("RIVN", result.trades().get(0).symbol());
     }
 
     @Test

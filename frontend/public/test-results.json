@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-09-27T23:53:43.861084",
+  "timestamp": "2026-09-27T15:54:20Z",
   "summary": {
-    "total": 556,
-    "passed": 556,
-    "failed": 0,
-    "suites": 71
+    "total": 637,
+    "passed": 636,
+    "failed": 1,
+    "suites": 80
   },
   "coverage": {
-    "backend": 81.2,
-    "frontend": 69.3
+    "backend": 80.2,
+    "frontend": 49.1
   },
   "suites": [
     {
@@ -2430,25 +2430,40 @@
         {
           "name": "parsesStockTradesSkippingForexTotalsAndDuplicateRows",
           "status": "pass",
-          "duration": "1ms"
+          "duration": "50ms"
+        },
+        {
+          "name": "detectsSellFromExplicitSellActivityInFundSection",
+          "status": "fail",
+          "duration": "9ms"
         },
         {
           "name": "extractsBareTickerFromDescriptiveSymbolCell",
           "status": "pass",
-          "duration": "1ms"
+          "duration": "2ms"
         },
         {
           "name": "looksLikeTigerStatementDetectsTheFormat",
           "status": "pass",
-          "duration": "0ms"
+          "duration": "1ms"
+        },
+        {
+          "name": "parsesStockSplitsFromCorporateActionsSection",
+          "status": "pass",
+          "duration": "11ms"
         },
         {
           "name": "usdTradeInUsdBaseAccountConvertsAtOne",
           "status": "pass",
-          "duration": "1ms"
+          "duration": "2ms"
         },
         {
           "name": "associatesRateForATradeCurrencyThatDiffersFromBase",
+          "status": "pass",
+          "duration": "4ms"
+        },
+        {
+          "name": "detectsSellFromCloseActivityAndNegativeQuantity",
           "status": "pass",
           "duration": "1ms"
         }
@@ -2819,43 +2834,145 @@
       ]
     },
     {
+      "name": "ExportMenu",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "renders an Export button",
+          "status": "pass",
+          "duration": "236.31770200000028ms"
+        },
+        {
+          "name": "opens the menu and shows CSV, Excel and PDF options",
+          "status": "pass",
+          "duration": "33.840247999999974ms"
+        },
+        {
+          "name": "triggers CSV export with rows and config",
+          "status": "pass",
+          "duration": "57.12666500000023ms"
+        },
+        {
+          "name": "triggers Excel export",
+          "status": "pass",
+          "duration": "46.600163000000066ms"
+        },
+        {
+          "name": "triggers PDF export and passes subtitle when provided",
+          "status": "pass",
+          "duration": "29.732253000000128ms"
+        },
+        {
+          "name": "shows a success toast on successful export",
+          "status": "pass",
+          "duration": "39.99021499999935ms"
+        },
+        {
+          "name": "shows an error toast (no stack trace) on failure",
+          "status": "pass",
+          "duration": "133.52274699999998ms"
+        },
+        {
+          "name": "disables the control and shows guidance when the dataset is empty",
+          "status": "pass",
+          "duration": "3.289429999999811ms"
+        },
+        {
+          "name": "does not run a second export while one is in flight (duplicate-click guard)",
+          "status": "pass",
+          "duration": "40.60860800000046ms"
+        },
+        {
+          "name": "supports keyboard navigation to open and move within the menu",
+          "status": "pass",
+          "duration": "38.003866999999445ms"
+        },
+        {
+          "name": "closes the menu on Escape",
+          "status": "pass",
+          "duration": "36.45684700000038ms"
+        }
+      ]
+    },
+    {
+      "name": "SearchableSelect",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "renders with placeholder when no value selected",
+          "status": "pass",
+          "duration": "71.64029900000014ms"
+        },
+        {
+          "name": "shows selected value label",
+          "status": "pass",
+          "duration": "2.650004000000081ms"
+        },
+        {
+          "name": "opens dropdown on click",
+          "status": "pass",
+          "duration": "32.345928000000185ms"
+        },
+        {
+          "name": "filters options by search text",
+          "status": "pass",
+          "duration": "18.723113000000012ms"
+        },
+        {
+          "name": "calls onChange when option is selected",
+          "status": "pass",
+          "duration": "12.945431999999983ms"
+        },
+        {
+          "name": "shows \"No results\" when search matches nothing",
+          "status": "pass",
+          "duration": "8.274531999999908ms"
+        },
+        {
+          "name": "respects disabled prop",
+          "status": "pass",
+          "duration": "7.7398629999997866ms"
+        }
+      ]
+    },
+    {
       "name": "ToastContainer",
       "type": "frontend",
       "tests": [
         {
           "name": "renders nothing when no toasts",
           "status": "pass",
-          "duration": "5ms"
+          "duration": "23.252101999999923ms"
         },
         {
           "name": "renders error toast with correct styling",
           "status": "pass",
-          "duration": "8ms"
+          "duration": "39.4611789999999ms"
         },
         {
           "name": "renders success toast with correct styling",
           "status": "pass",
-          "duration": "4ms"
+          "duration": "14.623635999999806ms"
         },
         {
           "name": "renders info toast with correct styling",
           "status": "pass",
-          "duration": "4ms"
+          "duration": "4.501757999999882ms"
         },
         {
           "name": "dismisses toast on X button click",
           "status": "pass",
-          "duration": "6ms"
+          "duration": "10.848658000000341ms"
         },
         {
           "name": "renders multiple toasts stacked",
           "status": "pass",
-          "duration": "5ms"
+          "duration": "9.425317000000177ms"
         },
         {
           "name": "preserves newlines in messages",
           "status": "pass",
-          "duration": "4ms"
+          "duration": "4.943583999999646ms"
         }
       ]
     },
@@ -2866,42 +2983,170 @@
         {
           "name": "provides empty toasts initially",
           "status": "pass",
-          "duration": "3ms"
+          "duration": "91.65665099999978ms"
         },
         {
           "name": "shows error toast",
           "status": "pass",
-          "duration": "4ms"
+          "duration": "20.353252999999768ms"
         },
         {
           "name": "shows success toast",
           "status": "pass",
-          "duration": "3ms"
+          "duration": "5.488065000000006ms"
         },
         {
           "name": "shows info toast",
           "status": "pass",
-          "duration": "3ms"
+          "duration": "3.4105790000003253ms"
         },
         {
           "name": "supports multiple simultaneous toasts",
           "status": "pass",
-          "duration": "4ms"
+          "duration": "29.413580999999795ms"
         },
         {
           "name": "removes toast manually",
           "status": "pass",
-          "duration": "4ms"
+          "duration": "4.359171999999944ms"
         },
         {
           "name": "auto-dismisses after 4 seconds",
           "status": "pass",
-          "duration": "5ms"
+          "duration": "15.1517130000002ms"
         },
         {
-          "name": "defaults to error type",
+          "name": "defaults to error type when no type specified",
           "status": "pass",
-          "duration": "3ms"
+          "duration": "2.4816249999998945ms"
+        },
+        {
+          "name": "throws error when used outside provider",
+          "status": "pass",
+          "duration": "17.80621599999995ms"
+        }
+      ]
+    },
+    {
+      "name": "api",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "exports owner CRUD functions",
+          "status": "pass",
+          "duration": "3.027161999999862ms"
+        },
+        {
+          "name": "exports account CRUD functions",
+          "status": "pass",
+          "duration": "0.4150480000000698ms"
+        },
+        {
+          "name": "exports asset functions",
+          "status": "pass",
+          "duration": "0.38601999999991676ms"
+        },
+        {
+          "name": "exports transaction functions",
+          "status": "pass",
+          "duration": "0.27704500000004373ms"
+        },
+        {
+          "name": "exports currency rate functions",
+          "status": "pass",
+          "duration": "0.39220899999986614ms"
+        },
+        {
+          "name": "exports tax functions",
+          "status": "pass",
+          "duration": "0.379711000000043ms"
+        },
+        {
+          "name": "exports work experience functions",
+          "status": "pass",
+          "duration": "0.3820699999998851ms"
+        },
+        {
+          "name": "exports salary functions",
+          "status": "pass",
+          "duration": "0.37360199999989163ms"
+        },
+        {
+          "name": "exports retirement fund functions",
+          "status": "pass",
+          "duration": "0.3176290000001245ms"
+        },
+        {
+          "name": "exports home loan functions",
+          "status": "pass",
+          "duration": "0.48113900000021204ms"
+        },
+        {
+          "name": "exports insurance bonus functions",
+          "status": "pass",
+          "duration": "0.33622399999990193ms"
+        }
+      ]
+    },
+    {
+      "name": "types",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "ASSET_TYPE_LABELS has all expected types",
+          "status": "pass",
+          "duration": "2.727335000000039ms"
+        },
+        {
+          "name": "ASSET_TYPE_COLORS has colors for all types in labels",
+          "status": "pass",
+          "duration": "2.6446220000000267ms"
+        },
+        {
+          "name": "has 16 asset types",
+          "status": "pass",
+          "duration": "0.17123500000002423ms"
+        }
+      ]
+    },
+    {
+      "name": "stockSplit",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "parses a forward split \"3:1\"",
+          "status": "pass",
+          "duration": "3.2152600000000575ms"
+        },
+        {
+          "name": "parses a reverse split \"1:8\"",
+          "status": "pass",
+          "duration": "0.34905700000001616ms"
+        },
+        {
+          "name": "treats a plain number as N:1",
+          "status": "pass",
+          "duration": "0.20147899999994934ms"
+        },
+        {
+          "name": "tolerates surrounding whitespace and spaces around the colon",
+          "status": "pass",
+          "duration": "0.22290700000007746ms"
+        },
+        {
+          "name": "accepts decimal ratios",
+          "status": "pass",
+          "duration": "0.1994399999999814ms"
+        },
+        {
+          "name": "rejects zero or negative values",
+          "status": "pass",
+          "duration": "0.2717039999999997ms"
+        },
+        {
+          "name": "rejects non-numeric / malformed input",
+          "status": "pass",
+          "duration": "0.2590619999999717ms"
         }
       ]
     },
@@ -2912,180 +3157,52 @@
         {
           "name": "renders page title and description",
           "status": "pass",
-          "duration": "15ms"
+          "duration": "113.99893900000006ms"
         },
         {
           "name": "loads and displays audit entries",
           "status": "pass",
-          "duration": "22ms"
+          "duration": "73.46571900000026ms"
         },
         {
           "name": "displays action badges with correct labels",
           "status": "pass",
-          "duration": "18ms"
+          "duration": "26.168047000000115ms"
         },
         {
           "name": "shows total entries count",
           "status": "pass",
-          "duration": "16ms"
+          "duration": "75.47954699999991ms"
         },
         {
           "name": "renders filter controls",
           "status": "pass",
-          "duration": "14ms"
+          "duration": "13.467666000000008ms"
         },
         {
           "name": "calls API with action filter",
           "status": "pass",
-          "duration": "20ms"
+          "duration": "92.48957999999993ms"
         },
         {
           "name": "calls API with entity filter",
           "status": "pass",
-          "duration": "18ms"
+          "duration": "144.04890799999976ms"
         },
         {
           "name": "clears all filters",
           "status": "pass",
-          "duration": "16ms"
+          "duration": "91.4384500000001ms"
         },
         {
           "name": "shows empty state when no entries",
           "status": "pass",
-          "duration": "12ms"
+          "duration": "28.25763700000016ms"
         },
         {
           "name": "shows loading spinner initially",
           "status": "pass",
-          "duration": "8ms"
-        }
-      ]
-    },
-    {
-      "name": "SearchableSelect",
-      "type": "frontend",
-      "tests": [
-        {
-          "name": "renders with placeholder",
-          "status": "pass",
-          "duration": "6ms"
-        },
-        {
-          "name": "shows selected value label",
-          "status": "pass",
-          "duration": "4ms"
-        },
-        {
-          "name": "opens dropdown on click",
-          "status": "pass",
-          "duration": "5ms"
-        },
-        {
-          "name": "filters options by search text",
-          "status": "pass",
-          "duration": "6ms"
-        },
-        {
-          "name": "calls onChange when option selected",
-          "status": "pass",
-          "duration": "5ms"
-        },
-        {
-          "name": "shows No results for empty search",
-          "status": "pass",
-          "duration": "4ms"
-        },
-        {
-          "name": "respects disabled prop",
-          "status": "pass",
-          "duration": "3ms"
-        }
-      ]
-    },
-    {
-      "name": "API Module",
-      "type": "frontend",
-      "tests": [
-        {
-          "name": "exports owner CRUD functions",
-          "status": "pass",
-          "duration": "2ms"
-        },
-        {
-          "name": "exports account CRUD functions",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "exports asset functions",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "exports transaction functions",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "exports currency rate functions",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "exports tax functions",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "exports work experience functions",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "exports salary functions",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "exports retirement fund functions",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "exports home loan functions",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "exports insurance bonus functions",
-          "status": "pass",
-          "duration": "1ms"
-        }
-      ]
-    },
-    {
-      "name": "TypeDefinitions",
-      "type": "frontend",
-      "tests": [
-        {
-          "name": "types are properly exported",
-          "status": "pass",
-          "duration": "2ms"
-        },
-        {
-          "name": "AssetType enum values exist",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "ASSET_TYPE_LABELS mapping",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "Currency type exists",
-          "status": "pass",
-          "duration": "1ms"
+          "duration": "5.352812000000085ms"
         }
       ]
     },
@@ -3096,83 +3213,42 @@
         {
           "name": "renders page title and description",
           "status": "pass",
-          "duration": "18ms"
+          "duration": "265.99675100000013ms"
         },
         {
           "name": "renders all four tabs",
           "status": "pass",
-          "duration": "12ms"
+          "duration": "40.16821499999969ms"
         },
         {
           "name": "shows plan tab summary cards by default",
           "status": "pass",
-          "duration": "15ms"
+          "duration": "134.2948290000004ms"
         },
         {
           "name": "switches to Categories tab and shows category management",
           "status": "pass",
-          "duration": "20ms"
+          "duration": "118.71556999999939ms"
         },
         {
           "name": "adds a new category",
           "status": "pass",
-          "duration": "22ms"
+          "duration": "177.729061ms"
         },
         {
           "name": "switches to Expenses tab",
           "status": "pass",
-          "duration": "14ms"
+          "duration": "114.09588799999983ms"
         },
         {
           "name": "switches to Report tab and shows empty state",
           "status": "pass",
-          "duration": "16ms"
+          "duration": "29.818935999999667ms"
         },
         {
           "name": "has month and year selectors",
           "status": "pass",
-          "duration": "10ms"
-        }
-      ]
-    },
-    {
-      "name": "parseSplitRatio",
-      "type": "frontend",
-      "tests": [
-        {
-          "name": "parses a forward split \"3:1\"",
-          "status": "pass",
-          "duration": "2ms"
-        },
-        {
-          "name": "parses a reverse split \"1:8\"",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "treats a plain number as N:1",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "tolerates surrounding whitespace and spaces around the colon",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "accepts decimal ratios",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "rejects zero or negative values",
-          "status": "pass",
-          "duration": "1ms"
-        },
-        {
-          "name": "rejects non-numeric / malformed input",
-          "status": "pass",
-          "duration": "1ms"
+          "duration": "12.709679000000506ms"
         }
       ]
     },
@@ -3183,37 +3259,420 @@
         {
           "name": "renders the header and advisory-only note",
           "status": "pass",
-          "duration": "20ms"
+          "duration": "264.35649500000045ms"
         },
         {
           "name": "renders all seven tabs",
           "status": "pass",
-          "duration": "10ms"
+          "duration": "56.543498ms"
         },
         {
           "name": "loads shared reference data on mount",
           "status": "pass",
-          "duration": "12ms"
+          "duration": "30.2067049999996ms"
         },
         {
           "name": "switches to the Notifications tab and loads notifications + alert prefs",
           "status": "pass",
-          "duration": "9ms"
+          "duration": "78.46013500000026ms"
         },
         {
           "name": "switches to the Backtesting tab and loads past runs",
           "status": "pass",
-          "duration": "8ms"
+          "duration": "94.4059559999996ms"
         },
         {
           "name": "switches to the Strategy tab and fetches the live allocation-curve preview",
           "status": "pass",
-          "duration": "9ms"
+          "duration": "476.6872459999995ms"
         },
         {
           "name": "shows an empty-state on the Index Monitor tab when there are no benchmarks",
           "status": "pass",
-          "duration": "7ms"
+          "duration": "14.405175999999301ms"
+        }
+      ]
+    },
+    {
+      "name": "Transactions.export",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "shows the Export button on the transactions table",
+          "status": "pass",
+          "duration": "515.9405980000001ms"
+        },
+        {
+          "name": "exports the complete loaded dataset with ALL columns, including UI-hidden ones",
+          "status": "pass",
+          "duration": "160.22171499999968ms"
+        }
+      ]
+    },
+    {
+      "name": "UserGuide",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "renders the guide title, search box and progress",
+          "status": "pass",
+          "duration": "301.08214899999984ms"
+        },
+        {
+          "name": "renders all section titles in the navigation",
+          "status": "pass",
+          "duration": "197.6109779999997ms"
+        },
+        {
+          "name": "shows the Welcome page content by default",
+          "status": "pass",
+          "duration": "145.8729440000002ms"
+        },
+        {
+          "name": "navigates to another page when a nav item is clicked",
+          "status": "pass",
+          "duration": "320.42473999999993ms"
+        },
+        {
+          "name": "expands a collapsed section and opens one of its pages",
+          "status": "pass",
+          "duration": "305.2469369999999ms"
+        },
+        {
+          "name": "searches and shows matching results",
+          "status": "pass",
+          "duration": "174.532467ms"
+        },
+        {
+          "name": "search with no match shows an empty message",
+          "status": "pass",
+          "duration": "100.28713100000004ms"
+        },
+        {
+          "name": "opens a related in-guide page via a related chip",
+          "status": "pass",
+          "duration": "188.626894ms"
+        },
+        {
+          "name": "navigates to an app route when a related route chip is clicked",
+          "status": "pass",
+          "duration": "172.63585500000045ms"
+        },
+        {
+          "name": "marks a page as done and updates progress + persists",
+          "status": "pass",
+          "duration": "237.66115200000058ms"
+        },
+        {
+          "name": "renders a screenshot placeholder (no src) with accessible label",
+          "status": "pass",
+          "duration": "65.45924399999967ms"
+        },
+        {
+          "name": "hides pages whose feature is disabled",
+          "status": "pass",
+          "duration": "97.52876500000002ms"
+        },
+        {
+          "name": "every content page has the required author fields",
+          "status": "pass",
+          "duration": "4.1296790000005785ms"
+        }
+      ]
+    },
+    {
+      "name": "configs",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "transactions config exports columns the UI hides (ID, fees, currency, createdAt)",
+          "status": "pass",
+          "duration": "3.232900999999856ms"
+        },
+        {
+          "name": "transactions export preserves original currency + amount (no conversion)",
+          "status": "pass",
+          "duration": "2.178378000000066ms"
+        },
+        {
+          "name": "accounts config EXCLUDES the sensitive account number",
+          "status": "pass",
+          "duration": "1.1740139999999428ms"
+        },
+        {
+          "name": "accounts export does not leak an account number even if present on the object",
+          "status": "pass",
+          "duration": "0.35842300000012983ms"
+        },
+        {
+          "name": "dividends and holdings configs include hidden columns (id, currency)",
+          "status": "pass",
+          "duration": "0.3944539999999961ms"
+        },
+        {
+          "name": "every column has a header and accessor",
+          "status": "pass",
+          "duration": "3.0300469999999677ms"
+        },
+        {
+          "name": "bank savings, generic FD, SL FD exclude account numbers; insurance excludes policy number",
+          "status": "pass",
+          "duration": "0.7004529999999249ms"
+        },
+        {
+          "name": "salary/work-experience/property/metals/tax configs include hidden columns (id, notes)",
+          "status": "pass",
+          "duration": "1.087233999999853ms"
+        },
+        {
+          "name": "every additional config column has a header and accessor",
+          "status": "pass",
+          "duration": "44.04127500000004ms"
+        }
+      ]
+    },
+    {
+      "name": "csv",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "leaves plain values unquoted",
+          "status": "pass",
+          "duration": "2.639118999999937ms"
+        },
+        {
+          "name": "quotes fields containing commas",
+          "status": "pass",
+          "duration": "0.3098889999998846ms"
+        },
+        {
+          "name": "escapes and quotes embedded double-quotes",
+          "status": "pass",
+          "duration": "0.17269400000009227ms"
+        },
+        {
+          "name": "quotes fields containing newlines",
+          "status": "pass",
+          "duration": "0.1977359999998498ms"
+        },
+        {
+          "name": "defuses formula injection with a leading quote",
+          "status": "pass",
+          "duration": "0.2559409999998934ms"
+        },
+        {
+          "name": "includes a header row",
+          "status": "pass",
+          "duration": "2.0665950000000066ms"
+        },
+        {
+          "name": "preserves original currency amounts without conversion or truncation",
+          "status": "pass",
+          "duration": "0.3861429999999473ms"
+        },
+        {
+          "name": "escapes commas, quotes, and newlines correctly",
+          "status": "pass",
+          "duration": "0.34167200000001685ms"
+        },
+        {
+          "name": "handles null values as empty fields",
+          "status": "pass",
+          "duration": "0.20600899999999456ms"
+        },
+        {
+          "name": "supports unicode content",
+          "status": "pass",
+          "duration": "0.19272000000000844ms"
+        },
+        {
+          "name": "formats dates consistently as YYYY-MM-DD",
+          "status": "pass",
+          "duration": "0.23156399999993482ms"
+        },
+        {
+          "name": "handles a large dataset without truncation",
+          "status": "pass",
+          "duration": "76.39358300000004ms"
+        },
+        {
+          "name": "prepends a UTF-8 BOM",
+          "status": "pass",
+          "duration": "1.3080909999998767ms"
+        }
+      ]
+    },
+    {
+      "name": "excel",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "creates a worksheet with a readable name",
+          "status": "pass",
+          "duration": "197.37131199999976ms"
+        },
+        {
+          "name": "writes all columns as headers",
+          "status": "pass",
+          "duration": "44.11164000000008ms"
+        },
+        {
+          "name": "keeps numeric and currency values numeric",
+          "status": "pass",
+          "duration": "166.64505099999997ms"
+        },
+        {
+          "name": "keeps dates as Date objects (date-compatible)",
+          "status": "pass",
+          "duration": "38.126428999999916ms"
+        },
+        {
+          "name": "renders booleans as Yes/No and null as empty",
+          "status": "pass",
+          "duration": "27.78468299999986ms"
+        },
+        {
+          "name": "preserves unicode",
+          "status": "pass",
+          "duration": "117.85722099999975ms"
+        },
+        {
+          "name": "freezes the header row",
+          "status": "pass",
+          "duration": "69.03392299999996ms"
+        },
+        {
+          "name": "handles a large dataset",
+          "status": "pass",
+          "duration": "1398.3656569999998ms"
+        }
+      ]
+    },
+    {
+      "name": "exportTable",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "downloads a CSV with a dated filename",
+          "status": "pass",
+          "duration": "6.022580000000289ms"
+        },
+        {
+          "name": "downloads an Excel file with .xlsx extension",
+          "status": "pass",
+          "duration": "125.1723079999997ms"
+        },
+        {
+          "name": "downloads a PDF with .pdf extension",
+          "status": "pass",
+          "duration": "24.820408000000043ms"
+        },
+        {
+          "name": "rejects an unsupported format",
+          "status": "pass",
+          "duration": "76.08102699999972ms"
+        }
+      ]
+    },
+    {
+      "name": "format",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "parses numbers and numeric strings",
+          "status": "pass",
+          "duration": "2.5591229999999996ms"
+        },
+        {
+          "name": "returns undefined for null/empty/non-numeric",
+          "status": "pass",
+          "duration": "0.37571600000001126ms"
+        },
+        {
+          "name": "formats a date-only string as YYYY-MM-DD",
+          "status": "pass",
+          "duration": "1.2991020000001754ms"
+        },
+        {
+          "name": "formats an ISO datetime to just the date",
+          "status": "pass",
+          "duration": "0.20247500000004948ms"
+        },
+        {
+          "name": "returns empty string for empty input",
+          "status": "pass",
+          "duration": "0.19462700000008226ms"
+        },
+        {
+          "name": "formats to YYYY-MM-DD HH:mm:ss",
+          "status": "pass",
+          "duration": "0.21246399999995447ms"
+        },
+        {
+          "name": "parses valid values and rejects invalid",
+          "status": "pass",
+          "duration": "0.37782100000003993ms"
+        },
+        {
+          "name": "handles null/undefined/empty consistently as empty string",
+          "status": "pass",
+          "duration": "0.30214200000000346ms"
+        },
+        {
+          "name": "renders booleans as Yes/No",
+          "status": "pass",
+          "duration": "0.18666600000005928ms"
+        },
+        {
+          "name": "keeps full numeric precision without truncation or separators",
+          "status": "pass",
+          "duration": "0.19450299999994058ms"
+        },
+        {
+          "name": "preserves unicode strings",
+          "status": "pass",
+          "duration": "0.15117199999986042ms"
+        },
+        {
+          "name": "builds entity_YYYY-MM-DD.ext",
+          "status": "pass",
+          "duration": "0.49960699999996905ms"
+        },
+        {
+          "name": "sanitizes unsafe characters",
+          "status": "pass",
+          "duration": "0.1763260000000173ms"
+        }
+      ]
+    },
+    {
+      "name": "pdf",
+      "type": "frontend",
+      "tests": [
+        {
+          "name": "produces a PDF blob",
+          "status": "pass",
+          "duration": "43.18342799999982ms"
+        },
+        {
+          "name": "generates a non-trivial document for wide tables with many columns",
+          "status": "pass",
+          "duration": "7.4793720000002395ms"
+        },
+        {
+          "name": "handles multi-page (large) datasets and long text",
+          "status": "pass",
+          "duration": "1494.5862119999997ms"
+        },
+        {
+          "name": "handles empty datasets (header only)",
+          "status": "pass",
+          "duration": "41.67838699999993ms"
+        },
+        {
+          "name": "accepts a subtitle without throwing",
+          "status": "pass",
+          "duration": "1.8173530000003666ms"
         }
       ]
     }
