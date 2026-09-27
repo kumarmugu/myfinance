@@ -1421,3 +1421,375 @@ org.springframework.web.server.ResponseStatusException: 400 BAD_REQUEST "Cannot 
 2026-09-28 00:19:54 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (87ms)
 2026-09-28 00:19:54 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (17ms)
 2026-09-28 00:19:54 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (26ms)
+2026-09-28 00:20:17 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/preview → 200 (326ms)
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1825 type=BUY assetId=8 quantity=5
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=705 assetId=8 quantity=86.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1826 type=BUY assetId=8 quantity=5
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=705 assetId=8 quantity=91.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1827 type=BUY assetId=486 quantity=3
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=737 assetId=486 quantity=3
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1828 type=BUY assetId=486 quantity=3
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=737 assetId=486 quantity=6
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1829 type=BUY assetId=3 quantity=10
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=707 assetId=3 quantity=19.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1830 type=BUY assetId=484 quantity=14
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=710 assetId=484 quantity=25.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1831 type=BUY assetId=481 quantity=10
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=706 assetId=481 quantity=18.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1832 type=BUY assetId=483 quantity=10
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=709 assetId=483 quantity=34.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1833 type=BUY assetId=486 quantity=3
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=737 assetId=486 quantity=9
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1834 type=BUY assetId=3 quantity=5
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=707 assetId=3 quantity=24.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1835 type=BUY assetId=481 quantity=10
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=706 assetId=481 quantity=28.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1836 type=BUY assetId=483 quantity=36
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=709 assetId=483 quantity=70.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1837 type=BUY assetId=3 quantity=4
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=707 assetId=3 quantity=28.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1838 type=BUY assetId=483 quantity=8
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=709 assetId=483 quantity=78.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1839 type=BUY assetId=8 quantity=13
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=705 assetId=8 quantity=104.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1840 type=BUY assetId=481 quantity=12
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=706 assetId=481 quantity=40.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1841 type=BUY assetId=3 quantity=5
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=707 assetId=3 quantity=33.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1842 type=BUY assetId=486 quantity=3
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=737 assetId=486 quantity=12
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1843 type=BUY assetId=483 quantity=22
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=709 assetId=483 quantity=100.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1844 type=BUY assetId=486 quantity=3
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=737 assetId=486 quantity=15
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1845 type=BUY assetId=3 quantity=5
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=707 assetId=3 quantity=38.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1846 type=BUY assetId=482 quantity=6
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=708 assetId=482 quantity=8.00
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1847 type=BUY assetId=487 quantity=1
+2026-09-28 00:20:25 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=738 assetId=487 quantity=1
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1848 type=BUY assetId=8 quantity=10
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=705 assetId=8 quantity=114.00
+2026-09-28 00:20:26 [http-nio-8080-exec-3] WARN  c.myfinance.service.IbkrSyncService - Skipping SELL of 50 NVDA on 2024-06-18: exceeds held 15 (shares likely opened before the statement)
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1849 type=BUY assetId=486 quantity=50
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=737 assetId=486 quantity=65
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1850 type=BUY assetId=488 quantity=10
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=739 assetId=488 quantity=10
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1851 type=BUY assetId=489 quantity=12
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=740 assetId=489 quantity=12
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1852 type=BUY assetId=487 quantity=2
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=738 assetId=487 quantity=3
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1853 type=BUY assetId=482 quantity=10
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=708 assetId=482 quantity=18.00
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1854 type=SELL assetId=486 quantity=50
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=737 assetId=486 quantity=15
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1854 profit=-7126.396150000000
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1855 type=BUY assetId=487 quantity=10
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=738 assetId=487 quantity=13
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1856 type=BUY assetId=487 quantity=10
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=738 assetId=487 quantity=23
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1857 type=BUY assetId=487 quantity=10
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=738 assetId=487 quantity=33
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1858 type=SELL assetId=8 quantity=30
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=705 assetId=8 quantity=84.00
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1858 profit=4331.660520000000
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1859 type=BUY assetId=8 quantity=20
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=705 assetId=8 quantity=104.00
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1860 type=BUY assetId=8 quantity=20
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=705 assetId=8 quantity=124.00
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Created Transaction id=1861 type=BUY assetId=8 quantity=20
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.HoldingService - Saved Holding id=705 assetId=8 quantity=144.00
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1858 profit=528.207990000000
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1854 profit=-7126.396150000000
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Recomputed for userId=2: 2 sells, 2 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.myfinance.service.IbkrSyncService - IBKR trade sync for userId=2: inserted=37 updated=0 skipped=0 skippedOversell=1 assetsCreated=0
+2026-09-28 00:20:26 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/apply → 200 (539ms)
+2026-09-28 00:20:26 [http-nio-8080-exec-2] INFO  c.m.controller.TransactionController - Applying stock split for userId=2 symbol=NVDA ratio=10:1 effective=2024-06-10
+2026-09-28 00:20:26 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=737 assetId=486 quantity=150.0000000000
+2026-09-28 00:20:26 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1858 profit=528.20799000000000
+2026-09-28 00:20:26 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1854 profit=2238.45000000000000
+2026-09-28 00:20:26 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Recomputed for userId=2: 2 sells, 2 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-28 00:20:26 [http-nio-8080-exec-2] INFO  c.m.service.StockSplitService - Applied 10:1 split for userId=2 symbol=NVDA effective=2024-06-10: 5 txns, 1 holdings
+2026-09-28 00:20:26 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/split → 200 (52ms)
+2026-09-28 00:20:26 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Applying stock split for userId=2 symbol=SMCI ratio=10:1 effective=2024-10-01
+2026-09-28 00:20:26 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=738 assetId=487 quantity=330.0000000000
+2026-09-28 00:20:26 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1858 profit=528.20799000000000
+2026-09-28 00:20:26 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1854 profit=2238.45000000000000
+2026-09-28 00:20:26 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Recomputed for userId=2: 2 sells, 2 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-28 00:20:26 [http-nio-8080-exec-4] INFO  c.m.service.StockSplitService - Applied 10:1 split for userId=2 symbol=SMCI effective=2024-10-01: 2 txns, 1 holdings
+2026-09-28 00:20:26 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/split → 200 (37ms)
+2026-09-28 00:20:26 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-28 00:20:26 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-28 00:20:26 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-28 00:20:26 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (5ms)
+2026-09-28 00:20:26 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (6ms)
+2026-09-28 00:20:26 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (17ms)
+2026-09-28 00:20:26 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (9ms)
+2026-09-28 00:20:43 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/preview → 200 (81ms)
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1862 type=BUY assetId=8 quantity=3
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=705 assetId=8 quantity=147.00
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1863 type=SELL assetId=487 quantity=30
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=738 assetId=487 quantity=300.00
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1863 profit=1125.9800000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1864 type=BUY assetId=8 quantity=13
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=705 assetId=8 quantity=160.00
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1865 type=BUY assetId=483 quantity=30
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=709 assetId=483 quantity=130.00
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1866 type=SELL assetId=481 quantity=20
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=706 assetId=481 quantity=20.00
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1866 profit=857.7500000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1867 type=SELL assetId=483 quantity=50
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=709 assetId=483 quantity=80.00
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1867 profit=1118.044600000000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1868 type=SELL assetId=8 quantity=16
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=705 assetId=8 quantity=144.00
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1868 profit=2964.228992000000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1869 type=BUY assetId=483 quantity=30
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=709 assetId=483 quantity=110.00
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1870 type=BUY assetId=490 quantity=50
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=741 assetId=490 quantity=50
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1871 type=BUY assetId=491 quantity=1
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=742 assetId=491 quantity=1
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1872 type=BUY assetId=492 quantity=30
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=743 assetId=492 quantity=30
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1873 type=SELL assetId=490 quantity=25
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=741 assetId=490 quantity=25
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1873 profit=147.73000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1874 type=SELL assetId=483 quantity=30
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=709 assetId=483 quantity=80.00
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1874 profit=1585.706010000000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1875 type=BUY assetId=493 quantity=30
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=744 assetId=493 quantity=30
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1876 type=BUY assetId=494 quantity=20
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=745 assetId=494 quantity=20
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1877 type=BUY assetId=495 quantity=50
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=746 assetId=495 quantity=50
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1878 type=BUY assetId=496 quantity=9
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=747 assetId=496 quantity=9
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1879 type=SELL assetId=490 quantity=25
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=741 assetId=490 quantity=0
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1879 profit=145.57000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1880 type=SELL assetId=482 quantity=18
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=708 assetId=482 quantity=0.00
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1880 profit=37.7300000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1881 type=BUY assetId=487 quantity=30
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=738 assetId=487 quantity=330.00
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Created Transaction id=1882 type=SELL assetId=492 quantity=30
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.HoldingService - Saved Holding id=743 assetId=492 quantity=0
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1882 profit=177.72000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1882 profit=177.720000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1880 profit=37.769996000000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1879 profit=145.570000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1873 profit=147.730000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1874 profit=1712.032500000000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1868 profit=2667.532896000000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1866 profit=857.750000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1867 profit=654.847500000000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1863 profit=194.346680000000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1858 profit=503.25543000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1854 profit=2238.45000000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.service.TransactionService - Recomputed for userId=2: 11 sells, 11 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.myfinance.service.IbkrSyncService - IBKR trade sync for userId=2: inserted=21 updated=0 skipped=0 skippedOversell=0 assetsCreated=0
+2026-09-28 00:20:55 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/apply → 200 (224ms)
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.controller.TransactionController - Applying stock split for userId=2 symbol=NFLX ratio=10:1 effective=2025-11-17
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=742 assetId=491 quantity=10.0000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1882 profit=177.72000000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1880 profit=37.76999600000000
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1879 profit=145.57000000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1873 profit=147.73000000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1874 profit=1712.03250000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1868 profit=2667.53289600000000
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1866 profit=857.75000000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1867 profit=654.84750000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1863 profit=194.34668000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1858 profit=503.25543000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1854 profit=2238.45000000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Recomputed for userId=2: 11 sells, 11 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.service.StockSplitService - Applied 10:1 split for userId=2 symbol=NFLX effective=2025-11-17: 1 txns, 1 holdings
+2026-09-28 00:20:55 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/split → 200 (46ms)
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Applying stock split for userId=2 symbol=TQQQ ratio=2:1 effective=2025-11-20
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.myfinance.service.HoldingService - Saved Holding id=709 assetId=483 quantity=160.0000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1882 profit=177.72000000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1880 profit=37.76999600000000
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1879 profit=145.57000000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1873 profit=147.73000000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1874 profit=1712.032500000000000000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1868 profit=2667.53289600000000
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1866 profit=857.75000000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1867 profit=654.847500000000000000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1863 profit=194.34668000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1858 profit=503.25543000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1854 profit=2238.45000000000000
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Recomputed for userId=2: 11 sells, 11 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.service.StockSplitService - Applied 2:1 split for userId=2 symbol=TQQQ effective=2025-11-20: 10 txns, 1 holdings
+2026-09-28 00:20:55 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/split → 200 (54ms)
+2026-09-28 00:20:55 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-28 00:20:55 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-28 00:20:55 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-28 00:20:55 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (4ms)
+2026-09-28 00:20:55 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-09-28 00:20:55 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (16ms)
+2026-09-28 00:20:55 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (7ms)
+2026-09-28 00:21:11 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/preview → 200 (31ms)
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=1883 type=SELL assetId=494 quantity=20
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=745 assetId=494 quantity=0.00
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1883 profit=437.7500000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=1884 type=BUY assetId=489 quantity=58
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=740 assetId=489 quantity=70.00
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=1885 type=BUY assetId=487 quantity=15
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=738 assetId=487 quantity=345.00
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=1886 type=SELL assetId=495 quantity=50
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=746 assetId=495 quantity=0.00
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1886 profit=97.6100000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=1887 type=BUY assetId=491 quantity=10
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=742 assetId=491 quantity=20.00
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=1888 type=BUY assetId=497 quantity=10
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=748 assetId=497 quantity=10
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=1889 type=BUY assetId=497 quantity=20
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=748 assetId=497 quantity=30
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=1890 type=BUY assetId=483 quantity=9
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=709 assetId=483 quantity=169.00
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Created Transaction id=1891 type=SELL assetId=497 quantity=10
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.myfinance.service.HoldingService - Saved Holding id=748 assetId=497 quantity=20
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1891 profit=331.083330000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1891 profit=331.083330000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1886 profit=97.610000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1883 profit=437.750000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1882 profit=177.72000000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1880 profit=37.76999600000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1879 profit=145.57000000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1873 profit=147.73000000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1874 profit=1665.95706000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1868 profit=2667.53289600000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1866 profit=857.75000000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1867 profit=578.05510000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1863 profit=276.44285000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1858 profit=503.25543000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1854 profit=2238.45000000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.service.TransactionService - Recomputed for userId=2: 14 sells, 14 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.myfinance.service.IbkrSyncService - IBKR trade sync for userId=2: inserted=9 updated=0 skipped=0 skippedOversell=0 assetsCreated=0
+2026-09-28 00:21:18 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/import/apply → 200 (110ms)
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.controller.TransactionController - Applying stock split for userId=2 symbol=CRWD ratio=4:1 effective=2026-07-02
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.myfinance.service.HoldingService - Saved Holding id=739 assetId=488 quantity=40.0000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1891 profit=331.08333000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1886 profit=97.61000000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1883 profit=437.75000000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1882 profit=177.72000000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1880 profit=37.76999600000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1879 profit=145.57000000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1873 profit=147.73000000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1874 profit=1665.95706000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1868 profit=2667.53289600000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1866 profit=857.75000000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1867 profit=578.05510000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1863 profit=276.43715000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1858 profit=503.25543000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1854 profit=2238.45000000000000
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.TransactionService - Recomputed for userId=2: 14 sells, 14 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.service.StockSplitService - Applied 4:1 split for userId=2 symbol=CRWD effective=2026-07-02: 1 txns, 1 holdings
+2026-09-28 00:21:18 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/split → 200 (45ms)
+2026-09-28 00:21:18 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-28 00:21:18 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-28 00:21:18 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-28 00:21:18 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-28 00:21:19 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (8ms)
+2026-09-28 00:21:19 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (14ms)
+2026-09-28 00:21:19 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-28 00:21:26 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-28 00:21:26 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-28 00:21:28 [http-nio-8080-exec-5] INFO  c.m.controller.AssetController - Refresh-all prices for user=2: updated=25, skipped=1
+2026-09-28 00:21:29 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/refresh-prices → 200 (956ms)
+2026-09-28 00:21:29 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (2ms)
+2026-09-28 00:21:34 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-28 00:21:34 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-28 00:21:34 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-28 00:21:34 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-28 00:21:34 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (6ms)
+2026-09-28 00:21:34 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (22ms)
+2026-09-28 00:21:34 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-28 00:21:34 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (4ms)
+2026-09-28 00:21:34 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-28 00:21:34 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-28 00:21:34 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (10ms)
+2026-09-28 00:21:34 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (8ms)
+2026-09-28 00:21:34 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-28 00:21:34 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (16ms)
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.m.controller.TransactionController - Rebuilding holdings from transactions for userId=2
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=748 assetId=497 quantity=20.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=709 assetId=483 quantity=169.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=742 assetId=491 quantity=20.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Deleted Holding id=746
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=738 assetId=487 quantity=75.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=740 assetId=489 quantity=70.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Deleted Holding id=745
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=206 assetId=138 quantity=177.60
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=205 assetId=137 quantity=168.08
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Deleted Holding id=743
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Deleted Holding id=708
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Deleted Holding id=741
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=747 assetId=496 quantity=9.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=744 assetId=493 quantity=30.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=673 assetId=137 quantity=46.52
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=705 assetId=8 quantity=120.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=674 assetId=138 quantity=97.10
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=706 assetId=481 quantity=20.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=737 assetId=486 quantity=150.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=739 assetId=488 quantity=40.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=707 assetId=3 quantity=38.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=710 assetId=484 quantity=25.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=616 assetId=8 quantity=18.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=614 assetId=5 quantity=5.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=711 assetId=485 quantity=45.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=615 assetId=3 quantity=3.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=132 assetId=65 quantity=11.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=668 assetId=140 quantity=80.68
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=131 assetId=6 quantity=36.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=133 assetId=3 quantity=8.00
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.myfinance.service.HoldingService - Saved Holding id=667 assetId=139 quantity=38.31
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.m.service.TransactionService - Rebuilt holdings for userId=2: 26 updated, 0 created, 0 removed
+2026-09-28 00:21:59 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/rebuild-holdings → 200 (64ms)
+2026-09-28 00:21:59 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-28 00:21:59 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-28 00:21:59 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-28 00:21:59 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (2ms)
+2026-09-28 00:21:59 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (6ms)
+2026-09-28 00:21:59 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (15ms)
+2026-09-28 00:21:59 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.controller.TransactionController - Recomputing realized P/L for userId=2
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1891 profit=331.08333000000000
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1886 profit=97.61000000000000
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1883 profit=437.75000000000000
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1882 profit=177.72000000000000
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1880 profit=37.76999600000000
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1879 profit=145.57000000000000
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1873 profit=147.73000000000000
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1874 profit=1665.95706000000000
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1868 profit=2667.53289600000000
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1866 profit=857.75000000000000
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1867 profit=578.05510000000000
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1863 profit=276.43715000000000
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1858 profit=503.25543000000000
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Synced SoldPosition for SELL transactionId=1854 profit=2238.45000000000000
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.service.TransactionService - Recomputed for userId=2: 14 sells, 14 sold positions, 0 holding currencies fixed, 0 buy-FX backfilled
+2026-09-28 00:22:02 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/transactions/recompute-pnl → 200 (48ms)
+2026-09-28 00:22:02 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-28 00:22:02 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (3ms)
+2026-09-28 00:22:02 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-09-28 00:22:02 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (3ms)
+2026-09-28 00:22:02 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (6ms)
+2026-09-28 00:22:02 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/transactions → 200 (15ms)
+2026-09-28 00:22:02 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (5ms)
+2026-09-28 00:22:12 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-28 00:22:12 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-28 00:22:12 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (9ms)
+2026-09-28 00:22:12 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (11ms)
+2026-09-28 00:22:12 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (17ms)
+2026-09-28 00:22:12 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-09-28 00:22:12 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (3ms)
+2026-09-28 00:22:12 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (6ms)
+2026-09-28 00:22:12 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
+2026-09-28 00:22:12 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (5ms)
+2026-09-28 00:22:16 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-09-28 00:22:16 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (4ms)
+2026-09-28 00:22:16 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (6ms)
+2026-09-28 00:22:16 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (6ms)
