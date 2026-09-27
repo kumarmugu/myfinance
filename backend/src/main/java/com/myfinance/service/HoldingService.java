@@ -2,6 +2,7 @@ package com.myfinance.service;
 
 import com.myfinance.model.Holding;
 import com.myfinance.model.enums.AssetType;
+import com.myfinance.model.enums.InvestmentPurpose;
 import com.myfinance.repository.HoldingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,13 @@ public class HoldingService {
     public List<Holding> getByAssetTypeForUser(AssetType type, Long userId) { return holdingRepository.findByAssetTypeAndUserId(type, userId); }
     public Optional<Holding> getHolding(Long assetId, Long accountId, Long ownerId) {
         return holdingRepository.findByAssetIdAndAccountIdAndOwnerId(assetId, accountId, ownerId);
+    }
+    /**
+     * Purpose-aware position lookup: a holding's identity includes its {@link InvestmentPurpose}, so
+     * the same symbol bought with cash vs SRS money resolves to two separate holdings.
+     */
+    public Optional<Holding> getHolding(Long assetId, Long accountId, Long ownerId, InvestmentPurpose purpose) {
+        return holdingRepository.findByPosition(assetId, accountId, ownerId, purpose);
     }
     public Holding save(Holding holding) {
         Holding saved = holdingRepository.save(holding);

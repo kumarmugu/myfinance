@@ -111,7 +111,8 @@ public class TransactionService {
 
         // 1. Reverse the OLD transaction's effect on the holding.
         reverseHolding(existing.getAsset(), existing.getAccount(), existing.getOwner(),
-                existing.getTransactionType(), existing.getQuantity(), existing.getPricePerUnit());
+                existing.getTransactionType(), existing.getQuantity(), existing.getPricePerUnit(),
+                existing.getPurpose());
 
         // 2. Re-point the transaction to the (possibly changed) asset/account/owner and values.
         Asset asset = assetService.getById(assetId);
@@ -150,8 +151,10 @@ public class TransactionService {
 
     /** Undo a previously-applied transaction's effect on its holding (inverse of updateHolding). */
     private void reverseHolding(Asset asset, Account account, Owner owner, TransactionType type,
-                                BigDecimal quantity, BigDecimal pricePerUnit) {
-        var holdingOpt = holdingService.getHolding(asset.getId(), account.getId(), owner.getId());
+                                BigDecimal quantity, BigDecimal pricePerUnit, InvestmentPurpose purpose) {
+        // Reverse against the SAME position (purpose-aware), so editing a cash trade never touches the
+        // SRS-funded holding of the same symbol, and vice versa.
+        var holdingOpt = holdingService.getHolding(asset.getId(), account.getId(), owner.getId(), purpose);
         if (holdingOpt.isEmpty()) return; // Nothing to reverse (e.g. holding was already removed).
         Holding h = holdingOpt.get();
 
@@ -237,7 +240,9 @@ public class TransactionService {
     private RealizedPnl updateHolding(Asset asset, Account account, Owner owner, TransactionType type,
                                       BigDecimal quantity, BigDecimal pricePerUnit, InvestmentPurpose purpose,
                                       BigDecimal fxRateToBase, BigDecimal fees, String feeCurrency) {
-        var holdingOpt = holdingService.getHolding(asset.getId(), account.getId(), owner.getId());
+        // Position identity includes purpose: same symbol/account/owner bought with cash vs SRS money
+        // are distinct holdings, so they show as separate portfolio records.
+        var holdingOpt = holdingService.getHolding(asset.getId(), account.getId(), owner.getId(), purpose);
         // buyFx: the trade→account FX for this transaction. 1 when same currency / not provided.
         BigDecimal txFx = fxRateToBase != null ? fxRateToBase : BigDecimal.ONE;
 
@@ -534,10 +539,16 @@ public class TransactionService {
     }
 
     private String positionKey(Transaction t) {
-        return t.getAsset().getId() + "|" + t.getAccount().getId() + "|" + t.getOwner().getId();
+        // Purpose is part of the position identity, so a SELL is priced only against BUYs of the same
+        // funding purpose (e.g. an SRS sell won't be costed against cash-funded buys of the same symbol).
+        String purpose = t.getPurpose() == null ? "" : t.getPurpose().name();
+        return t.getAsset().getId() + "|" + t.getAccount().getId() + "|" + t.getOwner().getId() + "|" + purpose;
     }
 
     private String holdingPositionKey(Holding h) {
-        return h.getAsset().getId() + "|" + h.getAccount().getId() + "|" + h.getOwner().getId();
+        // Must mirror positionKey(Transaction) exactly (purpose included) so a holding matches the
+        // buy aggregate for the same funding purpose during recompute/backfill.
+        String purpose = h.getPurpose() == null ? "" : h.getPurpose().name();
+        return h.getAsset().getId() + "|" + h.getAccount().getId() + "|" + h.getOwner().getId() + "|" + purpose;
     }
 }

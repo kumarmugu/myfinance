@@ -9,9 +9,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "holdings", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"asset_id", "account_id", "owner_id"})
-})
+// A holding's identity is asset + account + owner + PURPOSE: the same symbol bought with cash vs SRS
+// money must live in two separate rows. That's enforced at the application layer (see
+// HoldingRepository.findByPosition / TransactionService.updateHolding), which is the sole writer of
+// holdings. We intentionally declare no DB-level unique constraint here: the old
+// (asset_id, account_id, owner_id) constraint would reject a second, differently-purposed position,
+// and ddl-auto=update cannot safely swap a composite unique constraint on the existing prod database.
+@Table(name = "holdings")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Holding {
 

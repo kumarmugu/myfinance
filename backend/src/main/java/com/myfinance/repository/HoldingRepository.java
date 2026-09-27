@@ -13,6 +13,18 @@ import java.util.Optional;
 @Repository
 public interface HoldingRepository extends JpaRepository<Holding, Long> {
     Optional<Holding> findByAssetIdAndAccountIdAndOwnerId(Long assetId, Long accountId, Long ownerId);
+
+    /**
+     * Purpose-aware position lookup. A holding's identity is asset + account + owner + purpose, so a
+     * cash-funded position (e.g. LONG_TERM) and an SRS-funded position (SRS) of the same symbol are
+     * separate rows. Handles a null purpose (legacy/unspecified) with an explicit IS NULL branch,
+     * since a JPQL equality never matches null.
+     */
+    @Query("SELECT h FROM Holding h WHERE h.asset.id = :assetId AND h.account.id = :accountId "
+            + "AND h.owner.id = :ownerId AND (h.purpose = :purpose OR (:purpose IS NULL AND h.purpose IS NULL))")
+    Optional<Holding> findByPosition(@Param("assetId") Long assetId, @Param("accountId") Long accountId,
+                                     @Param("ownerId") Long ownerId,
+                                     @Param("purpose") com.myfinance.model.enums.InvestmentPurpose purpose);
     List<Holding> findByUserId(Long userId);
     List<Holding> findByAccountId(Long accountId);
     List<Holding> findByOwnerId(Long ownerId);

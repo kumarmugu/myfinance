@@ -86,6 +86,49 @@ class TransactionServiceTest {
 
     @Test
     @WithMockUser(username = "user")
+    void sameSymbolBoughtWithDifferentPurposesCreatesSeparateHoldings() {
+        // Buy the same asset/account/owner twice, once as a regular (cash, LONG_TERM) position and
+        // once with SRS money. They must NOT merge — the user tracks them as two distinct records.
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("400.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 15), "cash buy", InvestmentPurpose.LONG_TERM);
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, new BigDecimal("5"), new BigDecimal("420.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 2, 20), "SRS buy", InvestmentPurpose.SRS);
+
+        var all = holdingRepository.findByAssetId(asset.getId());
+        assertEquals(2, all.size(), "cash-funded and SRS-funded positions of the same symbol are separate holdings");
+
+        Holding cash = holdingService.getHolding(asset.getId(), account.getId(), owner.getId(), InvestmentPurpose.LONG_TERM).orElseThrow();
+        Holding srs = holdingService.getHolding(asset.getId(), account.getId(), owner.getId(), InvestmentPurpose.SRS).orElseThrow();
+        assertEquals(0, BigDecimal.TEN.compareTo(cash.getQuantity()), "cash position holds its own 10 shares");
+        assertEquals(0, new BigDecimal("5").compareTo(srs.getQuantity()), "SRS position holds its own 5 shares");
+        assertEquals(InvestmentPurpose.LONG_TERM, cash.getPurpose());
+        assertEquals(InvestmentPurpose.SRS, srs.getPurpose());
+    }
+
+    @Test
+    @WithMockUser(username = "user")
+    void secondBuyOfSamePurposeAggregatesIntoOneHolding() {
+        // A second buy with the SAME purpose must still aggregate into the one holding (not split).
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("400.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 15), "buy 1", InvestmentPurpose.SRS);
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("420.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 3, 1), "buy 2", InvestmentPurpose.SRS);
+
+        assertEquals(1, holdingRepository.findByAssetId(asset.getId()).size(), "same-purpose buys aggregate");
+        Holding srs = holdingService.getHolding(asset.getId(), account.getId(), owner.getId(), InvestmentPurpose.SRS).orElseThrow();
+        assertEquals(0, new BigDecimal("20").compareTo(srs.getQuantity()));
+    }
+
+    @Test
+    @WithMockUser(username = "user")
     void shouldAveragePriceOnMultipleBuys() {
         // First buy: 10 shares at $400
         transactionService.create(
