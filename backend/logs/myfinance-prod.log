@@ -4382,3 +4382,60 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: /Users/mugu/Docu
 2026-09-27 23:54:55 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (8ms)
 2026-09-27 23:54:55 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/allocation → 200 (41ms)
 2026-09-27 23:54:55 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/allocation → 200 (25ms)
+2026-09-27 23:55:37 [http-nio-8080-exec-10] INFO  c.m.controller.AuthController - Login attempt for user=admin
+2026-09-27 23:55:37 [http-nio-8080-exec-10] INFO  c.m.controller.AuthController - Login successful for user=admin
+2026-09-27 23:55:37 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (178ms)
+2026-09-27 23:55:37 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (6ms)
+2026-09-27 23:55:37 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (2ms)
+2026-09-27 23:55:44 [http-nio-8080-exec-3] INFO  c.m.c.UserManagementController - Updated features for user id=2: PORTFOLIO,CRYPTO,DIVIDENDS,DIVIDEND_IMPORT,IBKR_SYNC,CASH_FLOWS,BANK_SAVINGS,FIXED_DEPOSITS,SL_FD,REAL_ESTATE,PRECIOUS_METALS,BONDS,INSURANCE,HOME_LOANS,SALARY,TAX,WORK_EXPERIENCE,SRS_CPF,REPORTS,BUDGET,BROKER_SYNC
+2026-09-27 23:55:44 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/admin/users/2/features → 200 (13ms)
+2026-09-27 23:55:44 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (3ms)
+2026-09-27 23:55:46 [http-nio-8080-exec-6] INFO  c.m.c.UserManagementController - Updated features for user id=2: PORTFOLIO,CRYPTO,DIVIDENDS,DIVIDEND_IMPORT,IBKR_SYNC,CASH_FLOWS,BANK_SAVINGS,FIXED_DEPOSITS,SL_FD,REAL_ESTATE,PRECIOUS_METALS,BONDS,INSURANCE,HOME_LOANS,SALARY,TAX,WORK_EXPERIENCE,SRS_CPF,REPORTS,BUDGET,BROKER_SYNC,LEV_ETF
+2026-09-27 23:55:46 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/admin/users/2/features → 200 (5ms)
+2026-09-27 23:55:46 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/admin/users → 200 (1ms)
+2026-09-27 23:55:58 [http-nio-8080-exec-4] INFO  c.m.controller.AuthController - Login attempt for user=mugu
+2026-09-27 23:55:58 [http-nio-8080-exec-4] INFO  c.m.controller.AuthController - Login successful for user=mugu
+2026-09-27 23:55:58 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/auth/login → 200 (101ms)
+2026-09-27 23:55:58 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-09-27 23:55:58 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (9ms)
+2026-09-27 23:55:58 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-09-27 23:55:58 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/deposits → 200 (6ms)
+2026-09-27 23:55:58 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/allocation → 200 (26ms)
+2026-09-27 23:55:58 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/planning/allocation → 200 (17ms)
+2026-09-27 23:56:07 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/lev-etf/benchmarks → 200 (6ms)
+2026-09-27 23:56:07 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/lev-etf/strategies → 200 (9ms)
+2026-09-27 23:56:07 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/lev-etf/instruments → 200 (17ms)
+2026-09-27 23:56:07 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/lev-etf/benchmarks → 200 (2ms)
+2026-09-27 23:56:07 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/lev-etf/strategies → 200 (2ms)
+2026-09-27 23:56:07 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/lev-etf/instruments → 200 (3ms)
+2026-09-27 23:56:16 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/lev-etf/preview/allocation-curve → 200 (7ms)
+2026-09-27 23:56:21 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-09-27 23:56:21 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-09-27 23:56:21 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-09-27 23:56:43 [main] INFO  com.myfinance.MyFinanceApplication - Starting MyFinanceApplication using Java 17.0.20 with PID 4891 (/Users/mugu/Documents/Projects/myfinance/backend/target/classes started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-09-27 23:56:43 [main] INFO  com.myfinance.MyFinanceApplication - The following 1 profile is active: "prod"
+2026-09-27 23:56:43 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-27 23:56:44 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 131 ms. Found 48 JPA repository interfaces.
+2026-09-27 23:56:44 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-09-27 23:56:44 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-09-27 23:56:44 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-09-27 23:56:44 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-09-27 23:56:44 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1579 ms
+2026-09-27 23:56:45 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-09-27 23:56:45 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-09-27 23:56:45 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-09-27 23:56:45 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-09-27 23:56:45 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-09-27 23:56:45 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data-prod/myfinance user=SA
+2026-09-27 23:56:45 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-09-27 23:56:45 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-09-27 23:56:46 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-09-27 23:56:47 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-09-27 23:56:47 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-09-27 23:56:48 [main] INFO  c.m.security.CredentialCipher - app.crypto.master-key not set — broker credential storage is disabled until a key is configured
+2026-09-27 23:56:49 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-09-27 23:56:52 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1a8868f2, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@38f3ef54, org.springframework.security.web.context.SecurityContextHolderFilter@5dadf7d9, org.springframework.security.web.header.HeaderWriterFilter@1eb9713, org.springframework.web.filter.CorsFilter@81ebdb0, org.springframework.security.web.authentication.logout.LogoutFilter@25471835, com.myfinance.provisioning.ProvisioningTokenFilter@c212536, com.myfinance.security.JwtAuthFilter@2857dbe3, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2f8a57c2, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@30a56cce, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@f32397, org.springframework.security.web.session.SessionManagementFilter@3eeee97f, org.springframework.security.web.access.ExceptionTranslationFilter@262f71ef, org.springframework.security.web.access.intercept.AuthorizationFilter@401e1872]
+2026-09-27 23:56:52 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2026-09-27 23:56:52 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 9.811 seconds (process running for 10.182)
+2026-09-27 23:57:26 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-27 23:57:28 [http-nio-8080-exec-3] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 2262 ms

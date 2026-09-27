@@ -89,7 +89,6 @@ function AppContent() {
         { to: '/transactions', icon: ArrowLeftRight, label: 'Transactions', feature: 'PORTFOLIO' },
         { to: '/dividends', icon: DollarSign, label: 'Dividends', feature: 'DIVIDENDS' },
         { to: '/crypto', icon: Bitcoin, label: 'Crypto', feature: 'CRYPTO' },
-        { to: '/lev-etf', icon: Gauge, label: 'Leveraged ETF', feature: 'LEV_ETF' },
         { to: '/deposits', icon: ArrowLeftRight, label: 'Cash Flows', feature: 'CASH_FLOWS' },
       ],
     },
