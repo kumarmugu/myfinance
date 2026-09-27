@@ -356,10 +356,15 @@ export default function Transactions() {
   const assetById = new Map(assets.map(a => [a.id, a]));
 
   // Remaining held quantity per (asset, account, owner) — used to classify a BUY as open/closed.
-  const heldQtyKey = (assetId: number, accountId: number, ownerId: number) => `${assetId}:${accountId}:${ownerId}`;
+  // A position's identity now includes purpose (cash vs SRS etc.), matching how holdings are keyed
+  // on the backend. Without purpose in the key, two holdings of the same asset/account/owner (e.g.
+  // an SRS and a cash position) would collapse to one entry (last-write-wins), making a buy look
+  // "partially sold" against the wrong remaining quantity.
+  const heldQtyKey = (assetId: number, accountId: number, ownerId: number, purpose: string | null | undefined) =>
+    `${assetId}:${accountId}:${ownerId}:${purpose ?? ''}`;
   const heldQtyByKey = new Map<string, number>();
   holdings.forEach(h => {
-    if (h.asset && h.account && h.owner) heldQtyByKey.set(heldQtyKey(h.asset.id, h.account.id, h.owner.id), h.quantity);
+    if (h.asset && h.account && h.owner) heldQtyByKey.set(heldQtyKey(h.asset.id, h.account.id, h.owner.id, h.purpose), h.quantity);
   });
 
   type BuyStatus = 'OPEN' | 'PARTIAL' | 'CLOSED';
@@ -368,7 +373,7 @@ export default function Transactions() {
   // BUY: OPEN (all still held) / PARTIAL (some sold) / CLOSED (nothing held). SELL: REALIZED.
   const rowStatus = (tx: Transaction): 'OPEN' | 'PARTIAL' | 'CLOSED' | 'REALIZED' => {
     if (tx.transactionType === 'SELL') return 'REALIZED';
-    const held = heldQtyByKey.get(heldQtyKey(tx.asset.id, tx.account.id, tx.owner.id)) ?? 0;
+    const held = heldQtyByKey.get(heldQtyKey(tx.asset.id, tx.account.id, tx.owner.id, tx.purpose)) ?? 0;
     if (held <= 0) return 'CLOSED';
     if (held + 1e-9 < tx.quantity) return 'PARTIAL';
     return 'OPEN';
@@ -396,7 +401,7 @@ export default function Transactions() {
     const acctCcy = tx.account?.currency || tx.currency;
 
     if (tx.transactionType === 'BUY') {
-      const held = heldQtyByKey.get(heldQtyKey(tx.asset.id, tx.account.id, tx.owner.id)) ?? 0;
+      const held = heldQtyByKey.get(heldQtyKey(tx.asset.id, tx.account.id, tx.owner.id, tx.purpose)) ?? 0;
       // Classify against what this buy added. Partial sells make a single P/L number meaningless.
       if (held <= 0) return { kind: 'status', status: 'CLOSED' };
       if (held + 1e-9 < tx.quantity) return { kind: 'status', status: 'PARTIAL' };
@@ -1039,7 +1044,7 @@ export default function Transactions() {
                       {(() => {
                         // Show a quick "Sell" action on BUY rows that still have shares held.
                         if (tx.transactionType !== 'BUY') return null;
-                        const held = heldQtyByKey.get(heldQtyKey(tx.asset.id, tx.account.id, tx.owner.id)) ?? 0;
+                        const held = heldQtyByKey.get(heldQtyKey(tx.asset.id, tx.account.id, tx.owner.id, tx.purpose)) ?? 0;
                         if (held <= 0) return null;
                         return (
                           <button onClick={() => startSellFrom(tx, held)} className="text-slate-400 hover:text-red-600" title={`Sell from this position (up to ${held} held)`}>
@@ -1070,7 +1075,11 @@ export default function Transactions() {
                 // Grouped by position: a header row per asset/account/owner, then its rows.
                 return positionGroups.map(g => {
                   const gStatus = rowStatus(g.rows.find(r => r.transactionType === 'BUY') ?? g.rows[0]);
-                  const held = heldQtyByKey.get(heldQtyKey(g.tx0.asset.id, g.tx0.account.id, g.tx0.owner.id)) ?? 0;
+                  // The group spans one asset/account/owner but may cover multiple purposes, so sum
+                  // the held quantity across every purpose-holding for that position.
+                  const held = holdings
+                    .filter(h => h.asset?.id === g.tx0.asset.id && h.account?.id === g.tx0.account.id && h.owner?.id === g.tx0.owner.id)
+                    .reduce((s, h) => s + h.quantity, 0);
                   return (
                     <Fragment key={g.key}>
                       <tr className="bg-slate-100/70 border-y border-slate-200">
