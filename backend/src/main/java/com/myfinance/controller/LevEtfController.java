@@ -72,6 +72,7 @@ public class LevEtfController {
     public ResponseEntity<BenchmarkIndex> createBenchmark(@RequestBody BenchmarkIndex b) {
         b.setUserId(uid());
         b.setId(null);
+        if (b.getBenchmarkType() == null) b.setBenchmarkType(com.myfinance.model.enums.levetf.BenchmarkType.PRICE_INDEX);
         return ResponseEntity.status(HttpStatus.CREATED).body(benchmarkRepository.save(b));
     }
 
@@ -84,7 +85,7 @@ public class LevEtfController {
         e.setExchange(u.getExchange());
         e.setProvider(u.getProvider());
         e.setCurrency(u.getCurrency());
-        e.setBenchmarkType(u.getBenchmarkType());
+        if (u.getBenchmarkType() != null) e.setBenchmarkType(u.getBenchmarkType());
         e.setTimezone(u.getTimezone());
         if (u.getEnabled() != null) e.setEnabled(u.getEnabled());
         return benchmarkRepository.save(e);

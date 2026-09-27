@@ -203,6 +203,17 @@ class LevEtfControllerTest {
 
     @Test
     @WithMockUser(username = "levUserA")
+    void benchmarkCreate_acceptsEmptyStringEnum_andDefaults() throws Exception {
+        // Frontend sends benchmarkType:"" for an unselected optional enum → coerced to null → defaults to PRICE_INDEX.
+        mockMvc.perform(post("/api/lev-etf/benchmarks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"symbol\":\"^SPX\",\"name\":\"S&P 500\",\"currency\":\"USD\",\"benchmarkType\":\"\",\"enabled\":true}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.benchmarkType", is("PRICE_INDEX")));
+    }
+
+    @Test
+    @WithMockUser(username = "levUserA")
     void instrumentCrud_roundTrips() throws Exception {
         String created = mockMvc.perform(post("/api/lev-etf/instruments")
                         .contentType(MediaType.APPLICATION_JSON)
