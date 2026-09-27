@@ -274,7 +274,7 @@ export default function Transactions() {
       const { data } = ibkrSource === 'live'
         ? await applyIbkrSync({ ...ibkrBody(), approvedMismatchTradeIds: approved })
         : await applyTradeImport(ibkrFile!, ibkrAccountId, ibkrOwnerId, approved);
-      showToast(`Imported ${data.inserted} trade${data.inserted === 1 ? '' : 's'}${data.updated ? `, updated ${data.updated}` : ''}${data.assetsCreated ? ` (${data.assetsCreated} new asset${data.assetsCreated === 1 ? '' : 's'})` : ''}`, 'success');
+      showToast(`Imported ${data.inserted} trade${data.inserted === 1 ? '' : 's'}${data.updated ? `, updated ${data.updated}` : ''}${data.assetsCreated ? ` (${data.assetsCreated} new asset${data.assetsCreated === 1 ? '' : 's'})` : ''}${data.skippedOversell ? `. Skipped ${data.skippedOversell} sell${data.skippedOversell === 1 ? '' : 's'} of shares bought before this statement` : ''}`, data.skippedOversell ? 'info' : 'success');
 
       // Apply any splits the user gave a ratio for (the file detected the split but not the ratio).
       // Done AFTER the trades are imported so the just-imported shares are adjusted too.

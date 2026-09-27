@@ -190,6 +190,33 @@ class IbkrSyncServiceTest {
 
     @Test
     @WithMockUser(username = "syncuser")
+    void skipsAnOverSellingSellInsteadOfAbortingTheWholeImport() {
+        // A statement whose period contains a SELL of shares opened BEFORE the period (no opening BUY
+        // in the file) — e.g. a 2025 statement selling shares bought in 2024. The over-selling SELL
+        // must be skipped, and the rest of the file must still import (not roll back with
+        // "Cannot sell more than held").
+        String csv = String.join("\n",
+            "Activity Statement,,,,2025-01-01 - 2025-12-31",
+            "Account Information,,,,Account,Address,Account Category,Base Currency",
+            "Account Information,,,DATA,50414420,ADDR,Cash,USD",
+            "Trades,,,,Symbol,Market,Exchange,Activity Type,Quantity,Trade Price,Amount,Commission,Trade Time,Settle Date,Currency",
+            // SELL of 30 SMCI in Feb — opened in 2024, not in this file → nothing to sell against.
+            "Trades,Stock,,DATA,SMCI,US,,Close,-30,45.00000,-1350.00,-1.00,\"2025-02-14\n09:40:37, US/Eastern\",,USD",
+            // A genuine BUY that must still import.
+            "Trades,Stock,,DATA,TSLA,US,,Open,3,360.00000,1080.00,-1.00,\"2025-02-07\n18:06:42, US/Eastern\",,USD");
+        byte[] file = csv.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+
+        var result = syncService.applyFile(file, userId, account, owner, null, null, java.util.Set.of());
+        assertEquals(1, result.inserted(), "the TSLA buy imports");
+        assertEquals(1, result.skippedOversell(), "the SMCI over-sell is skipped, not fatal");
+
+        // The TSLA holding exists; no SMCI holding was created by a phantom sell.
+        assertTrue(holdingRepository.findAll().stream().anyMatch(h -> "TSLA".equals(h.getAsset().getSymbol())));
+        assertTrue(holdingRepository.findAll().stream().noneMatch(h -> "SMCI".equals(h.getAsset().getSymbol())));
+    }
+
+    @Test
+    @WithMockUser(username = "syncuser")
     void appliesTradesChronologicallySoASellListedBeforeItsBuyStillImports() {
         // A Tiger statement listing the SELL row physically BEFORE the earlier BUY row. Without
         // chronological ordering the SELL would hit an empty holding ("Cannot sell more than held").

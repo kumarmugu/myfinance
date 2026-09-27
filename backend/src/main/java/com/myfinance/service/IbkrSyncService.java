@@ -2,6 +2,7 @@ package com.myfinance.service;
 
 import com.myfinance.model.Account;
 import com.myfinance.model.Asset;
+import com.myfinance.model.Holding;
 import com.myfinance.model.Owner;
 import com.myfinance.model.Transaction;
 import com.myfinance.model.enums.AssetType;
@@ -19,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -52,6 +55,7 @@ public class IbkrSyncService {
     private final AssetService assetService;
     private final TransactionService transactionService;
     private final TransactionRepository transactionRepository;
+    private final HoldingService holdingService;
     private final IbkrTradeParser tradeParser;
     private final SaxoTradeParser saxoTradeParser;
     private final TigerStatementParser tigerStatementParser;
@@ -80,8 +84,12 @@ public class IbkrSyncService {
                               List<String> corporateActions, List<String> needsReview,
                               List<SplitInfo> splits) {}
 
-    /** Result of applying a sync. */
-    public record SyncResult(int inserted, int updated, int skipped, int assetsCreated) {}
+    /**
+     * Result of applying a sync. {@code skippedOversell} counts SELL rows that were skipped because
+     * they exceeded the shares held at that point — typically shares opened before the statement
+     * period (the opening BUY isn't in the file), so there's nothing to sell against.
+     */
+    public record SyncResult(int inserted, int updated, int skipped, int assetsCreated, int skippedOversell) {}
 
     // ─────────────────────────── preview ───────────────────────────
 
@@ -224,7 +232,7 @@ public class IbkrSyncService {
     @Transactional
     public SyncResult applyTrades(IbkrTradeParser.FlexTrades parsed, Long userId, Account account, Owner owner,
                                   LocalDate from, LocalDate to, Set<String> approvedMismatchTradeIds) {
-        int inserted = 0, updated = 0, skipped = 0;
+        int inserted = 0, updated = 0, skipped = 0, skippedOversell = 0;
         int[] assetsCreated = {0};
 
         // Apply chronologically so a position is opened (BUY) before it is closed (SELL). Statements
@@ -236,9 +244,35 @@ public class IbkrSyncService {
                 .comparing(ParsedTrade::tradeDate, java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder()))
                 .thenComparing(t -> t.buy() ? 0 : 1));
 
+        // Running held-quantity per asset symbol for THIS account+owner, seeded from existing holdings
+        // so we can tell an over-sell (a SELL of shares opened before the statement, whose BUY isn't in
+        // the file) apart from a genuine close. We track it here and skip an over-selling SELL rather
+        // than letting TransactionService throw "Cannot sell more than held", which would abort the
+        // whole import (the apply is one transaction).
+        Map<String, BigDecimal> heldBySymbol = new HashMap<>();
+        for (Holding h : holdingService.getByAccountForUser(userId, account.getId())) {
+            if (h.getAsset() == null || h.getOwner() == null || !owner.getId().equals(h.getOwner().getId())) continue;
+            String sym = h.getAsset().getSymbol() == null ? "" : h.getAsset().getSymbol().trim().toUpperCase();
+            heldBySymbol.merge(sym, h.getQuantity(), BigDecimal::add);
+        }
+
         for (ParsedTrade t : ordered) {
             if (outOfRange(t.tradeDate(), from, to)) continue;
             TransactionType type = t.buy() ? TransactionType.BUY : TransactionType.SELL;
+            String sym = t.symbol() == null ? "" : t.symbol().trim().toUpperCase();
+
+            // Guard SELLs that would exceed the shares held at this point (opening BUY not in the file).
+            // Skip them cleanly and keep importing the rest, rather than aborting the whole file.
+            if (type == TransactionType.SELL) {
+                BigDecimal held = heldBySymbol.getOrDefault(sym, BigDecimal.ZERO);
+                if (t.quantity().subtract(held).compareTo(QTY_TOL) > 0) {
+                    log.warn("Skipping SELL of {} {} on {}: exceeds held {} (shares likely opened before the statement)",
+                            t.quantity(), sym, t.tradeDate(), held);
+                    skippedOversell++;
+                    continue;
+                }
+            }
+
             TradePlan plan = classify(t, userId, account, owner);
 
             switch (plan.classification()) {
@@ -263,15 +297,19 @@ public class IbkrSyncService {
                 case NEW -> {
                     insertTrade(t, account, owner, type, assetsCreated);
                     inserted++;
+                    // Track the effect on the running held quantity so later trades in this file see it
+                    // (a BUY adds shares available to a subsequent SELL; a SELL reduces them).
+                    BigDecimal delta = type == TransactionType.BUY ? t.quantity() : t.quantity().negate();
+                    heldBySymbol.merge(sym, delta, BigDecimal::add);
                 }
             }
         }
 
         // Keep holdings / sold positions / realized P/L consistent after the writes.
         transactionService.recomputeRealizedPnlForUser(userId);
-        log.info("IBKR trade sync for userId={}: inserted={} updated={} skipped={} assetsCreated={}",
-                userId, inserted, updated, skipped, assetsCreated[0]);
-        return new SyncResult(inserted, updated, skipped, assetsCreated[0]);
+        log.info("IBKR trade sync for userId={}: inserted={} updated={} skipped={} skippedOversell={} assetsCreated={}",
+                userId, inserted, updated, skipped, skippedOversell, assetsCreated[0]);
+        return new SyncResult(inserted, updated, skipped, assetsCreated[0], skippedOversell);
     }
 
     private void insertTrade(ParsedTrade t, Account account, Owner owner, TransactionType type, int[] assetsCreated) {

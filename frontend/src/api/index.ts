@@ -128,7 +128,7 @@ export interface IbkrSyncBody {
 export const previewIbkrSync = (body: IbkrSyncBody) =>
   api.post<IbkrSyncPreview>('/transactions/ibkr-sync/preview', body);
 export const applyIbkrSync = (body: IbkrSyncBody) =>
-  api.post<{ inserted: number; updated: number; skipped: number; assetsCreated: number }>('/transactions/ibkr-sync/apply', body);
+  api.post<{ inserted: number; updated: number; skipped: number; assetsCreated: number; skippedOversell: number }>('/transactions/ibkr-sync/apply', body);
 
 // Trade file import (IBKR Flex XML or "Transaction History" CSV). Two-phase like the live sync:
 // preview classifies (new/duplicate/mismatch) without writing; apply inserts new + approved overwrites.
@@ -145,7 +145,7 @@ export const applyTradeImport = (file: File, accountId: number, ownerId: number,
   fd.append('accountId', String(accountId));
   fd.append('ownerId', String(ownerId));
   approvedMismatchTradeIds.forEach(id => fd.append('approvedMismatchTradeIds', id));
-  return api.post<{ inserted: number; updated: number; skipped: number; assetsCreated: number }>('/transactions/import/apply', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+  return api.post<{ inserted: number; updated: number; skipped: number; assetsCreated: number; skippedOversell: number }>('/transactions/import/apply', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
 };
 
 // Bulk cleanup of transactions scoped to one owner+account (both required). Preview shows how many
