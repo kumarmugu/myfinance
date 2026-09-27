@@ -538,6 +538,111 @@ public class TransactionService {
         return new RecomputeResult(sellsRecomputed, soldSynced, currencyFixed, buyFxBackfilled);
     }
 
+    /** Result of a holdings rebuild, so the UI can report what changed. */
+    public record RebuildHoldingsResult(int updated, int created, int removed) {}
+
+    /**
+     * Rebuild the current user's active holdings IN PLACE from their transaction history, keyed by
+     * asset + account + owner + purpose. Transactions are the source of truth; holdings are a derived
+     * cache. This reconciles them without deleting/recreating the whole set:
+     * <ul>
+     *   <li>each (asset, account, owner, purpose) position is recomputed from its BUYs and SELLs —
+     *       net quantity, average buy price, invested amount, quantity-weighted average buy FX, and
+     *       the asset's currency;</li>
+     *   <li>an existing holding for that key is UPDATED; a missing one is CREATED;</li>
+     *   <li>a holding whose net quantity is ≤ 0, or that has no backing transactions at all, is
+     *       REMOVED (it no longer represents an open position).</li>
+     * </ul>
+     * This is what splits a legacy merged holding (created before purpose was part of the key) into
+     * the correct per-purpose rows. It does not touch transactions or sold positions. Idempotent.
+     */
+    @Transactional
+    public RebuildHoldingsResult rebuildHoldingsForUser(Long userId) {
+        List<Transaction> all = transactionRepository.findByUserIdOrderByTransactionDateDesc(userId);
+
+        // Accumulate each position (keyed incl. purpose) from its BUYs and SELLs.
+        record Accum(Asset asset, Account account, Owner owner, InvestmentPurpose purpose,
+                     BigDecimal qty, BigDecimal invested, BigDecimal fxQty, BigDecimal fxWeighted) {}
+        java.util.Map<String, Accum> byPosition = new java.util.LinkedHashMap<>();
+
+        for (Transaction t : all) {
+            TransactionType type = t.getTransactionType();
+            if (type != TransactionType.BUY && type != TransactionType.SELL) continue;
+            String key = positionKey(t);
+            Accum a = byPosition.get(key);
+            if (a == null) {
+                a = new Accum(t.getAsset(), t.getAccount(), t.getOwner(), t.getPurpose(),
+                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+            }
+            BigDecimal q = t.getQuantity();
+            if (type == TransactionType.BUY) {
+                BigDecimal newQty = a.qty().add(q);
+                BigDecimal newInvested = a.invested().add(q.multiply(t.getPricePerUnit()));
+                BigDecimal newFxQty = a.fxQty();
+                BigDecimal newFxWeighted = a.fxWeighted();
+                if (t.getFxRateToBase() != null) {
+                    newFxQty = newFxQty.add(q);
+                    newFxWeighted = newFxWeighted.add(t.getFxRateToBase().multiply(q));
+                }
+                byPosition.put(key, new Accum(a.asset(), a.account(), a.owner(), a.purpose(),
+                        newQty, newInvested, newFxQty, newFxWeighted));
+            } else { // SELL: reduce quantity and invested at the running average cost.
+                BigDecimal avg = a.qty().signum() > 0
+                        ? a.invested().divide(a.qty(), 6, RoundingMode.HALF_UP) : BigDecimal.ZERO;
+                BigDecimal newQty = a.qty().subtract(q);
+                BigDecimal newInvested = a.invested().subtract(q.multiply(avg)).max(BigDecimal.ZERO);
+                byPosition.put(key, new Accum(a.asset(), a.account(), a.owner(), a.purpose(),
+                        newQty, newInvested, a.fxQty(), a.fxWeighted()));
+            }
+        }
+
+        int updated = 0, created = 0, removed = 0;
+
+        // Upsert a holding for every position that still has a positive net quantity.
+        java.util.Set<Long> keptHoldingIds = new java.util.HashSet<>();
+        for (Accum a : byPosition.values()) {
+            var existing = holdingService.getHolding(a.asset().getId(), a.account().getId(),
+                    a.owner().getId(), a.purpose());
+            if (a.qty().signum() <= 0) {
+                // Net flat/closed: drop any lingering holding for this position.
+                existing.ifPresent(h -> holdingService.delete(h.getId()));
+                continue;
+            }
+            BigDecimal avgPrice = a.invested().divide(a.qty(), 6, RoundingMode.HALF_UP);
+            BigDecimal avgFx = a.fxQty().signum() > 0
+                    ? a.fxWeighted().divide(a.fxQty(), 6, RoundingMode.HALF_UP) : null;
+            com.myfinance.model.enums.Currency ccy = a.asset().getCurrency() != null
+                    ? a.asset().getCurrency() : a.account().getCurrency();
+
+            Holding h = existing.orElseGet(Holding::new);
+            boolean isNew = h.getId() == null;
+            h.setAsset(a.asset());
+            h.setAccount(a.account());
+            h.setOwner(a.owner());
+            h.setPurpose(a.purpose());
+            h.setQuantity(a.qty());
+            h.setAverageBuyPrice(avgPrice);
+            h.setInvestedAmount(a.invested());
+            h.setAverageBuyFxRate(avgFx);
+            h.setCurrency(ccy);
+            h.setUserId(userId);
+            Holding saved = holdingService.save(h);
+            keptHoldingIds.add(saved.getId());
+            if (isNew) created++; else updated++;
+        }
+
+        // Remove holdings that no longer correspond to any transaction-backed position.
+        for (Holding h : holdingService.getAllByUserId(userId)) {
+            if (!keptHoldingIds.contains(h.getId())) {
+                holdingService.delete(h.getId());
+                removed++;
+            }
+        }
+
+        log.info("Rebuilt holdings for userId={}: {} updated, {} created, {} removed", userId, updated, created, removed);
+        return new RebuildHoldingsResult(updated, created, removed);
+    }
+
     private String positionKey(Transaction t) {
         // Purpose is part of the position identity, so a SELL is priced only against BUYs of the same
         // funding purpose (e.g. an SRS sell won't be costed against cash-funded buys of the same symbol).

@@ -123,6 +123,19 @@ public class TransactionController {
     }
 
     /**
+     * Maintenance: rebuild the current user's active holdings from their transaction history, keyed
+     * by asset + account + owner + purpose. Reconciles holdings in place (updates/creates/removes) —
+     * transactions and sold positions are untouched. Splits a legacy merged holding (created before
+     * purpose was part of the key) into the correct per-purpose rows. Tenant-scoped and idempotent.
+     */
+    @PostMapping("/rebuild-holdings")
+    public ResponseEntity<TransactionService.RebuildHoldingsResult> rebuildHoldings() {
+        Long uid = tenantContext.getCurrentUserId();
+        log.info("Rebuilding holdings from transactions for userId={}", uid);
+        return ResponseEntity.ok(transactionService.rebuildHoldingsForUser(uid));
+    }
+
+    /**
      * Apply a stock split (or reverse split) to the caller's position in a symbol. Adjusts every
      * transaction/holding dated on or before the effective date: quantity ×(numerator/denominator),
      * price ÷(numerator/denominator), so the cost basis is preserved. Tenant-scoped.

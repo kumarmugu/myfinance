@@ -93,6 +93,9 @@ export const updateTransaction = (id: number, req: TransactionRequest) => api.pu
 export const deleteTransaction = (id: number) => api.delete(`/transactions/${id}`);
 // One-time maintenance: recompute FX-aware realized P/L for the user's existing sells.
 export const recomputeRealizedPnl = () => api.post<{ sellsRecomputed: number; soldPositionsSynced: number; holdingsCurrencyFixed: number; holdingsBuyFxBackfilled: number }>('/transactions/recompute-pnl');
+// Maintenance: rebuild active holdings from transactions, keyed by asset+account+owner+purpose.
+// Splits a legacy merged holding (same symbol bought with cash vs SRS) into separate per-purpose rows.
+export const rebuildHoldings = () => api.post<{ updated: number; created: number; removed: number }>('/transactions/rebuild-holdings');
 
 // Apply a stock split (or reverse split) to the caller's position in a symbol. Adjusts every
 // transaction/holding dated on or before the effective date: quantity ×(numerator/denominator),

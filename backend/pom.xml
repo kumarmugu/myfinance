@@ -167,16 +167,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Give the forked test JVM enough heap for the Spring context cache (multiple
-                 @SpringBootTest contexts + autoconfiguration). @{argLine} preserves JaCoCo's agent. -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
-                <configuration>
-                    <argLine>@{argLine} -Xmx1536m</argLine>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 </project>

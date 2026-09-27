@@ -1,6 +1,6 @@
 import { useEffect, useState, Fragment } from 'react';
 import { Plus, Trash2, Pencil, ArrowUpCircle, ArrowDownCircle, Lock, RefreshCw, Scissors } from 'lucide-react';
-import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates, getActiveHoldings, recomputeRealizedPnl, previewIbkrSync, applyIbkrSync, previewTradeImport, applyTradeImport, previewTxnBulkDelete, txnBulkDelete, applyStockSplit } from '../api';
+import { getTransactions, createTransaction, updateTransaction, deleteTransaction, getAssets, getAccounts, getOwners, getSoldPositions, getCurrencyRates, getActiveHoldings, recomputeRealizedPnl, rebuildHoldings, previewIbkrSync, applyIbkrSync, previewTradeImport, applyTradeImport, previewTxnBulkDelete, txnBulkDelete, applyStockSplit } from '../api';
 import type { TxnBulkResult } from '../api';
 import type { IbkrSyncPreview, IbkrSyncBody } from '../api';
 import { useAuth } from '../contexts/AuthContext';
@@ -55,6 +55,7 @@ export default function Transactions() {
   const [deletePassword, setDeletePassword] = useState('');
   const [deleteError, setDeleteError] = useState('');
   const [recomputing, setRecomputing] = useState(false);
+  const [rebuilding, setRebuilding] = useState(false);
   // Stock split adjustment: enter symbol + effective date + ratio (e.g. 3:1). Broker files record
   // that a split happened but not the ratio, so the user supplies it.
   const [showSplit, setShowSplit] = useState(false);
@@ -195,6 +196,20 @@ export default function Transactions() {
       showToast('Failed to recompute realized P/L');
     } finally {
       setRecomputing(false);
+    }
+  };
+
+  const handleRebuildHoldings = async () => {
+    setRebuilding(true);
+    try {
+      const { data } = await rebuildHoldings();
+      showToast(`Rebuilt holdings: ${data.created} created, ${data.updated} updated, ${data.removed} removed`, 'success');
+      loadData();
+    } catch (err) {
+      console.error(err);
+      showToast('Failed to rebuild holdings');
+    } finally {
+      setRebuilding(false);
     }
   };
 
@@ -528,6 +543,9 @@ export default function Transactions() {
           />
           <button onClick={handleRecompute} disabled={recomputing} title="Recompute FX-aware realized P/L for your existing sells (one-time fix for older trades)" className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 disabled:opacity-50">
             <RefreshCw size={16} className={recomputing ? 'animate-spin' : ''} /> {recomputing ? 'Recomputing...' : 'Recompute P/L'}
+          </button>
+          <button onClick={handleRebuildHoldings} disabled={rebuilding} title="Rebuild your holdings from transactions. Splits a merged position (e.g. same symbol bought with cash vs SRS) into separate records by purpose." className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 disabled:opacity-50">
+            <RefreshCw size={16} className={rebuilding ? 'animate-spin' : ''} /> {rebuilding ? 'Rebuilding...' : 'Rebuild Holdings'}
           </button>
           <button onClick={() => setShowSplit(v => !v)} title="Adjust your holdings and trade history for a stock split or reverse split" className="flex items-center gap-2 px-3 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">
             <Scissors size={16} /> Stock split

@@ -111,6 +111,46 @@ class TransactionServiceTest {
 
     @Test
     @WithMockUser(username = "user")
+    void rebuildSplitsALegacyMergedHoldingIntoPerPurposeRows() {
+        // Simulate the pre-fix state: two buys of the same symbol with DIFFERENT purposes, but a
+        // single merged holding carrying the combined quantity under one purpose (as the old
+        // purpose-agnostic key would have produced).
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, BigDecimal.TEN, new BigDecimal("400.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 1, 15), "cash buy", InvestmentPurpose.LONG_TERM);
+        transactionService.create(
+                asset.getId(), account.getId(), owner.getId(),
+                TransactionType.BUY, new BigDecimal("5"), new BigDecimal("420.00"),
+                BigDecimal.ZERO, "USD", LocalDate.of(2024, 2, 20), "SRS buy", InvestmentPurpose.SRS);
+
+        // Collapse to one merged row (qty 15, LONG_TERM) to mimic legacy data, deleting the extra.
+        var holdings = holdingRepository.findByAssetId(asset.getId());
+        Holding keep = holdings.get(0);
+        for (int i = 1; i < holdings.size(); i++) holdingRepository.deleteById(holdings.get(i).getId());
+        keep.setPurpose(InvestmentPurpose.LONG_TERM);
+        keep.setQuantity(new BigDecimal("15"));
+        keep.setInvestedAmount(new BigDecimal("6100.00")); // 10*400 + 5*420
+        holdingRepository.save(keep);
+        assertEquals(1, holdingRepository.findByAssetId(asset.getId()).size(), "precondition: one merged holding");
+
+        // Rebuild from transactions.
+        var result = transactionService.rebuildHoldingsForUser(testUser.getId());
+
+        var rebuilt = holdingRepository.findByAssetId(asset.getId());
+        assertEquals(2, rebuilt.size(), "merged holding is split into cash + SRS rows");
+        Holding cash = holdingService.getHolding(asset.getId(), account.getId(), owner.getId(), InvestmentPurpose.LONG_TERM).orElseThrow();
+        Holding srs = holdingService.getHolding(asset.getId(), account.getId(), owner.getId(), InvestmentPurpose.SRS).orElseThrow();
+        assertEquals(0, BigDecimal.TEN.compareTo(cash.getQuantity()));
+        assertEquals(0, new BigDecimal("5").compareTo(srs.getQuantity()));
+        // One row was reused (updated) and one created; nothing orphaned.
+        assertEquals(1, result.created());
+        assertEquals(1, result.updated());
+        assertEquals(0, result.removed());
+    }
+
+    @Test
+    @WithMockUser(username = "user")
     void secondBuyOfSamePurposeAggregatesIntoOneHolding() {
         // A second buy with the SAME purpose must still aggregate into the one holding (not split).
         transactionService.create(
