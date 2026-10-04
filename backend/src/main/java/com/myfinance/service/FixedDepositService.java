@@ -29,6 +29,8 @@ public class FixedDepositService {
     public List<FixedDeposit> getActiveByMaturity() { return fdRepository.findAllActiveOrderByMaturity(); }
     public List<FixedDeposit> getRequiringUpdate() { return fdRepository.findByRequiresUpdateTrue(); }
     public List<FixedDeposit> getRequiringUpdateForUser(Long userId) { return fdRepository.findByUserIdAndRequiresUpdateTrue(userId); }
+    public long countByHolder(Long holderId) { return fdRepository.countByHolderId(holderId); }
+    public long countByBank(Long bankId) { return fdRepository.countByBankId(bankId); }
 
     public List<FixedDeposit> getMaturingWithinDays(int days) {
         return fdRepository.findMaturingBefore(LocalDate.now().plusDays(days));

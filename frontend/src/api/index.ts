@@ -223,6 +223,8 @@ export const getBanks = () => api.get<Bank[]>('/fixed-deposits/banks');
 export const getFDHolders = () => api.get<FDHolder[]>('/fixed-deposits/holders');
 export const createBank = (bank: Partial<Bank>) => api.post<Bank>('/fixed-deposits/banks', bank);
 export const createFDHolder = (holder: Partial<FDHolder>) => api.post<FDHolder>('/fixed-deposits/holders', holder);
+export const deleteFDHolder = (id: number) => api.delete(`/fixed-deposits/holders/${id}`);
+export const deleteBank = (id: number) => api.delete(`/fixed-deposits/banks/${id}`);
 
 // ─── Planning ───
 export const getAllocationPlan = (ownerId?: number) => api.get<{ targets: AllocationTarget[]; current: Record<string, number> }>('/planning/allocation', { params: { ownerId } });

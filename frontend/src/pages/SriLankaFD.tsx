@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Plus, Calendar, Globe, Pencil, Trash2 } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import { getFixedDeposits, getFDSummary, getMaturingFDs, getBanks, getFDHolders, createFixedDeposit, updateFixedDeposit, deleteFixedDeposit, toggleFDNetWorth } from '../api';
+import { getFixedDeposits, getFDSummary, getMaturingFDs, getBanks, getFDHolders, createFixedDeposit, updateFixedDeposit, deleteFixedDeposit, toggleFDNetWorth, createFDHolder, deleteFDHolder, createBank, deleteBank } from '../api';
 import { formatDate, daysBetween, formatCurrency } from '../utils/formatters';
 import SearchableSelect from '../components/SearchableSelect';
 import ExportMenu from '../components/ExportMenu';
@@ -34,6 +34,9 @@ export default function SriLankaFD() {
   const [netWorthInput, setNetWorthInput] = useState<{ id: number; amount: string } | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<FixedDeposit | null>(null);
+  const [showManage, setShowManage] = useState(false);
+  const [newHolder, setNewHolder] = useState({ name: '', relationship: '', isSeniorCitizen: false });
+  const [newBankForm, setNewBankForm] = useState({ name: '', shortName: '' });
   const [fdForm, setFdForm] = useState({
     holderId: 0, jointHolderId: 0, bankId: 0, accountNumber: '', principalAmount: 0,
     interestRate: 0, startDate: '', maturityDate: '', period: '', branch: '',
@@ -66,6 +69,48 @@ export default function SriLankaFD() {
     interestRate: 0, startDate: '', maturityDate: '', period: '', branch: '',
     category: 'NORMAL', status: 'ACTIVE', expectedInterest: 0, beneficiary: '', purpose: '', notes: ''
   });
+
+  const handleAddHolder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newHolder.name.trim()) return;
+    try {
+      await createFDHolder(newHolder);
+      setNewHolder({ name: '', relationship: '', isSeniorCitizen: false });
+      showToast('Holder added', 'success');
+      loadData();
+    } catch { showToast('Failed to add holder'); }
+  };
+
+  const handleDeleteHolder = async (id: number) => {
+    try {
+      await deleteFDHolder(id);
+      showToast('Holder deleted', 'success');
+      loadData();
+    } catch (err: any) {
+      showToast(err?.response?.data?.message || 'Cannot delete holder — it may be in use');
+    }
+  };
+
+  const handleAddBank = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newBankForm.name.trim() || !newBankForm.shortName.trim()) return;
+    try {
+      await createBank(newBankForm);
+      setNewBankForm({ name: '', shortName: '' });
+      showToast('Bank added', 'success');
+      loadData();
+    } catch { showToast('Failed to add bank'); }
+  };
+
+  const handleDeleteBank = async (id: number) => {
+    try {
+      await deleteBank(id);
+      showToast('Bank deleted', 'success');
+      loadData();
+    } catch (err: any) {
+      showToast(err?.response?.data?.message || 'Cannot delete bank — it may be in use');
+    }
+  };
 
   const handleFdSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -129,6 +174,9 @@ export default function SriLankaFD() {
         <p className="text-sm text-slate-500">Sri Lanka family fixed deposits — managed separately from investment net worth</p>
         <div className="flex items-center gap-3">
           <ExportMenu rows={fds} config={sriLankaFdExportConfig} />
+          <button onClick={() => setShowManage(v => !v)} className="flex items-center gap-2 px-4 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50">
+            Manage Holders & Banks
+          </button>
           <button onClick={() => { setShowForm(!showForm); setEditing(null); resetFdForm(); }} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
             <Plus size={16} /> New FD
           </button>
@@ -146,6 +194,62 @@ export default function SriLankaFD() {
           )}
         </div>
       </div>
+
+      {/* Manage Holders & Banks Panel */}
+      {showManage && (
+        <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
+          <h3 className="text-base font-semibold text-slate-800 mb-4">Manage Holders & Banks</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Holders */}
+            <div>
+              <h4 className="text-sm font-medium text-slate-700 mb-3">Holders</h4>
+              <form onSubmit={handleAddHolder} className="flex flex-wrap gap-2 mb-3">
+                <input value={newHolder.name} onChange={e => setNewHolder({...newHolder, name: e.target.value})} placeholder="Name *" className="border border-slate-300 rounded-lg px-3 py-1.5 text-sm flex-1 min-w-28" required />
+                <input value={newHolder.relationship} onChange={e => setNewHolder({...newHolder, relationship: e.target.value})} placeholder="Relationship" className="border border-slate-300 rounded-lg px-3 py-1.5 text-sm w-36" />
+                <label className="flex items-center gap-1.5 text-sm text-slate-600 cursor-pointer">
+                  <input type="checkbox" checked={newHolder.isSeniorCitizen} onChange={e => setNewHolder({...newHolder, isSeniorCitizen: e.target.checked})} className="rounded" />
+                  Senior
+                </label>
+                <button type="submit" className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">Add</button>
+              </form>
+              <div className="space-y-1.5 max-h-52 overflow-y-auto">
+                {holders.map(h => (
+                  <div key={h.id} className="flex items-center justify-between px-3 py-2 rounded-lg bg-slate-50 border border-slate-100">
+                    <div>
+                      <span className="text-sm font-medium text-slate-700">{h.name}</span>
+                      {h.relationship && <span className="text-xs text-slate-500 ml-2">({h.relationship})</span>}
+                      {h.isSeniorCitizen && <span className="text-[10px] ml-2 px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded-full">Senior</span>}
+                    </div>
+                    <button onClick={() => handleDeleteHolder(h.id)} className="text-slate-300 hover:text-red-500 transition-colors" title="Delete holder"><Trash2 size={14} /></button>
+                  </div>
+                ))}
+                {holders.length === 0 && <p className="text-sm text-slate-400 text-center py-3">No holders yet</p>}
+              </div>
+            </div>
+            {/* Banks */}
+            <div>
+              <h4 className="text-sm font-medium text-slate-700 mb-3">Banks</h4>
+              <form onSubmit={handleAddBank} className="flex gap-2 mb-3">
+                <input value={newBankForm.shortName} onChange={e => setNewBankForm({...newBankForm, shortName: e.target.value})} placeholder="Short name *" className="border border-slate-300 rounded-lg px-3 py-1.5 text-sm w-28" required />
+                <input value={newBankForm.name} onChange={e => setNewBankForm({...newBankForm, name: e.target.value})} placeholder="Full name *" className="border border-slate-300 rounded-lg px-3 py-1.5 text-sm flex-1" required />
+                <button type="submit" className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">Add</button>
+              </form>
+              <div className="space-y-1.5 max-h-52 overflow-y-auto">
+                {banks.map(b => (
+                  <div key={b.id} className="flex items-center justify-between px-3 py-2 rounded-lg bg-slate-50 border border-slate-100">
+                    <div>
+                      <span className="text-sm font-medium text-slate-700">{b.shortName}</span>
+                      <span className="text-xs text-slate-500 ml-2">{b.name}</span>
+                    </div>
+                    <button onClick={() => handleDeleteBank(b.id)} className="text-slate-300 hover:text-red-500 transition-colors" title="Delete bank"><Trash2 size={14} /></button>
+                  </div>
+                ))}
+                {banks.length === 0 && <p className="text-sm text-slate-400 text-center py-3">No banks yet</p>}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* FD Form */}
       {showForm && (

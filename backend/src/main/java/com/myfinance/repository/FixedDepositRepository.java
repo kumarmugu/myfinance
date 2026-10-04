@@ -15,6 +15,8 @@ public interface FixedDepositRepository extends JpaRepository<FixedDeposit, Long
     List<FixedDeposit> findByStatus(FDStatus status);
     List<FixedDeposit> findByHolderId(Long holderId);
     List<FixedDeposit> findByBankId(Long bankId);
+    long countByHolderId(Long holderId);
+    long countByBankId(Long bankId);
     List<FixedDeposit> findByRequiresUpdateTrue();
 
     @Query("SELECT fd FROM FixedDeposit fd WHERE fd.status = 'ACTIVE' AND fd.maturityDate <= :date")

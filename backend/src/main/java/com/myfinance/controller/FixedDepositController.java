@@ -148,4 +148,22 @@ public class FixedDepositController {
         log.info("Creating FD holder: {}", holder.getName());
         return fdHolderRepository.save(holder);
     }
+
+    @DeleteMapping("/holders/{id}")
+    public ResponseEntity<Void> deleteHolder(@PathVariable Long id) {
+        long inUse = fdService.countByHolder(id);
+        if (inUse > 0) throw new RuntimeException("Cannot delete holder: used by " + inUse + " FD(s)");
+        fdHolderRepository.deleteById(id);
+        log.info("Deleted FD holder id={}", id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/banks/{id}")
+    public ResponseEntity<Void> deleteBank(@PathVariable Long id) {
+        long inUse = fdService.countByBank(id);
+        if (inUse > 0) throw new RuntimeException("Cannot delete bank: used by " + inUse + " FD(s)");
+        bankRepository.deleteById(id);
+        log.info("Deleted bank id={}", id);
+        return ResponseEntity.noContent().build();
+    }
 }
