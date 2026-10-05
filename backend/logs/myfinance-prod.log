@@ -79,3 +79,11 @@
 2026-10-05 23:55:29 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (7ms)
 2026-10-05 23:55:29 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (6ms)
 2026-10-05 23:55:30 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (14ms)
+2026-10-05 23:58:11 [http-nio-8080-exec-2] INFO  c.m.c.FixedDepositController - Creating fixed deposit: bank=null, principal=778795.78
+2026-10-05 23:58:11 [http-nio-8080-exec-2] INFO  c.m.c.FixedDepositController - Created fixed deposit id=6
+2026-10-05 23:58:11 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/fixed-deposits → 201 (9ms)
+2026-10-05 23:58:11 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (2ms)
+2026-10-05 23:58:11 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (3ms)
+2026-10-05 23:58:11 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (6ms)
+2026-10-05 23:58:11 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (18ms)
+2026-10-05 23:58:11 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (22ms)
