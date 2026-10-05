@@ -78,12 +78,13 @@ export function formatPercent(value: number): string {
   return `${sign}${value.toFixed(2)}%`;
 }
 
-export function formatDate(dateStr: string): string {
+export function formatDate(dateStr: string | null | undefined): string {
   if (!dateStr) return '-';
   return new Date(dateStr).toLocaleDateString('en-SG', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
-export function daysBetween(dateStr: string): number {
+export function daysBetween(dateStr: string | null | undefined): number {
+  if (!dateStr) return 0;
   const target = new Date(dateStr);
   const now = new Date();
   return Math.ceil((target.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));

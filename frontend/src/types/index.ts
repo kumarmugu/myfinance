@@ -162,7 +162,7 @@ export interface FixedDeposit {
   principalAmount: number;
   interestRate: number;
   startDate: string;
-  maturityDate: string;
+  maturityDate: string | null;
   period: string;
   branch: string;
   category: string;

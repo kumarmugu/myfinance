@@ -31,6 +31,7 @@ export default function SriLankaFD() {
   const [loading, setLoading] = useState(true);
   const [filterBank, setFilterBank] = useState<string>('');
   const [filterHolder, setFilterHolder] = useState<string>('');
+  const [searchText, setSearchText] = useState('');
   const [netWorthInput, setNetWorthInput] = useState<{ id: number; amount: string } | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<FixedDeposit | null>(null);
@@ -144,7 +145,7 @@ export default function SriLankaFD() {
     setFdForm({
       holderId: fd.holder.id, jointHolderId: fd.jointHolder?.id || 0, bankId: fd.bank.id,
       accountNumber: fd.accountNumber || '', principalAmount: fd.principalAmount,
-      interestRate: fd.interestRate, startDate: fd.startDate, maturityDate: fd.maturityDate,
+      interestRate: fd.interestRate, startDate: fd.startDate, maturityDate: fd.maturityDate || '',
       period: fd.period || '', branch: fd.branch || '', category: fd.category || 'NORMAL',
       status: fd.status, expectedInterest: fd.expectedInterest || 0,
       beneficiary: fd.beneficiary || '', purpose: fd.purpose || '', notes: fd.notes || ''
@@ -158,9 +159,19 @@ export default function SriLankaFD() {
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
+  const searchLower = searchText.toLowerCase();
   const filteredFDs = fds.filter(fd => {
     if (filterBank && fd.bank.id.toString() !== filterBank) return false;
     if (filterHolder && fd.holder.id.toString() !== filterHolder) return false;
+    if (searchLower) {
+      const haystack = [
+        fd.bank.shortName,
+        fd.holder.name,
+        fd.jointHolder?.name ?? '',
+        fd.accountNumber ?? '',
+      ].join(' ').toLowerCase();
+      if (!haystack.includes(searchLower)) return false;
+    }
     return true;
   });
 
@@ -363,6 +374,13 @@ export default function SriLankaFD() {
 
       {/* Filters */}
       <div className="flex gap-3 items-center flex-wrap">
+        <input
+          type="text"
+          value={searchText}
+          onChange={e => setSearchText(e.target.value)}
+          placeholder="Search account #, holder, bank..."
+          className="border border-slate-300 rounded-lg px-3 py-2 text-sm w-64"
+        />
         <div className="w-48"><SearchableSelect options={[{ value: '', label: 'All Banks' }, ...banks.map(b => ({ value: b.id.toString(), label: b.shortName }))]} value={filterBank} onChange={v => setFilterBank(v.toString() === '0' ? '' : v.toString())} placeholder="All Banks" /></div>
         <div className="w-48"><SearchableSelect options={[{ value: '', label: 'All Holders' }, ...holders.map(h => ({ value: h.id.toString(), label: h.name }))]} value={filterHolder} onChange={v => setFilterHolder(v.toString() === '0' ? '' : v.toString())} placeholder="All Holders" /></div>
         <span className="text-xs text-slate-500">{filteredFDs.length} records</span>
@@ -376,6 +394,7 @@ export default function SriLankaFD() {
               <tr>
                 <th className="text-left px-3 py-2.5 font-medium text-slate-600">Holder</th>
                 <th className="text-left px-3 py-2.5 font-medium text-slate-600">Bank</th>
+                <th className="text-left px-3 py-2.5 font-medium text-slate-600">Acct #</th>
                 <th className="text-right px-3 py-2.5 font-medium text-slate-600">Principal</th>
                 <th className="text-right px-3 py-2.5 font-medium text-slate-600">Rate</th>
                 <th className="text-left px-3 py-2.5 font-medium text-slate-600">Maturity</th>
@@ -393,17 +412,25 @@ export default function SriLankaFD() {
                     {fd.jointHolder && <p className="text-[10px] text-slate-400">Joint: {fd.jointHolder.name}</p>}
                   </td>
                   <td className="px-3 py-2.5 text-slate-600 text-xs">{fd.bank.shortName}</td>
+                  <td className="px-3 py-2.5 text-slate-500 text-[11px]">{fd.accountNumber || '—'}</td>
                   <td className="px-3 py-2.5 text-right font-medium text-slate-800 text-xs">{formatLKR(fd.principalAmount)}</td>
                   <td className="px-3 py-2.5 text-right text-slate-700 text-xs">{fd.interestRate}%</td>
                   <td className="px-3 py-2.5 text-slate-600 text-[11px]">{formatDate(fd.maturityDate)}</td>
                   <td className="px-3 py-2.5 text-slate-500 text-[11px]">{fd.period}</td>
                   <td className="px-3 py-2.5 text-right text-emerald-600 text-xs">{fd.expectedInterest ? formatLKR(fd.expectedInterest) : '-'}</td>
                   <td className="px-3 py-2.5">
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
-                      fd.status === 'ACTIVE' ? 'bg-green-100 text-green-700' :
-                      fd.status === 'REQUIRES_UPDATE' ? 'bg-amber-100 text-amber-700' :
-                      'bg-slate-100 text-slate-600'
-                    }`}>{fd.status}</span>
+                    <div className="flex flex-wrap gap-1">
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
+                        fd.status === 'ACTIVE' ? 'bg-green-100 text-green-700' :
+                        fd.status === 'REQUIRES_UPDATE' ? 'bg-amber-100 text-amber-700' :
+                        'bg-slate-100 text-slate-600'
+                      }`}>{fd.status}</span>
+                      {!fd.maturityDate && (
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-800 border border-yellow-300">
+                          Needs Update
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-3 py-2.5">
                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -413,7 +440,7 @@ export default function SriLankaFD() {
                   </td>
                 </tr>
               ))}
-              {filteredFDs.length === 0 && <tr><td colSpan={9} className="px-4 py-12 text-center text-slate-400">No fixed deposits</td></tr>}
+              {filteredFDs.length === 0 && <tr><td colSpan={10} className="px-4 py-12 text-center text-slate-400">No fixed deposits</td></tr>}
             </tbody>
           </table>
         </div>
