@@ -813,3 +813,4 @@ insert into fixed_deposits (account_number,bank_id,beneficiary,branch,category,c
 2026-10-06 22:55:48 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (9ms)
 2026-10-06 22:57:55 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/retirement-fund → 200 (3ms)
 2026-10-06 22:57:55 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/retirement-fund → 200 (2ms)
+2026-10-06 22:58:40 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/retirement-fund → 200 (8ms)
