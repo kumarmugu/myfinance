@@ -1,16 +1,17 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 import { getActiveHoldings, getSoldPositions, getShortTermTrades, getOwners, getCurrencyRates } from '../api';
 import { formatCurrency, formatPercent } from '../utils/formatters';
 import ExportMenu from '../components/ExportMenu';
 import SearchableSelect from '../components/SearchableSelect';
 import { holdingsExportConfig, soldPositionsExportConfig } from '../utils/export/configs';
-import type { Holding, SoldPosition, Currency, Owner, CurrencyRate } from '../types';
+import type { Account, Holding, SoldPosition, Currency, Owner, CurrencyRate } from '../types';
 import { ASSET_TYPE_LABELS, ASSET_TYPE_COLORS } from '../types';
 
 type Tab = 'holdings' | 'sold' | 'shortTerm';
 
-/** Latest rate to convert `from` → `to` from the user's stored FX rates (direct, then inverse). */
+/** Latest rate to convert from -> to from the user's stored FX rates (direct, then inverse). */
 function resolveRate(rates: CurrencyRate[], from: string, to: string): number | null {
   if (!from || !to) return null;
   if (from.toUpperCase() === to.toUpperCase()) return 1;
@@ -34,10 +35,8 @@ export default function Portfolio() {
   const [owners, setOwners] = useState<Owner[]>([]);
   const [fxRates, setFxRates] = useState<CurrencyRate[]>([]);
   const [filterOwner, setFilterOwner] = useState<number | undefined>();
-  // Holdings-table column filters (client-side). Owner is handled globally, server-side.
   const [filterAssetId, setFilterAssetId] = useState<string>('');
   const [filterAccountId, setFilterAccountId] = useState<string>('');
-  // Holdings-table sorting. Default: highest value first.
   type SortKey = 'asset' | 'type' | 'account' | 'owner' | 'quantity' | 'averageBuyPrice' | 'currentPrice' | 'investedAmount' | 'currentValue' | 'gainLoss';
   const [sortKey, setSortKey] = useState<SortKey>('currentValue');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
@@ -51,8 +50,6 @@ export default function Portfolio() {
 
   const loadData = async () => {
     try {
-      // Holdings & sold positions filter server-side by owner; short-term trades have no owner
-      // param on the API, so they're filtered client-side below.
       const [hRes, sRes, stRes, fxRes] = await Promise.all([getActiveHoldings(filterOwner), getSoldPositions(filterOwner), getShortTermTrades(), getCurrencyRates()]);
       setHoldings(hRes.data);
       setSold(sRes.data);
@@ -64,14 +61,22 @@ export default function Portfolio() {
 
   if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>;
 
-
-  // Distinct assets / accounts present in the current holdings, for the filter dropdowns.
   const assetOptions = Array.from(new Map(holdings.filter(h => h.asset).map(h => [h.asset.id, h.asset])).values())
     .sort((a, b) => a.symbol.localeCompare(b.symbol));
   const accountOptions = Array.from(new Map(holdings.filter(h => h.account).map(h => [h.account.id, h.account])).values())
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  // Apply the client-side column filters (owner is already applied server-side).
+  // Accounts with uninvested cash, for the Cash Balances card in the Holdings tab.
+  const accountsWithCash = Array.from(
+    new Map(holdings.map(h => [h.account.id, h.account])).values()
+  ).filter(a => a.cashBalance != null && a.cashBalance !== 0)
+   .sort((a, b) => a.name.localeCompare(b.name));
+
+  const totalCash = accountsWithCash.reduce((sum, a) => {
+    const r = resolveRate(fxRates, a.currency, displayCurrency) ?? 1;
+    return sum + (a.cashBalance! * r);
+  }, 0);
+
   const filteredHoldings = holdings.filter(h => {
     if (filterAssetId && String(h.asset?.id) !== filterAssetId) return false;
     if (filterAccountId && String(h.account?.id) !== filterAccountId) return false;
@@ -85,25 +90,17 @@ export default function Portfolio() {
     const currentValue = h.quantity * currentPrice;
     const gainLoss = currentValue - h.investedAmount;
     const pct = h.investedAmount > 0 ? (gainLoss / h.investedAmount) * 100 : 0;
-    // Convert money fields to the display currency (SGD/USD toggle) when a rate is available.
-    // If no rate exists, fall back to showing the holding's own currency, unconverted.
     const rate = resolveRate(fxRates, h.currency, displayCurrency);
     const dispCurrency = rate != null ? displayCurrency : h.currency;
     const r = rate ?? 1;
 
-    // ── FX P/L: the currency effect on the current value, in the display currency. ──
-    // It's the difference between valuing the position at today's FX rate vs the rate paid at
-    // purchase: qty * currentPrice * (todayRate - purchaseRate). Only meaningful when the holding's
-    // currency differs from the display currency AND we know the purchase rate.
-    //   - purchaseRate to the display ccy: if display == account ccy, it's averageBuyFxRate
-    //     (stored trade->account rate); if display == holding ccy, there's no FX (rate 1).
     let fxPnl = 0;
     let fxPnlKnown = false;
     if (rate != null && h.currency.toUpperCase() !== displayCurrency.toUpperCase()) {
       const acctCcy = h.account?.currency;
       let purchaseRate: number | null = null;
       if (acctCcy && acctCcy.toUpperCase() === displayCurrency.toUpperCase()) {
-        purchaseRate = h.averageBuyFxRate ?? null; // stored trade->account(display) rate at purchase
+        purchaseRate = h.averageBuyFxRate ?? null;
       }
       if (purchaseRate != null && purchaseRate > 0) {
         fxPnl = h.quantity * currentPrice * (r - purchaseRate);
@@ -126,11 +123,9 @@ export default function Portfolio() {
     };
   });
 
-  // Totals in the display currency (currentValue & dispInvested are already converted per row).
   const totalValue = holdingsWithValue.reduce((s, h) => s + h.currentValue, 0);
   const totalInvested = holdingsWithValue.reduce((s, h) => s + h.dispInvested, 0);
 
-  // Sort a copy of the computed holdings by the active column/direction.
   const sortedHoldings = [...holdingsWithValue].sort((a, b) => {
     let av: number | string;
     let bv: number | string;
@@ -151,12 +146,10 @@ export default function Portfolio() {
     return sortDir === 'asc' ? cmp : -cmp;
   });
 
-  // Group by type
   const byType: Record<string, number> = {};
   holdingsWithValue.forEach(h => { byType[h.asset.assetType] = (byType[h.asset.assetType] || 0) + h.currentValue; });
   const pieData = Object.entries(byType).map(([k, v]) => ({ name: ASSET_TYPE_LABELS[k as keyof typeof ASSET_TYPE_LABELS] || k, value: v, color: ASSET_TYPE_COLORS[k as keyof typeof ASSET_TYPE_COLORS] || '#94a3b8' }));
 
-  // Group by account/broker — how much value is held with each broker.
   const ACCOUNT_COLORS = ['#6366f1', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316', '#64748b'];
   const byAccount: Record<string, number> = {};
   holdingsWithValue.forEach(h => { const n = h.account?.name || 'Unknown'; byAccount[n] = (byAccount[n] || 0) + h.currentValue; });
@@ -164,7 +157,6 @@ export default function Portfolio() {
     .sort((a, b) => b[1] - a[1])
     .map(([name, value], i) => ({ name, value, color: ACCOUNT_COLORS[i % ACCOUNT_COLORS.length] }));
 
-  // Top holdings bar
   const topHoldings = [...holdingsWithValue].sort((a, b) => b.currentValue - a.currentValue).slice(0, 10).map(h => ({ name: h.asset.symbol, value: h.currentValue }));
 
   return (
@@ -233,6 +225,42 @@ export default function Portfolio() {
             </div>
           </div>
 
+          {/* Cash Balances - shown only when at least one account has uninvested cash */}
+          {accountsWithCash.length > 0 && (
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-slate-800 text-sm">Cash Balances</h3>
+                <span className="text-sm font-medium text-slate-700">
+                  Total: {formatCurrency(totalCash, displayCurrency)}
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                {accountsWithCash.map(a => {
+                  const r = resolveRate(fxRates, a.currency, displayCurrency) ?? 1;
+                  const disp = a.cashBalance! * r;
+                  const excluded = a.includeCashInNetWorth === false;
+                  return (
+                    <div key={a.id} className={`flex flex-col px-4 py-2.5 rounded-lg border ${excluded ? 'border-slate-200 bg-slate-50' : 'border-indigo-100 bg-indigo-50'}`}>
+                      <span className="text-xs font-medium text-slate-700 flex items-center gap-1.5">
+                        {a.name}
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-600">{a.currency}</span>
+                        {excluded && <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-400">excl. NW</span>}
+                      </span>
+                      <span className={`text-sm font-semibold mt-0.5 ${excluded ? 'text-slate-400' : 'text-indigo-700'}`}>
+                        {formatCurrency(disp, displayCurrency)}
+                        {a.currency !== displayCurrency && (
+                          <span className="text-[10px] text-slate-400 font-normal ml-1">
+                            ({formatCurrency(a.cashBalance!, a.currency)})
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Holdings Table */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="p-4 border-b border-slate-200 flex justify-between items-center">
@@ -242,7 +270,6 @@ export default function Portfolio() {
               </div>
               <ExportMenu rows={filteredHoldings} config={holdingsExportConfig} />
             </div>
-            {/* Column filters (owner is the global filter above) */}
             <div className="px-4 py-3 border-b border-slate-200 bg-slate-50/50 flex flex-wrap items-end gap-3">
               <div className="w-52">
                 <label className="block text-[11px] font-medium text-slate-500 mb-1">Asset</label>
@@ -257,7 +284,6 @@ export default function Portfolio() {
                 <label className="block text-[11px] font-medium text-slate-500 mb-1">Account</label>
                 <SearchableSelect
                   options={[{ value: '', label: 'All Accounts' }, ...accountOptions.map(a => {
-                    // Disambiguate accounts that share a name across owners (e.g. two "Tiger" accounts).
                     const dup = accountOptions.some(b => b.id !== a.id && b.name === a.name);
                     return { value: a.id.toString(), label: dup && a.owner?.name ? `${a.name} (${a.owner.name})` : a.name };
                   })]}
@@ -320,7 +346,7 @@ export default function Portfolio() {
                       <td className="px-4 py-3 text-right">
                         {h.fxPnlKnown
                           ? <span className={`font-medium ${h.fxPnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(h.fxPnl, h.dispCurrency)}</span>
-                          : <span className="text-slate-300" title="No purchase FX rate recorded — run Recompute P/L on the Transactions page or add the buy's FX rate">—</span>}
+                          : <span className="text-slate-300" title="No purchase FX rate recorded">-</span>}
                       </td>
                     </tr>
                   ))}
@@ -337,8 +363,35 @@ export default function Portfolio() {
   );
 }
 
+type SoldGroupEntry = { account: Account; rows: SoldPosition[] };
+
 function SoldTable({ data, title }: { data: SoldPosition[]; title: string }) {
   const totalProfit = data.reduce((s, p) => s + p.profit, 0);
+
+  // Group rows by account, sorted alphabetically by account name.
+  const groups: SoldGroupEntry[] = Object.values(
+    data.reduce((acc, p) => {
+      const key = p.account.id;
+      if (!acc[key]) acc[key] = { account: p.account, rows: [] };
+      acc[key].rows.push(p);
+      return acc;
+    }, {} as Record<number, SoldGroupEntry>)
+  ).sort((a, b) => a.account.name.localeCompare(b.account.name));
+  // Within each group, most recent sold date first.
+  groups.forEach(g => g.rows.sort((a, b) => b.soldDate.localeCompare(a.soldDate)));
+
+  // All groups start expanded.
+  const [expandedGroups, setExpandedGroups] = useState<Set<number>>(
+    () => new Set(data.map(p => p.account.id))
+  );
+  const toggleGroup = (id: number) => {
+    setExpandedGroups(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
   return (
     <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
       <div className="p-4 border-b border-slate-200 flex justify-between items-center">
@@ -367,20 +420,61 @@ function SoldTable({ data, title }: { data: SoldPosition[]; title: string }) {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {data.map(p => (
-              <tr key={p.id} className="hover:bg-slate-50">
-                <td className="px-4 py-3 font-medium text-slate-800">{p.asset.symbol}</td>
-                <td className="px-4 py-3 text-slate-600">{p.account.name}</td>
-                <td className="px-4 py-3 text-right">{p.quantity}</td>
-                <td className="px-4 py-3 text-right">{formatCurrency(p.buyPrice, p.currency)}</td>
-                <td className="px-4 py-3 text-right">{formatCurrency(p.sellPrice, p.currency)}</td>
-                <td className={`px-4 py-3 text-right font-medium ${p.profit >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(p.profit, p.currency)}</td>
-                <td className={`px-4 py-3 text-right ${p.profitPercentage >= 0 ? 'text-green-600' : 'text-red-600'}`}>{formatPercent(p.profitPercentage)}</td>
-                <td className="px-4 py-3 text-slate-500 text-xs">{p.holdingPeriod}</td>
-                <td className="px-4 py-3 text-slate-500">{p.soldDate}</td>
-              </tr>
-            ))}
-            {data.length === 0 && <tr><td colSpan={9} className="px-4 py-12 text-center text-slate-400">No records</td></tr>}
+            {groups.map(g => {
+              const isOpen = expandedGroups.has(g.account.id);
+              const groupProfit = g.rows.reduce((s, p) => s + p.profit, 0);
+              return (
+                <React.Fragment key={`grp-${g.account.id}`}>
+                  <tr
+                    className="bg-slate-50 cursor-pointer hover:bg-slate-100 select-none"
+                    onClick={() => toggleGroup(g.account.id)}
+                  >
+                    <td colSpan={9} className="px-4 py-2.5">
+                      <div className="flex items-center gap-2">
+                        {isOpen
+                          ? <ChevronDown size={14} className="text-slate-400 shrink-0" />
+                          : <ChevronRight size={14} className="text-slate-400 shrink-0" />}
+                        <span className="font-semibold text-slate-800 text-sm">{g.account.name}</span>
+                        {g.account.owner && (
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 font-medium">
+                            {g.account.owner.name}
+                          </span>
+                        )}
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-600 font-medium">
+                          {g.rows.length} position{g.rows.length !== 1 ? 's' : ''}
+                        </span>
+                        <span className={`ml-auto text-sm font-semibold ${groupProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                          {formatCurrency(groupProfit, g.rows[0]?.currency ?? 'USD')}
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                  {isOpen && g.rows.map(p => (
+                    <tr key={p.id} className="hover:bg-slate-50">
+                      <td className="pl-8 pr-4 py-3">
+                        <span className="font-medium text-slate-800">{p.asset.symbol}</span>
+                        <p className="text-xs text-slate-400">{p.asset.name}</p>
+                      </td>
+                      <td className="px-4 py-3 text-slate-600">{p.account.name}</td>
+                      <td className="px-4 py-3 text-right">{p.quantity}</td>
+                      <td className="px-4 py-3 text-right">{formatCurrency(p.buyPrice, p.currency)}</td>
+                      <td className="px-4 py-3 text-right">{formatCurrency(p.sellPrice, p.currency)}</td>
+                      <td className={`px-4 py-3 text-right font-medium ${p.profit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {formatCurrency(p.profit, p.currency)}
+                      </td>
+                      <td className={`px-4 py-3 text-right ${p.profitPercentage >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {formatPercent(p.profitPercentage)}
+                      </td>
+                      <td className="px-4 py-3 text-slate-500 text-xs">{p.holdingPeriod}</td>
+                      <td className="px-4 py-3 text-slate-500">{p.soldDate}</td>
+                    </tr>
+                  ))}
+                </React.Fragment>
+              );
+            })}
+            {data.length === 0 && (
+              <tr><td colSpan={9} className="px-4 py-12 text-center text-slate-400">No records</td></tr>
+            )}
           </tbody>
         </table>
       </div>
