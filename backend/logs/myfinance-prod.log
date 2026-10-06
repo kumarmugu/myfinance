@@ -586,3 +586,230 @@ insert into fixed_deposits (account_number,bank_id,beneficiary,branch,category,c
 2026-10-06 22:33:22 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (3ms)
 2026-10-06 22:33:22 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (4ms)
 2026-10-06 22:33:22 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (9ms)
+2026-10-06 22:35:51 [http-nio-8080-exec-2] INFO  c.m.c.FixedDepositController - Creating fixed deposit: bank=null, principal=915886.21
+2026-10-06 22:35:51 [http-nio-8080-exec-2] INFO  c.m.c.FixedDepositController - Created fixed deposit id=15
+2026-10-06 22:35:51 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/fixed-deposits → 201 (6ms)
+2026-10-06 22:35:51 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (1ms)
+2026-10-06 22:35:51 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (1ms)
+2026-10-06 22:35:51 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (3ms)
+2026-10-06 22:35:51 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (3ms)
+2026-10-06 22:35:51 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (7ms)
+2026-10-06 22:37:22 [http-nio-8080-exec-7] INFO  c.m.c.FixedDepositController - Creating fixed deposit: bank=null, principal=500000
+2026-10-06 22:37:22 [http-nio-8080-exec-7] INFO  c.m.c.FixedDepositController - Created fixed deposit id=16
+2026-10-06 22:37:22 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/fixed-deposits → 201 (7ms)
+2026-10-06 22:37:22 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (1ms)
+2026-10-06 22:37:22 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (1ms)
+2026-10-06 22:37:22 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (4ms)
+2026-10-06 22:37:22 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (5ms)
+2026-10-06 22:37:22 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (10ms)
+2026-10-06 22:40:40 [http-nio-8080-exec-1] INFO  c.m.c.FixedDepositController - Creating fixed deposit: bank=null, principal=2390968.8
+2026-10-06 22:40:40 [http-nio-8080-exec-1] INFO  c.m.c.FixedDepositController - Created fixed deposit id=17
+2026-10-06 22:40:40 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/fixed-deposits → 201 (6ms)
+2026-10-06 22:40:40 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (1ms)
+2026-10-06 22:40:40 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (2ms)
+2026-10-06 22:40:40 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (6ms)
+2026-10-06 22:40:40 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (7ms)
+2026-10-06 22:40:40 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (13ms)
+2026-10-06 22:41:52 [http-nio-8080-exec-2] INFO  c.m.c.FixedDepositController - Creating fixed deposit: bank=null, principal=743433.34
+2026-10-06 22:41:52 [http-nio-8080-exec-2] INFO  c.m.c.FixedDepositController - Created fixed deposit id=18
+2026-10-06 22:41:52 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/fixed-deposits → 201 (4ms)
+2026-10-06 22:41:52 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (1ms)
+2026-10-06 22:41:52 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (1ms)
+2026-10-06 22:41:52 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (4ms)
+2026-10-06 22:41:52 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (4ms)
+2026-10-06 22:41:52 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (9ms)
+2026-10-06 22:42:59 [http-nio-8080-exec-7] INFO  c.m.c.FixedDepositController - Creating fixed deposit: bank=null, principal=446060
+2026-10-06 22:42:59 [http-nio-8080-exec-7] INFO  c.m.c.FixedDepositController - Created fixed deposit id=19
+2026-10-06 22:42:59 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/fixed-deposits → 201 (4ms)
+2026-10-06 22:42:59 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (1ms)
+2026-10-06 22:42:59 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (1ms)
+2026-10-06 22:42:59 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (5ms)
+2026-10-06 22:42:59 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (6ms)
+2026-10-06 22:42:59 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (9ms)
+2026-10-06 22:43:58 [http-nio-8080-exec-5] INFO  c.m.c.FixedDepositController - Creating fixed deposit: bank=null, principal=355804.11
+2026-10-06 22:43:58 [http-nio-8080-exec-5] INFO  c.m.c.FixedDepositController - Created fixed deposit id=20
+2026-10-06 22:43:58 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/fixed-deposits → 201 (8ms)
+2026-10-06 22:43:58 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (1ms)
+2026-10-06 22:43:58 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (2ms)
+2026-10-06 22:43:58 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (4ms)
+2026-10-06 22:43:58 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (5ms)
+2026-10-06 22:43:58 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (7ms)
+2026-10-06 22:45:04 [http-nio-8080-exec-1] INFO  c.m.c.FixedDepositController - Creating fixed deposit: bank=null, principal=1000000
+2026-10-06 22:45:04 [http-nio-8080-exec-1] INFO  c.m.c.FixedDepositController - Created fixed deposit id=21
+2026-10-06 22:45:04 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/fixed-deposits → 201 (4ms)
+2026-10-06 22:45:04 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (1ms)
+2026-10-06 22:45:04 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (1ms)
+2026-10-06 22:45:04 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (4ms)
+2026-10-06 22:45:04 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (5ms)
+2026-10-06 22:45:04 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (9ms)
+2026-10-06 22:45:24 [http-nio-8080-exec-7] INFO  c.m.c.FixedDepositController - Updating fixed deposit id=21
+2026-10-06 22:45:24 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/fixed-deposits/21 → 200 (7ms)
+2026-10-06 22:45:24 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (1ms)
+2026-10-06 22:45:24 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (2ms)
+2026-10-06 22:45:24 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (5ms)
+2026-10-06 22:45:24 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (5ms)
+2026-10-06 22:45:24 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (10ms)
+2026-10-06 22:46:53 [http-nio-8080-exec-5] INFO  c.m.c.FixedDepositController - Creating FD holder: Car
+2026-10-06 22:46:53 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/fixed-deposits/holders → 200 (10ms)
+2026-10-06 22:46:53 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (3ms)
+2026-10-06 22:46:53 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (1ms)
+2026-10-06 22:46:53 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (1ms)
+2026-10-06 22:46:53 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (4ms)
+2026-10-06 22:46:53 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (9ms)
+2026-10-06 22:48:28 [http-nio-8080-exec-1] INFO  c.m.c.FixedDepositController - Creating fixed deposit: bank=null, principal=775000
+2026-10-06 22:48:28 [http-nio-8080-exec-1] INFO  c.m.c.FixedDepositController - Created fixed deposit id=22
+2026-10-06 22:48:28 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/fixed-deposits → 201 (5ms)
+2026-10-06 22:48:28 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (0ms)
+2026-10-06 22:48:28 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (2ms)
+2026-10-06 22:48:28 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (5ms)
+2026-10-06 22:48:28 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (6ms)
+2026-10-06 22:48:28 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (10ms)
+2026-10-06 22:49:16 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-10-06 22:49:16 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-10-06 22:49:16 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-10-06 22:49:37 [main] INFO  com.myfinance.MyFinanceApplication - Starting MyFinanceApplication using Java 17.0.20 with PID 15485 (/Users/mugu/Documents/Projects/myfinance/backend/target/classes started by mugu in /Users/mugu/Documents/Projects/myfinance/backend)
+2026-10-06 22:49:37 [main] INFO  com.myfinance.MyFinanceApplication - The following 1 profile is active: "prod"
+2026-10-06 22:49:38 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-10-06 22:49:38 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 144 ms. Found 48 JPA repository interfaces.
+2026-10-06 22:49:39 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-10-06 22:49:39 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-10-06 22:49:39 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-10-06 22:49:39 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-10-06 22:49:39 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1982 ms
+2026-10-06 22:49:39 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-10-06 22:49:39 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-10-06 22:49:39 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-10-06 22:49:40 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-10-06 22:49:40 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-10-06 22:49:40 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data-prod/myfinance user=SA
+2026-10-06 22:49:40 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-10-06 22:49:40 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-10-06 22:49:41 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-10-06 22:49:42 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-10-06 22:49:42 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-10-06 22:49:45 [main] INFO  c.m.service.ReceiptScanService - Receipt OCR disabled: app.ocr.tessdata-path is not configured.
+2026-10-06 22:49:47 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4cd451fb, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7b07ef24, org.springframework.security.web.context.SecurityContextHolderFilter@7bb98540, org.springframework.security.web.header.HeaderWriterFilter@5ffe718a, org.springframework.web.filter.CorsFilter@23fbc6b2, org.springframework.security.web.authentication.logout.LogoutFilter@4efd93ee, com.myfinance.provisioning.ProvisioningTokenFilter@7b377a53, com.myfinance.security.JwtAuthFilter@1de7c0ad, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@68d4814b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2f95c400, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1ba44388, org.springframework.security.web.session.SessionManagementFilter@f400c86, org.springframework.security.web.access.ExceptionTranslationFilter@4614ce7c, org.springframework.security.web.access.intercept.AuthorizationFilter@6537b264]
+2026-10-06 22:49:48 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2026-10-06 22:49:48 [main] INFO  com.myfinance.MyFinanceApplication - Started MyFinanceApplication in 11.125 seconds (process running for 11.501)
+2026-10-06 22:49:48 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-06 22:49:48 [http-nio-8080-exec-1] WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2026-10-06 22:49:48 [http-nio-8080-exec-1] WARN  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/login → 405 (7ms)
+2026-10-06 22:50:06 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (43ms)
+2026-10-06 22:50:06 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/auth/me → 200 (4ms)
+2026-10-06 22:50:06 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/generic-fd → 200 (9ms)
+2026-10-06 22:50:06 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/generic-fd → 200 (3ms)
+2026-10-06 22:50:09 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (32ms)
+2026-10-06 22:50:09 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (35ms)
+2026-10-06 22:50:09 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/banks → 200 (3ms)
+2026-10-06 22:50:09 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (48ms)
+2026-10-06 22:50:09 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (50ms)
+2026-10-06 22:50:09 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/holders → 200 (4ms)
+2026-10-06 22:50:09 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (59ms)
+2026-10-06 22:50:09 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits → 200 (14ms)
+2026-10-06 22:50:09 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/maturing → 200 (14ms)
+2026-10-06 22:50:09 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/fixed-deposits/summary → 200 (45ms)
+2026-10-06 22:51:36 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (13ms)
+2026-10-06 22:51:36 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (14ms)
+2026-10-06 22:51:36 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/broker-credentials → 200 (16ms)
+2026-10-06 22:51:36 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (7ms)
+2026-10-06 22:51:36 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/broker-credentials → 200 (5ms)
+2026-10-06 22:51:36 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/accounts → 200 (12ms)
+2026-10-06 22:51:39 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (16ms)
+2026-10-06 22:51:39 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (8ms)
+2026-10-06 22:51:43 [http-nio-8080-exec-4] INFO  c.m.controller.AssetController - Refresh-all prices for user=2: updated=43, skipped=3
+2026-10-06 22:51:43 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] POST /api/assets/refresh-prices → 200 (2038ms)
+2026-10-06 22:51:43 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/assets → 200 (5ms)
+2026-10-06 22:51:56 [http-nio-8080-exec-9] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-10-06 22:51:56 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-10-06 22:51:56 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (6ms)
+2026-10-06 22:51:56 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-10-06 22:51:56 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-10-06 22:51:56 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (34ms)
+2026-10-06 22:51:57 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (15ms)
+2026-10-06 22:51:57 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (175ms)
+2026-10-06 22:51:57 [http-nio-8080-exec-3] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-10-06 22:51:57 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (97ms)
+2026-10-06 22:52:47 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (6ms)
+2026-10-06 22:52:47 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (9ms)
+2026-10-06 22:52:47 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-10-06 22:52:47 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (19ms)
+2026-10-06 22:52:47 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings → 200 (4ms)
+2026-10-06 22:52:47 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/bank-savings/summary → 200 (8ms)
+2026-10-06 22:52:53 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (8ms)
+2026-10-06 22:52:53 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (3ms)
+2026-10-06 22:53:06 [http-nio-8080-exec-9] INFO  c.m.c.NetWorthConfigController - Batch updating 21 net-worth configs
+2026-10-06 22:53:06 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/net-worth-config/batch → 200 (42ms)
+2026-10-06 22:53:06 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (3ms)
+2026-10-06 22:53:08 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (5ms)
+2026-10-06 22:53:08 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/work-experience → 200 (3ms)
+2026-10-06 22:53:08 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (26ms)
+2026-10-06 22:53:08 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary → 200 (13ms)
+2026-10-06 22:53:08 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (81ms)
+2026-10-06 22:53:08 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/salary/summary → 200 (48ms)
+2026-10-06 22:53:10 [http-nio-8080-exec-7] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-10-06 22:53:10 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (1ms)
+2026-10-06 22:53:10 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (1ms)
+2026-10-06 22:53:10 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-10-06 22:53:10 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (11ms)
+2026-10-06 22:53:10 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (4ms)
+2026-10-06 22:53:10 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (7ms)
+2026-10-06 22:53:10 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (73ms)
+2026-10-06 22:53:10 [http-nio-8080-exec-6] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-10-06 22:53:10 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (62ms)
+2026-10-06 22:53:18 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (3ms)
+2026-10-06 22:53:18 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (4ms)
+2026-10-06 22:53:41 [http-nio-8080-exec-9] INFO  c.m.c.NetWorthConfigController - Batch updating 21 net-worth configs
+2026-10-06 22:53:41 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/net-worth-config/batch → 200 (7ms)
+2026-10-06 22:53:41 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (2ms)
+2026-10-06 22:53:44 [http-nio-8080-exec-3] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-10-06 22:53:44 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-10-06 22:53:44 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-10-06 22:53:44 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (15ms)
+2026-10-06 22:53:44 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-10-06 22:53:44 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-10-06 22:53:44 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (8ms)
+2026-10-06 22:53:44 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (86ms)
+2026-10-06 22:53:44 [http-nio-8080-exec-2] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-10-06 22:53:44 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (72ms)
+2026-10-06 22:53:57 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (3ms)
+2026-10-06 22:53:57 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (3ms)
+2026-10-06 22:54:01 [http-nio-8080-exec-10] INFO  c.m.c.NetWorthConfigController - Batch updating 21 net-worth configs
+2026-10-06 22:54:01 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/net-worth-config/batch → 200 (7ms)
+2026-10-06 22:54:01 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (2ms)
+2026-10-06 22:54:03 [http-nio-8080-exec-6] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-10-06 22:54:03 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-10-06 22:54:03 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (2ms)
+2026-10-06 22:54:03 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-10-06 22:54:03 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (2ms)
+2026-10-06 22:54:03 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (12ms)
+2026-10-06 22:54:03 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (7ms)
+2026-10-06 22:54:03 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (60ms)
+2026-10-06 22:54:03 [http-nio-8080-exec-8] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-10-06 22:54:04 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (57ms)
+2026-10-06 22:54:16 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (3ms)
+2026-10-06 22:54:16 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (2ms)
+2026-10-06 22:54:56 [http-nio-8080-exec-4] INFO  c.m.c.NetWorthConfigController - Batch updating 21 net-worth configs
+2026-10-06 22:54:56 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] PUT /api/net-worth-config/batch → 200 (8ms)
+2026-10-06 22:54:56 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/net-worth-config → 200 (2ms)
+2026-10-06 22:54:59 [http-nio-8080-exec-3] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-10-06 22:54:59 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (2ms)
+2026-10-06 22:54:59 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-10-06 22:54:59 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/net-worth/history → 200 (3ms)
+2026-10-06 22:54:59 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (12ms)
+2026-10-06 22:54:59 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-10-06 22:54:59 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (8ms)
+2026-10-06 22:54:59 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (67ms)
+2026-10-06 22:54:59 [http-nio-8080-exec-1] INFO  c.myfinance.service.DashboardService - Generating dashboard summary for ownerId=null, userId=2
+2026-10-06 22:54:59 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/dashboard/summary → 200 (50ms)
+2026-10-06 22:55:48 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (3ms)
+2026-10-06 22:55:48 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (4ms)
+2026-10-06 22:55:48 [http-nio-8080-exec-2] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (12ms)
+2026-10-06 22:55:48 [http-nio-8080-exec-7] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (17ms)
+2026-10-06 22:55:48 [http-nio-8080-exec-5] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (21ms)
+2026-10-06 22:55:48 [http-nio-8080-exec-8] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/currency-rates → 200 (2ms)
+2026-10-06 22:55:48 [http-nio-8080-exec-6] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/owners → 200 (2ms)
+2026-10-06 22:55:48 [http-nio-8080-exec-10] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions/short-term → 200 (6ms)
+2026-10-06 22:55:48 [http-nio-8080-exec-1] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/sold-positions → 200 (4ms)
+2026-10-06 22:55:48 [http-nio-8080-exec-3] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/holdings → 200 (9ms)
+2026-10-06 22:57:55 [http-nio-8080-exec-4] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/retirement-fund → 200 (3ms)
+2026-10-06 22:57:55 [http-nio-8080-exec-9] INFO  c.m.config.RequestLoggingConfig - [HTTP] GET /api/retirement-fund → 200 (2ms)
