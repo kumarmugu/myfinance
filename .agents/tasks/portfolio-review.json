@@ -1,0 +1,46 @@
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    {
+      "id": 1,
+      "severity": "blocking",
+      "label": "Sold positions cross-tenant leak via ownerId/accountId param",
+      "detail": "SoldPositionController.getAll(?ownerId=X) and getAll(?accountId=X) return data without checking the caller's userId. findByOwnerIdOrderBySoldDateDesc and findByAccountIdOrderBySoldDateDesc have no userId predicate. Any authenticated user who knows another user's owner id or account id can read their sold positions. Fix: add userId-scoped finders (findByOwnerIdAndUserIdOrderBySoldDateDesc, findByAccountIdAndUserIdOrderBySoldDateDesc) and pass uid from the controller.",
+      "confirmed": true,
+      "location": "backend/src/main/java/com/myfinance/controller/SoldPositionController.java:28-29"
+    },
+    {
+      "id": 2,
+      "severity": "blocking",
+      "label": "Sold positions delete without ownership check",
+      "detail": "DELETE /api/sold-positions/{id} calls soldPositionService.delete(id) which calls repository.deleteById directly. Any authenticated user can delete any sold position by id. Fix: load the record, verify sp.getUserId().equals(uid), and throw 403/404 before deleting.",
+      "confirmed": true,
+      "location": "backend/src/main/java/com/myfinance/controller/SoldPositionController.java:44-48"
+    },
+    {
+      "id": 3,
+      "severity": "blocking",
+      "label": "SoldTable total profit hardcodes USD",
+      "detail": "formatCurrency(totalProfit, 'USD') is wrong when positions are in SGD or mixed currencies. totalProfit is a raw sum across rows with different currencies. Pass displayCurrency as a prop and apply resolveRate conversion before summing, consistent with the Holdings tab.",
+      "confirmed": true,
+      "location": "frontend/src/pages/Portfolio.tsx (SoldTable component)"
+    },
+    {
+      "id": 4,
+      "severity": "non-blocking",
+      "label": "Cash card misses accounts with no active holdings",
+      "detail": "accountsWithCash is built from holdings.map(h => h.account), so any account with cash but zero open positions (fully sold) is invisible. The most important use case for the feature is not covered. Consider fetching accounts independently or documenting the limitation.",
+      "confirmed": true,
+      "location": "frontend/src/pages/Portfolio.tsx:accountsWithCash derivation"
+    },
+    {
+      "id": 5,
+      "severity": "non-blocking",
+      "label": "Dead AccountService.getAllAccounts() calls findAll() unscoped",
+      "detail": "The method returns all users' accounts but is not called from any controller in this diff. Remove it or scope it before it gets wired somewhere.",
+      "confirmed": true,
+      "location": "backend/src/main/java/com/myfinance/service/AccountService.java:getAllAccounts()"
+    }
+  ],
+  "reviewDoc": "/Users/mugu/Documents/Projects/myfinance/.agents/tasks/portfolio-review.md"
+}
